@@ -1,0 +1,24 @@
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  /* background-color: blue; */
+  text-decoration: none;
+}
+.ant-tabs-tab {
+  width: 100px;
+}
+.abc {
+  /* margin: 0 10px 10px 10px; */
+  /* width: 300px; */
+  margin-top: 20px;
+  font-weight: 700;
+}
+.abc :active {
+  background-color: #88ece6;
+}
+.requests {
+  background-color: #e1e1e1;
+
+  cursor: pointer;
+  padding: 8px 30px;
+  margin-left: 15px;
+  width: 20vh;
+}

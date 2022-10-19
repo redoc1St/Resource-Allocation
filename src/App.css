@@ -1,7 +1,8 @@
-.App {
-  text-align: center;
-}
+@import '~antd/dist/antd.min.css';
 
+/* .App {
+  text-align: center;
+} */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -12,6 +13,11 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+input, select{
+  width: 200px;
+}
+
 
 .App-header {
   background-color: #282c34;
@@ -28,11 +34,39 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+nav a.active{
+  /* text-decoration: ; */
+  font-weight: bold;
+  background-color: #c2c8f4;
+  /* border-radius: ; */
+}
+a.active{
+  background-color: aquamarine;
+}
+
+button{
+  opacity: 0.75;  
+  transition: all 0.1 ease;
+
+}
+
+button:hover{
+  opacity: 1;
+  font-weight: bold;
+}
+Badge:hover{
+  opacity: 1;
+  font-weight: bold;
+}
+a{
+  text-decoration: none;
+}
+.ant-modal-title{
+  color: #28316f;
+  font-weight: bold;
+}
+Button .active{
+  background-color: aquamarine;
+
 }
