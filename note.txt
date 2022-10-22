@@ -1,0 +1,6 @@
+22/10/2022
+usercontroller: phần search thêm by name + active
+
+resourcePlaningController: update - bỏ 3 phần role_id, e_id, status
+
+ProjectController:  insert thêm check code

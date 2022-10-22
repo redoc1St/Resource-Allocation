@@ -27,22 +27,22 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult GetListResourcePool(string pid)
         {
             string query = @"
-                               select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
-Project.ProjectName, ResourcePlanning_Employee.Date_start, 
-ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
-from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
-Project, ResourcePlanning_Role, Department
-where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
+                    select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
+                    Project.ProjectName, ResourcePlanning_Employee.Date_start, 
+                    ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
+                    from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
+                    Project, ResourcePlanning_Role, Department
+                    where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
 
-[User].[User_id] = User_Role.[User_id] and
-User_Role.Role_id = Roles.Role_id and
-[User].Department_id = Department.Department_id and
+                    [User].[User_id] = User_Role.[User_id] and
+                    User_Role.Role_id = Roles.Role_id and
+                    [User].Department_id = Department.Department_id and
 
-ResourcePlanning_Employee.Level_id = Levels.Level_id AND
-Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
+                    ResourcePlanning_Employee.Level_id = Levels.Level_id AND
+                    Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
 
-Project.Project_id = ResourcePlanning_Role.Project_id and
-ResourcePlanning_Role.Employee_id =ResourcePlanning_Employee.Employee_id";
+                    Project.Project_id = ResourcePlanning_Role.Project_id and
+                    ResourcePlanning_Role.Employee_id =ResourcePlanning_Employee.Employee_id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

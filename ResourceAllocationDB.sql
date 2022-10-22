@@ -134,7 +134,7 @@ insert into Project values('AIS_0005','ProjectName5',5,2,5,1,2,2,
 '2022/07/01','2022/07/01','2022/07/10','2022/07/10'
 )
 
-select * from ResourcePlanning_Role
+
 --ResourcePlanning_Role
 create table ResourcePlanning_Role(
 id int primary key identity(1,1),
@@ -342,26 +342,10 @@ and [User].Fullname like '%tung%'
 
 
 
-  if not exists ( select * from ResourcePlanning_Role where Role_id = 3 and Level_id =5 and Skill_id =2)
-   insert into ResourcePlanning_Role(Role_id,Level_id,Skill_id) values(4,3,1)
+  if not exists ( select * from ResourcePlanning_Role where Role_id = 4 and Level_id =2 and Skill_id =2 and Project_id=5)
+  insert into ResourcePlanning_Role(Role_id,Level_id,Skill_id) values(4,2,2)
 
-  
-CREATE PROCEDURE [dbo].ResourcePlanning_Role
-    @Role_id int = NULL,
-    @Level_id int = NULL,
-	AS
+    if not exists ( select * from Project where Code = 'AIS_0001')
+	insert into Project values('AIS_0001','ProjectName1',1,2,5,1,2,2,'2022/06/01','2022/06/01','2022/06/10','2022/06/10')
 
-BEGIN
-   
-    IF EXISTS(SELECT * FROM ResourcePlanning_Role WHERE Role_id=@Role_id and Level_id=@Level_id)   
-        select * from ResourcePlanning_Role
-       
-    ELSE   
-        INSERT INTO ResourcePlanning_Role
-        (Role_id, Level_id)
-        VALUES  (@Role_id,  @Level_id)
-END
-
-
- select * from
-                                dbo.[Skill]
+  select * from Project

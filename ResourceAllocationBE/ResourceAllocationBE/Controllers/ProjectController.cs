@@ -108,13 +108,15 @@ namespace ResourceAllocationBE.Controllers
 
         public JsonResult Post(Project project)
         {
-            string query = @"insert into Project values(
+            string query = @"
+        if not exists ( select * from Project where Code = @Code)
+        insert into Project values(
         @Code, @ProjectName,
-@Depeartment_id,@Effort_planned,
-@Effort_actual,@Effort_billable,
-@Quantity_plan,@Quantity_actual,
-@Start_plan,@Start_actual,
-@End_plan,@End_actual)";
+        @Depeartment_id,@Effort_planned,
+        @Effort_actual,@Effort_billable,
+        @Quantity_plan,@Quantity_actual,
+        @Start_plan,@Start_actual,
+        @End_plan,@End_actual)";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -155,13 +157,13 @@ namespace ResourceAllocationBE.Controllers
         [HttpPut("{id}")]
         public JsonResult Put(Project project, int id)
         {
-            string query = @"update dbo.Project
-        set Code = @Code, ProjectName= @ProjectName, Depeartment_id = @Depeartment_id,
-Effort_planned = @Effort_planned,Effort_actual=@Effort_actual,
-Effort_billable=@Effort_billable, Quantity_plan=@Quantity_plan, 
-Quantity_actual=@Quantity_actual, Start_plan=@Start_plan,
-Start_actual=@Start_actual, End_plan=@End_plan, End_actual=@End_actual
-WHERE [Project_id] = @id";
+            string query = @"
+            update dbo.Project set Depeartment_id = @Depeartment_id,
+            Effort_planned = @Effort_planned,Effort_actual=@Effort_actual,
+            Effort_billable=@Effort_billable, Quantity_plan=@Quantity_plan, 
+            Quantity_actual=@Quantity_actual, Start_plan=@Start_plan,
+            Start_actual=@Start_actual, End_plan=@End_plan, End_actual=@End_actual
+            WHERE [Project_id] = @id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -171,8 +173,6 @@ WHERE [Project_id] = @id";
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@id", id);
-                    myCommand.Parameters.AddWithValue("@Code", project.Code);
-                    myCommand.Parameters.AddWithValue("@ProjectName", project.ProjectName);
                     myCommand.Parameters.AddWithValue("@Depeartment_id", project.Department_id);
                     myCommand.Parameters.AddWithValue("@Effort_planned", project.Effort_planned);
                     myCommand.Parameters.AddWithValue("@Effort_actual", project.Effort_actual);

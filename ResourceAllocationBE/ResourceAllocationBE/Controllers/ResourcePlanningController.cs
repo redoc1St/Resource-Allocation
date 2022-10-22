@@ -63,16 +63,16 @@ and Project.code = @pid";
         public JsonResult ViewResourcePoolByRole(string name, string role)
         {
             string query = @"
-                               SELECT [User].Fullname, Roles.RoleName, ResourcePlanning_Role.Date_start, 
-  ResourcePlanning_Role.Date_end, ResourcePlanning_Role.Effort_planned, 
-  ResourcePlanning_Role.Bill_rate, Levels.LevelName, Skill.SkillName
-   FROM Project, ResourcePlanning_Role, [USER], Roles, Levels, Skill
-  WHERE Project.Project_id = ResourcePlanning_Role.Project_id AND
-  ResourcePlanning_Role.Employee_id =[USER].[User_id] AND 
-  Roles.Role_id = ResourcePlanning_Role.Role_id AND
-  Levels.Level_id = ResourcePlanning_Role.Level_id AND
- Skill.Skill_id = ResourcePlanning_Role.Skill_id
- and ProjectName =@name AND Roles.RoleName = @role";
+                SELECT [User].Fullname, Roles.RoleName, ResourcePlanning_Role.Date_start, 
+                ResourcePlanning_Role.Date_end, ResourcePlanning_Role.Effort_planned, 
+                ResourcePlanning_Role.Bill_rate, Levels.LevelName, Skill.SkillName
+                FROM Project, ResourcePlanning_Role, [USER], Roles, Levels, Skill
+                WHERE Project.Project_id = ResourcePlanning_Role.Project_id AND
+                ResourcePlanning_Role.Employee_id =[USER].[User_id] AND 
+                Roles.Role_id = ResourcePlanning_Role.Role_id AND
+                Levels.Level_id = ResourcePlanning_Role.Level_id AND
+                Skill.Skill_id = ResourcePlanning_Role.Skill_id
+                and ProjectName =@name AND Roles.RoleName = @role";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -120,7 +120,7 @@ and Project.code = @pid";
             return new JsonResult(table);
         }
 
-        //Get Detail PROJECT
+        //Get Detail ResourcePlanning_Role
         [HttpGet("one/{id}")]
         public JsonResult GetDetail(string id)
         {
@@ -148,21 +148,22 @@ and Project.code = @pid";
         [HttpPost]
         public JsonResult Post(ResourcePlanningRole resource)
         {
-            string query = @"insert into [ResourcePlanning_Role](Project_id,Role_id,Quantity,Date_start ,
-Date_end ,
-Effort_planned ,
-Effort_actual ,
-Bill_rate ,
-Level_id,
-Skill_id ,
-[Status]) values(
+            string query = @"
+            if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id)
+            insert into [ResourcePlanning_Role](Project_id,Role_id,Quantity,Date_start ,
+            Date_end ,
+            Effort_planned ,
+            Effort_actual ,
+            Bill_rate ,
+            Level_id,
+            Skill_id) values(
                 @Project_id, @Role_id,
-        @Quantity,
-        @Date_start,@Date_end,
-        @Effort_planned,@Effort_actual,
-        @Bill_rate,@Level_id,
-        @Skill_id,
-        @Status)";
+                @Quantity,
+                @Date_start,@Date_end,
+                @Effort_planned,@Effort_actual,
+                @Bill_rate,@Level_id,
+                @Skill_id
+                )";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -181,7 +182,6 @@ Skill_id ,
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
                     myCommand.Parameters.AddWithValue("@Level_id", resource.Level_id);
                     myCommand.Parameters.AddWithValue("@Skill_id", resource.Skill_id);
-                    myCommand.Parameters.AddWithValue("@Status", resource.Status);
 
 
                     myReader = myCommand.ExecuteReader();
@@ -200,7 +200,8 @@ Skill_id ,
         public JsonResult Put(ResourcePlanningRole resource, int id)
         {
             string query = @"update dbo.ResourcePlanning_Role
-                set  Role_id= @Role_id, 
+                set  Project_id= @Project_id, 
+                Quantity=@Quantity,
                 Date_start=@Date_start,
                 Date_end=@Date_end, 
                 Effort_planned=@Effort_planned, 
@@ -208,7 +209,7 @@ Skill_id ,
                 Bill_rate=@Bill_rate,
                 Level_id=@Level_id, 
                 Skill_id=@Skill_id 
-        WHERE id = @id";
+                WHERE id = @id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -219,8 +220,6 @@ Skill_id ,
                 {
                     myCommand.Parameters.AddWithValue("@id", id);
                     myCommand.Parameters.AddWithValue("@Project_id", resource.Project_id);
-                    myCommand.Parameters.AddWithValue("@Role_id", resource.Role_id);
-                    myCommand.Parameters.AddWithValue("@Employee_id", resource.Employee_id);
                     myCommand.Parameters.AddWithValue("@Quantity", resource.Quantity);
                     myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start);
                     myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end);
@@ -229,7 +228,6 @@ Skill_id ,
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
                     myCommand.Parameters.AddWithValue("@Level_id", resource.Level_id);
                     myCommand.Parameters.AddWithValue("@Skill_id", resource.Skill_id);
-                    myCommand.Parameters.AddWithValue("@Status", resource.Status);
 
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
