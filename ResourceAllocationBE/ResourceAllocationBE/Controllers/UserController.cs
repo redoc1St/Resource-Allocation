@@ -104,7 +104,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
                                select * from
-                                dbo.[User] where [Username] like @UName and [isActive] = @isactive";
+                                dbo.[User] where [Fullname] like @UName and [isActive] = @isactive";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

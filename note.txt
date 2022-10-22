@@ -4,3 +4,7 @@ usercontroller: phần search thêm by name + active
 resourcePlaningController: update - bỏ 3 phần role_id, e_id, status
 
 ProjectController:  insert thêm check code
+
+--- (2)
+resourcePoolController - theem //List by role, level, skill
+					 //INSERT check INTO DB

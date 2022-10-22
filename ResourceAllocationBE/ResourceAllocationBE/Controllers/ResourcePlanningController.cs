@@ -30,7 +30,7 @@ namespace ResourceAllocationBE.Controllers
                               select id,Roles.RoleName, ProjectName, 
 Quantity, Date_start, Date_end, ResourcePlanning_Role.Effort_planned,
 ResourcePlanning_Role.Effort_actual, Bill_rate, [Status], 
-LevelName, SkillName
+LevelName, SkillName, Skill.Skill_id, Levels.Level_id
 from ResourcePlanning_Role, Roles,Project, Levels,Skill
 where ResourcePlanning_Role.Project_id = Project.Project_id and
 Roles.Role_id = ResourcePlanning_Role.Role_id and
@@ -199,13 +199,13 @@ and Project.code = @pid";
         [HttpPut("{id}")]
         public JsonResult Put(ResourcePlanningRole resource, int id)
         {
-            string query = @"update dbo.ResourcePlanning_Role
-                set  Project_id= @Project_id, 
-                Quantity=@Quantity,
+            string query = @" if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id)
+                update dbo.ResourcePlanning_Role
+                set  
+                Role_id=@Role_id,
                 Date_start=@Date_start,
                 Date_end=@Date_end, 
                 Effort_planned=@Effort_planned, 
-                Effort_actual=@Effort_actual, 
                 Bill_rate=@Bill_rate,
                 Level_id=@Level_id, 
                 Skill_id=@Skill_id 
@@ -219,12 +219,12 @@ and Project.code = @pid";
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@id", id);
-                    myCommand.Parameters.AddWithValue("@Project_id", resource.Project_id);
+                    myCommand.Parameters.AddWithValue("@Role_id", resource.Role_id);
+                    myCommand.Parameters.AddWithValue("@Quantity", resource.Quantity);
                     myCommand.Parameters.AddWithValue("@Quantity", resource.Quantity);
                     myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start);
                     myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end);
                     myCommand.Parameters.AddWithValue("@Effort_planned", resource.Effort_planned);
-                    myCommand.Parameters.AddWithValue("@Effort_actual", resource.Effort_actual);
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
                     myCommand.Parameters.AddWithValue("@Level_id", resource.Level_id);
                     myCommand.Parameters.AddWithValue("@Skill_id", resource.Skill_id);

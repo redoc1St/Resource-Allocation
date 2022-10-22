@@ -243,38 +243,7 @@ Approved_by nvarchar(50)
 insert into ResourceRequest values(
 1,2,'admin','admin','admin','admin')
 
----- Mix_Skill
---create table Employee_Skill(
---Skill_id int foreign key references Skill(Skill_id),
---Employee_id int foreign key references ResourcePlanning_Employee(id)
---)
---insert into Employee_Skill values(1,1)
---insert into Employee_Skill values(2,2)
---insert into Employee_Skill values(2,3)
---insert into Employee_Skill values(2,4)
---insert into Employee_Skill values(3,5)
---insert into Employee_Skill values(4,6)
---insert into Employee_Skill values(3,7)
---insert into Employee_Skill values(4,8)
---insert into Employee_Skill values(3,9)
---insert into Employee_Skill values(4,10)
---insert into Employee_Skill values(3,11)
---insert into Employee_Skill values(4,12)
---insert into Employee_Skill values(4,13)
 
---create table Role_Skill(
---Skill_id int foreign key references Skill(Skill_id),
---ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
---)
-
---insert into Role_Skill values(1,1)
---insert into Role_Skill values(2,2)
---insert into Role_Skill values(2,3)
---insert into Role_Skill values(2,4)
---insert into Role_Skill values(3,5)
---insert into Role_Skill values(4,6)
---insert into Role_Skill values(3,7)
---insert into Role_Skill values(4,8)
 
 -- SELECT RESOURCE PLANNING
 
@@ -341,11 +310,29 @@ ResourcePlanning_Role.Employee_id =ResourcePlanning_Employee.Employee_id
 and [User].Fullname like '%tung%'
 
 
+-- insert emplooyee
+  if not exists ( select * from [ResourcePlanning_Employee] where Role_id = 3 and Level_id =5 and Skill_id =1 )
+  insert into [ResourcePlanning_Employee](Employee_id,Role_id,Date_start, Date_end, Effort, Bill_rate,Level_id,Skill_id) 
+  values(3,3,'2022/06/01','2022/06/01',1,1,5,1) 
+  else  select * from [ResourcePlanning_Employee] 
 
-  if not exists ( select * from ResourcePlanning_Role where Role_id = 4 and Level_id =2 and Skill_id =2 and Project_id=5)
-  insert into ResourcePlanning_Role(Role_id,Level_id,Skill_id) values(4,2,2)
-
+  -- insert Project
     if not exists ( select * from Project where Code = 'AIS_0001')
 	insert into Project values('AIS_0001','ProjectName1',1,2,5,1,2,2,'2022/06/01','2022/06/01','2022/06/10','2022/06/10')
 
-  select * from Project
+	select * from ResourcePlanning_role
+
+if not exists ( select * from ResourcePlanning_Role where Role_id = '4' and Project_id='4')
+update dbo.ResourcePlanning_Role
+                set  
+                Quantity=1,
+                Date_start='2022/06/01',
+                Date_end='2022/06/01',
+                Effort_planned=1, 
+                Bill_rate=1,
+                Level_id=1, 
+                Skill_id=2
+                WHERE id = 18
+				else select * from ResourcePlanning_role
+
+			
