@@ -8,3 +8,10 @@ ProjectController:  insert thêm check code
 --- (2)
 resourcePoolController - theem //List by role, level, skill
 					 //INSERT check INTO DB
+
+--
+
+23/10/2022
+database: sửa 2 bảng ResourcePlanning_Role, [ResourcePlanning_Employee] và thêm bảng  		Emp_RolePlanning
+
+.NET - sửa lại ResourcePoolController và ResourcePlanningController

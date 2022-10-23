@@ -99,31 +99,7 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
-        //SHOW ALL ROLE
-        //[HttpGet]
-        //[Route("api/roles")]
-        //public JsonResult GetListRole()
-        //{
-        //    string query = @"
-        //                       (select * from
-        //                        dbo.[Roles]) union (select * from [user]) order by [user].[user_id]";
-        //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-        //    SqlDataReader myReader;
-        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-        //    {
-        //        myCon.Open();
-        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
-        //        {
-        //            myReader = myCommand.ExecuteReader();
-        //            table.Load(myReader);
-        //            myReader.Close();
-        //            myCon.Close();
-
-        //        }
-        //    }
-        //    return new JsonResult(table);
-        //}
+        
         //INSERT IN TO DB User_role
         [Route("api/add/User_role")]
         [HttpPost]

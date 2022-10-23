@@ -118,9 +118,11 @@ Start_actual date,
 End_plan date,
 End_actual date
 )
+if not exists ( select * from Project where Code = 'AIS_0001')
 insert into Project values('AIS_0001','ProjectName1',1,2,5,1,2,2,
 '2022/06/01','2022/06/01','2022/06/10','2022/06/10'
 )
+if not exists ( select * from Project where Code = 'AIS_0002')
 insert into Project values('AIS_0002','ProjectName2',2,5,4,3,3,3,
 '2022/05/01','2022/05/01','2022/06/10','2022/06/10'
 )
@@ -135,12 +137,13 @@ insert into Project values('AIS_0005','ProjectName5',5,2,5,1,2,2,
 )
 
 
+
+
 --ResourcePlanning_Role
 create table ResourcePlanning_Role(
 id int primary key identity(1,1),
 Project_id int foreign key references Project(Project_id),
 Role_id int foreign key references Roles(Role_id) ,
-Employee_id int foreign key references [User]([User_id]),
 Quantity int,
 Date_start date,
 Date_end date,
@@ -152,36 +155,39 @@ Skill_id int foreign key references Skill(Skill_id),
 [Status] nvarchar(50)
 )
 
-insert into ResourcePlanning_Role (Project_id,Role_id,Quantity,Date_start ,
+if not exists ( select * from ResourcePlanning_Role where Project_id=1 and Role_id = 3  and Level_id =5 and Skill_id =2  )
+insert into ResourcePlanning_Role (Project_id,
+Role_id,Quantity,
+Date_start ,
 Date_end ,
 Effort_planned ,
 Effort_actual ,
 Bill_rate ,
 Level_id,
 Skill_id ,
-[Status]) values(1,3,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,2,1)
-insert into ResourcePlanning_Role values(1,4,5,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,3,1)
-insert into ResourcePlanning_Role values(1,5,6,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,2,1)
-insert into ResourcePlanning_Role values(1,6,3,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,1,1)
+[Status]) values(1,3,2,'2022/06/01', '2022/06/10'
+,100,'',100,5,2,'Waiting')
 
-insert into ResourcePlanning_Role values(2,3,8,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,4,1)
-insert into ResourcePlanning_Role values(2,4,9,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,5,1)
-insert into ResourcePlanning_Role values(2,5,10,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,4,1)
-insert into ResourcePlanning_Role values(2,6,11,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,3,1)
+insert into ResourcePlanning_Role values(1,4,1,'2022/06/01', '2022/06/10'
+,100,'',100,5,3,'Waiting')
+insert into ResourcePlanning_Role values(1,5,1,'2022/06/01', '2022/06/10'
+,100,'',100,5,2,'Waiting')
+insert into ResourcePlanning_Role values(1,6,1,'2022/06/01', '2022/06/10'
+,100,'',100,5,1,'Waiting')
+
+insert into ResourcePlanning_Role values(2,3,1,'2022/06/01', '2022/06/10'
+,100,'',100,5,4,'Waiting')
+insert into ResourcePlanning_Role values(2,4,1,'2022/06/01', '2022/06/10'
+,100,'',100,5,5,'Waiting')
+insert into ResourcePlanning_Role values(2,5,1,'2022/06/01', '2022/06/10'
+,100,'',100,5,4,'Waiting')
+insert into ResourcePlanning_Role values(2,6,1,'2022/06/01', '2022/06/10'
+,100,'',100,5,3,'Waiting')
 
 
 --ResourcePlanning_Employee
 create table ResourcePlanning_Employee(
 id int primary key identity(1,1),
-ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id) null,
 Employee_id int foreign key references [User]([User_id]),
 Role_id int foreign key references Roles(Role_id),
 Date_start date,
@@ -191,46 +197,62 @@ Bill_rate int,
 Level_id int foreign key references Levels(Level_id),
 Skill_id int foreign key references Skill(Skill_id)
 )
+
+if not exists ( select * from [ResourcePlanning_Employee] where Employee_id =3 and Role_id = 3 and Level_id =2 and Skill_id =1 )
 insert into ResourcePlanning_Employee values(
-1,3,3,'2022/06/01','2022/06/10','','',2,1
+3,3,'2022/06/01','2022/06/10','','',2,1
 )
 insert into ResourcePlanning_Employee values(
-2,3,4,'2022/06/01','2022/06/10','','',1,2
+3,4,'2022/06/01','2022/06/10','','',1,2
 )
 insert into ResourcePlanning_Employee values(
-3,4,3,'2022/06/01','2022/06/10','','',3,3
+4,3,'2022/06/01','2022/06/10','','',3,3
 )
 insert into ResourcePlanning_Employee values(
-4,4,4,'2022/06/01','2022/06/10','','',4,4
+4,4,'2022/06/01','2022/06/10','','',4,4
 )
 insert into ResourcePlanning_Employee values(
-1,5,5,'2022/06/01','2022/06/10','','',5,5
+5,5,'2022/06/01','2022/06/10','','',5,5
 )
 insert into ResourcePlanning_Employee values(
-2,6,1,'2022/06/01','2022/06/10','','',3,3
+6,1,'2022/06/01','2022/06/10','','',3,3
 )
 insert into ResourcePlanning_Employee values(
-5,7,3,'2022/06/01','2022/06/10','','',4,2
+7,3,'2022/06/01','2022/06/10','','',4,2
 )
 insert into ResourcePlanning_Employee values(
-6,8,4,'2022/06/01','2022/06/10','','',5,3
+8,4,'2022/06/01','2022/06/10','','',5,3
 )
 insert into ResourcePlanning_Employee values(
-7,8,5,'2022/06/01','2022/06/10','','',4,3
+8,5,'2022/06/01','2022/06/10','','',4,3
 )
 insert into ResourcePlanning_Employee values(
-8,9,6,'2022/06/01','2022/06/10','','',4,4
+9,6,'2022/06/01','2022/06/10','','',4,4
 )
 insert into ResourcePlanning_Employee values(
-5,10,4,'2022/06/01','2022/06/10','','',3,2
+10,4,'2022/06/01','2022/06/10','','',3,2
 )
 insert into ResourcePlanning_Employee values(
-6,11,5,'2022/06/01','2022/06/10','','',5,4
+11,5,'2022/06/01','2022/06/10','','',5,4
 )
 insert into ResourcePlanning_Employee values(
-7,11,6,'2022/06/01','2022/06/10','','',5,3
+11,6,'2022/06/01','2022/06/10','','',5,3
 )
 
+-- mix EMP_PLANNING_ROLE
+create table Emp_RolePlanning(
+ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
+Employee_id int foreign key references ResourcePlanning_Employee(id)
+)
+insert into Emp_RolePlanning values(1,1)
+insert into Emp_RolePlanning values(1,3)
+insert into Emp_RolePlanning values(2,2)
+insert into Emp_RolePlanning values(3,5)
+insert into Emp_RolePlanning values(4,6)
+insert into Emp_RolePlanning values(6,7)
+insert into Emp_RolePlanning values(5,8)
+insert into Emp_RolePlanning values(7,9)
+insert into Emp_RolePlanning values(8,10)
 --ResourceRequest
 create table ResourceRequest(
 ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
@@ -245,81 +267,105 @@ insert into ResourceRequest values(
 
 
 
--- SELECT RESOURCE PLANNING
 
-select id,Roles.RoleName, ProjectName, [User].Fullname,
+
+
+go
+-- SELECT RESOURCE PLANNING OK
+
+select id,Roles.RoleName, ProjectName, 
 Quantity, Date_start, Date_end, ResourcePlanning_Role.Effort_planned,
 ResourcePlanning_Role.Effort_actual, Bill_rate, [Status], 
-LevelName, SkillName
-from ResourcePlanning_Role, Roles,Project, [user], Levels,Skill
+LevelName, SkillName, Skill.Skill_id, Levels.Level_id
+from ResourcePlanning_Role, Roles,Project, Levels,Skill
 where ResourcePlanning_Role.Project_id = Project.Project_id and
 Roles.Role_id = ResourcePlanning_Role.Role_id and
-ResourcePlanning_Role.Employee_id = [User].[User_id] 
-and ResourcePlanning_Role.Level_id = Levels.Level_id and
+ResourcePlanning_Role.Level_id = Levels.Level_id and
 ResourcePlanning_Role.Skill_id =  Skill.Skill_id
 and Project.code = 'ais_0001'
 
 
---select RESOURCEPOOL
-select id, RoleName, ProjectName
-from ResourcePlanning_Role, roles,Project, [user]
-where ResourcePlanning_Role.Role_id = roles.Role_id and
-ResourcePlanning_Role.Project_id = Project.Project_id
-and Project.Code = 'ais_0001'
 
 
+--select RESOURCEPOOL by projectname and role OK
+SELECT [User].Fullname, 
+Roles.RoleName, 
+ResourcePlanning_Role.Date_start, 
+ResourcePlanning_Role.Date_end, 
+ResourcePlanning_Role.Effort_planned, 
+ResourcePlanning_Role.Bill_rate, 
+Levels.LevelName, 
+Skill.SkillName
+               
+FROM Project, ResourcePlanning_Role, [USER], Roles, 
+Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
+                
+WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
+                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
+				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
+				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
+                Roles.Role_id = ResourcePlanning_Role.Role_id AND
+                Levels.Level_id = ResourcePlanning_Role.Level_id AND
+                Skill.Skill_id = ResourcePlanning_Role.Skill_id
+                and ProjectName ='ProjectName1' AND Roles.RoleName = 'ba'
 
---select RESOURCEPOOL by ROLE
+
+--
+--LIST RESOURCE POOL
 select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
-Project.ProjectName, ResourcePlanning_Employee.Date_start, 
-ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
-from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
-Project, ResourcePlanning_Role, Department
-where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
+                    Project.ProjectName, ResourcePlanning_Employee.Date_start, 
+                    ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
+                    from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
+                    Project, ResourcePlanning_Role, Department, Emp_RolePlanning
+                    where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
 
-[User].[User_id] = User_Role.[User_id] and
-User_Role.Role_id = Roles.Role_id and
-[User].Department_id = Department.Department_id and
+                    [User].[User_id] = User_Role.[User_id] and
+                    User_Role.Role_id = Roles.Role_id and
+                    [User].Department_id = Department.Department_id and
 
-ResourcePlanning_Employee.Level_id = Levels.Level_id AND
+                    ResourcePlanning_Employee.Level_id = Levels.Level_id AND
+                    Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
 
-Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
+                    Project.Project_id = ResourcePlanning_Role.Project_id and
 
-Project.Project_id = ResourcePlanning_Role.Project_id and
-ResourcePlanning_Role.Employee_id =ResourcePlanning_Employee.Employee_id
-and RoleName = 'ba' and Project.Code = 'ais_0001'
-
+                    ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
+					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
 
 
+
+-- SEARCH BY RESOURCEPOOL FULLNAME
 select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
-Project.ProjectName, ResourcePlanning_Employee.Date_start, 
-ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
-from ResourcePlanning_Employee, [User], Roles, User_Role, Levels,  Skill, 
-Project, ResourcePlanning_Role, Department
-where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
+                Project.ProjectName, ResourcePlanning_Employee.Date_start, 
+                ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
+                from ResourcePlanning_Employee, [User], Roles, User_Role, Levels,  Skill, 
+                Project, ResourcePlanning_Role, Department, Emp_RolePlanning
+                where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
 
-[User].[User_id] = User_Role.[User_id] and
-User_Role.Role_id = Roles.Role_id and
-[User].Department_id = Department.Department_id and
+                [User].[User_id] = User_Role.[User_id] and
+                    User_Role.Role_id = Roles.Role_id and
+                [User].Department_id = Department.Department_id and
 
-ResourcePlanning_Employee.Level_id = Levels.Level_id AND
-Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
+                ResourcePlanning_Employee.Level_id = Levels.Level_id AND
+                Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
 
-Project.Project_id = ResourcePlanning_Role.Project_id and
-ResourcePlanning_Role.Employee_id =ResourcePlanning_Employee.Employee_id
-and [User].Fullname like '%tung%'
+                Project.Project_id = ResourcePlanning_Role.Project_id and
+
+				ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
+				ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
+                and [User].Fullname like @name
+
 
 
 -- insert emplooyee
-  if not exists ( select * from [ResourcePlanning_Employee] where Role_id = 3 and Level_id =5 and Skill_id =1 )
+  if not exists ( select * from [ResourcePlanning_Employee] where  Employee_id= 3 and Role_id = 3 and Level_id =2 and Skill_id =1  )
   insert into [ResourcePlanning_Employee](Employee_id,Role_id,Date_start, Date_end, Effort, Bill_rate,Level_id,Skill_id) 
-  values(3,3,'2022/06/01','2022/06/01',1,1,5,1) 
+  values(3,3,'2022/06/01','2022/06/01',1,1,2,1) 
   else  select * from [ResourcePlanning_Employee] 
 
-  -- insert Project
+
+-- insert Project
     if not exists ( select * from Project where Code = 'AIS_0001')
 	insert into Project values('AIS_0001','ProjectName1',1,2,5,1,2,2,'2022/06/01','2022/06/01','2022/06/10','2022/06/10')
-
 	select * from ResourcePlanning_role
 
 if not exists ( select * from ResourcePlanning_Role where Role_id = '4' and Project_id='4')
@@ -335,4 +381,7 @@ update dbo.ResourcePlanning_Role
                 WHERE id = 18
 				else select * from ResourcePlanning_role
 
-			
+drop table Emp_RolePlanning
+drop table ResourcePlanning_Employee
+drop table ResourcePlanning_Role
+drop table ResourceRequest

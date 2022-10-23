@@ -31,7 +31,7 @@ namespace ResourceAllocationBE.Controllers
                     Project.ProjectName, ResourcePlanning_Employee.Date_start, 
                     ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
                     from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
-                    Project, ResourcePlanning_Role, Department
+                    Project, ResourcePlanning_Role, Department, Emp_RolePlanning
                     where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
 
                     [User].[User_id] = User_Role.[User_id] and
@@ -42,7 +42,9 @@ namespace ResourceAllocationBE.Controllers
                     Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
 
                     Project.Project_id = ResourcePlanning_Role.Project_id and
-                    ResourcePlanning_Role.Employee_id =ResourcePlanning_Employee.Employee_id";
+
+                    ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
+					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -71,7 +73,7 @@ namespace ResourceAllocationBE.Controllers
                 Project.ProjectName, ResourcePlanning_Employee.Date_start, 
                 ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
                 from ResourcePlanning_Employee, [User], Roles, User_Role, Levels,  Skill, 
-                Project, ResourcePlanning_Role, Department
+                Project, ResourcePlanning_Role, Department, Emp_RolePlanning
                 where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
 
                 [User].[User_id] = User_Role.[User_id] and
@@ -82,7 +84,9 @@ namespace ResourceAllocationBE.Controllers
                 Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
 
                 Project.Project_id = ResourcePlanning_Role.Project_id and
-                    ResourcePlanning_Role.Employee_id =ResourcePlanning_Employee.Employee_id
+
+				ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
+				ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
                 and [User].Fullname like @name";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
