@@ -12,6 +12,10 @@ function useAuth() {
     setMoreRow,
     valueInput,
     setValueInput,
+    quantity,
+    setQuantity,
+    statusCand,
+    setStatusCand,
   } = React.useContext(AuthContext); //lấy từ app.js
   const isAuthenticated = !!account;
   return {
@@ -24,6 +28,10 @@ function useAuth() {
     setMoreRow,
     valueInput,
     setValueInput,
+    quantity,
+    setQuantity,
+    statusCand,
+    setStatusCand,
   };
 }
 export default useAuth;

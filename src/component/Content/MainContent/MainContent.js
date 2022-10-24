@@ -9,13 +9,7 @@ import ModalAddItem from "./ModalAddItem";
 
 export default function MainContent() {
 
-  const callbackFunction = (search) => {
-    // this.setState({message: childData})
-    // console.log(search);
-    // setValueInput(search)
-    // console.log(valueInput);
 
-}
 
   return (
     <div>
@@ -32,7 +26,7 @@ export default function MainContent() {
       <div>
         <BasicBreadcrumbs />
 
-        <Search placeholder="Enter project name " parentCall={(search)=>callbackFunction(search)}/>
+        <Search placeholder="Enter project name " />
         <div style={{ marginTop: "15px" }}>
           <TableData/>
         </div>

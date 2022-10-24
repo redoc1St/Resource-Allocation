@@ -5,11 +5,10 @@ import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 export default function Search(data) {
-  const { placeholder ,parentCall} = data;
+  const { placeholder } = data;
   const { valueInput,setValueInput}= useAuth()
   const handleSearch = (e) => {
     // console.log(e);
-    parentCall(e)
     setValueInput(e)
   };
   return (

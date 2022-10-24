@@ -2,20 +2,38 @@ import React, { useEffect } from "react";
 import { Table, Dropdown, Progress, Popconfirm, Menu } from "antd";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../../Store/Actions/UserActions";
-import { Divider, Tag } from 'antd';
+import { getUsers, getUsersByName, getUsersByNameAStatus } from "../../../Store/Actions/UserActions";
+import { Divider, Tag } from "antd";
 
 export default function TableCandidate() {
-
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
-  
-  const dispatch =useDispatch()
-  const users = useSelector(state=>state?.Users?.users)
-  let countId=1;
+  const { valueInput, setValueInput,statusCand, setStatusCand } = useAuth();
 
-  useEffect(()=>{
-    dispatch(getUsers())
-  },[])
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state?.Users?.users);
+  let countId = 1;
+
+  // useEffect(() => {
+  //   if (valueInput) {
+  //     // dispatch(getUsersByName(valueInput));
+  //     dispatch(getUsersByNameAStatus(valueInput,statusCand))
+  //   } else {
+  //     dispatch(getUsers());
+  //   }
+  // }, [valueInput, dispatch]);
+
+  useEffect(() => {
+  //   if (valueInput) {
+  //     // dispatch(getUsersByName(valueInput));
+  //     dispatch(getUsersByNameAStatus(valueInput, statusCand));
+  //   }else if(statusCand==="all"){
+  //  dispatch(getUsers());
+
+  //   } else {
+  //     dispatch(getUsersByNameAStatus(" ", statusCand));
+  //   }
+  }, [statusCand, dispatch]);
+
   const columns = [
     {
       title: "No.",
@@ -78,7 +96,7 @@ export default function TableCandidate() {
       dataIndex: "isActive",
       width: 130,
     },
-    
+
     {
       title: "Action",
       dataIndex: "action",
@@ -90,7 +108,6 @@ export default function TableCandidate() {
     },
   ];
 
-  
   // const data = [
   //   {
   //     no: 1,
@@ -112,16 +129,23 @@ export default function TableCandidate() {
   //   },
   // ];
 
-const data= users.map((item)=>({
-  no:countId++,
-  ...item,
-  isActive: item.isActive===true ?<Tag color="#87d068" style={{width:'60px',textAlign:'center'}}>Active</Tag>
-  :<Tag color="#f50" style={{width:'60px',textAlign:'center'}}>Inactive</Tag>
-}))
+  const data = users.map((item) => ({
+    no: countId++,
+    ...item,
+    isActive:
+      item.isActive === true ? (
+        <Tag color="#87d068" style={{ width: "60px", textAlign: "center" }}>
+          Active
+        </Tag>
+      ) : (
+        <Tag color="#f50" style={{ width: "60px", textAlign: "center" }}>
+          Inactive
+        </Tag>
+      ),
+  }));
 
   return (
     <div>
-      {console.log(users)}
       <Table
         columns={columns}
         scroll={{
@@ -129,13 +153,13 @@ const data= users.map((item)=>({
           y: 300,
         }}
         style={
-            onclickShowLeft
-              ? {
-                  width: "170vh",
-                  marginTop:'20px'
-                }
-              : { width: "200vh" }
-          }
+          onclickShowLeft
+            ? {
+                width: "170vh",
+                marginTop: "20px",
+              }
+            : { width: "200vh" }
+        }
         className="-striped -highlight"
         dataSource={data}
         size="small"

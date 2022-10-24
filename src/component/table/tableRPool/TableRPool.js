@@ -73,7 +73,7 @@ export default function TableRPool() {
     {
       title: "Bill/Unbill",
       dataIndex: "bill",
-      width: 84,
+      width: 87,
     },
     {
       title: "% Bill",
@@ -112,6 +112,7 @@ let countEmp =0;
     <div>
       {console.log(modifiedData)}
       <Table
+      bordered
         columns={columns}
         scroll={{
           // x: 600,

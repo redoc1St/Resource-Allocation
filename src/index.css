@@ -30,3 +30,6 @@
   line-height: 120px;
   background: rgba(16, 142, 233, 1);
 }
+html{
+  font-family: 'Roboto', sans-serif;
+}

@@ -27,6 +27,7 @@ import GuestRouter from "./component/Route/GuestRoute";
 import ResourcePool from "./component/Content/MainContent/resourcePool/ResourcePool";
 import CandidateManage from "./component/Content/candidateManage/CandidateManage";
 import RequestPage from "./component/Content/requestPage/RequestPage";
+import Profile from "./component/Content/Profile/Profile";
 // import '../src/api/request'
 export const AuthContext = React.createContext(); //chuyền sang cái khác
 
@@ -39,6 +40,10 @@ function App() {
 
   const [valueInput, setValueInput] = useState("");
 
+const [statusCand, setStatusCand]=  useState("")
+
+  const [quantity, setQuantity]= useState([])
+
   return (
     <AuthContext.Provider
       value={{
@@ -48,7 +53,10 @@ function App() {
         setOnclickShowLeft,
         moreRow,
         setMoreRow,
-        valueInput,setValueInput
+        valueInput,
+        setValueInput,
+        quantity,
+        setQuantity,statusCand, setStatusCand
       }}
     >
       <Router>
@@ -99,6 +107,8 @@ function App() {
 
                 <Route exact path="/resourcePool" element={<ResourcePool />} />
                 <Route exact path="/requests" element={<RequestPage />} />
+                <Route exact path="/profile" element={<Profile />} />
+                
                 {/* </Route> */}
                 {/* {console.log(onclickShowLeft)} */}
               </Routes>

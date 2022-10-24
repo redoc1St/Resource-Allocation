@@ -27,7 +27,7 @@ padding: 8px 8px;
 }
 
 .ant-table-thead > tr > th{
-background-color: #d9d9d9;
+background-color: aquamarine;
 }
 .ant-table-container{
   /* background-color: aquamarine; */
@@ -43,3 +43,20 @@ ant-table-content{}
   background-color: white;
   pointer-events: none;
 }
+
+
+/* .table-striped-rows tr td {
+  background-color: #f1d6d0;
+} */
+
+.ant-table-thead .ant-table-cell {
+  background-color: #efdfde;
+}
+.ant-table-tbody .ant-table-cell{
+  background-color: #f9ebea;
+
+}
+.ant-modal-content .ant-modal-header{
+  background-color: #abe6a8;
+}
+/* #abe6a8 */

@@ -189,7 +189,7 @@ const NavMenuPane = styled.div`
   height: 100vh;
   z-index: 1000;
   width: 100%;
-  
+  background-color: #ECFEFF;
   /* margin-left:-100%; */
   position: fixed;
   /* max-height: auto; */

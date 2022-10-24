@@ -54,12 +54,16 @@ export default function TableData(sText) {
   const [editRowkey, SetEditRowKey] = useState("");
   const [form] = Form.useForm();
   const { valueInput, setValueInput } = useAuth();
+  const defaultExpandable = {
+    expandedRowRender: (record) => <p>Note: ...</p>,
+  };
+  const [expandable, setExpandable] = useState(defaultExpandable);
 
   // const [gridData, setGridData] = useState([]);
 
   useAuth();
   const { onclickShowLeft, setOnclickShowLeft } = useAuth();
-const[isUpdated,setIsUpdated]= useState(false)
+  const [isUpdated, setIsUpdated] = useState(false);
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
 
@@ -72,11 +76,7 @@ const[isUpdated,setIsUpdated]= useState(false)
     } else {
       dispatch(getProjects());
     }
-    console.log("assad");
-    
-  }, [valueInput,dispatch]);
-
-
+  }, [valueInput, dispatch]);
 
   const modifiedData = projects.map((item) => ({
     key: item.id,
@@ -143,10 +143,10 @@ const[isUpdated,setIsUpdated]= useState(false)
     {
       title: "Project ID",
       dataIndex: "pId",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.age - b.age,
+      // defaultSortOrder: "descend",
+      // sorter: (a, b) => a.age - b.age,
       width: 100,
-      editTable: true,
+      // editTable: true, 
     },
     {
       title: "Project Name",
@@ -169,14 +169,14 @@ const[isUpdated,setIsUpdated]= useState(false)
     {
       title: "Unit",
       dataIndex: "unit",
-      defaultSortOrder: "descend",
+      // defaultSortOrder: "descend",
       sorter: (a, b) => a.unit - b.unit,
       width: 50,
     },
     {
       title: "% Allocation",
       dataIndex: "allocation",
-      width: 200,
+      width: 150,
       fontSize: "10px",
 
       // fontSize:5
@@ -309,14 +309,19 @@ const[isUpdated,setIsUpdated]= useState(false)
       </td>
     );
   };
-
+  const tableProps = {
+    expandable,
+  };
   return (
     <div
     // style={{ minWidth: "1500px", overflowX: "scroll" }}
     >
       <Form form={form} component={false}>
-        {console.log(projects)}
         <Table
+          {...tableProps}
+          // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+          className="table-striped-rows"
+          bordered
           columns={mergedColumns}
           components={{
             body: {

@@ -4,9 +4,11 @@ import { Button, Modal, Table } from "antd";
 import { getRolesByNameNRole } from "../../../../../Store/Actions/PlanningRoleAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import useAuth from "../../../../hooks/useAuth";
 export default function ViewEmp(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { pName:code } = useParams();
+  const { pName: code } = useParams();
+  const { quantity, setQuantity } = useAuth();
 
   const showModal = () => {
     // console.log(record.record.record.role)
@@ -15,17 +17,21 @@ export default function ViewEmp(data) {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const dispatch =useDispatch()
+  const dispatch = useDispatch();
   const rolesEmp = useSelector((state) => state.PlanningRoles.rolesEmp);
 
   useEffect(() => {
-    dispatch(getRolesByNameNRole(data?.record?.ProjectName,data?.record?.RoleName))
+    dispatch(
+      getRolesByNameNRole(data?.record?.ProjectName, data?.record?.RoleName)
+    );
   }, [data?.record?.ProjectName]);
 
-  const mergedData=rolesEmp.map((item)=>({
+  let countEmp = 0;
+  const mergedData = rolesEmp.map((item) => ({
+    countEmp: (countEmp += 1),
     ...item,
-    Role:data?.record?.RoleName
-  }))
+    Role: data?.record?.RoleName,
+  }));
 
   const columns = [
     {
@@ -75,7 +81,6 @@ export default function ViewEmp(data) {
       width: 100,
     },
   ];
-  
 
   return (
     <div>
@@ -88,7 +93,7 @@ export default function ViewEmp(data) {
         footer={null}
       >
         <div style={{ display: "flex" }}>
-          <h5>Plan Quantity &nbsp;&nbsp;&nbsp;&nbsp;</h5>
+          {/* <h5>Plan Quantity &nbsp;&nbsp;&nbsp;&nbsp;</h5>
           <input
             style={{
               border: "2px solid",
@@ -100,10 +105,10 @@ export default function ViewEmp(data) {
               fontSize: "18px",
             }}
             value="2"
-          />
+          /> */}
 
           <h5>
-            &nbsp;&nbsp;&nbsp;&nbsp; Actual Quantity &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp; Actual Quantity &nbsp;&nbsp;&nbsp;&nbsp;
             <input
               style={{
                 border: "2px solid",
@@ -114,13 +119,11 @@ export default function ViewEmp(data) {
                 marginBottom: "5px",
                 fontSize: "18px",
               }}
-              value="2"
+              value={countEmp}
             />
           </h5>
         </div>
-        <Table columns={columns}
-        dataSource={mergedData}
-        ></Table>
+        <Table columns={columns} dataSource={mergedData}></Table>
       </Modal>
     </div>
   );

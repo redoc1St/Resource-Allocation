@@ -6,11 +6,14 @@ import DotAction from "./dotAction/DotAction";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 // import { Badge, Dropdown, Menu, Space, Table } from "antd";
-
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { Link } from "react-router-dom";
 export default function TableResourcePlanning(data) {
-  const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
+  const { onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
+  const { quantity, setQuantity } = useAuth();
+let pQuantity = 0;
   useEffect(() => {
     // dispatch(getProjects());
   }, []);
@@ -27,15 +30,21 @@ export default function TableResourcePlanning(data) {
     //   editTable: true,
     // },
     {
-      title: "Quantity",
+      title: "Planned quantity",
       dataIndex: "Quantity",
-      width: 100,
+      width: 75,
+      editTable: true,
+    },
+    {
+      title: "Actual quantity",
+      dataIndex: "ActualQuantity",
+      width: 75,
       editTable: true,
     },
     {
       title: "Employee",
-      dataIndex: "Fullname",
-      width: 180,
+      dataIndex: "employee",
+      width: 85,
       editTable: true,
     },
     {
@@ -50,14 +59,14 @@ export default function TableResourcePlanning(data) {
       width: 150,
     },
     {
-      title: "% Planned effort",
+      title: "%Planned effort",
       dataIndex: "Effort_planned",
-      width: 110,
+      width: 85,
     },
     {
       title: "% Actual effort",
       dataIndex: "Effort_actual",
-      width: 100,
+      width: 80,
     },
     {
       title: "Bill/Unbill",
@@ -85,23 +94,39 @@ export default function TableResourcePlanning(data) {
       dataIndex: "action",
       fixed: "right",
       width: 130,
-      render: (_, record) => {
-        return <DotAction record={record} />;
-      },
+      // render: (_, record) => {
+      //   return <DotAction record={record} />;
+      // },
     },
   ];
   // let countQuantity =0;
 
   const mergedData = [
-    { key: 0, role: "Total", Quantity:data.planningRoles.length  },
+    {
+      key: 0,
+    },
     ...data.planningRoles,
   ];
-
- 
-
+  const ar = [1, 2, 3, 4];
+  const mergedData2 = mergedData.map((item, index) =>
+    index > 0
+      ? {
+          ...item,
+          ActualQuantity: ar[0]++,
+          action: <DotAction record={item} />,
+          employee: (
+            <Link to={{ pathname: "/resourcePool" }} state={item}>
+              <PersonAddIcon />
+            </Link>
+          ),
+        }
+      : { key: 0, RoleName: "Total", Quantity: data?.planningRoles[data.planningRoles.length-1]?.totalPQuantity }
+  );
+console.log(data.planningRoles);
   return (
     <div>
       <Table
+      bordered
         columns={columns}
         scroll={{
           // x: 600,
@@ -115,7 +140,7 @@ export default function TableResourcePlanning(data) {
             : { width: "200vh" }
         }
         className="-striped -highlight"
-        dataSource={mergedData}
+        dataSource={mergedData2}
         size="small"
       ></Table>
     </div>

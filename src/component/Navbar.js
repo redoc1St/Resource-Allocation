@@ -151,9 +151,9 @@ export default function Navbar() {
                 aria-labelledby="navbarDropdown"
               >
                 <li>
-                  <a className="dropdown-item" href="#!">
-                    Settings
-                  </a>
+                  <Link className="dropdown-item" to='/profile'>
+                    Profile
+                  </Link>
                 </li>
                 <li>
                   <a className="dropdown-item" href="#!">
@@ -178,4 +178,6 @@ export default function Navbar() {
 }
 const NavbarPane = styled.div`
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background-color: #FAE4D7;
+
 `;

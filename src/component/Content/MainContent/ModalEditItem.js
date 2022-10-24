@@ -119,9 +119,9 @@ export default function ModalEditItem(data) {
 
   return (
     <div>
-      <Button style={{ border: "0" }} onClick={showModal}>
-        <BorderColorIcon />
-      </Button>
+      <span style={{ border: "0"}} onClick={showModal}>
+        <BorderColorIcon style={{cursor:'pointer'}}/>
+      </span>
 
       <Modal
         // style={{color:'#424a80'}}
@@ -140,7 +140,7 @@ export default function ModalEditItem(data) {
                   <tr>
                     <td>Project ID</td>
                     <td>
-                      <input {...register("pId")} />
+                      <input disabled {...register("pId")} />
                     </td>
                   </tr>
                   <tr>

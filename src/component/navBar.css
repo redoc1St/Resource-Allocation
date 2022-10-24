@@ -19,3 +19,6 @@
   .site-layout .site-layout-background {
     background: #fff;
   }
+  .sb-topnav navbar navbar-expand navbar-dark bg-white{
+    background-color: #1890ff;
+  }

@@ -14,31 +14,25 @@ import { Modal, Table } from "antd";
 import { display, height } from "@mui/system";
 import { useForm } from "react-hook-form";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import request from "../../../../src/api/request";
 import { useParams } from "react-router-dom";
-import { getRoleByCode } from "../../../../../Store/Actions/PlanningRoleAction";
+import { getRoleByCode } from "../../../Store/Actions/PlanningRoleAction";
+import { useDispatch } from "react-redux";
 
-export default function ModalEditPlan(record) {
+export default function ModalAddRole(record) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const roles = useSelector((state) => state.ExtraObject.roles);
-  const levels = useSelector((state) => state.ExtraObject.levels);
-  const skills = useSelector((state) => state.ExtraObject.skills);
-
-  const { pName } = useParams();
-  const dispatch = useDispatch();
 
   useEffect(() => {}, []);
 
   const showModal = () => {
-    // console.log(record?.record.id)
+    // console.log(record?.record);
     setIsModalOpen(true);
   };
 
   const handleCreate = () => {
     setIsModalOpen(false);
   };
-
+  // console.log(record.roles);
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -48,60 +42,47 @@ export default function ModalEditPlan(record) {
     formState: { errors },
     handleSubmit,
   } = useForm({
-    defaultValues: {
-      Date_start:record?.record?.Date_start,
-      Date_end:record?.record?.Date_end,
-      Effort_planned:record?.record?.Effort_planned,
-      Effort_actual:record?.record?.Effort_actual,
-      Quantity:record?.record?.Quantity,
-      LevelName:record?.record?.Level_id,
-      SkillName:record?.record?.Skill_id,
-      Bill_rate:record?.record?.Bill_rate,
-      // sdp: record?.data?.sdp,
-      // unit: record?.data?.unit,
-    },
+    defaultValues: {},
     // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
+  const { pName } = useParams();
+  const dispatch = useDispatch();
 
   const onSubmit = async (values) => {
     // const{pId,unit, pName}= values;
-    // record?.record.id
     console.log(values);
-    
-
-  try {
-    const res = await axios({
-      url: `https://localhost:5001/api/ResourcePlanning/${record?.record.id}`,
-      method: "PUT",
-      data: {
-        Quantity:values.Quantity,
-        Date_start:values.Date_start,
-        Date_end:values.Date_end,
-        Effort_planned:values.Effort_planned,
-        Bill_rate:values.Bill_rate,
-        Level_id:values.LevelName,
-        Skill_id:values.SkillName
-      },
-    });
     setIsModalOpen(false);
-    dispatch(getRoleByCode(pName));
-    // dispatch(getProjectsByName(valueInput ? valueInput : ""));
-    message.success({
-      content:"Edit role planning successfully",
-      style:{marginTop:'50px'},
-    });
-  } catch (err) {
-    console.log(err);
-  }
-  }
+    try {
+      const res = await request({
+        url: "https://localhost:5001/api/ResourcePlanning/",
+        method: "POST",
+        data: { Project_id: record.pId, ...values },
+      });
+
+      message.success({
+        content: "Add planning role successfully",
+        style: { marginTop: "50px" },
+      });
+      dispatch(getRoleByCode(pName));
+
+      setIsModalOpen(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div>
-      <span onClick={showModal}>Edit</span>,
+      <span
+        style={{ cursor: "pointer", fontWeight: "bold" }}
+        onClick={showModal}
+      >
+        + Add Item
+      </span>
       <Modal
         // style={{color:'#424a80'}}
         width={700}
-        title="Edit role planning"
+        title="Add new role planning"
         open={isModalOpen}
         // onOk={handleCreate}
         footer={null}
@@ -114,21 +95,22 @@ export default function ModalEditPlan(record) {
                 <tbody>
                   <tr>
                     <td>Role</td>
+
                     <td>
                       <select
                         // placeholder="Choose Unit"
                         // value={record.data.unit}
-                        disabled
+                        {...register("Role_id")}
+                        required
                       >
                         <Select.Option required></Select.Option>
-                        {roles.map((item) => {
+                        {record.roles.map((item) => {
                           return (
-                            <option value={item.RoleName}>
+                            <option value={item.Role_id}>
                               {item.RoleName}
                             </option>
                           );
                         })}
-                        
                       </select>
                     </td>
                   </tr>
@@ -142,7 +124,6 @@ export default function ModalEditPlan(record) {
                         // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
                       />
-                     
                     </td>
                   </tr>
                   <tr>
@@ -163,19 +144,19 @@ export default function ModalEditPlan(record) {
                       <select
                         // placeholder="Choose Unit"
                         // value={record.data.unit}
-                        {...register("LevelName")}
+                        {...register("Level_id")}
                         required
-                        // defaultValue={3}
                       >
-                        <Select.Option  required></Select.Option>
-                        {levels.map((item) => {
+                        <Select.Option required></Select.Option>
+                        {record.levels.map((item) => {
                           return (
                             <option value={item.Level_id}>
                               {item.LevelName}
                             </option>
                           );
                         })}
-                        </select>
+                        
+                      </select>
                     </td>
                   </tr>
                 </tbody>
@@ -187,7 +168,7 @@ export default function ModalEditPlan(record) {
                   <tr>
                     <td>Quantity</td>
                     <td>
-                      <input {...register("Quantity")}  />
+                      <input {...register("Quantity")} />
                     </td>
                   </tr>
                   <tr>
@@ -200,7 +181,6 @@ export default function ModalEditPlan(record) {
                         // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
                       />
-                    
                     </td>
                   </tr>
                   <tr>
@@ -215,23 +195,20 @@ export default function ModalEditPlan(record) {
                       />
                     </td>
                   </tr>
-                  
+
                   <tr>
                     <td>Skill</td>
                     <td>
-                      <select
-                        {...register("SkillName")}
-                        required
-                      >
+                      <select {...register("Skill_id")} required>
                         <Select.Option required></Select.Option>
-                        {skills.map((item) => {
+                        {record.skills.map((item) => {
                           return (
                             <option value={item.Skill_id}>
                               {item.SkillName}
                             </option>
                           );
                         })}
-                        </select>
+                      </select>
                     </td>
                   </tr>
 
@@ -241,7 +218,7 @@ export default function ModalEditPlan(record) {
                         style={{ marginLeft: "50px", marginTop: "30px" }}
                         type="submit"
                       >
-                        Edit
+                        Add
                       </button>
                     </td>
                     <td>
@@ -254,6 +231,7 @@ export default function ModalEditPlan(record) {
                           marginTop: "30px",
                         }}
                         onClick={handleCancel}
+                        type="reset"
                       >
                         Cancel
                       </button>
