@@ -126,6 +126,38 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult("Added Successfully");
         }
 
-        
+        //INSERT IN TO DB addEmp_Role
+        [Route("api/add/Emp_Role/{role}/{level}/{skill}")]
+        [HttpPost]
+        public JsonResult addEmp_Role(ResourcePlanningRole resource, int role, int level, int skill)
+        {
+            string query = @"
+            if not exists(select * from Emp_RolePlanning, ResourcePlanning_Role 
+            where Emp_RolePlanning.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+            and Emp_RolePlanning.Employee_id = @emp_id and Role_id=@role and Level_id =@level and Skill_id=@skill and Project_id=@projectid)
+            insert into Emp_RolePlanning values (@resourcePid,@emp_id)";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+
+                    myCommand.Parameters.AddWithValue("@resourcePid", resource.Id);
+                    myCommand.Parameters.AddWithValue("@emp_id", resource.Employee_id);
+                    myCommand.Parameters.AddWithValue("@role", role);
+                    myCommand.Parameters.AddWithValue("@level", level);
+                    myCommand.Parameters.AddWithValue("@skill", skill);
+                    myCommand.Parameters.AddWithValue("@projectid", resource.Project_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Added Successfully");
+        }
     }
 }

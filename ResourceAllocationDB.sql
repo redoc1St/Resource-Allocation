@@ -269,7 +269,6 @@ insert into ResourceRequest values(
 
 
 
-
 go
 -- SELECT RESOURCE PLANNING OK
 
@@ -330,7 +329,7 @@ select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.Lev
 
                     ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
 					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
-
+					AND Roles.RoleName = 'ba' and Levels.Level_id =1 and Skill.Skill_id = 3
 
 
 -- SEARCH BY RESOURCEPOOL FULLNAME
@@ -368,6 +367,7 @@ select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.Lev
 	insert into Project values('AIS_0001','ProjectName1',1,2,5,1,2,2,'2022/06/01','2022/06/01','2022/06/10','2022/06/10')
 	select * from ResourcePlanning_role
 
+	--update ResourcePlanning_Role
 if not exists ( select * from ResourcePlanning_Role where Role_id = '4' and Project_id='4')
 update dbo.ResourcePlanning_Role
                 set  
@@ -380,8 +380,19 @@ update dbo.ResourcePlanning_Role
                 Skill_id=2
                 WHERE id = 18
 				else select * from ResourcePlanning_role
+				
 
+-- ADD EMP TO ROLE PLANNING
+if not exists(select * from Emp_RolePlanning, ResourcePlanning_Role where Emp_RolePlanning.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+and Emp_RolePlanning.Employee_id = 3 and Role_id=3 and Level_id =2 and Skill_id=1 and Project_id=1)
+insert into Emp_RolePlanning values (9,3)
+else select * from Emp_RolePlanning
+
+select * from [ResourcePlanning_Employee] 
+                        where Role_id = 3 and Level_id =2 and Skill_id =1
+						
 drop table Emp_RolePlanning
 drop table ResourcePlanning_Employee
 drop table ResourcePlanning_Role
 drop table ResourceRequest
+
