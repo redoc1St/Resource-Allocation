@@ -20,7 +20,7 @@ export default function ResourcePool(record) {
     <div>
       <h3 style={{ fontWeight: "bold", color: "#121843" }}>
         Resource Pool
-        {/* {console.log(location?.state?.record)} */}
+        {/* {console.log(Role_id)} */}
       </h3>
       <div style={{ display: "flex" ,  }}>
         <BasicBreadcrumbs />
@@ -67,7 +67,7 @@ export default function ResourcePool(record) {
           <td></td>
         </tr>
       </TablePane>
-      <TableRPool />
+      <TableRPool {...location?.state}/>
 </> : <ViewByChart/>}
       
     </div>

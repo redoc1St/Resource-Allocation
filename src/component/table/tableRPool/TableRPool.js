@@ -3,21 +3,25 @@ import { Table, Dropdown, Progress, Popconfirm, Menu } from "antd";
 import DotAction from "./dotAction/DotAction";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { getResourcePoolEmp } from "../../../Store/Actions/ResourcePoolAction";
+import { getResourcePoolEmp, getResourcePoolEmpByRLK } from "../../../Store/Actions/ResourcePoolAction";
 
-export default function TableRPool() {
+export default function TableRPool(data) {
 
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
-
+      console.log(data?.Role_id,data?.Level_id,data?.Skill_id)
   useEffect(() => {
-   
-      dispatch(getResourcePoolEmp());
+   if(Object.keys(data).length===0){//check data rỗng
+    dispatch(getResourcePoolEmp());
+
+   }else{
+    dispatch(getResourcePoolEmpByRLK(data?.Role_id,data?.Level_id,data?.Skill_id));
+
+   }
     
     
-  }, []);
-  console.log(emps);
+  }, [data?.Role_id,dispatch,]);
 
   const columns = [
     {

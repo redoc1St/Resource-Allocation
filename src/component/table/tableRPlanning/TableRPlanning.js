@@ -23,6 +23,7 @@ let pQuantity = 0;
       dataIndex: "RoleName",
       width: 100,
     },
+    
     // {
     //   title: "Planned quantity",
     //   dataIndex: "pQuantity",
@@ -40,6 +41,16 @@ let pQuantity = 0;
       dataIndex: "ActualQuantity",
       width: 75,
       editTable: true,
+    },
+    {
+      title: "Level",
+      dataIndex: "LevelName",
+      width: 130,
+    },
+    {
+      title: "Skills",
+      dataIndex: "SkillName",
+      width: 130,
     },
     {
       title: "Employee",
@@ -79,16 +90,7 @@ let pQuantity = 0;
       dataIndex: "Bill_rate",
       width: 130,
     },
-    {
-      title: "Level",
-      dataIndex: "LevelName",
-      width: 130,
-    },
-    {
-      title: "Skills",
-      dataIndex: "SkillName",
-      width: 130,
-    },
+   
     {
       title: "Action",
       dataIndex: "action",
