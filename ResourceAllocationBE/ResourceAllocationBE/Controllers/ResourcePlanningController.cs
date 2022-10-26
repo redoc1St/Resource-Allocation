@@ -181,6 +181,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult Put(ResourcePlanningRole resource, int id)
         {
             string query = @"
+                if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id)
                 update dbo.ResourcePlanning_Role
                 set  
                 Quantity=@Quantity,
@@ -207,6 +208,8 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
                     myCommand.Parameters.AddWithValue("@Level_id", resource.Level_id);
                     myCommand.Parameters.AddWithValue("@Skill_id", resource.Skill_id);
+                    myCommand.Parameters.AddWithValue("@Role_id", resource.Role_id);
+                    myCommand.Parameters.AddWithValue("@Project_id", resource.Project_id);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -244,7 +247,7 @@ namespace ResourceAllocationBE.Controllers
         //}
 
         //UPDATE STATUS
-        [HttpPut("{id}")]
+        [HttpPut("status/{id}")]
         public JsonResult updateStatus(ResourcePlanningRole resource, int id)
         {
             string query = @"
