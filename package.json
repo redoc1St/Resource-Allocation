@@ -2,10 +2,10 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@mobiscroll/react": "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-5.19.1.tgz",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.5",
     "@testing-library/jest-dom": "^5.16.5",
@@ -16,6 +16,7 @@
     "axios": "^1.1.2",
     "cors": "^2.8.5",
     "i": "^0.3.7",
+    "mobiscroll-react": "^4.0.0",
     "npm": "^8.19.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -36,9 +37,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-
-
-    
   },
   "eslintConfig": {
     "extends": [
