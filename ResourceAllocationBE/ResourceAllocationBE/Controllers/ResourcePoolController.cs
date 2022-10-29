@@ -27,7 +27,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult GetListResourcePool(string pid)
         {
             string query = @"
-                    select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
+                    select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id), ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, ResourcePlanning_Employee.Date_start, 
                     ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
                     from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 

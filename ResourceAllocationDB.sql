@@ -257,13 +257,13 @@ insert into Emp_RolePlanning values(8,10)
 create table ResourceRequest(
 ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
 [Type] int,
-Requested_at nvarchar(50),
-Requested_by nvarchar(50),
-Approved_at nvarchar(50),
+Requested_to int foreign key references [User]([User_id]),
 Approved_by nvarchar(50)
 )
+
 insert into ResourceRequest values(
-1,2,'admin','admin','admin','admin')
+10,1,2,'')
+update ResourcePlanning_Role set [Status] = 'In Progress' where id = 10
 
 
 
@@ -311,8 +311,8 @@ WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
 
 --
 --LIST RESOURCE POOL
-select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
-                    Project.ProjectName, ResourcePlanning_Employee.Date_start, 
+select number = ROW_NUMBER() OVER (ORDER BY t.A), ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
+                     Project.ProjectName, ResourcePlanning_Employee.Date_start, 
                     ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
                     from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
                     Project, ResourcePlanning_Role, Department, Emp_RolePlanning
@@ -395,4 +395,8 @@ drop table Emp_RolePlanning
 drop table ResourcePlanning_Employee
 drop table ResourcePlanning_Role
 drop table ResourceRequest
+
+-- LOAD LIST REQUEST
+select  from ResourceRequest, ResourcePlanning_Role 
+where ResourcePlanning_Role.id = ResourceRequest.ResourcePlannig_RoleId
 

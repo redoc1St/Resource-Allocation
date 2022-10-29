@@ -23,8 +23,12 @@ database: sửa 2 bảng ResourcePlanning_Role, [ResourcePlanning_Employee] và 
 
 
 25/10/2022
-- Dem soluong view employee vao load list resourceplaning 
+- Dem soluong view employee vao load list resourceplaning (chua lam, note lai)
 
 26/10/2022
 ResourcePlanningController: - them phan check update
 ResourcePoolController: - them UpdateResourcePool + check
+
+
+29/10/2022
+- Dang nhap xong co token

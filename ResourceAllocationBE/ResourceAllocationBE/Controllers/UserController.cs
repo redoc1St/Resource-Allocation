@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ResourceAllocationBE.Model;
@@ -16,37 +17,33 @@ namespace ResourceAllocationBE.Controllers
     public class UserController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public UserController(IConfiguration configuration)
+        private readonly IJwtTokenManager _tokenManager;
+        public UserController(IJwtTokenManager jwtTokenManager, IConfiguration configuration)
         {
             _configuration = configuration;
+            _tokenManager = jwtTokenManager;
         }
-
-        //login
+        [AllowAnonymous]
         [HttpPost("login")]
-        public JsonResult Login(User user)
+        public IActionResult LoginA(User user)
         {
-            string query = @"
-                            select * from [User] where email = @Email and Password = @password";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
+
+                SqlDataAdapter da = new SqlDataAdapter("select * from [User] where email = '" + user.Email + "' and Password = '" + user.Password + "'", myCon);
                 myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                da.Fill(table);
+                if (table.Rows.Count > 0)
                 {
-                    myCommand.Parameters.AddWithValue("@Email", user.Email);
-                    myCommand.Parameters.AddWithValue("@password", user.Password);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-
+                    var token = _tokenManager.Authenticate(user.Email, user.Password);
+                    return Ok(token);
                 }
+                return Unauthorized();
             }
-            return new JsonResult("Login Successfully");
         }
-
+        
         //LOAD LIST USER
         [HttpGet]
         public JsonResult GetListUser()
