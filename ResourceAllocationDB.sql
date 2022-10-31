@@ -260,6 +260,8 @@ ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
 Requested_to int foreign key references [User]([User_id]),
 Approved_by nvarchar(50)
 )
+-- type =1 -> RolePlanning 
+-- type =2 -> RéourcePool
 
 insert into ResourceRequest values(
 10,1,2,'')
@@ -269,19 +271,33 @@ update ResourcePlanning_Role set [Status] = 'In Progress' where id = 10
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 go
 -- SELECT RESOURCE PLANNING OK
 
-select id,Roles.RoleName, ProjectName, 
-Quantity, Date_start, Date_end, ResourcePlanning_Role.Effort_planned,
-ResourcePlanning_Role.Effort_actual, Bill_rate, [Status], 
-LevelName, SkillName, Skill.Skill_id, Levels.Level_id
-from ResourcePlanning_Role, Roles,Project, Levels,Skill
+select *
+from ResourcePlanning_Role, Roles,Project, Levels,Skill, ResourceRequest
 where ResourcePlanning_Role.Project_id = Project.Project_id and
 Roles.Role_id = ResourcePlanning_Role.Role_id and
 ResourcePlanning_Role.Level_id = Levels.Level_id and
-ResourcePlanning_Role.Skill_id =  Skill.Skill_id
-and Project.code = 'ais_0001'
+ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
+ResourceRequest.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+and [Type]  = 1
 
 
 

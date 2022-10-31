@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ResourceAllocationBE.Controllers
@@ -20,6 +21,13 @@ namespace ResourceAllocationBE.Controllers
         public ExtraObjectController(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+
+        [HttpGet("getuser")]
+        public IActionResult GetUser()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Ok(userId);
         }
 
         //ROLES
@@ -159,5 +167,8 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("Added Successfully");
         }
+        
+
+        // SHOW ALL LEADER 
     }
 }

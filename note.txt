@@ -32,3 +32,9 @@ ResourcePoolController: - them UpdateResourcePool + check
 
 29/10/2022
 - Dang nhap xong co token
+
+31/10/2022
+- Hien email khi nhap token
+- Resource Planning Role: Add Role to project 
+- Request: - // Request ResourceRole Planning to Project
+		- //ShOW All request ResourcePlanning 
