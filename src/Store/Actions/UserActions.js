@@ -7,13 +7,13 @@ import {
   GET_CANDIDATES_BY_NAMEANDSTATUS,
   GET_CANDIDATES_BY_STATUS,
 } from "../types";
-const projectsApi = "https://localhost:5001/api";
-
+const projectsApi = process.env.REACT_APP_BASE_URL;
+// console.log(projectsApi);
 export const getUsers = () => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })
 
   await axios
-    .get(projectsApi + "/user")
+    .get(projectsApi + "/api/user")
     .then((res) => {
       // console.log(res)
       const users = res.data.map((user) => ({
@@ -30,7 +30,7 @@ export const getUsersByName = (name) => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })
 
   await axios
-    .get(projectsApi + `/user/search/${name}`)
+    .get(projectsApi + `/api/user/search/${name}`)
     .then((res) => {
       // console.log(res)
       const users = res.data.map((user) => ({
@@ -48,7 +48,7 @@ export const getUsersByStatus = (status) => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })
 
   await axios
-    .get(projectsApi + `/user/list/${status}`)
+    .get(projectsApi + `/api/user/list/${status}`)
     .then((res) => {
       // console.log(res)
       const users = res.data.map((user) => ({
@@ -64,7 +64,7 @@ export const getUsersByNameAStatus = (name, status) => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })
 
   await axios
-    .get(projectsApi + `/user/search/${name}/${status}`)
+    .get(projectsApi + `/api/user/search/${name}/${status}`)
     .then((res) => {
       const users = res.data.map((user) => ({
         ...user,

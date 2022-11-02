@@ -71,7 +71,7 @@ export default function ModalEditPlan(record) {
 
   try {
     const res = await axios({
-      url: `https://localhost:5001/api/ResourcePlanning/${record?.record.id}`,
+      url: process.env.REACT_APP_BASE_URL+`/api/ResourcePlanning/${record?.record.id}`,
       method: "PUT",
       data: {
         Quantity:values.Quantity,
@@ -254,6 +254,7 @@ export default function ModalEditPlan(record) {
                           marginTop: "30px",
                         }}
                         onClick={handleCancel}
+                        type="button"
                       >
                         Cancel
                       </button>

@@ -4,6 +4,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { fontSize } from "@mui/system";
+import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const {setAccount}= useAuth();
     handleSubmit,
   } = useForm({
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
     mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
@@ -29,15 +30,45 @@ const {setAccount}= useAuth();
   const p =<p style={{color:'red', fontSize:'20px'}} > Login Fail</p>
 
   const onSubmit = async (values) => {
-    const { username, password } = values;
+    const { email, password } = values;
+console.log(values);
     try {
-      /// axios
-    } catch (error) {}
-    console.log(username);
-    if (username === accountLogin.username && password === accountLogin.password) {
-      setAccount(true);
-      navigate("/resourceAllocation");
+      const res = await axios({
+        url: process.env.REACT_APP_BASE_URL+"/api/user/login",
+        method: "post",
+        data: { email, password },
+      });
+      if (res.data=='success') {
+console.log(res.data);
+
+        // localStorage.setItem('token',res.data.data.token)
+        // console.log('thanh cong')
+        // login({
+        //     _id:res.data.data._id,
+        //     token:res.data.data.token
+        // })
+
+
+        // login({
+        //   _id: res.data.data._id,
+        //   token: res.data.data.token,
+        //   returnUrl: searchParams.get("returnUrl") || "",
+        // });
+      }
+
+      // console.log("abc", res.data.data.token);
+    } catch (error) {
+      console.log(error);
     }
+
+    // try {
+    //   /// axios
+    // } catch (error) {}
+    // console.log(username);
+    // if (username === accountLogin.username && password === accountLogin.password) {
+    //   setAccount(true);
+    //   navigate("/resourceAllocation");
+    // }
   };
 
   return (
@@ -59,19 +90,18 @@ const {setAccount}= useAuth();
                 {/* Email input */}
                 <div className="form-outline mb-4">
                   <input
-                    name="username"
                     type="email"
                     id="form3Example3"
                     className="form-control form-control-lg"
                     placeholder="Enter a valid email address"
-                    {...register("username", { required: true })}
+                    {...register("email", { required: true })}
                   />
                   <label className="form-label" htmlFor="form3Example3">
                     Email address
                   </label>
                 </div>
-                {errors?.username?.type === "required" && (
-                  <p style={{ color: "red" }}>Username không được để trống</p>
+                {errors?.email?.type === "required" && (
+                  <p style={{ color: "red" }}>Email không được để trống</p>
                 )}
                 {/* Password input */}
                 <div className="form-outline mb-3">

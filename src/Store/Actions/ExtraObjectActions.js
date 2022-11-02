@@ -2,13 +2,13 @@
 import axios from "../../../src/api/request";
 
 import { GET_LEVELS,GET_ROLES,GET_SKILLS } from "../types";
-const projectsApi = "https://localhost:5001/api";
+const projectsApi = process.env.REACT_APP_BASE_URL;
 
 export const getLevels = () => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })
 
   await axios
-    .get(projectsApi + "/levels")
+    .get(projectsApi + "/api/levels")
     .then((res) => {
       // console.log(res)
       const levels = res.data.map((item) => ({
@@ -24,7 +24,7 @@ export const getRoles = () => async (dispatch) => {
     // dispatch({ type: SET_LOADING, payload: true })
   
     await axios
-      .get(projectsApi + "/roles")
+      .get(projectsApi + "/api/roles")
       .then((res) => {
         // console.log(res)
         const roles = res.data.map((item) => ({
@@ -40,7 +40,7 @@ export const getRoles = () => async (dispatch) => {
     // dispatch({ type: SET_LOADING, payload: true })
   
     await axios
-      .get(projectsApi + "/skills")
+      .get(projectsApi + "/api/skills")
       .then((res) => {
         // console.log(res)
         const skills = res.data.map((item) => ({

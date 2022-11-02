@@ -65,7 +65,7 @@ export default function ModalAddItem() {
     console.log(values);
     try {
       const res = await request({
-        url: "https://localhost:5001/api/project",
+        url: process.env.REACT_APP_BASE_URL+"/api/project",
         method: "POST",
         data: {
           code: JSON.parse(JSON.stringify(code)),

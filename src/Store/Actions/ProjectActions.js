@@ -2,13 +2,13 @@
 import axios from "../../../src/api/request";
 
 import { GET_PROJECTS, GET_PROJECTS_BY_NAME } from "../types";
-const projectsApi = "https://localhost:5001/api";
+const projectsApi = process.env.REACT_APP_BASE_URL;
 
 export const getProjects = () => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })
 
   await axios
-    .get(projectsApi + "/project")
+    .get(projectsApi + "/api/project")
     .then((res) => {
       // console.log(res)
       const projects = res.data.map((project) => ({
@@ -33,7 +33,7 @@ export const getProjects = () => async (dispatch) => {
 
 export const getProjectsByName = (name) => async (dispatch) => {
   await axios
-    .get(projectsApi + `/project/search/${name}`)
+    .get(projectsApi + `/api/project/search/${name}`)
     .then((res) => {
       const projects = res.data.map((project) => ({
         id: project.Project_id,

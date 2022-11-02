@@ -3,12 +3,12 @@ import axios from '../../../src/api/request';
 import useAuth from '../../component/hooks/useAuth';
 
 import {GET_ROLE_BY_CODE,GET_ROLES_BY_ROLE_CODE, } from '../types'
-const projectsApi= 'https://localhost:5001/api';
+const projectsApi= process.env.REACT_APP_BASE_URL;
 
 export const getRoleByCode = (code) => async dispatch => {
     // dispatch({ type: SET_LOADING, payload: true })
 let  totalPQuantity=0
-    await axios.get(`${projectsApi}/ResourcePlanning/${code}`)
+    await axios.get(`${projectsApi}/api/ResourcePlanning/${code}`)
         .then(res => {
             const roles = res.data.map((item)=>({
                 ...item,
@@ -26,7 +26,7 @@ export const getRolesByNameNRole = (name,role) => async dispatch => {
     // dispatch({ type: SET_LOADING, payload: true })
 ///ResourcePlanning/view/ProjectName1/tester
 
-    await axios.get(`${projectsApi}/ResourcePlanning/view/${name}/${role}`)
+    await axios.get(`${projectsApi}/api/ResourcePlanning/view/${name}/${role}`)
         .then(res => {
             const roles = res.data.map((item)=>({
                 ...item,

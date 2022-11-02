@@ -100,7 +100,7 @@ export default function TableRPool(data) {
       fixed: "right",
       width: 70,
       render: (_, record) => {
-        return <DotAction />;
+        return <DotAction record={record}/>;
       },
     },
   ];

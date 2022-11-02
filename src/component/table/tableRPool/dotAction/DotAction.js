@@ -13,6 +13,7 @@ import {
 import { Link, Navigate, Route } from "react-router-dom";
 import ModalEditEmp from "./edit/ModalEditEmp";
 import AddToProject from "./addToProject/AddToProject";
+import ModalEditPoolEmp from "./edit/ModalEditEmp";
 
 export default function DotAction(record) {
 
@@ -21,7 +22,7 @@ export default function DotAction(record) {
       items={[
         {
           key: "1",
-          label: <ModalEditEmp />
+          label: <ModalEditPoolEmp {...record}/>
         },
         {
           key: "2",

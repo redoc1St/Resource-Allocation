@@ -54,7 +54,7 @@ export default function ModalAddRole(record) {
     setIsModalOpen(false);
     try {
       const res = await request({
-        url: "https://localhost:5001/api/ResourcePlanning/",
+        url: process.env.REACT_APP_BASE_URL+"/api/ResourcePlanning/",
         method: "POST",
         data: { Project_id: record.pId, ...values },
       });

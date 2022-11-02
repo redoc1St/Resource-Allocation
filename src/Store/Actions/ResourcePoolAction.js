@@ -2,11 +2,11 @@
 import axios from '../../../src/api/request';
 
 import {GET_RESOURCEPOOL_EMP,GET_RESOURCEPOOL_EMP_BY_RLK } from '../types'
-const projectsApi= 'https://localhost:5001/api';
+const projectsApi= process.env.REACT_APP_BASE_URL;
 export const getResourcePoolEmp = () => async dispatch => {
     // dispatch({ type: SET_LOADING, payload: true })
 
-    await axios.get(`${projectsApi}/ResourcePool`)
+    await axios.get(`${projectsApi}/api/ResourcePool`)
         .then(res => {
             const emp = res.data.map((item)=>({
                 ...item,
@@ -22,7 +22,7 @@ export const getResourcePoolEmp = () => async dispatch => {
 export const getResourcePoolEmpByRLK = (role,level,skill) => async dispatch => {
     // dispatch({ type: SET_LOADING, payload: true })
 
-    await axios.get(`${projectsApi}/ResourcePool/${role}/${level}/${skill}`)
+    await axios.get(`${projectsApi}/api/ResourcePool/${role}/${level}/${skill}`)
         .then(res => {
             const emp = res.data.map((item)=>({
                 ...item,

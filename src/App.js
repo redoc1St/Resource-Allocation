@@ -1,6 +1,7 @@
 import "./App.css";
 import Navbar from "./component/Navbar";
 import NavMenu from "./component/NavMenu";
+// import { REACT_APP_BASE_URL } from "../"
 import {
   BrowserRouter as Router,
   Switch,
@@ -18,7 +19,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Login from "./component/login/Login";
 
 import PrivateRoute from "./component/Route/PrivateRoute";
@@ -28,13 +29,16 @@ import ResourcePool from "./component/Content/MainContent/resourcePool/ResourceP
 import CandidateManage from "./component/Content/candidateManage/CandidateManage";
 import RequestPage from "./component/Content/requestPage/RequestPage";
 import Profile from "./component/Content/Profile/Profile";
+import { useDispatch } from "react-redux";
+import { getProjects } from "./Store/Actions/ProjectActions";
 // import '../src/api/request'
 export const AuthContext = React.createContext(); //chuyền sang cái khác
 
 function App() {
   const [account, setAccount] = useState(false);
-
+// console.log(process.env.REACT_APP_BASE_URL)
   const [onclickShowLeft, setOnclickShowLeft] = useState(true);
+  const dispatch = useDispatch();
 
   const [moreRow, setMoreRow] = useState(0);
 
@@ -43,6 +47,12 @@ function App() {
 const [statusCand, setStatusCand]=  useState("")
 
   const [quantity, setQuantity]= useState([])
+
+  useEffect(() => {
+
+      dispatch(getProjects());
+    
+  }, [dispatch]);
 
   return (
     <AuthContext.Provider

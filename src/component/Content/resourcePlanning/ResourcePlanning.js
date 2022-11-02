@@ -43,7 +43,7 @@ export default function ResourcePlanning() {
     dispatch(getLevels());
     dispatch(getSkills());
     axios
-      .get(`https://localhost:5001/api/${pName}`)
+      .get(process.env.REACT_APP_BASE_URL+`/api/${pName}`)
       .then(function (response) {
         // handle success
         // console.log();
@@ -120,9 +120,59 @@ export default function ResourcePlanning() {
       </h5>
       <div
         className="site-card-border-less-wrapper"
-        style={{ display: "flex" }}
+        style={{ display: "flex", marginTop:'20px',marginBottom:'20px' }}
       >
+      <Card
+          style={{
+            color: "white",
+            // border: "10px solid",
+            borderRadius:'10px',
+            backgroundColor: "#988ff4",
+            width: 150,
+            height: 120,
+            textAlign:'center',
+            margin:'0 30px '
+          }}
+        >
+          <p>Planned effort<br/>(MM)<p style={{fontSize:'30px'}}>5</p></p>
+          <p></p>
+          
+        </Card>
         <Card
+          style={{
+            color: "white",
+            // border: "10px solid",
+            borderRadius:'10px',
+            backgroundColor: "#988ff4",
+            width: 150,
+            height: 120,
+            textAlign:'center',
+            margin:'0 30px '
+            
+          }}
+        >
+          <p>Planned effort<br/>(MM)<p style={{fontSize:'30px'}}>5</p></p>
+          <p></p>
+          
+        </Card>
+        <Card
+          style={{
+            color: "white",
+            // border: "10px solid",
+            borderRadius:'10px',
+            backgroundColor: "#988ff4",
+            width: 150,
+            height: 120,
+            textAlign:'center',
+            margin:'0 30px '
+            
+          }}
+        >
+          <p>Planned effort<br/>(MM)<p style={{fontSize:'30px'}}>5</p></p>
+          <p></p>
+          
+        </Card>
+        {/* <Card
           style={{
             color: "#646464",
             fontWeight: "bold",
@@ -135,9 +185,9 @@ export default function ResourcePlanning() {
           <p>Planned effort:</p>
           <p>Billable effort:</p>
           <p>Actual effort:</p>
-        </Card>
+        </Card> */}
         <div style={{ marginLeft: "700px" }}>
-          <BtnViewEmp />
+          {/* <BtnViewEmp /> */}
         </div>
       </div>
 

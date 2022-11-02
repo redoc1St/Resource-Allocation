@@ -250,6 +250,8 @@ export default function Request(record) {
                     marginTop: "30px",
                   }}
                   onClick={handleCancel}
+                  type="button"
+
                 >
                   Cancel
                 </button>

@@ -86,7 +86,7 @@ export default function Timeline() {
   const myResources = React.useMemo(() => {
     return emps.map((item) => ({
       id: item.number,
-      name: item?.Fullname,
+      name: item?.Username,
       unit: item?.Department_name,
       role: item?.RoleName,
       level: item?.LevelName,

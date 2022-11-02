@@ -66,7 +66,7 @@ export default function ModalEditItem(data) {
       values;
     try {
       const res = await request({
-        url: `https://localhost:5001/api/project/${data.data.key}`,
+        url: process.env.REACT_APP_BASE_URL+`/api/project/${data.data.key}`,
         method: "PUT",
         data: {
           code: JSON.parse(JSON.stringify(pId)),

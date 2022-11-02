@@ -90,7 +90,15 @@ let pQuantity = 0;
       dataIndex: "Bill_rate",
       width: 130,
     },
-   
+    {
+      title: "Status",
+      dataIndex: "status",
+      fixed: "right",
+      width: 100,
+      // render: (_, record) => {
+      //   return <DotAction record={record} />;
+      // },
+    },
     {
       title: "Action",
       dataIndex: "action",
@@ -115,6 +123,8 @@ let pQuantity = 0;
       ? {
           ...item,
           ActualQuantity: ar[0]++,
+          status: item.Status,
+          
           action: <DotAction record={item} />,
           employee: (
             <Link to={{ pathname: "/resourcePool" }} state={item}>
