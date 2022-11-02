@@ -244,6 +244,7 @@ create table Emp_RolePlanning(
 ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
 Employee_id int foreign key references ResourcePlanning_Employee(id)
 )
+if not exists (select *from Emp_RolePlanning where ResourcePlannig_RoleId =1 and Employee_id = 1)
 insert into Emp_RolePlanning values(1,1)
 insert into Emp_RolePlanning values(1,3)
 insert into Emp_RolePlanning values(2,2)
@@ -253,26 +254,31 @@ insert into Emp_RolePlanning values(6,7)
 insert into Emp_RolePlanning values(5,8)
 insert into Emp_RolePlanning values(7,9)
 insert into Emp_RolePlanning values(8,10)
---ResourceRequest
-create table ResourceRequest(
+
+--ResourceRequestRole
+create table ResourceRequestRole(
 ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
-[Type] int,
 Requested_to int foreign key references [User]([User_id]),
 Approved_by nvarchar(50)
 )
--- type =1 -> RolePlanning 
--- type =2 -> RéourcePool
 
-insert into ResourceRequest values(
-10,1,2,'')
+insert into ResourceRequestRole values(
+10,2,'')
 update ResourcePlanning_Role set [Status] = 'In Progress' where id = 10
 
 
-
-
-
-
-
+--ResourceRequestEmployee
+create table ResourceRequestEmployee(
+ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
+Employee_id int foreign key references ResourcePlanning_Employee(id),
+Requested_to int foreign key references [User]([User_id]),
+Approved_by nvarchar(50),
+[status] nvarchar(50)
+)
+if not exists (select *from [ResourceRequestEmployee] where ResourcePlannig_RoleId =8 and Employee_id = 11) 
+and not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =8 and Employee_id = 11) 
+insert into ResourceRequestEmployee values(
+8,11,2,'','waiting')
 
 
 
@@ -410,9 +416,38 @@ select * from [ResourcePlanning_Employee]
 drop table Emp_RolePlanning
 drop table ResourcePlanning_Employee
 drop table ResourcePlanning_Role
-drop table ResourceRequest
+drop table ResourceRequestRole
 
 -- LOAD LIST REQUEST
-select  from ResourceRequest, ResourcePlanning_Role 
+select * from ResourceRequest, ResourcePlanning_Role 
 where ResourcePlanning_Role.id = ResourceRequest.ResourcePlannig_RoleId
+go
+
+-- REQUETS EMPLOYEE TO ROLE 
+if exists (select *   FROM [ResourceAllocationDB].[dbo].[ResourcePlanning_Employee]
+, [user] where [user].[User_id] =ResourcePlanning_Employee.Employee_id 
+and department_id =1
+)
+select * from ResourcePlanning_Employee
+else
+select * from ResourcePlanning_Role
+
+-- show all request emp 
+select  *
+                    from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
+                    Project, ResourcePlanning_Role, Department, Emp_RolePlanning, ResourceRequestEmployee
+                    where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
+
+                    [User].[User_id] = User_Role.[User_id] and
+                    User_Role.Role_id = Roles.Role_id and
+                    [User].Department_id = Department.Department_id and
+
+                    ResourcePlanning_Employee.Level_id = Levels.Level_id AND
+                    Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
+
+                    Project.Project_id = ResourcePlanning_Role.Project_id and
+
+                    ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
+					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id and
+					ResourcePlanning_Employee.Employee_id = ResourceRequestEmployee.Employee_id
 
