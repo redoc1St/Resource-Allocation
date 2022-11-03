@@ -8,6 +8,8 @@ import {
   Route,
   Routes,
   NavLink,
+  useNavigate,
+  Navigate,
 } from "react-router-dom";
 import MainContent from "./component/Content/MainContent/MainContent";
 import styled from "styled-components";
@@ -31,12 +33,50 @@ import RequestPage from "./component/Content/requestPage/RequestPage";
 import Profile from "./component/Content/Profile/Profile";
 import { useDispatch } from "react-redux";
 import { getProjects } from "./Store/Actions/ProjectActions";
+import axios from "axios";
 // import '../src/api/request'
 export const AuthContext = React.createContext(); //chuyền sang cái khác
 
 function App() {
-  const [account, setAccount] = useState(false);
-// console.log(process.env.REACT_APP_BASE_URL)
+  // const [account, setAccount] = useState(false);
+  // const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState({
+    status: "idle",
+    data: null,
+  });
+  console.log(userInfo);
+  const verifyUserInfo = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setUserInfo({ status: "fail", data: null });
+      return;
+    }else
+    // try {
+    // const res = await axios.get("/api/auth/verify");
+    // if (res.data.success) {
+    setUserInfo({ status: "success", data: 1 });
+    //   } else {
+    //     setUserInfo({ status: "success", data: 456 });
+    //   }
+    // } catch (error) {
+    //   // setUserInfo({ status: "success", data: 789 });
+    // }
+  };
+
+  const login = ({ token }) => {
+    localStorage.setItem("token", token);
+    // navigate('/candidateManage')      //không dùng đc cái này vì k render lại => k gọi được verifyUserInfo trong useEffect
+    console.log(userInfo.data);
+    // Navigate('/candidateManage')
+    window.location.href = "/candidateManage"; // ?? gần giống ||, kiểu nếu không có returnUrl thì trả về trang home
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUserInfo({ status: "success", data: null });
+  };
+
+  // console.log(process.env.REACT_APP_BASE_URL)
   const [onclickShowLeft, setOnclickShowLeft] = useState(true);
   const dispatch = useDispatch();
 
@@ -44,21 +84,18 @@ function App() {
 
   const [valueInput, setValueInput] = useState("");
 
-const [statusCand, setStatusCand]=  useState("")
+  const [statusCand, setStatusCand] = useState("");
 
-  const [quantity, setQuantity]= useState([])
+  const [quantity, setQuantity] = useState([]);
 
   useEffect(() => {
-
-      dispatch(getProjects());
-    
+    dispatch(getProjects());
+    verifyUserInfo();
   }, [dispatch]);
 
   return (
     <AuthContext.Provider
       value={{
-        setAccount,
-        account,
         onclickShowLeft,
         setOnclickShowLeft,
         moreRow,
@@ -66,18 +103,23 @@ const [statusCand, setStatusCand]=  useState("")
         valueInput,
         setValueInput,
         quantity,
-        setQuantity,statusCand, setStatusCand
+        setQuantity,
+        statusCand,
+        setStatusCand,
+        user: userInfo.data,
+        login,
+        logout,
       }}
     >
       <Router>
         <div className="App">
-          {/* {account === true ? <Navbar /> : ""}
+          {userInfo.data === 1 ? <Navbar /> : ""}
           <ContentContainer>
-            {account === true ? <NavMenu /> : ""} */}
+            {userInfo.data === 1 ? <NavMenu /> : ""}
 
-          <Navbar />
+            {/* <Navbar />
           <ContentContainer>
-            <NavMenu />
+            <NavMenu /> */}
             {/* {
             onclickShowLeft ? <div className="mainContent"  style={{marginLeft: "245px" }}> : <div className="mainContent"  style={{marginLeft: "245px" }}>
           } */}
@@ -93,33 +135,36 @@ const [statusCand, setStatusCand]=  useState("")
                 <Route element={<GuestRouter />}>
                   <Route exact path="/login" element={<Login />} />
                 </Route>
-                {/* <Route element={<PrivateRoute />}> */}
-                <Route
-                  exact
-                  path="/candidateManage"
-                  element={<CandidateManage />}
-                />
-                <Route
-                  exact
-                  path="/resourceAllocation"
-                  element={<MainContent />}
-                />
-                <Route
-                  exact
-                  path="/resourcePlaning/:pName"
-                  element={<ResourcePlanning />}
-                />
-                <Route
-                  exact
-                  path="/resourcePlaning"
-                  element={<ResourcePlanning />}
-                />
+                <Route element={<PrivateRoute />}>
+                  <Route
+                    exact
+                    path="/candidateManage"
+                    element={<CandidateManage />}
+                  />
+                  <Route
+                    exact
+                    path="/resourceAllocation"
+                    element={<MainContent />}
+                  />
+                  <Route
+                    exact
+                    path="/resourcePlaning/:pName"
+                    element={<ResourcePlanning />}
+                  />
+                  <Route
+                    exact
+                    path="/resourcePlaning"
+                    element={<ResourcePlanning />}
+                  />
 
-                <Route exact path="/resourcePool" element={<ResourcePool />} />
-                <Route exact path="/requests" element={<RequestPage />} />
-                <Route exact path="/profile" element={<Profile />} />
-                
-                {/* </Route> */}
+                  <Route
+                    exact
+                    path="/resourcePool"
+                    element={<ResourcePool />}
+                  />
+                  <Route exact path="/requests" element={<RequestPage />} />
+                  <Route exact path="/profile" element={<Profile />} />
+                </Route>
                 {/* {console.log(onclickShowLeft)} */}
               </Routes>
             </div>

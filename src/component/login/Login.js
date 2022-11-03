@@ -8,7 +8,8 @@ import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
-const {setAccount}= useAuth();
+  const { setAccount,login,logout } = useAuth();
+
   const accountLogin = {
     username: "quang1412@gmail.com",
     password: "123456",
@@ -26,28 +27,27 @@ const {setAccount}= useAuth();
     },
     mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
-  
-  const p =<p style={{color:'red', fontSize:'20px'}} > Login Fail</p>
+
+  const p = <p style={{ color: "red", fontSize: "20px" }}> Login Fail</p>;
 
   const onSubmit = async (values) => {
     const { email, password } = values;
-console.log(values);
+    console.log(values);
     try {
       const res = await axios({
-        url: process.env.REACT_APP_BASE_URL+"/api/user/login",
+        url: process.env.REACT_APP_BASE_URL + "/api/user/login",
         method: "post",
         data: { email, password },
       });
-      if (res.data=='success') {
-console.log(res.data);
+      if (res.data) {
 
-        // localStorage.setItem('token',res.data.data.token)
+        // localStorage.setItem("token", res.data);
+        // navigate('/candidateManage')
         // console.log('thanh cong')
-        // login({
-        //     _id:res.data.data._id,
-        //     token:res.data.data.token
-        // })
-
+        login({
+            // _id:res.data.data._id,
+            token:res.data
+        })
 
         // login({
         //   _id: res.data.data._id,
@@ -85,8 +85,6 @@ console.log(res.data);
             </div>
             <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
               <form onSubmit={handleSubmit(onSubmit)}>
-                
-                
                 {/* Email input */}
                 <div className="form-outline mb-4">
                   <input
@@ -134,7 +132,7 @@ console.log(res.data);
                       defaultValue
                       id="form2Example3"
                     />
-                    
+
                     <label className="form-check-label" htmlFor="form2Example3">
                       Remember me
                     </label>
@@ -143,7 +141,7 @@ console.log(res.data);
                     Forgot password?
                   </a>
                 </div>
-                
+
                 <div className="text-center text-lg-start mt-4 pt-2">
                   <button
                     type="submit"
@@ -164,7 +162,6 @@ console.log(res.data);
             </div>
           </div>
         </div>
-        
       </section>
     </div>
   );

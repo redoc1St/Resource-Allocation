@@ -15,7 +15,7 @@ function useAuth() {
     quantity,
     setQuantity,
     statusCand,
-    setStatusCand,
+    setStatusCand,login,logout,user
   } = React.useContext(AuthContext); //lấy từ app.js
   const isAuthenticated = !!account;
   return {
@@ -31,7 +31,7 @@ function useAuth() {
     quantity,
     setQuantity,
     statusCand,
-    setStatusCand,
+    setStatusCand,login,logout,user
   };
 }
 export default useAuth;

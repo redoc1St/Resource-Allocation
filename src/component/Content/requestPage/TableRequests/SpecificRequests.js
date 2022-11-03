@@ -1,8 +1,17 @@
 import { Table } from 'antd';
 import React from 'react'
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSpecRequest } from '../../../../Store/Actions/SpecRequestActions';
 import useAuth from '../../../hooks/useAuth';
 
 export default function SpecificRequests() {
+
+  const dispatch = useDispatch();
+  const specRequests = useSelector((state) => state.SpecRequest.specRequests);
+  useEffect(() => {
+    dispatch(getSpecRequest())
+  }, [ dispatch]);
     const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
     const columns = [
         {
@@ -13,40 +22,40 @@ export default function SpecificRequests() {
     
         {
           title: "Employee",
-          dataIndex: "employee",
+          dataIndex: "Username",
           width: 100,
           //   editTable: true,
         },
         {
           title: "Role",
-          dataIndex: "role",
+          dataIndex: "RoleName",
           width: 90,
           //   editTable: true,
         },
         {
           title: "Unit",
-          dataIndex: "unit",
+          dataIndex: "Department_name",
           width: 70,
         },
         {
             title: "Project",
-            dataIndex: "project",
+            dataIndex: "ProjectName",
             width: 150,
           },
         {
           title: "Start date",
-          dataIndex: "sDate",
+          dataIndex: "Date_start",
           width: 130,
         },
         {
           title: "End date",
-          dataIndex: "eDate",
+          dataIndex: "Date_end",
           width: 130,
         },
     
         {
           title: "% Effort",
-          dataIndex: "pe",
+          dataIndex: "Effort",
           width: 90,
         },
     
@@ -58,7 +67,7 @@ export default function SpecificRequests() {
         
         {
           title: "Skill",
-          dataIndex: "skill",
+          dataIndex: "SkillName",
           width: 80,
         },
         {
@@ -66,11 +75,17 @@ export default function SpecificRequests() {
           dataIndex: "requester",
           width: 100,
         },
-        
+        {
+          title: "Time",
+          dataIndex: "lastestTime",
+          width: 130,
+          fixed:'right'
+        },
         {
           title: "Status",
           dataIndex: "status",
           width: 130,
+          fixed:'right'
         },
         {
           title: "Action",
@@ -82,6 +97,12 @@ export default function SpecificRequests() {
           },
         },
       ];
+      let countReqs = 0;
+
+      const modifiedData = specRequests.map((item)=>({
+        no:(countReqs+=1),...item
+      }))
+
     return (
         <div>
         {/* {console.log(data)} */}
@@ -91,6 +112,8 @@ export default function SpecificRequests() {
             // x: 600,
             y: 300,
           }}
+        dataSource={modifiedData}
+
           style={
               onclickShowLeft
                 ? {

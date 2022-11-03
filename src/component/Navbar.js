@@ -21,11 +21,11 @@ import useAuth from "./hooks/useAuth";
 import { hover } from "@testing-library/user-event/dist/hover";
 import { Opacity } from "@mui/icons-material";
 export default function Navbar() {
-  const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
+  const { logout, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const onClickLogOut = () => {
-    setAccount(false);
-
-    Navigate("/login");
+    // setAccount(false);
+    logout()
+    // Navigate("/login");
   };
   const onClickBaGach = () => {
     document.body.classList.toggle('sb-sidenav-toggled');

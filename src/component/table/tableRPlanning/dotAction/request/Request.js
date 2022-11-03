@@ -6,22 +6,28 @@ import {
   Form,
   Input,
   InputNumber,
+  message,
   Row,
   Select,
 } from "antd";
 import { Modal, Table } from "antd";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import request from "../../../../../../src/api/request";
+import { useDispatch } from "react-redux";
+import { getRoleByCode } from "../../../../../Store/Actions/PlanningRoleAction";
 
 export default function Request(record) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+
   const { pName } = useParams();
   const { pQuantity, aQuantity, sDate, eDate } = record.record.record;
   const quantity = parseInt(pQuantity) - parseInt(aQuantity);
   const showModal = () => {
-    // console.log(record.record.record.role)
     setIsModalOpen(true);
   };
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -46,9 +52,37 @@ export default function Request(record) {
     // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
   const onSubmit = async (values) => {
-    // const{pId,unit, pName}= values;
-    console.log(values);
-    setIsModalOpen(false);
+
+    try {
+      const res = await request({
+        url: process.env.REACT_APP_BASE_URL+"/api/Request/RolePlanning",
+        method: "POST",
+        data: {
+          resourceRole_id:record.record.record.id
+        },
+      });
+      if (res.data.success) {
+        // moreRow++;
+        // console.log(res.data.success);
+        // console.log(moreRow);
+        // navigate('/')
+      }
+
+
+      message.success({
+        content:"Request role planning successfull",
+        style:{marginTop:'50px'},
+      });
+      // dispatch(getProjects());
+      dispatch(getRoleByCode(pName));
+
+      setIsModalOpen(false);
+
+    } catch (err) {
+      console.log(err);
+    }
+    // console.log(values);
+    // setIsModalOpen(false);
 
     // const { username, password } = values;
     // try {
@@ -91,7 +125,7 @@ export default function Request(record) {
                   <tr>
                     <th>Role</th>
                     <td>
-                      <select {...register("role")} required>
+                      <select {...register("role")} disabled required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="BA">
                           BA
@@ -110,6 +144,7 @@ export default function Request(record) {
                     {console.log(record)}
                     <td>
                       <input
+                      disabled
                         type="date"
                         {...register("sd", {
                           pattern: /^\d{2}\/\d{2}\/\d{4}$/,
@@ -128,6 +163,7 @@ export default function Request(record) {
                     <th>% Effort </th>
                     <td>
                       <input
+                      disabled
                         type="number"
                         min={0}
                         value="2"
@@ -140,7 +176,7 @@ export default function Request(record) {
                   <tr>
                     <th>Level</th>
                     <td>
-                      <select {...register("level")} required>
+                      <select {...register("level") } disabled required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="Junior">
                           Junior
@@ -160,7 +196,7 @@ export default function Request(record) {
                   <tr>
                     <th>Project</th>
                     <td>
-                      <select {...register("pName")} required>
+                      <select {...register("pName")} disabled required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value={pName}>
                           {pName}
@@ -172,6 +208,7 @@ export default function Request(record) {
                     <th>Quantity</th>
                     <td>
                       <input
+                      disabled
                         type="number"
                         max={quantity}
                         min={1}
@@ -185,6 +222,7 @@ export default function Request(record) {
                       <input
                         // value={data?.data?.sdp}
                         // value={eDate}
+                        disabled
                         type="date"
                         {...register("ed", {
                           pattern: /^\d{2}\/\d{2}\/\d{4}$/,
@@ -203,6 +241,7 @@ export default function Request(record) {
                     <th>% Bill</th>
                     <td>
                       <input
+                      disabled
                         type="number"
                         min={0}
                         {...register("pBill")}
@@ -215,7 +254,7 @@ export default function Request(record) {
                   <tr>
                     <th>Skill</th>
                     <td>
-                      <select {...register("skill")} required>
+                      <select {...register("skill")} required disabled>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="BA">
                           BA

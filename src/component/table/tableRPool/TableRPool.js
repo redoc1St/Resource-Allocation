@@ -3,25 +3,26 @@ import { Table, Dropdown, Progress, Popconfirm, Menu } from "antd";
 import DotAction from "./dotAction/DotAction";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { getResourcePoolEmp, getResourcePoolEmpByRLK } from "../../../Store/Actions/ResourcePoolAction";
+import {
+  getResourcePoolEmp,
+  getResourcePoolEmpByRLK,
+} from "../../../Store/Actions/ResourcePoolAction";
 
 export default function TableRPool(data) {
-
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
-      console.log(data?.Role_id,data?.Level_id,data?.Skill_id)
+  console.log(data?.Role_id, data?.Level_id, data?.Skill_id);
   useEffect(() => {
-   if(Object.keys(data).length===0){//check data rỗng
-    dispatch(getResourcePoolEmp());
-
-   }else{
-    dispatch(getResourcePoolEmpByRLK(data?.Role_id,data?.Level_id,data?.Skill_id));
-
-   }
-    
-    
-  }, [data?.Role_id,dispatch,]);
+    if (Object.keys(data).length === 0) {
+      //check data rỗng
+      dispatch(getResourcePoolEmp());
+    } else {
+      dispatch(
+        getResourcePoolEmpByRLK(data?.Role_id, data?.Level_id, data?.Skill_id)
+      );
+    }
+  }, [data?.Role_id, dispatch]);
 
   const columns = [
     {
@@ -100,36 +101,34 @@ export default function TableRPool(data) {
       fixed: "right",
       width: 70,
       render: (_, record) => {
-        return <DotAction record={record}/>;
+        return <DotAction record={record} />;
       },
     },
   ];
-let countEmp =0;
-  const modifiedData=emps.map((item)=>({
-    no:countEmp+=1,
-...item
-  }))
-
-  
+  let countEmp = 0;
+  const modifiedData = emps.map((item) => ({
+    no: (countEmp += 1),
+    ...item,
+  }));
 
   return (
     <div>
       {console.log(modifiedData)}
       <Table
-      bordered
+        bordered
         columns={columns}
         scroll={{
           // x: 600,
           y: 300,
         }}
         style={
-            onclickShowLeft
-              ? {
-                  width: "170vh",
-                  marginTop:'20px'
-                }
-              : { width: "200vh" }
-          }
+          onclickShowLeft
+            ? {
+                width: "170vh",
+                marginTop: "20px",
+              }
+            : { width: "200vh" }
+        }
         className="-striped -highlight"
         dataSource={modifiedData}
         size="small"
