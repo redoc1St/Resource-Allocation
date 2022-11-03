@@ -27,7 +27,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult RequestToRolePlanning(RequestModel request)
         {
             string query = @"
-            insert into ResourceRequestRole values(@rid,2,'')
+            insert into ResourceRequestRole values(@rid,2,'',GETDATE())
             update ResourcePlanning_Role set [Status] = 'In Progress' where id = @rid
                 ";
             DataTable table = new DataTable();
@@ -77,6 +77,54 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
+        //APPROVE ROLE TO PROJECT
+        [HttpPost("RolePlanning/approved")]
+        public JsonResult approvedRequestRoleToProject(RequestModel request)
+        {
+            string query = @"
+            update ResourcePlanning_Role set [status] = 'Approved' where ResourcePlannig_RoleId =@rid";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("APPROVED Successfully");
+        }
+
+        // REJECT ROLE TO PROJECT 
+        [HttpPost("RolePlanning/reject")]
+        public JsonResult rejectdRequestRoleToProject(RequestModel request)
+        {
+            string query = @"
+            update ResourcePlanning_Role set [status] = 'Reject' where ResourcePlannig_RoleId =@rid";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("APPROVED Successfully");
+        }
+
         // Request to ResourceRole Planning (Not Existed in Project)
 
         // SHOW REQUEST BY BU (Leader Project can see)
@@ -89,7 +137,7 @@ namespace ResourceAllocationBE.Controllers
             //and not exists(select * from Emp_RolePlanning where ResourcePlannig_RoleId = 5 and Employee_id = 2)
             string query = @"
             insert into ResourceRequestEmployee values(
-            @rid,@eid,2,'','waiting')
+            @rid,@eid,2,'','waiting',GETDATE())
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -142,8 +190,15 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListRequestEmp()
         {
             string query = @"
-                    select  *
-                    from ResourceRequestEmployee";
+select * from [User]
+                    SELECT *
+                    FROM [ResourceRequestEmployee] 
+                    join ResourcePlanning_Employee on ResourceRequestEmployee.Employee_id = ResourcePlanning_Employee.id
+                    join [User] on [user].[User_id] = ResourcePlanning_Employee.Employee_id
+                    join Roles on ResourcePlanning_Employee.Role_id = Roles.Role_id
+                    join Department on Department.Department_id = [user].Department_id
+                    join Project on Project.Depeartment_id = Department.Department_id
+  ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

@@ -167,8 +167,73 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("Added Successfully");
         }
+
+
+        //get projectId by code 
+        [HttpGet]
+        [Route("api/{code}")]
+
+        public JsonResult GetPidByCode(string code)
+        {
+            string query = @"SELECT [Project_id],[ProjectName]  FROM Project WHERE [Code]=@code";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@code", code);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
+
+        // SHOW  LEADER  INFOR
+
+        [HttpGet]
+        [Route("api/leader")]
+        public JsonResult GetLeaderInfor(Project project)
+        {
+            string query = @"SELECT TOP (1000) [User_id]
+                        ,[Username]
+                        ,[Password]
+      ,[Fullname]
+      ,[Email]
+      ,[Address]
+      ,[UserType]
+      ,[isActive]
+      ,[BirthDay]
+      ,[Start_Day]
+      ,[Department_id],
+	  code
+  FROM [ResourceAllocationDB].[dbo].[User], Project
+  where Project.Depeartment_id = [user].Department_id and code = @code and UserType ='leader'";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@code", project.Code);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
         
 
-        // SHOW ALL LEADER 
     }
 }

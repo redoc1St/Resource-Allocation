@@ -259,13 +259,15 @@ insert into Emp_RolePlanning values(8,10)
 create table ResourceRequestRole(
 ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
 Requested_to int foreign key references [User]([User_id]),
-Approved_by nvarchar(50)
+Approved_by nvarchar(50),
+lastestTime datetime
 )
 
 insert into ResourceRequestRole values(
-10,2,'')
+10,2,'', GETDATE())
 update ResourcePlanning_Role set [Status] = 'In Progress' where id = 10
-
+insert into ResourceRequestRole values(
+9,2,'', CURRENT_TIMESTAMP)
 
 --ResourceRequestEmployee
 create table ResourceRequestEmployee(
@@ -273,12 +275,13 @@ ResourcePlannig_RoleId int foreign key references ResourcePlanning_Role(id),
 Employee_id int foreign key references ResourcePlanning_Employee(id),
 Requested_to int foreign key references [User]([User_id]),
 Approved_by nvarchar(50),
-[status] nvarchar(50)
+[status] nvarchar(50),
+lastestTime datetime
 )
-if not exists (select *from [ResourceRequestEmployee] where ResourcePlannig_RoleId =8 and Employee_id = 11) 
-and not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =8 and Employee_id = 11) 
+--if not exists (select *from [ResourceRequestEmployee] where ResourcePlannig_RoleId =8 and Employee_id = 11) 
+--and not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =8 and Employee_id = 11) 
 insert into ResourceRequestEmployee values(
-8,11,2,'','waiting')
+8,11,2,'','waiting', GETDATE())
 
 
 
@@ -451,3 +454,32 @@ select  *
 					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id and
 					ResourcePlanning_Employee.Employee_id = ResourceRequestEmployee.Employee_id
 
+					select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
+                    Project.ProjectName, ResourcePlanning_Employee.Date_start, 
+					[User].Username,
+                    ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
+                    from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
+                    Project, ResourcePlanning_Role, Department, Emp_RolePlanning
+                    where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
+
+                    [User].[User_id] = User_Role.[User_id] and
+                    User_Role.Role_id = Roles.Role_id and
+                    [User].Department_id = Department.Department_id and
+
+                    ResourcePlanning_Employee.Level_id = Levels.Level_id AND
+                    Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
+
+                    Project.Project_id = ResourcePlanning_Role.Project_id and
+
+                    ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
+					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
+                    and Roles.Role_id = 3 and Levels.Level_id =3 and Skill.Skill_id =3
+
+
+					select *
+                    from ResourcePlanning_Role, Roles,Project, Levels,Skill, ResourceRequestRole
+                    where ResourcePlanning_Role.Project_id = Project.Project_id and
+                    Roles.Role_id = ResourcePlanning_Role.Role_id and
+                    ResourcePlanning_Role.Level_id = Levels.Level_id and
+                    ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
+                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id

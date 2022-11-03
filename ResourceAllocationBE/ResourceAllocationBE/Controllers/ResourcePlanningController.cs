@@ -27,7 +27,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult GetListResourcePlanning(string pid)
         {
             string query = @"
-                    select id,Roles.RoleName, ProjectName, 
+                    select id,Roles.RoleName, ProjectName, Roles.Role_id, 
                     Quantity, Date_start, Date_end, ResourcePlanning_Role.Effort_planned,
                     ResourcePlanning_Role.Effort_actual, Bill_rate, [Status], 
                     LevelName, SkillName, Skill.Skill_id, Levels.Level_id

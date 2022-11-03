@@ -38,3 +38,6 @@ ResourcePoolController: - them UpdateResourcePool + check
 - Resource Planning Role: Add Role to project 
 - Request: - // Request ResourceRole Planning to Project
 		- //ShOW All request ResourcePlanning 
+
+2/11/2022 
+requestController thay doi

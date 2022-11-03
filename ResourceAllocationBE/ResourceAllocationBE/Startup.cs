@@ -56,7 +56,21 @@ namespace ResourceAllocationBE
                 };
             });
             services.AddSingleton(typeof(IJwtTokenManager), typeof(JwtTokenManager));
+            // Enable Cors
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>()).WithHeaders("Authorization").WithMethods("POST", "DELETE");
+                });
+                options.AddPolicy("SpecificOrigin", builder =>
+                {
+                    builder.WithOrigins("http://localhost:5001").WithHeaders("Authorization").WithMethods("GET", "POST", "DELETE");
 
+                });
+
+                services.AddCors();
+            });
             // JSON Serializer
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)

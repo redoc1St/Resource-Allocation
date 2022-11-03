@@ -160,7 +160,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult Put(Project project, int id)
         {
             string query = @"
-            update dbo.Project set Depeartment_id = @Depeartment_id,
+            update dbo.Project set Code = @Code, ProjectName= @ProjectName, Depeartment_id = @Depeartment_id,
             Effort_planned = @Effort_planned,Effort_actual=@Effort_actual,
             Effort_billable=@Effort_billable, Quantity_plan=@Quantity_plan, 
             Quantity_actual=@Quantity_actual, Start_plan=@Start_plan,
@@ -175,6 +175,8 @@ namespace ResourceAllocationBE.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@id", id);
+                    myCommand.Parameters.AddWithValue("@Code", project.Code);
+                    myCommand.Parameters.AddWithValue("@ProjectName", project.ProjectName);
                     myCommand.Parameters.AddWithValue("@Depeartment_id", project.Department_id);
                     myCommand.Parameters.AddWithValue("@Effort_planned", project.Effort_planned);
                     myCommand.Parameters.AddWithValue("@Effort_actual", project.Effort_actual);
