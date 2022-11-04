@@ -198,8 +198,8 @@ namespace ResourceAllocationBE.Controllers
         // SHOW  LEADER  INFOR
 
         [HttpGet]
-        [Route("api/leader")]
-        public JsonResult GetLeaderInfor(Project project)
+        [Route("api/leader/{code}")]
+        public JsonResult GetLeaderInfor(string code)
         {
             string query = @"SELECT TOP (1000) [User_id]
                         ,[Username]
@@ -223,7 +223,7 @@ namespace ResourceAllocationBE.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@code", project.Code);
+                    myCommand.Parameters.AddWithValue("@code", code);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

@@ -82,7 +82,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult approvedRequestRoleToProject(RequestModel request)
         {
             string query = @"
-            update ResourcePlanning_Role set [status] = 'Approved' where ResourcePlannig_RoleId =@rid";
+            update ResourcePlanning_Role set [status] = 'Approved' where id =@rid";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -106,7 +106,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult rejectdRequestRoleToProject(RequestModel request)
         {
             string query = @"
-            update ResourcePlanning_Role set [status] = 'Reject' where ResourcePlannig_RoleId =@rid";
+            update ResourcePlanning_Role set [status] = 'Reject' where id =@rid";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -125,6 +125,31 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult("APPROVED Successfully");
         }
 
+
+        // APPROVED AND REJECT  ROLE TO PROJECT 
+        [HttpPost("RolePlanning/{status}")]
+        public JsonResult statusRequestRoleToProject(RequestModel request, string status)
+        {
+            string query = @"
+            update ResourcePlanning_Role set [status] = @status where id =@rid";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@status", status);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("APPROVED Successfully");
+        }
         // Request to ResourceRole Planning (Not Existed in Project)
 
         // SHOW REQUEST BY BU (Leader Project can see)
@@ -183,6 +208,33 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("APPROVED Successfully");
         }
+
+        //APPROVED / REJECT REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
+        [HttpPost("EmpToRole/{status}")]
+        public JsonResult statusRequestEmp(RequestModel request, string status)
+        {
+            string query = @"
+            insert into Emp_RolePlanning values(@rid,@eid)
+            update ResourceRequestEmployee set [status] = @status where ResourcePlannig_RoleId =@rid and Employee_id = @eid";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@eid", request.employee_id);
+                    myCommand.Parameters.AddWithValue("@status", status);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("APPROVED Successfully");
+        }
         // REQUEST EMPLOYEE TO ROLE PLANNING (cung BU)
 
         // SHOW ALL EMPLOYEE REQEUST  (chua xong) 
@@ -190,7 +242,6 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListRequestEmp()
         {
             string query = @"
-select * from [User]
                     SELECT *
                     FROM [ResourceRequestEmployee] 
                     join ResourcePlanning_Employee on ResourceRequestEmployee.Employee_id = ResourcePlanning_Employee.id
