@@ -224,7 +224,7 @@ export default function ModalEditPlan(record) {
                         required
                       >
                         <Select.Option required></Select.Option>
-                        {skills.map((item) => {
+                        {skills?.map((item) => {
                           return (
                             <option value={item.Skill_id}>
                               {item.SkillName}

@@ -13,6 +13,7 @@ import { getRoleByCode } from "../../../Store/Actions/PlanningRoleAction";
 import ScrollBar from "react-perfect-scrollbar";
 import ModalAddRole from "./ModalAddItem";
 import {
+  getLeaderByCode,
   getLevels,
   getRoles,
   getSkills,
@@ -23,32 +24,36 @@ import styled from "styled-components";
 export default function ResourcePlanning() {
   const { pName } = useParams();
   // console.log(pName);
+ 
+
   const projects = useSelector((state) => state.Projects.projects);
   const planningRoles = useSelector((state) => state.PlanningRoles.roles);
   const [getPId, setPID] = useState();
   const [getPName, setPName] = useState();
 
-
   const roles = useSelector((state) => state.ExtraObject.roles);
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
+
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getRoleByCode(pName));
+   
   }, [pName]);
   useEffect(() => {
     dispatch(getRoles());
     dispatch(getLevels());
     dispatch(getSkills());
+    // dispatch(getLeaderByCode(pName))
     axios
-      .get(process.env.REACT_APP_BASE_URL+`/api/${pName}`)
+      .get(process.env.REACT_APP_BASE_URL + `/api/${pName}`)
       .then(function (response) {
         // handle success
         // console.log();
         setPID(response.data[0].Project_id);
-        setPName(response.data[0].ProjectName)
+        setPName(response.data[0].ProjectName);
       })
       .catch(function (error) {
         // handle error
@@ -92,14 +97,19 @@ export default function ResourcePlanning() {
   if (!pName) {
     return (
       <ListPane>
-      <Dropdown overlay={menu} >
-        <Button style={{border:'4px',boxShadow:' 0 4px 10px rgba(0, 0, 0, 0.3)'}}>
-          <Space >
-            Project Name
-            <DownOutlined />
-          </Space>
-        </Button>
-      </Dropdown>
+        <Dropdown overlay={menu}>
+          <Button
+            style={{
+              border: "4px",
+              boxShadow: " 0 4px 10px rgba(0, 0, 0, 0.3)",
+            }}
+          >
+            <Space>
+              Project Name
+              <DownOutlined />
+            </Space>
+          </Button>
+        </Dropdown>
       </ListPane>
     );
   }
@@ -120,57 +130,64 @@ export default function ResourcePlanning() {
       </h5>
       <div
         className="site-card-border-less-wrapper"
-        style={{ display: "flex", marginTop:'20px',marginBottom:'20px' }}
+        style={{ display: "flex", marginTop: "20px", marginBottom: "20px" }}
       >
-      <Card
+        <Card
           style={{
             color: "white",
             // border: "10px solid",
-            borderRadius:'10px',
+            borderRadius: "10px",
             backgroundColor: "#988ff4",
             width: 150,
             height: 120,
-            textAlign:'center',
-            margin:'0 30px '
+            textAlign: "center",
+            margin: "0 30px ",
           }}
         >
-          <p>Planned effort<br/>(MM)<p style={{fontSize:'30px'}}>5</p></p>
+          <p>
+            Planned effort
+            <br />
+            (MM)<p style={{ fontSize: "30px" }}>5</p>
+          </p>
           <p></p>
-          
         </Card>
         <Card
           style={{
             color: "white",
             // border: "10px solid",
-            borderRadius:'10px',
+            borderRadius: "10px",
             backgroundColor: "#988ff4",
             width: 150,
             height: 120,
-            textAlign:'center',
-            margin:'0 30px '
-            
+            textAlign: "center",
+            margin: "0 30px ",
           }}
         >
-          <p>Planned effort<br/>(MM)<p style={{fontSize:'30px'}}>5</p></p>
+          <p>
+            Planned effort
+            <br />
+            (MM)<p style={{ fontSize: "30px" }}>5</p>
+          </p>
           <p></p>
-          
         </Card>
         <Card
           style={{
             color: "white",
             // border: "10px solid",
-            borderRadius:'10px',
+            borderRadius: "10px",
             backgroundColor: "#988ff4",
             width: 150,
             height: 120,
-            textAlign:'center',
-            margin:'0 30px '
-            
+            textAlign: "center",
+            margin: "0 30px ",
           }}
         >
-          <p>Planned effort<br/>(MM)<p style={{fontSize:'30px'}}>5</p></p>
+          <p>
+            Planned effort
+            <br />
+            (MM)<p style={{ fontSize: "30px" }}>5</p>
+          </p>
           <p></p>
-          
         </Card>
         {/* <Card
           style={{
@@ -186,9 +203,7 @@ export default function ResourcePlanning() {
           <p>Billable effort:</p>
           <p>Actual effort:</p>
         </Card> */}
-        <div style={{ marginLeft: "700px" }}>
-          {/* <BtnViewEmp /> */}
-        </div>
+        <div style={{ marginLeft: "700px" }}>{/* <BtnViewEmp /> */}</div>
       </div>
 
       <div style={{ marginTop: "5px" }}>
@@ -203,6 +218,4 @@ export default function ResourcePlanning() {
     </div>
   );
 }
-const ListPane =styled.div`
-
-`
+const ListPane = styled.div``;

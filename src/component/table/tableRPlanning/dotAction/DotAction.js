@@ -16,6 +16,7 @@ import ViewEmp from "./viewEmp/ViewEmp";
 import Request from "./request/Request";
 
 export default function DotAction(record) {
+  // console.log(record.record.Status);
   const menu = (
     <Menu
       items={[
@@ -32,7 +33,7 @@ export default function DotAction(record) {
         {
           key: "2",
           // label: <Link to={{pathname:'/resourcePool'}} state={record} >Request</Link>,
-          label: <Request record={record}/>,
+          label:record.record.Status==='Approved' ? null : <Request record={record} />,
         },
         {
           key: "3",

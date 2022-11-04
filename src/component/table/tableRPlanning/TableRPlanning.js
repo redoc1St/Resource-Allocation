@@ -7,23 +7,28 @@ import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 // import { Badge, Dropdown, Menu, Space, Table } from "antd";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { getLeaderByCode } from "../../../Store/Actions/ExtraObjectActions";
 export default function TableResourcePlanning(data) {
   const { onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
+  const { pName } = useParams();
+
   const projects = useSelector((state) => state.Projects.projects);
   const { quantity, setQuantity } = useAuth();
-let pQuantity = 0;
+  let pQuantity = 0;
+  const leader = useSelector((state) => state.ExtraObject.leader);
   useEffect(() => {
-    // dispatch(getProjects());
+    dispatch(getLeaderByCode(pName));
   }, []);
+
   const columns = [
     {
       title: "Role",
       dataIndex: "RoleName",
       width: 100,
     },
-    
+
     // {
     //   title: "Planned quantity",
     //   dataIndex: "pQuantity",
@@ -124,21 +129,29 @@ let pQuantity = 0;
           ...item,
           ActualQuantity: ar[0]++,
           status: item.Status,
-          
-          action: <DotAction record={item} />,
-          employee: (
-            <Link to={{ pathname: "/resourcePool" }} state={item}>
-              <PersonAddIcon />
-            </Link>
-          ),
+
+          action: <DotAction record={item} leader={leader} />,
+          employee:
+            item.Status === "Approved" ? (
+              <Link to={{ pathname: "/resourcePool" }} state={item}>
+                <PersonAddIcon />
+              </Link>
+            ) : (
+              ""
+            ),
         }
-      : { key: 0, RoleName: "Total", Quantity: data?.planningRoles[data.planningRoles.length-1]?.totalPQuantity }
+      : {
+          key: 0,
+          RoleName: "Total",
+          Quantity:
+            data?.planningRoles[data.planningRoles.length - 1]?.totalPQuantity,
+        }
   );
-console.log(data.planningRoles);
+  // console.log(data.planningRoles);
   return (
     <div>
       <Table
-      bordered
+        bordered
         columns={columns}
         scroll={{
           // x: 600,

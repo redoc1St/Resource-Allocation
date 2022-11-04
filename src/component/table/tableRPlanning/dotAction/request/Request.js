@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -14,8 +14,9 @@ import { Modal, Table } from "antd";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import request from "../../../../../../src/api/request";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getRoleByCode } from "../../../../../Store/Actions/PlanningRoleAction";
+import { getLeaderByCode } from "../../../../../Store/Actions/ExtraObjectActions";
 
 export default function Request(record) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +25,12 @@ export default function Request(record) {
   const { pName } = useParams();
   const { pQuantity, aQuantity, sDate, eDate } = record.record.record;
   const quantity = parseInt(pQuantity) - parseInt(aQuantity);
+
+
+
+  // useEffect(() => {
+  // }, [pName]);
+  // console.log(record.record.leader.Username);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -37,28 +44,29 @@ export default function Request(record) {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      pName: record.record.record.pName,
-      role: record.record.record.role,
-      sd: record.record.record.sDate,
-      quantity: parseInt(pQuantity) - parseInt(aQuantity),
-      ed: record.record.record.eDate,
-      pe: record.record.record.actual,
-      pBill: record.record.record.pBill,
-      level: record.record.record.level,
-      skill: record.record.record.skills,
+      requestTo:record.record?.leader?.Username,
+      role: record.record.record.RoleName,
+      sd: record.record.record.Date_start,
+      pe: record.record.record.Effort_planned,
+      level: record.record.record.LevelName,
+
+      pName: record.record.record.ProjectName,
+      quantity: record.record.record.Quantity,
+      ed: record.record.record.Date_end,
+      pBill: record.record.record.Bill_rate,
+      skill: record.record.record.SkillName,
       // sdp: record?.data?.sdp,
       // unit: record?.data?.unit,
     },
     // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
   const onSubmit = async (values) => {
-
     try {
       const res = await request({
-        url: process.env.REACT_APP_BASE_URL+"/api/Request/RolePlanning",
+        url: process.env.REACT_APP_BASE_URL + "/api/Request/RolePlanning",
         method: "POST",
         data: {
-          resourceRole_id:record.record.record.id
+          resourceRole_id: record.record.record.id,
         },
       });
       if (res.data.success) {
@@ -68,16 +76,14 @@ export default function Request(record) {
         // navigate('/')
       }
 
-
       message.success({
-        content:"Request role planning successfull",
-        style:{marginTop:'50px'},
+        content: "Request role planning successfull",
+        style: { marginTop: "50px" },
       });
       // dispatch(getProjects());
       dispatch(getRoleByCode(pName));
 
       setIsModalOpen(false);
-
     } catch (err) {
       console.log(err);
     }
@@ -114,18 +120,21 @@ export default function Request(record) {
                   <tr>
                     <th>Request to</th>
                     <td>
-                      <select {...register("request")} required>
+                      <input disabled {...register("requestTo")} />
+                      {/* <select {...register("request")} required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="ThaiBA">
                           ThaiBA
                         </option>
-                      </select>
+                      </select> */}
                     </td>
                   </tr>
                   <tr>
                     <th>Role</th>
                     <td>
-                      <select {...register("role")} disabled required>
+                    <input disabled {...register("role")} />
+
+                      {/* <select {...register("role")} disabled required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="BA">
                           BA
@@ -136,15 +145,14 @@ export default function Request(record) {
                         <option defaultValue value="PO">
                           PO
                         </option>
-                      </select>
+                      </select> */}
                     </td>
                   </tr>
                   <tr>
                     <th>Start date </th>
-                    {console.log(record)}
                     <td>
                       <input
-                      disabled
+                        disabled
                         type="date"
                         {...register("sd", {
                           pattern: /^\d{2}\/\d{2}\/\d{4}$/,
@@ -163,7 +171,7 @@ export default function Request(record) {
                     <th>% Effort </th>
                     <td>
                       <input
-                      disabled
+                        disabled
                         type="number"
                         min={0}
                         value="2"
@@ -176,7 +184,9 @@ export default function Request(record) {
                   <tr>
                     <th>Level</th>
                     <td>
-                      <select {...register("level") } disabled required>
+                    <input disabled {...register("level")} />
+
+                      {/* <select {...register("level")} disabled required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="Junior">
                           Junior
@@ -184,7 +194,7 @@ export default function Request(record) {
                         <option defaultValue value="Senior">
                           Senior
                         </option>
-                      </select>
+                      </select> */}
                     </td>
                   </tr>
                 </tbody>
@@ -196,19 +206,20 @@ export default function Request(record) {
                   <tr>
                     <th>Project</th>
                     <td>
-                      <select {...register("pName")} disabled required>
+                      <input disabled {...register("pName")} />
+                      {/* <select {...register("pName")} disabled required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value={pName}>
                           {pName}
                         </option>
-                      </select>
+                      </select> */}
                     </td>
                   </tr>
                   <tr>
                     <th>Quantity</th>
                     <td>
                       <input
-                      disabled
+                        disabled
                         type="number"
                         max={quantity}
                         min={1}
@@ -241,7 +252,7 @@ export default function Request(record) {
                     <th>% Bill</th>
                     <td>
                       <input
-                      disabled
+                        disabled
                         type="number"
                         min={0}
                         {...register("pBill")}
@@ -254,7 +265,9 @@ export default function Request(record) {
                   <tr>
                     <th>Skill</th>
                     <td>
-                      <select {...register("skill")} required disabled>
+                    <input disabled {...register("skill")} />
+
+                      {/* <select {...register("skill")} required disabled>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="BA">
                           BA
@@ -262,7 +275,7 @@ export default function Request(record) {
                         <option defaultValue value="PM">
                           PM
                         </option>
-                      </select>
+                      </select> */}
                     </td>
                   </tr>
                 </tbody>
@@ -290,7 +303,6 @@ export default function Request(record) {
                   }}
                   onClick={handleCancel}
                   type="button"
-
                 >
                   Cancel
                 </button>

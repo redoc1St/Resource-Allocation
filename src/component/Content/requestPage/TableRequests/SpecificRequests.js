@@ -83,7 +83,7 @@ export default function SpecificRequests() {
         },
         {
           title: "Status",
-          dataIndex: "status",
+          dataIndex: "Status",
           width: 130,
           fixed:'right'
         },

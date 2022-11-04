@@ -201,7 +201,7 @@ export default function ModalAddRole(record) {
                     <td>
                       <select {...register("Skill_id")} required>
                         <Select.Option required></Select.Option>
-                        {record.skills.map((item) => {
+                        {record?.skills?.map((item) => {
                           return (
                             <option value={item.Skill_id}>
                               {item.SkillName}

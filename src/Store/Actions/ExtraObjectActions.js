@@ -1,7 +1,12 @@
 // import axios from 'axios'
 import axios from "../../../src/api/request";
 
-import { GET_LEVELS,GET_ROLES,GET_SKILLS } from "../types";
+import {
+  GET_LEADER_BY_CODE,
+  GET_LEVELS,
+  GET_ROLES,
+  GET_SKILLS,
+} from "../types";
 const projectsApi = process.env.REACT_APP_BASE_URL;
 
 export const getLevels = () => async (dispatch) => {
@@ -12,7 +17,7 @@ export const getLevels = () => async (dispatch) => {
     .then((res) => {
       // console.log(res)
       const levels = res.data.map((item) => ({
-        ...item
+        ...item,
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_LEVELS, payload: levels });
@@ -21,34 +26,46 @@ export const getLevels = () => async (dispatch) => {
 };
 
 export const getRoles = () => async (dispatch) => {
-    // dispatch({ type: SET_LOADING, payload: true })
-  
-    await axios
-      .get(projectsApi + "/api/roles")
-      .then((res) => {
-        // console.log(res)
-        const roles = res.data.map((item) => ({
-          ...item
-        }));
-        // dispatch({ type: SET_LOADING, payload: false })
-        dispatch({ type: GET_ROLES, payload: roles });
-      })
-      .catch((err) => console.log("Get project api error", err));
-  };
-  
-  export const getSkills = () => async (dispatch) => {
-    // dispatch({ type: SET_LOADING, payload: true })
-  
-    await axios
-      .get(projectsApi + "/api/skills")
-      .then((res) => {
-        // console.log(res)
-        const skills = res.data.map((item) => ({
-          ...item
-        }));
-        // dispatch({ type: SET_LOADING, payload: false })
-        dispatch({ type: GET_SKILLS, payload: skills });
-      })
-      .catch((err) => console.log("Get project api error", err));
-  };
-  
+  // dispatch({ type: SET_LOADING, payload: true })
+
+  await axios
+    .get(projectsApi + "/api/roles")
+    .then((res) => {
+      // console.log(res)
+      const roles = res.data.map((item) => ({
+        ...item,
+      }));
+      // dispatch({ type: SET_LOADING, payload: false })
+      dispatch({ type: GET_ROLES, payload: roles });
+    })
+    .catch((err) => console.log("Get project api error", err));
+};
+
+export const getSkills = () => async (dispatch) => {
+  // dispatch({ type: SET_LOADING, payload: true })
+
+  await axios
+    .get(projectsApi + "/api/skills")
+    .then((res) => {
+      // console.log(res)
+      const skills = res.data.map((item) => ({
+        ...item,
+      }));
+      // dispatch({ type: SET_LOADING, payload: false })
+      dispatch({ type: GET_SKILLS, payload: skills });
+    })
+    .catch((err) => console.log("Get project api error", err));
+};
+
+export const getLeaderByCode = (code) => async (dispatch) => {
+  await axios
+    .get(projectsApi + `/api/leader/${code}`)
+    .then((res) => {
+      const leader = res.data.map((item) => ({
+        ...item,
+      }));
+      // dispatch({ type: SET_LOADING, payload: false })
+      dispatch({ type: GET_LEADER_BY_CODE, payload: leader[0] });
+    })
+    .catch((err) => console.log("Get role error", err));
+};

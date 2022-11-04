@@ -1,22 +1,48 @@
 // import axios from 'axios'
-import axios from '../../../src/api/request';
-import useAuth from '../../component/hooks/useAuth';
+import axios from "../../../src/api/request";
+import useAuth from "../../component/hooks/useAuth";
+import { Divider, Tag } from "antd";
 
-import {GET_GENERAL_REQUEST } from '../types'
-const projectsApi= process.env.REACT_APP_BASE_URL;
+import { GET_GENERAL_REQUEST } from "../types";
+const projectsApi = process.env.REACT_APP_BASE_URL;
 
-export const getGeneralRequest = () => async dispatch => {
-    // dispatch({ type: SET_LOADING, payload: true })
-    await axios.get(`${projectsApi}/api/Request/RolePlanning`)
-        .then(res => {
-            const requests = res.data.map((item)=>({
-                ...item,
-                Date_start:new Date(item.Date_start).toLocaleDateString('fr-CA'),
-                Date_end:new Date(item.Date_end).toLocaleDateString('fr-CA'),
-                lastestTime:new Date(item.lastestTime).toLocaleString("es-CL")
-            }))
-            // dispatch({ type: SET_LOADING, payload: false })
-            dispatch({ type: GET_GENERAL_REQUEST, payload: requests})
-        })
-        .catch((err) => console.log('Get role error', err))
-}
+const handleStyleStatus = (status) => {
+  if (status === "Approved") {
+    return (
+      <Tag style={{ width: "85px", textAlign: "center" }} color="#87d068">
+        Approved
+      </Tag>
+    );
+  } else if (status === "Waiting") {
+    return (
+      <Tag style={{ width: "85px", textAlign: "center" }} color="#62B0A8">
+        Waiting
+      </Tag>
+    );
+  } else if (status === "In Progress") {
+    return (
+      <Tag style={{ width: "85px", textAlign: "center" }} color="#DEDA23">
+        In Progress
+      </Tag>
+    );
+  } else if (status === "") {
+  }
+};
+
+export const getGeneralRequest = () => async (dispatch) => {
+  // dispatch({ type: SET_LOADING, payload: true })
+  await axios
+    .get(`${projectsApi}/api/Request/RolePlanning`)
+    .then((res) => {
+      const requests = res.data.map((item) => ({
+        ...item,
+        Date_start: new Date(item.Date_start).toLocaleDateString("fr-CA"),
+        Date_end: new Date(item.Date_end).toLocaleDateString("fr-CA"),
+        lastestTime: new Date(item.lastestTime).toLocaleString("es-CL"),
+        Status: handleStyleStatus(item.Status),
+      }));
+      // dispatch({ type: SET_LOADING, payload: false })
+      dispatch({ type: GET_GENERAL_REQUEST, payload: requests });
+    })
+    .catch((err) => console.log("Get role error", err));
+};
