@@ -30,21 +30,13 @@ namespace ResourceAllocationBE.Controllers
                     select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id), ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, ResourcePlanning_Employee.Date_start, [user].Username,
                     ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
-                    from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
-                    Project, ResourcePlanning_Role, Department, Emp_RolePlanning
-                    where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
-
-                    [User].[User_id] = User_Role.[User_id] and
-                    User_Role.Role_id = Roles.Role_id and
-                    [User].Department_id = Department.Department_id and
-
-                    ResourcePlanning_Employee.Level_id = Levels.Level_id AND
-                    Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
-
-                    Project.Project_id = ResourcePlanning_Role.Project_id and
-
-                    ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
-					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id";
+                    from ResourcePlanning_Employee
+		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
+		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
+		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
+                    join Project on Project.Depeartment_id = [User].Department_id 
+		            join Department on Department.Department_id = [user].Department_id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -72,21 +64,13 @@ namespace ResourceAllocationBE.Controllers
                 select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
                 Project.ProjectName, ResourcePlanning_Employee.Date_start, 
                 ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
-                from ResourcePlanning_Employee, [User], Roles, User_Role, Levels,  Skill, 
-                Project, ResourcePlanning_Role, Department, Emp_RolePlanning
-                where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
-
-                [User].[User_id] = User_Role.[User_id] and
-                    User_Role.Role_id = Roles.Role_id and
-                [User].Department_id = Department.Department_id and
-
-                ResourcePlanning_Employee.Level_id = Levels.Level_id AND
-                Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
-
-                Project.Project_id = ResourcePlanning_Role.Project_id and
-
-				ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
-				ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
+                from ResourcePlanning_Employee
+		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
+		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
+		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
+                    join Project on Project.Depeartment_id = [User].Department_id 
+		            join Department on Department.Department_id = [user].Department_id
                 and [User].Fullname like @name";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -115,21 +99,13 @@ namespace ResourceAllocationBE.Controllers
                      select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, ResourcePlanning_Employee.Date_start, [User].[Username],
                     ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
-                    from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
-                    Project, ResourcePlanning_Role, Department, Emp_RolePlanning
-                    where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
-
-                    [User].[User_id] = User_Role.[User_id] and
-                    User_Role.Role_id = Roles.Role_id and
-                    [User].Department_id = Department.Department_id and
-
-                    ResourcePlanning_Employee.Level_id = Levels.Level_id AND
-                    Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
-
-                    Project.Project_id = ResourcePlanning_Role.Project_id and
-
-                    ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
-					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
+                    from ResourcePlanning_Employee
+		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
+		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
+		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
+                    join Project on Project.Depeartment_id = [User].Department_id 
+		            join Department on Department.Department_id = [user].Department_id
                     and Roles.Role_id = @role and Levels.Level_id =@level and Skill.Skill_id =@skill ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");

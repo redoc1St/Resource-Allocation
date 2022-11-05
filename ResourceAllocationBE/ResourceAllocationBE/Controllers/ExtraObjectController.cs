@@ -108,31 +108,31 @@ namespace ResourceAllocationBE.Controllers
         }
 
         
-        //INSERT IN TO DB User_role
-        [Route("api/add/User_role")]
-        [HttpPost]
-        public JsonResult addUserRole(User_Role user_role)
-        {
-            string query = @"insert into User_Role values(@role_id, @user_id)";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@role_id", user_role.Role_id);
-                    myCommand.Parameters.AddWithValue("@user_id", user_role.User_id);
+        ////INSERT IN TO DB User_role
+        //[Route("api/add/User_role")]
+        //[HttpPost]
+        //public JsonResult addUserRole(User_Role user_role)
+        //{
+        //    string query = @"insert into User_Role values(@role_id, @user_id)";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@role_id", user_role.Role_id);
+        //            myCommand.Parameters.AddWithValue("@user_id", user_role.User_id);
 
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("Added Successfully");
-        }
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
+        //        }
+        //    }
+        //    return new JsonResult("Added Successfully");
+        //}
 
         //INSERT IN TO DB addEmp_Role
         [Route("api/add/Emp_Role/{role}/{level}/{skill}")]

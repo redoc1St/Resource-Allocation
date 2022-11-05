@@ -81,24 +81,24 @@ insert into [User] values('phatnt2000','123456a','Nguyen Thanh Phat','phatnt2022
 ,'employee','0','2000/05/05','2022/01/01',2)
 insert into [User] values('tuannt2000','123456a','Nguyen Thanh Tuan','tuannt2022@gmail.com','Ha Noi'
 ,'employee','0','2000/05/05','2022/01/01',2)
---USER ROLE
-create table User_Role(
-Role_id int foreign key references Roles(Role_id),
-[User_id] int foreign key references [User]([User_id])
-)
-insert into User_Role values(3,3)
-insert into User_Role values(4,3)
-insert into User_Role values(3,4)
-insert into User_Role values(4,4)
-insert into User_Role values(5,5)
-insert into User_Role values(1,6)
-insert into User_Role values(3,7)
-insert into User_Role values(4,8)
-insert into User_Role values(5,8)
-insert into User_Role values(6,9)
-insert into User_Role values(4,10)
-insert into User_Role values(5,11)
-insert into User_Role values(6,11)
+----USER ROLE
+--create table User_Role(
+--Role_id int foreign key references Roles(Role_id),
+--[User_id] int foreign key references [User]([User_id])
+--)
+--insert into User_Role values(3,3)
+--insert into User_Role values(4,3)
+--insert into User_Role values(3,4)
+--insert into User_Role values(4,4)
+--insert into User_Role values(5,5)
+--insert into User_Role values(1,6)
+--insert into User_Role values(3,7)
+--insert into User_Role values(4,8)
+--insert into User_Role values(5,8)
+--insert into User_Role values(6,9)
+--insert into User_Role values(4,10)
+--insert into User_Role values(5,11)
+--insert into User_Role values(6,11)
 
 
 
@@ -297,21 +297,9 @@ insert into ResourceRequestEmployee values(
 
 
 go
--- SELECT RESOURCE PLANNING OK
-
-select *
-from ResourcePlanning_Role, Roles,Project, Levels,Skill, ResourceRequest
-where ResourcePlanning_Role.Project_id = Project.Project_id and
-Roles.Role_id = ResourcePlanning_Role.Role_id and
-ResourcePlanning_Role.Level_id = Levels.Level_id and
-ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
-ResourceRequest.ResourcePlannig_RoleId = ResourcePlanning_Role.id
-and [Type]  = 1
 
 
-
-
---select RESOURCEPOOL by projectname and role OK
+--select RESOURCEPOOL by projectname and role
 SELECT [User].Fullname, 
 Roles.RoleName, 
 ResourcePlanning_Role.Date_start, 
@@ -335,48 +323,19 @@ WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
 
 
 --
---LIST RESOURCE POOL
-select number = ROW_NUMBER() OVER (ORDER BY t.A), ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
-                     Project.ProjectName, ResourcePlanning_Employee.Date_start, 
-                    ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
-                    from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
-                    Project, ResourcePlanning_Role, Department, Emp_RolePlanning
-                    where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
-
-                    [User].[User_id] = User_Role.[User_id] and
-                    User_Role.Role_id = Roles.Role_id and
-                    [User].Department_id = Department.Department_id and
-
-                    ResourcePlanning_Employee.Level_id = Levels.Level_id AND
-                    Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
-
-                    Project.Project_id = ResourcePlanning_Role.Project_id and
-
-                    ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
-					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
-					AND Roles.RoleName = 'ba' and Levels.Level_id =1 and Skill.Skill_id = 3
-
-
--- SEARCH BY RESOURCEPOOL FULLNAME
-select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
-                Project.ProjectName, ResourcePlanning_Employee.Date_start, 
-                ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
-                from ResourcePlanning_Employee, [User], Roles, User_Role, Levels,  Skill, 
-                Project, ResourcePlanning_Role, Department, Emp_RolePlanning
-                where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
-
-                [User].[User_id] = User_Role.[User_id] and
-                    User_Role.Role_id = Roles.Role_id and
-                [User].Department_id = Department.Department_id and
-
-                ResourcePlanning_Employee.Level_id = Levels.Level_id AND
-                Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
-
-                Project.Project_id = ResourcePlanning_Role.Project_id and
-
-				ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
-				ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
-                and [User].Fullname like @name
+--LIST RESOURCE POOL - OK NEW 
+select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),
+		ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
+        Project.ProjectName, ResourcePlanning_Employee.Date_start, [user].Username,
+        ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name                    
+		from ResourcePlanning_Employee
+		join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
+		join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
+		join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+		join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
+        join Project on Project.Depeartment_id = [User].Department_id 
+		join Department on Department.Department_id = [user].Department_id
+					AND Roles.RoleName = 'ba' and Levels.Level_id =3 and Skill.Skill_id = 3
 
 
 
@@ -413,73 +372,15 @@ and Emp_RolePlanning.Employee_id = 3 and Role_id=3 and Level_id =2 and Skill_id=
 insert into Emp_RolePlanning values (9,3)
 else select * from Emp_RolePlanning
 
-select * from [ResourcePlanning_Employee] 
-                        where Role_id = 3 and Level_id =2 and Skill_id =1
-						
-drop table Emp_RolePlanning
-drop table ResourcePlanning_Employee
-drop table ResourcePlanning_Role
-drop table ResourceRequestRole
 
--- LOAD LIST REQUEST
-select * from ResourceRequest, ResourcePlanning_Role 
-where ResourcePlanning_Role.id = ResourceRequest.ResourcePlannig_RoleId
-go
-
--- REQUETS EMPLOYEE TO ROLE 
-if exists (select *   FROM [ResourceAllocationDB].[dbo].[ResourcePlanning_Employee]
-, [user] where [user].[User_id] =ResourcePlanning_Employee.Employee_id 
-and department_id =1
-)
-select * from ResourcePlanning_Employee
-else
-select * from ResourcePlanning_Role
-
--- show all request emp 
-select  *
-                    from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
-                    Project, ResourcePlanning_Role, Department, Emp_RolePlanning, ResourceRequestEmployee
-                    where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
-
-                    [User].[User_id] = User_Role.[User_id] and
-                    User_Role.Role_id = Roles.Role_id and
-                    [User].Department_id = Department.Department_id and
-
-                    ResourcePlanning_Employee.Level_id = Levels.Level_id AND
-                    Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
-
-                    Project.Project_id = ResourcePlanning_Role.Project_id and
-
-                    ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
-					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id and
-					ResourcePlanning_Employee.Employee_id = ResourceRequestEmployee.Employee_id
-
-					select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
-                    Project.ProjectName, ResourcePlanning_Employee.Date_start, 
-					[User].Username,
-                    ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
-                    from ResourcePlanning_Employee, [User], Roles, User_Role, Levels, Skill, 
-                    Project, ResourcePlanning_Role, Department, Emp_RolePlanning
-                    where ResourcePlanning_Employee.Employee_id = [User].[User_id] and
-
-                    [User].[User_id] = User_Role.[User_id] and
-                    User_Role.Role_id = Roles.Role_id and
-                    [User].Department_id = Department.Department_id and
-
-                    ResourcePlanning_Employee.Level_id = Levels.Level_id AND
-                    Skill.Skill_id = ResourcePlanning_Employee.Skill_id and
-
-                    Project.Project_id = ResourcePlanning_Role.Project_id and
-
-                    ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
-					ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
-                    and Roles.Role_id = 3 and Levels.Level_id =3 and Skill.Skill_id =3
-
-
-					select *
-                    from ResourcePlanning_Role, Roles,Project, Levels,Skill, ResourceRequestRole
-                    where ResourcePlanning_Role.Project_id = Project.Project_id and
-                    Roles.Role_id = ResourcePlanning_Role.Role_id and
-                    ResourcePlanning_Role.Level_id = Levels.Level_id and
-                    ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
-                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+		select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),
+		ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
+        Project.ProjectName, ResourcePlanning_Employee.Date_start, [user].Username,
+        ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name                    
+		from ResourcePlanning_Employee
+		join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
+		join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
+		join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+		join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
+        join Project on Project.Depeartment_id = [User].Department_id 
+		join Department on Department.Department_id = [user].Department_id

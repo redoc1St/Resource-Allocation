@@ -246,34 +246,34 @@ namespace ResourceAllocationBE.Controllers
         //    return new JsonResult("Delete Successfully");
         //}
 
-        //UPDATE STATUS
-        [HttpPut("status/{id}")]
-        public JsonResult updateStatus(ResourcePlanningRole resource, int id)
-        {
-            string query = @"
-                update dbo.ResourcePlanning_Role
-                set  
-                [Status]=@status
-                WHERE id = @id";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@id", id);
-                    myCommand.Parameters.AddWithValue("@status", resource.Status);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+        ////UPDATE STATUS
+        //[HttpPut("status/{id}")]
+        //public JsonResult updateStatus(ResourcePlanningRole resource, int id)
+        //{
+        //    string query = @"
+        //        update dbo.ResourcePlanning_Role
+        //        set  
+        //        [Status]=@status
+        //        WHERE id = @id";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@id", id);
+        //            myCommand.Parameters.AddWithValue("@status", resource.Status);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
 
-                }
-            }
-            return new JsonResult("Update Successfully");
-        }
+        //        }
+        //    }
+        //    return new JsonResult("Update Successfully");
+        //}
         //PAGING 
         [HttpGet("page/{number}")]
 
