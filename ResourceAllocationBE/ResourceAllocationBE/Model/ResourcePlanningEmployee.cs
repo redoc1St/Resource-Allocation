@@ -18,6 +18,7 @@ namespace ResourceAllocationBE.Model
         public int Bill_rate { get; set; }
         public int Level_id { get; set; }
          public int Skill_id { get; set; }
+        public int Project_id { get; set; }
         
     }
 }

@@ -135,10 +135,10 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Effort_billable", project.Effort_billable);
                     myCommand.Parameters.AddWithValue("@Quantity_plan", project.Quantity_plan);
                     myCommand.Parameters.AddWithValue("@Quantity_actual", project.Quantity_actual);
-                    myCommand.Parameters.AddWithValue("@Start_plan", project.Start_plan == null ? "" : project.Start_plan);
-                    myCommand.Parameters.AddWithValue("@Start_actual", project.Start_actual == null ? "" : project.Start_actual);
-                    myCommand.Parameters.AddWithValue("@End_plan", project.End_plan == null ? "" : project.End_plan);
-                    myCommand.Parameters.AddWithValue("@End_actual", project.End_actual == null ? "" : project.End_actual);
+                    myCommand.Parameters.AddWithValue("@Start_plan", project.Start_plan == null ? "GETDATE()" : project.Start_plan);
+                    myCommand.Parameters.AddWithValue("@Start_actual", project.Start_actual == null ? "GETDATE()" : project.Start_actual);
+                    myCommand.Parameters.AddWithValue("@End_plan", project.End_plan == null ? "GETDATE()" : project.End_plan);
+                    myCommand.Parameters.AddWithValue("@End_actual", project.End_actual == null ? "GETDATE()" : project.End_actual);
 
 
                     myReader = myCommand.ExecuteReader();
@@ -183,10 +183,10 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Effort_billable", project.Effort_billable);
                     myCommand.Parameters.AddWithValue("@Quantity_plan", project.Quantity_plan);
                     myCommand.Parameters.AddWithValue("@Quantity_actual", project.Quantity_actual);
-                    myCommand.Parameters.AddWithValue("@Start_plan", project.Start_plan == null ? "" : project.Start_plan);
-                    myCommand.Parameters.AddWithValue("@Start_actual", project.Start_actual == null ? "" : project.Start_actual);
-                    myCommand.Parameters.AddWithValue("@End_plan", project.End_plan == null ? "" : project.End_plan);
-                    myCommand.Parameters.AddWithValue("@End_actual", project.End_actual == null ? "" : project.End_actual);
+                    myCommand.Parameters.AddWithValue("@Start_plan", project.Start_plan == null ? "GETDATE()" : project.Start_plan);
+                    myCommand.Parameters.AddWithValue("@Start_actual", project.Start_actual == null ? "GETDATE()" : project.Start_actual);
+                    myCommand.Parameters.AddWithValue("@End_plan", project.End_plan == null ? "GETDATE()" : project.End_plan);
+                    myCommand.Parameters.AddWithValue("@End_actual", project.End_actual == null ? "GETDATE()" : project.End_actual);
 
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);

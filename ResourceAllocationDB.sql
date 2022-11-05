@@ -118,6 +118,10 @@ Start_actual date,
 End_plan date,
 End_actual date
 )
+
+insert into Project values('AIS_0000','No project',null,'','','','','',
+'','','',''
+)
 if not exists ( select * from Project where Code = 'AIS_0001')
 insert into Project values('AIS_0001','ProjectName1',1,2,5,1,2,2,
 '2022/06/01','2022/06/01','2022/06/10','2022/06/10'
@@ -135,7 +139,9 @@ insert into Project values('AIS_0004','ProjectName4',4,4,3,3,3,3,
 insert into Project values('AIS_0005','ProjectName5',5,2,5,1,2,2,
 '2022/07/01','2022/07/01','2022/07/10','2022/07/10'
 )
-
+insert into Project values('AIS_0006','ProjectName6',1,2,5,1,2,2,
+'2022/07/01','2022/07/01','2022/07/10','2022/07/10'
+)
 
 
 
@@ -195,48 +201,49 @@ Date_end date,
 Effort int, 
 Bill_rate int,
 Level_id int foreign key references Levels(Level_id),
-Skill_id int foreign key references Skill(Skill_id)
+Skill_id int foreign key references Skill(Skill_id),
+project_id int foreign key references Project(project_id)
 )
 
 if not exists ( select * from [ResourcePlanning_Employee] where Employee_id =3 and Role_id = 3 and Level_id =2 and Skill_id =1 )
 insert into ResourcePlanning_Employee values(
-3,3,'2022/06/01','2022/06/10','','',2,1
+3,3,'2022/06/01','2022/06/10','','',2,1,null
 )
 insert into ResourcePlanning_Employee values(
-3,4,'2022/06/01','2022/06/10','','',1,2
+3,4,'2022/06/01','2022/06/10','','',1,2,1
 )
 insert into ResourcePlanning_Employee values(
-4,3,'2022/06/01','2022/06/10','','',3,3
+4,3,'2022/06/01','2022/06/10','','',3,3,2
 )
 insert into ResourcePlanning_Employee values(
-4,4,'2022/06/01','2022/06/10','','',4,4
+4,4,'2022/06/01','2022/06/10','','',4,4,1
 )
 insert into ResourcePlanning_Employee values(
-5,5,'2022/06/01','2022/06/10','','',5,5
+5,5,'2022/06/01','2022/06/10','','',5,5,1
 )
 insert into ResourcePlanning_Employee values(
-6,1,'2022/06/01','2022/06/10','','',3,3
+6,1,'2022/06/01','2022/06/10','','',3,3,2
 )
 insert into ResourcePlanning_Employee values(
-7,3,'2022/06/01','2022/06/10','','',4,2
+7,3,'2022/06/01','2022/06/10','','',4,2,3
 )
 insert into ResourcePlanning_Employee values(
-8,4,'2022/06/01','2022/06/10','','',5,3
+8,4,'2022/06/01','2022/06/10','','',5,3,2
 )
 insert into ResourcePlanning_Employee values(
-8,5,'2022/06/01','2022/06/10','','',4,3
+8,5,'2022/06/01','2022/06/10','','',4,3,2
 )
 insert into ResourcePlanning_Employee values(
-9,6,'2022/06/01','2022/06/10','','',4,4
+9,6,'2022/06/01','2022/06/10','','',4,4,3
 )
 insert into ResourcePlanning_Employee values(
-10,4,'2022/06/01','2022/06/10','','',3,2
+10,4,'2022/06/01','2022/06/10','','',3,2,2
 )
 insert into ResourcePlanning_Employee values(
-11,5,'2022/06/01','2022/06/10','','',5,4
+11,5,'2022/06/01','2022/06/10','','',5,4,2
 )
 insert into ResourcePlanning_Employee values(
-11,6,'2022/06/01','2022/06/10','','',5,3
+11,6,'2022/06/01','2022/06/10','','',5,3,6
 )
 
 -- mix EMP_PLANNING_ROLE
@@ -382,5 +389,5 @@ else select * from Emp_RolePlanning
 		join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
 		join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
 		join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
-        join Project on Project.Depeartment_id = [User].Department_id 
+        left join Project on Project.Project_id = ResourcePlanning_Employee.project_id
 		join Department on Department.Department_id = [user].Department_id

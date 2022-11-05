@@ -35,7 +35,7 @@ namespace ResourceAllocationBE.Controllers
 		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
 		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
 		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
-                    join Project on Project.Depeartment_id = [User].Department_id 
+                    left join Project on Project.Project_id = ResourcePlanning_Employee.project_id
 		            join Department on Department.Department_id = [user].Department_id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -69,7 +69,7 @@ namespace ResourceAllocationBE.Controllers
 		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
 		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
 		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
-                    join Project on Project.Depeartment_id = [User].Department_id 
+                    left join Project on Project.Project_id = ResourcePlanning_Employee.project_id
 		            join Department on Department.Department_id = [user].Department_id
                 and [User].Fullname like @name";
             DataTable table = new DataTable();
@@ -104,7 +104,7 @@ namespace ResourceAllocationBE.Controllers
 		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
 		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
 		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
-                    join Project on Project.Depeartment_id = [User].Department_id 
+                    left join Project on Project.Project_id = ResourcePlanning_Employee.project_id
 		            join Department on Department.Department_id = [user].Department_id
                     and Roles.Role_id = @role and Levels.Level_id =@level and Skill.Skill_id =@skill ";
             DataTable table = new DataTable();
@@ -133,7 +133,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult Post(ResourcePlanningEmployee resource)
         {
             string query = @" if not exists ( select * from [ResourcePlanning_Employee] where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and Employee_id = @Employee_id )
-                insert into [ResourcePlanning_Employee](Employee_id,Role_id,Date_start, Date_end, Effort, Bill_rate,Level_id,Skill_id) 
+                insert into [ResourcePlanning_Employee](Employee_id,Role_id,Date_start, Date_end, Effort, Bill_rate,Level_id,Skill_id, Project_id) 
                 values(@Employee_id
                 ,@Role_id
                 ,@Date_start
@@ -141,7 +141,8 @@ namespace ResourceAllocationBE.Controllers
                 ,@Effort
                 ,@Bill_rate
                 ,@Level_id
-                ,@Skill_id) ";
+                ,@Skill_id,
+@project_id) ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -158,6 +159,7 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
                     myCommand.Parameters.AddWithValue("@Level_id", resource.Level_id);
                     myCommand.Parameters.AddWithValue("@Skill_id", resource.Skill_id);
+                    myCommand.Parameters.AddWithValue("@project_id", resource.Project_id);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
