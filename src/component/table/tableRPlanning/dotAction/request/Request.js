@@ -69,13 +69,7 @@ export default function Request(record) {
           resourceRole_id: record.record.record.id,
         },
       });
-      if (res.data.success) {
-        // moreRow++;
-        // console.log(res.data.success);
-        // console.log(moreRow);
-        // navigate('/')
-      }
-
+console.log('ok');
       message.success({
         content: "Request role planning successfull",
         style: { marginTop: "50px" },
@@ -221,8 +215,8 @@ export default function Request(record) {
                       <input
                         disabled
                         type="number"
-                        max={quantity}
-                        min={1}
+                        // max={quantity}
+                        // min={1}
                         {...register("quantity")}
                       />
                     </td>

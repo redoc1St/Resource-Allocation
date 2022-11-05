@@ -128,9 +128,9 @@ export default function ModalEditPoolEmp(record) {
                       {...register("RoleName")}    
                       >
                         <Select.Option required></Select.Option>
-                        {roles.map((item) => {
+                        {roles.map((item,index) => {
                           return (
-                            <option value={item.RoleName}>
+                            <option value={item.RoleName} key={index}>
                               {item.RoleName}
                             </option>
                           );
@@ -174,9 +174,9 @@ export default function ModalEditPoolEmp(record) {
                         // defaultValue={3}
                       >
                         <Select.Option  required></Select.Option>
-                        {levels.map((item) => {
+                        {levels.map((item,index) => {
                           return (
-                            <option value={item.Level_id}>
+                            <option value={item.Level_id} key={index}>
                               {item.LevelName}
                             </option>
                           );
@@ -230,9 +230,9 @@ export default function ModalEditPoolEmp(record) {
                         required
                       >
                         <Select.Option required></Select.Option>
-                        {skills.map((item) => {
+                        {skills.map((item,index) => {
                           return (
-                            <option value={item.Skill_id}>
+                            <option value={item.Skill_id} key={index}>
                               {item.SkillName}
                             </option>
                           );

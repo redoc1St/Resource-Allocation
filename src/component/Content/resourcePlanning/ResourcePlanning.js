@@ -24,7 +24,6 @@ import styled from "styled-components";
 export default function ResourcePlanning() {
   const { pName } = useParams();
   // console.log(pName);
- 
 
   const projects = useSelector((state) => state.Projects.projects);
   const planningRoles = useSelector((state) => state.PlanningRoles.roles);
@@ -35,12 +34,10 @@ export default function ResourcePlanning() {
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
 
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getRoleByCode(pName));
-   
   }, [pName]);
   useEffect(() => {
     dispatch(getRoles());
@@ -96,7 +93,7 @@ export default function ResourcePlanning() {
 
   if (!pName) {
     return (
-      <ListPane>
+      // <ListPane>
         <Dropdown overlay={menu}>
           <Button
             style={{
@@ -110,7 +107,7 @@ export default function ResourcePlanning() {
             </Space>
           </Button>
         </Dropdown>
-      </ListPane>
+      // </ListPane>
     );
   }
 
@@ -121,7 +118,7 @@ export default function ResourcePlanning() {
   //   // }
   // },[])
   return (
-    <div style={{}}>
+    <div>
       <h3 style={{ fontWeight: "bold", color: "#121843" }}>
         Resource Planning
       </h3>
@@ -144,12 +141,9 @@ export default function ResourcePlanning() {
             margin: "0 30px ",
           }}
         >
-          <p>
             Planned effort
             <br />
             (MM)<p style={{ fontSize: "30px" }}>5</p>
-          </p>
-          <p></p>
         </Card>
         <Card
           style={{
@@ -163,12 +157,9 @@ export default function ResourcePlanning() {
             margin: "0 30px ",
           }}
         >
-          <p>
             Planned effort
             <br />
             (MM)<p style={{ fontSize: "30px" }}>5</p>
-          </p>
-          <p></p>
         </Card>
         <Card
           style={{
@@ -182,12 +173,9 @@ export default function ResourcePlanning() {
             margin: "0 30px ",
           }}
         >
-          <p>
             Planned effort
             <br />
             (MM)<p style={{ fontSize: "30px" }}>5</p>
-          </p>
-          <p></p>
         </Card>
         {/* <Card
           style={{
@@ -203,7 +191,7 @@ export default function ResourcePlanning() {
           <p>Billable effort:</p>
           <p>Actual effort:</p>
         </Card> */}
-        <div style={{ marginLeft: "700px" }}>{/* <BtnViewEmp /> */}</div>
+        {/* <div style={{ marginLeft: "700px" }}><BtnViewEmp /></div> */}
       </div>
 
       <div style={{ marginTop: "5px" }}>
@@ -218,4 +206,4 @@ export default function ResourcePlanning() {
     </div>
   );
 }
-const ListPane = styled.div``;
+// const ListPane = styled.div``;

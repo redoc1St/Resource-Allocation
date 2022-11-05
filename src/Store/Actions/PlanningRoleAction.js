@@ -8,14 +8,17 @@ const projectsApi = process.env.REACT_APP_BASE_URL;
 
 const handleStyleStatus = (status) => {
   if (status === "Approved") {
+    // return 'Approved'
     return <Tag style={{width:'85px',textAlign:'center'}} color="#87d068">Approved</Tag>;
   } else if (status === "Waiting") {
     return <Tag style={{width:'85px',textAlign:'center'}} color="#62B0A8">Waiting</Tag>;
   } else if (status === "In Progress") {
     return <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>;
-  } else if (status === "") {
-  }
-};
+  } else if (status === "Reject") {
+    return <Tag style={{ width: "85px", textAlign: "center" }} color="red">
+      Rejected
+    </Tag>;
+};}
 
 export const getRoleByCode = (code) => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })

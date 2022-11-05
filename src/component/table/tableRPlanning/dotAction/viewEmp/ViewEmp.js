@@ -27,7 +27,8 @@ export default function ViewEmp(data) {
   }, [data?.record?.ProjectName]);
 
   let countEmp = 0;
-  const mergedData = rolesEmp.map((item) => ({
+  const mergedData = rolesEmp.map((item,id) => ({
+    key:id,
     countEmp: (countEmp += 1),
     ...item,
     Role: data?.record?.RoleName,
@@ -119,6 +120,7 @@ export default function ViewEmp(data) {
                 marginBottom: "5px",
                 fontSize: "18px",
               }}
+              disabled
               value={countEmp}
             />
           </h5>

@@ -106,8 +106,10 @@ export default function TableRPool(data) {
     },
   ];
   let countEmp = 0;
-  const modifiedData = emps.map((item) => ({
+  const modifiedData = emps.map((item,index) => ({
     no: (countEmp += 1),
+    key:index,
+
     ...item,
   }));
 

@@ -128,9 +128,11 @@ export default function TableCandidate() {
   //     leader: "QuangDD",
   //   },
   // ];
-
+console.log(users);
   const data = users.map((item) => ({
     no: countId++,
+    key:item.User_id,
+
     ...item,
     isActive:
       item.isActive === true ? (

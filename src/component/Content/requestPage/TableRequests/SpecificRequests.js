@@ -99,7 +99,8 @@ export default function SpecificRequests() {
       ];
       let countReqs = 0;
 
-      const modifiedData = specRequests.map((item)=>({
+      const modifiedData = specRequests.map((item,id)=>({
+        key:id,
         no:(countReqs+=1),...item
       }))
 

@@ -33,7 +33,7 @@ export default function DotAction(record) {
         {
           key: "2",
           // label: <Link to={{pathname:'/resourcePool'}} state={record} >Request</Link>,
-          label:record.record.Status==='Approved' ? null : <Request record={record} />,
+          label:record.record.Status.props.children==='Approved' ? null : <Request record={record} />,
         },
         {
           key: "3",

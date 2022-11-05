@@ -1,5 +1,5 @@
-import { Eventcalendar, getJson } from "@mobiscroll/react";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import { Eventcalendar } from '@mobiscroll/react'; /* or import any other component */
+import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import { Switch, Table } from "antd";
 import "./index.css";
 

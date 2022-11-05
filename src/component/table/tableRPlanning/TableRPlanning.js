@@ -3,6 +3,8 @@ import { Button, DatePicker, Space, version, Form, Input } from "antd";
 import { Table, Dropdown, Progress, Popconfirm, Menu } from "antd";
 import "./tableRPlanning.css";
 import DotAction from "./dotAction/DotAction";
+import { Divider, Tag } from "antd";
+
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 // import { Badge, Dropdown, Menu, Space, Table } from "antd";
@@ -126,13 +128,14 @@ export default function TableResourcePlanning(data) {
   const mergedData2 = mergedData.map((item, index) =>
     index > 0
       ? {
+        key: item.id,
           ...item,
           ActualQuantity: ar[0]++,
           status: item.Status,
 
           action: <DotAction record={item} leader={leader} />,
           employee:
-            item.Status === "Approved" ? (
+            item.Status.props.children ==='Approved' ? (
               <Link to={{ pathname: "/resourcePool" }} state={item}>
                 <PersonAddIcon />
               </Link>

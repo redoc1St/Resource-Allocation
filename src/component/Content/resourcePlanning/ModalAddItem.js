@@ -104,9 +104,9 @@ export default function ModalAddRole(record) {
                         required
                       >
                         <Select.Option required></Select.Option>
-                        {record.roles.map((item) => {
+                        {record.roles.map((item,index) => {
                           return (
-                            <option value={item.Role_id}>
+                            <option value={item.Role_id} key={index}>
                               {item.RoleName}
                             </option>
                           );
@@ -148,9 +148,9 @@ export default function ModalAddRole(record) {
                         required
                       >
                         <Select.Option required></Select.Option>
-                        {record.levels.map((item) => {
+                        {record.levels.map((item,index) => {
                           return (
-                            <option value={item.Level_id}>
+                            <option value={item.Level_id} key={index}>
                               {item.LevelName}
                             </option>
                           );
@@ -201,9 +201,9 @@ export default function ModalAddRole(record) {
                     <td>
                       <select {...register("Skill_id")} required>
                         <Select.Option required></Select.Option>
-                        {record?.skills?.map((item) => {
+                        {record?.skills?.map((item,index) => {
                           return (
-                            <option value={item.Skill_id}>
+                            <option value={item.Skill_id} key={index}>
                               {item.SkillName}
                             </option>
                           );
