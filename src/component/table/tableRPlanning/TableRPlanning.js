@@ -23,7 +23,7 @@ export default function TableResourcePlanning(data) {
   useEffect(() => {
     dispatch(getLeaderByCode(pName));
   }, []);
-
+// console.log(data.bu)
   const columns = [
     {
       title: "Role",
@@ -128,15 +128,18 @@ export default function TableResourcePlanning(data) {
   const mergedData2 = mergedData.map((item, index) =>
     index > 0
       ? {
-        key: item.id,
+          key: item.id,
           ...item,
           ActualQuantity: ar[0]++,
           status: item.Status,
 
           action: <DotAction record={item} leader={leader} />,
           employee:
-            item.Status.props.children ==='Approved' ? (
-              <Link to={{ pathname: "/resourcePool" }} state={item}>
+            item.Status.props.children === "Approved" ? (
+              <Link
+                to={{ pathname: `/resourcePool/${pName}/${item.Role_id}/${item.Level_id}/${ item.Skill_id}` }}
+                state={[item.Role_id, item.Level_id, item.Skill_id,pName,data.bu, item.id]}
+              >
                 <PersonAddIcon />
               </Link>
             ) : (
@@ -150,7 +153,7 @@ export default function TableResourcePlanning(data) {
             data?.planningRoles[data.planningRoles.length - 1]?.totalPQuantity,
         }
   );
-  // console.log(data.planningRoles);
+  console.log(data.planningRoles);
   return (
     <div>
       <Table

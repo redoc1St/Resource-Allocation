@@ -22,18 +22,25 @@ export default function DotAction(record) {
       items={[
         {
           key: "4",
-          label: <ViewEmp {...record}/>,
+          label: <ViewEmp {...record} />,
         },
         {
           key: "1",
           // label: <ModalEditPlan record={record} />,
           label: <ModalEditPlan {...record} />,
-
         },
         {
           key: "2",
           // label: <Link to={{pathname:'/resourcePool'}} state={record} >Request</Link>,
-          label:record.record.Status.props.children==='Approved' ? null : <Request record={record} />,
+          label:
+            record.record.Status.props.children === "Approved" ||
+            record.record.Status.props.children === "Rejected" ||
+            record.record.Status.props.children === "In Progress" 
+             ? (
+              ""
+            ) : (
+              <Request record={record} />
+            ),
         },
         {
           key: "3",

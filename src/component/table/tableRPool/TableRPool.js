@@ -12,14 +12,22 @@ export default function TableRPool(data) {
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
-  console.log(data?.Role_id, data?.Level_id, data?.Skill_id);
+ 
+ 
+  // console.log(data?.Role_id, data?.Level_id, data?.Skill_id);
+  //  console.log(data[4]);   // BU NAME
+  //  console.log(data[5]);   // resourcePlanning_id
+
+   console.log(emps[0]?.Department_id);
   useEffect(() => {
     if (Object.keys(data).length === 0) {
       //check data rỗng
+
       dispatch(getResourcePoolEmp());
     } else {
       dispatch(
-        getResourcePoolEmpByRLK(data?.Role_id, data?.Level_id, data?.Skill_id)
+        // 3 vị trí  0,1,2 tương đương với 3 vị trí role level skill lấy bên tableRPlanning lúc truyền vào state
+        getResourcePoolEmpByRLK(data[0], data[1], data[2])
       );
     }
   }, [data?.Role_id, dispatch]);
@@ -101,14 +109,14 @@ export default function TableRPool(data) {
       fixed: "right",
       width: 70,
       render: (_, record) => {
-        return <DotAction record={record} />;
+        return <DotAction record={record} buProject={data[4]} resourceRole_id={data[5]}/>;
       },
     },
   ];
   let countEmp = 0;
-  const modifiedData = emps.map((item,index) => ({
+  const modifiedData = emps.map((item, index) => ({
     no: (countEmp += 1),
-    key:index,
+    key: item.id,
 
     ...item,
   }));

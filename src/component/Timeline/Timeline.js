@@ -1,11 +1,13 @@
-import { Eventcalendar } from '@mobiscroll/react'; /* or import any other component */
-import '@mobiscroll/react/dist/css/mobiscroll.min.css';
+import { Eventcalendar } from "@mobiscroll/react"; /* or import any other component */
+import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import { Switch, Table } from "antd";
 import "./index.css";
-
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import React, { useEffect, useState } from "react";
 import { getResourcePoolEmp } from "../../Store/Actions/ResourcePoolAction";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import AddToProject from "../table/tableRPool/dotAction/addToProject/AddToProject";
 
 export default function Timeline() {
   //   const [myEvents, setEvents] = React.useState([]);
@@ -167,6 +169,13 @@ export default function Timeline() {
   const renderCustomResource = (resource) => {
     return (
       <div className="md-resource-header-template-cont">
+        <div className="md-resource-header-template-icon">
+          <Link to="">
+          <AddToProject type={'icon'}/>
+            {/* <PersonAddAlt1Icon /> */}
+          </Link>
+        </div>
+
         <div className="md-resource-header-template-name">{resource.name}</div>
         <div className="md-resource-header-template-unit">{resource.unit}</div>
         <div className="md-resource-header-template-role">{resource.role}</div>
@@ -180,6 +189,8 @@ export default function Timeline() {
   const renderCustomHeader = () => {
     return (
       <div className="md-resource-header-template-title">
+        <div className="md-resource-header-template-icon">Action</div>
+
         <div className="md-resource-header-template-name">Employee</div>
         <div className="md-resource-header-template-unit">Unit</div>
         <div className="md-resource-header-template-role">Role</div>
@@ -208,18 +219,17 @@ export default function Timeline() {
         themeVariant="light"
         view={{
           timeline: {
-            type:switchType ?  "month" : "year",
+            type: switchType ? "month" : "year",
             startDay: 1,
             endDay: 5,
             eventList: true,
             weekNumbers: true,
           },
         }}
-       
         data={myEvents}
         resources={myResources}
         renderResource={renderCustomResource}
-        height='550px'
+        height="550px"
         renderResourceHeader={renderCustomHeader}
         cssClass="md-resource-header-template"
       />

@@ -25,12 +25,9 @@ export default function Request(record) {
   const { pName } = useParams();
   const { pQuantity, aQuantity, sDate, eDate } = record.record.record;
   const quantity = parseInt(pQuantity) - parseInt(aQuantity);
-
-
-
   // useEffect(() => {
   // }, [pName]);
-  // console.log(record.record.leader.Username);
+  // console.log(record.record.record);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -44,7 +41,7 @@ export default function Request(record) {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      requestTo:record.record?.leader?.Username,
+      requestTo: record.record?.leader?.Username,
       role: record.record.record.RoleName,
       sd: record.record.record.Date_start,
       pe: record.record.record.Effort_planned,
@@ -61,6 +58,7 @@ export default function Request(record) {
     // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
   const onSubmit = async (values) => {
+    console.log(values);
     try {
       const res = await request({
         url: process.env.REACT_APP_BASE_URL + "/api/Request/RolePlanning",
@@ -69,7 +67,7 @@ export default function Request(record) {
           resourceRole_id: record.record.record.id,
         },
       });
-console.log('ok');
+      // if(res.data)
       message.success({
         content: "Request role planning successfull",
         style: { marginTop: "50px" },
@@ -96,9 +94,8 @@ console.log('ok');
   };
   return (
     <div>
-      <span onClick={showModal}>Request</span>
+      <span onClick={showModal} >Request</span>
       <Modal
-        // style={{color:'#424a80'}}
         width={700}
         title="Create a general request"
         open={isModalOpen}
@@ -106,7 +103,7 @@ console.log('ok');
         footer={null}
         onCancel={handleCancel}
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form  onSubmit={handleSubmit(onSubmit)} >
           <Row>
             <Col span={12}>
               <table>
@@ -114,7 +111,7 @@ console.log('ok');
                   <tr>
                     <th>Request to</th>
                     <td>
-                      <input disabled {...register("requestTo")} />
+                      <input  {...register("requestTo")} />
                       {/* <select {...register("request")} required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="ThaiBA">
@@ -126,7 +123,7 @@ console.log('ok');
                   <tr>
                     <th>Role</th>
                     <td>
-                    <input disabled {...register("role")} />
+                      <input disabled {...register("role")} />
 
                       {/* <select {...register("role")} disabled required>
                         <Select.Option required></Select.Option>
@@ -147,10 +144,8 @@ console.log('ok');
                     <td>
                       <input
                         disabled
-                        type="date"
-                        {...register("sd", {
-                          pattern: /^\d{2}\/\d{2}\/\d{4}$/,
-                        })}
+                        // type="date"
+                        {...register("sd")}
                         // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
                       />
@@ -166,9 +161,8 @@ console.log('ok');
                     <td>
                       <input
                         disabled
-                        type="number"
+                        // type="number"
                         min={0}
-                        value="2"
                         {...register("pe")}
                         // required
                       />
@@ -178,7 +172,7 @@ console.log('ok');
                   <tr>
                     <th>Level</th>
                     <td>
-                    <input disabled {...register("level")} />
+                      <input disabled {...register("level")} />
 
                       {/* <select {...register("level")} disabled required>
                         <Select.Option required></Select.Option>
@@ -214,7 +208,7 @@ console.log('ok');
                     <td>
                       <input
                         disabled
-                        type="number"
+                        // type="number"
                         // max={quantity}
                         // min={1}
                         {...register("quantity")}
@@ -225,13 +219,9 @@ console.log('ok');
                     <th>End date </th>
                     <td>
                       <input
-                        // value={data?.data?.sdp}
-                        // value={eDate}
                         disabled
-                        type="date"
-                        {...register("ed", {
-                          pattern: /^\d{2}\/\d{2}\/\d{4}$/,
-                        })}
+                        // type="date"
+                        {...register("ed")}
                         // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
                       />
@@ -247,7 +237,7 @@ console.log('ok');
                     <td>
                       <input
                         disabled
-                        type="number"
+                        // type="number"
                         min={0}
                         {...register("pBill")}
                         // placeholder="0"
@@ -259,7 +249,7 @@ console.log('ok');
                   <tr>
                     <th>Skill</th>
                     <td>
-                    <input disabled {...register("skill")} />
+                      <input disabled {...register("skill")} />
 
                       {/* <select {...register("skill")} required disabled>
                         <Select.Option required></Select.Option>

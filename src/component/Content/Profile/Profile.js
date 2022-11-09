@@ -13,8 +13,8 @@ export default function Profile() {
   const showButton = () => {
     if (!editButton) {
       return (
-        <div class="col-sm-12">
-          <button class="btn btn-info " href="#" onClick={changeStatus}>
+        <div className="col-sm-12">
+          <button className="btn btn-info " href="#" onClick={changeStatus}>
             Edit
           </button>
         </div>

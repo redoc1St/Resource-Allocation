@@ -13,6 +13,7 @@ export default function RequestPage() {
     setValue(e);
     
   };
+  // console.log(...location);
   const showTable =()=>{
     if(value==='gr'){
       return <GeneralRequests/>

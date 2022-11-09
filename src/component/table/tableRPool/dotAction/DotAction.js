@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Dropdown,
@@ -14,24 +14,33 @@ import { Link, Navigate, Route } from "react-router-dom";
 import ModalEditEmp from "./edit/ModalEditEmp";
 import AddToProject from "./addToProject/AddToProject";
 import ModalEditPoolEmp from "./edit/ModalEditEmp";
+import { useDispatch, useSelector } from "react-redux";
+import { getPNameByRLS } from "../../../../Store/Actions/ExtraObjectActions";
 
 export default function DotAction(record) {
+  const dispatch = useDispatch();
 
+  // const PNames = useSelector((state) => state.ExtraObject.pName);
+  // // console.log(record.record);
+  // useEffect(() => {
+  //   dispatch(getPNameByRLS(record?.record?.Role_id, record?.record?.level_id, record?.record?.skill_id));
+  // }, []);
+  // console.log(PNames);
   const menu = (
     <Menu
       items={[
         {
           key: "1",
-          label: <ModalEditPoolEmp {...record}/>
+          label: <ModalEditPoolEmp {...record} />,
         },
         {
           key: "2",
-          label:"Add item",
+          label: "Add item",
           // label: <Link onClick={handleRequest}>Request</Link>,
         },
         {
           key: "3",
-          label: <AddToProject /> ,
+          label: <AddToProject {...record} />,
         },
         // {
         //   key: "4",
@@ -52,6 +61,7 @@ export default function DotAction(record) {
               alignItems: "center",
             }}
           >
+          
             ...
           </a>
         </Dropdown>

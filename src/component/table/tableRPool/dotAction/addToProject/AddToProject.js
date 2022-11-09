@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -6,18 +6,62 @@ import {
   Form,
   Input,
   InputNumber,
+  message,
   Row,
   Select,
 } from "antd";
 import { Modal, Table } from "antd";
 import { useForm } from "react-hook-form";
 import "./index.css";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getIdRoleByCodeRLS,
+  getPNameByRLS,
+} from "../../../../../Store/Actions/ExtraObjectActions";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-export default function AddToProject() {
+export default function AddToProject(type) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { r, l, s } = useParams();
+  // console.log(r,l,s);
+  const PNames = useSelector((state) => state.ExtraObject.pName);
+  const IdPLanningRole = useSelector((state) => state.ExtraObject.id);
+
+  useEffect(() => {
+    // console.log(PNames);
+    // console.log(type?.record.Role_id);
+    // console.log(type?.record.level_id);
+    // console.log(type?.record.skill_id);
+    if ((r, l, s)) {
+      dispatch(getPNameByRLS(r, l, s));
+    } else {
+      type?.record?.skill_id
+        ? dispatch(
+            getPNameByRLS(
+              type?.record?.Role_id,
+              type?.record?.level_id,
+              type?.record?.skill_id
+            )
+          )
+        : console.log("hello");
+
+      // console.log(PNames)
+    }
+  }, [
+    isModalOpen,
+    // type?.record?.Role_id,
+    // type?.record?.level_id,
+    // type?.record?.skill_id,
+  ]);
+  // console.log(PNames[0]?.ProjectName);
+  // console.log("id"+type);
 
   const showModal = () => {
     // console.log(record.record.record.role)
+
     setIsModalOpen(true);
   };
   const handleCancel = () => {
@@ -30,20 +74,138 @@ export default function AddToProject() {
     handleSubmit,
   } = useForm({
     defaultValues: {
+      // pName:
       //   pId: data?.data?.pId,
       //   sdp: data?.data?.sdp,
       //   unit: data?.data?.unit,
     },
     // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
-
   const onSubmit = async (values) => {
     // const{pId,unit, pName}= values;
-    console.log(values);
+    console.log(values.pName.split(",")[0]);
     // console.log(dataProject);
     // setDataProject([...dataProject, values])
-    setIsModalOpen(false);
+    //check nếu mà cùng bu thì add trực tiếp k cần thêm vào request, còn k cùng bu thì add vào request
 
+    if (type.buProject) {
+      if (type?.buProject === type?.record?.Department_id) {
+        try {
+          console.log("hello");
+          const res = await axios({
+            url:
+              process.env.REACT_APP_BASE_URL + "/api/Request/EmpToRoleDirect",
+            method: "POST",
+            data: {
+              resourceRole_id: type?.resourceRole_id,
+              employee_id: type?.record?.id,
+            },
+          });
+          // if(res.data)
+          message.success({
+            content: "Request employee successfull",
+            style: { marginTop: "50px" },
+          });
+          // dispatch(getRoleByCode());
+
+          setIsModalOpen(false);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        //k cos truoc khác bu
+        try {
+          console.log("hello2");
+          const res = await axios({
+            url: process.env.REACT_APP_BASE_URL + "/api/Request/EmpToRole",
+            method: "POST",
+            data: {
+              resourceRole_id: type?.resourceRole_id,
+              employee_id: type?.record?.id,
+            },
+          });
+          // if(res.data)
+          message.success({
+            content: "Request employee successfull",
+            style: { marginTop: "50px" },
+          });
+          // dispatch(getRoleByCode());
+
+          setIsModalOpen(false);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    } else {
+      // console.log(values.pName.split(",")[1],
+      // type?.record?.Role_id,
+      // type?.record?.level_id,
+      // type?.record?.skill_id);
+      
+//cùng bu khi không theo luồng project
+      
+      dispatch(
+        getIdRoleByCodeRLS(
+          values.pName.split(",")[1], //[1] la code truyền từ value
+          type?.record?.Role_id,
+          type?.record?.level_id,
+          type?.record?.skill_id
+        )
+      );
+      console.log(IdPLanningRole);
+      if (values.pName.split(",")[0] == type?.record?.Department_id) {   //[0] laf buId, lấy từ value truyền từ pName dưới
+        try {
+          console.log("hello");
+          const res = await axios({
+            url:
+              process.env.REACT_APP_BASE_URL + "/api/Request/EmpToRoleDirect",
+            method: "POST",
+            data: {
+              resourceRole_id: IdPLanningRole?.id,
+              employee_id: type?.record?.id,
+            },
+          });
+          // if(res.data)
+          message.success({
+            content: "Request employee direct successfull",
+            style: { marginTop: "50px" },
+          });
+          // dispatch(getRoleByCode());
+
+          setIsModalOpen(false);
+        } catch (err) {
+          console.log(err);
+        }
+      }else{
+        try {
+//khác bu khi không theo luồng project
+          const res = await axios({
+            url: process.env.REACT_APP_BASE_URL + "/api/Request/EmpToRole",
+            method: "POST",
+            data: {
+              resourceRole_id: IdPLanningRole?.id,
+              employee_id: type?.record?.id,
+            },
+          });
+          // if(res.data)
+          message.success({
+            content: "Request employee indirect successfull",
+            style: { marginTop: "50px" },
+          });
+          // dispatch(getRoleByCode());
+
+          setIsModalOpen(false);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+
+    // if (type?.buProject === type?.record?.Department_id) {
+    //   console.log("bang nhau");
+    // } else {
+    //   console.log("ko bang nhau");
+    // }
     // const { username, password } = values;
     // try {
     //   /// axios
@@ -55,9 +217,23 @@ export default function AddToProject() {
     // }
   };
 
+  const showIconOrSpan = () => {
+    if (type.type === "icon") {
+      return <PersonAddAlt1Icon onClick={showModal} />;
+    } else {
+      return <span onClick={showModal}>Add to project</span>;
+    }
+  };
+
+  const listPName = () => {
+    return PNames.map((item) => {
+      <option>123456</option>;
+    });
+  };
+
   return (
     <div>
-      <span onClick={showModal}>Add to project</span>,
+      {showIconOrSpan()}
       <div>
         <Modal
           width={350}
@@ -77,10 +253,17 @@ export default function AddToProject() {
                   <th>Project</th>
                   <td>
                     <select {...register("pName")} required>
-                      <Select.Option required></Select.Option>
-                      <option defaultValue value="prj1">
-                        Project Name 1
-                      </option>
+                      {/* <Select.Option required></Select.Option> */}
+                      {/* {listPName} */}
+                      {/* <option>{PNames[0]?.ProjectName}</option> */}
+
+                      {PNames.map((item, index) => {
+                        return (
+                          <option key={index} value={[item.Depeartment_id,item.Code]}>
+                            {item.Code}
+                          </option>
+                        );
+                      })}
                     </select>
                   </td>
                 </tr>
@@ -137,13 +320,13 @@ export default function AddToProject() {
                     </select>
                   </td>
                 </tr> */}
-                
+
                 <tr>
                   <th>% Effort</th>
                   <td>
                     <input
-                    style={{width:'70px'}}
-                    // width={20}
+                      style={{ width: "70px" }}
+                      // width={20}
                       type="number"
                       min={0}
                       max={100}
@@ -151,13 +334,12 @@ export default function AddToProject() {
                       required
                     />
                   </td>
-                  </tr>
-                  <tr>
+                </tr>
+                <tr>
                   <th>% Bill</th>
                   <td>
                     <input
-                    style={{width:'70px'}}
-
+                      style={{ width: "70px" }}
                       type="number"
                       min={0}
                       max={100}
@@ -170,10 +352,11 @@ export default function AddToProject() {
             </table>
             <div style={{ display: "flex" }}>
               <button
-                style={{ marginLeft: "100px", 
-                marginTop: "30px",
-                backgroundColor:'#2a5bbb',
-                color:'white'
+                style={{
+                  marginLeft: "100px",
+                  marginTop: "30px",
+                  backgroundColor: "#2a5bbb",
+                  color: "white",
                 }}
                 type="submit"
               >
@@ -182,13 +365,14 @@ export default function AddToProject() {
 
               <button
                 style={{
-                  backgroundColor:'white',
-                color:'#909090',
+                  backgroundColor: "white",
+                  color: "#909090",
                   border: "1px solid",
                   marginLeft: "50px",
                   marginTop: "30px",
                 }}
                 onClick={handleCancel}
+                type="button"
               >
                 Cancel
               </button>

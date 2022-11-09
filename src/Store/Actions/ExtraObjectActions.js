@@ -6,6 +6,8 @@ import {
   GET_LEVELS,
   GET_ROLES,
   GET_SKILLS,
+  GET_PNAME_BY_RLS,
+  GET_IDROLE_BY_CODERLS
 } from "../types";
 const projectsApi = process.env.REACT_APP_BASE_URL;
 
@@ -66,6 +68,33 @@ export const getLeaderByCode = (code) => async (dispatch) => {
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_LEADER_BY_CODE, payload: leader[0] });
+    })
+    .catch((err) => console.log("Get role error", err));
+};
+
+
+export const getPNameByRLS = (role,level,skill) => async (dispatch) => {
+  await axios
+    .get(projectsApi + `/api/getPnameByRLS/${role}/${level}/${skill}`)
+    .then((res) => {
+      const projectName = res.data.map((item) => ({
+        ...item,
+      }));
+      // dispatch({ type: SET_LOADING, payload: false })
+      dispatch({ type: GET_PNAME_BY_RLS, payload: projectName });
+    })
+    .catch((err) => console.log("Get role error", err));
+};
+
+export const getIdRoleByCodeRLS = (code,role,level,skill) => async (dispatch) => {
+  await axios
+    .get(projectsApi + `/api/getPnameByRLS/${code}/${role}/${level}/${skill}`)
+    .then((res) => {
+      const id = res.data.map((item) => ({
+        ...item,
+      }));
+      // dispatch({ type: SET_LOADING, payload: false })
+      dispatch({ type: GET_IDROLE_BY_CODERLS, payload: id[0] });
     })
     .catch((err) => console.log("Get role error", err));
 };

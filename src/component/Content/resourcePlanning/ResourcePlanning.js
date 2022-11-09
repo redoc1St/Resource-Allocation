@@ -23,12 +23,13 @@ import { useState } from "react";
 import styled from "styled-components";
 export default function ResourcePlanning() {
   const { pName } = useParams();
-  // console.log(pName);
 
   const projects = useSelector((state) => state.Projects.projects);
   const planningRoles = useSelector((state) => state.PlanningRoles.roles);
   const [getPId, setPID] = useState();
   const [getPName, setPName] = useState();
+  const [getBU, setBU] = useState();
+
 
   const roles = useSelector((state) => state.ExtraObject.roles);
   const levels = useSelector((state) => state.ExtraObject.levels);
@@ -48,17 +49,20 @@ export default function ResourcePlanning() {
       .get(process.env.REACT_APP_BASE_URL + `/api/${pName}`)
       .then(function (response) {
         // handle success
-        // console.log();
+        // console.log(response.data[0].Depeartment_id);
         setPID(response.data[0].Project_id);
         setPName(response.data[0].ProjectName);
+        setBU(response.data[0].Depeartment_id);
       })
       .catch(function (error) {
         // handle error
         console.log(error);
       });
   }, [pName]);
+// console.log(getBU);
 
   const menu = (
+    
     <Menu
       items={projects.map((item) => ({
         key: item.id,
@@ -70,6 +74,7 @@ export default function ResourcePlanning() {
         ),
       }))}
     />
+    
   );
   /////////////////
   // const menu = (
@@ -195,7 +200,7 @@ export default function ResourcePlanning() {
       </div>
 
       <div style={{ marginTop: "5px" }}>
-        <TableResourcePlanning planningRoles={planningRoles} />
+        <TableResourcePlanning planningRoles={planningRoles} bu={getBU} />
         <ModalAddRole
           roles={roles}
           skills={skills}

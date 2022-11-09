@@ -162,6 +162,11 @@ function App() {
                     path="/resourcePool"
                     element={<ResourcePool />}
                   />
+                   <Route
+                    exact
+                    path="/resourcePool/:code/:r/:l/:s"
+                    element={<ResourcePool />}
+                  />
                   <Route exact path="/requests" element={<RequestPage />} />
                   <Route exact path="/profile" element={<Profile />} />
                 </Route>

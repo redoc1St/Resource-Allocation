@@ -10,7 +10,7 @@ import ViewByChart from "./viewByChart/ViewByChart";
 export default function ResourcePool(record) {
   const location = useLocation();
   const [value, setValue] = useState("list");
-  // console.log('33',location?.state?.LevelName);
+  console.log('33',location?.state);
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
