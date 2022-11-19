@@ -189,17 +189,17 @@ namespace ResourceAllocationBE.Controllers
         }
 
 
-        //UPDATE INTO DB
+        //UPDATE INFOR USER INTO DB
         [HttpPut("{id}")]
         public JsonResult Put(User user, int id)
         {
             string query = @"update dbo.[User]
         set [Username] = @Username, [Password]= @Password, 
-[Fullname] = @Fullname, [Email] = @Email,
-[Address]=@Address, [UserType]=@UserType, 
-[isActive]=@isActive, [BirthDay]=@BirthDay, 
-[Start_Day]=@Start_Day, [Department_id]=@Department_id
-WHERE [User_id] = @id";
+        [Fullname] = @Fullname, [Email] = @Email,
+        [Address]=@Address, [UserType]=@UserType, 
+        [isActive]=@isActive, [BirthDay]=@BirthDay, 
+        [Start_Day]=@Start_Day, [Department_id]=@Department_id
+        WHERE [User_id] = @id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -230,7 +230,7 @@ WHERE [User_id] = @id";
             return new JsonResult("Update Successfully");
         }
 
-
+       
         //Get Detail user
         [HttpGet("getuser")]
         public JsonResult GetDetail()
@@ -254,6 +254,32 @@ WHERE [User_id] = @id";
                 }
             }
             return new JsonResult(table);
+        }
+
+        //CHANGE PASSWORD 
+        [HttpPut("changePass/{id}")]
+        public JsonResult changePass(User user, int id)
+        {
+            string query = @"update dbo.[User]
+        set [Password]= @Password
+        WHERE [User_id] = @id";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@id", id);
+                    myCommand.Parameters.AddWithValue("@Password", user.Password);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Update Successfully");
         }
     }
 }

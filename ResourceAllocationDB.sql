@@ -292,7 +292,8 @@ insert into ResourceRequestEmployee values(
 
 create table Notifications (
 user_id int foreign key references [User]([User_id]),
-
+content nvarchar(200),
+noti_time datetime
 )
 
 

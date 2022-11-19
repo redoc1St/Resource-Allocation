@@ -78,52 +78,52 @@ namespace ResourceAllocationBE.Controllers
         }
 
         //APPROVE ROLE TO PROJECT
-        [HttpPost("RolePlanning/approved")]
-        public JsonResult approvedRequestRoleToProject(RequestModel request)
-        {
-            string query = @"
-            update ResourcePlanning_Role set [status] = 'Approved' where id =@rid";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("APPROVED Successfully");
-        }
+        //[HttpPost("RolePlanning/approved")]
+        //public JsonResult approvedRequestRoleToProject(RequestModel request)
+        //{
+        //    string query = @"
+        //    update ResourcePlanning_Role set [status] = 'Approved' where id =@rid";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
+        //        }
+        //    }
+        //    return new JsonResult("APPROVED Successfully");
+        //}
 
-        // REJECT ROLE TO PROJECT 
-        [HttpPost("RolePlanning/reject")]
-        public JsonResult rejectdRequestRoleToProject(RequestModel request)
-        {
-            string query = @"
-            update ResourcePlanning_Role set [status] = 'Reject' where id =@rid";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("APPROVED Successfully");
-        }
+        //// REJECT ROLE TO PROJECT 
+        //[HttpPost("RolePlanning/reject")]
+        //public JsonResult rejectdRequestRoleToProject(RequestModel request)
+        //{
+        //    string query = @"
+        //    update ResourcePlanning_Role set [status] = 'Reject' where id =@rid";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
+        //        }
+        //    }
+        //    return new JsonResult("APPROVED Successfully");
+        //}
 
 
         // APPROVED AND REJECT  ROLE TO PROJECT 
@@ -131,7 +131,9 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult statusRequestRoleToProject(RequestModel request, string status)
         {
             string query = @"
-            update ResourcePlanning_Role set [status] = @status where id =@rid";
+            update ResourcePlanning_Role set [status] = @status where id =@rid
+            insert into Notifications values (12, 'De nghi Role cua ban da duoc @status', GETDATE())
+            ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -148,7 +150,7 @@ namespace ResourceAllocationBE.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("APPROVED Successfully");
+            return new JsonResult(" Successfully");
         }
         // Request to ResourceRole Planning (Not Existed in Project)
 
@@ -215,7 +217,8 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
             insert into Emp_RolePlanning values(@rid,@eid)
-            update ResourceRequestEmployee set [status] = @status where ResourcePlannig_RoleId =@rid and Employee_id = @eid";
+            update ResourceRequestEmployee set [status] = @status where ResourcePlannig_RoleId =@rid and Employee_id = @eid
+             insert into Notifications values (12, 'De nghi Employee cua ban da duoc @status', GETDATE())";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -233,7 +236,7 @@ namespace ResourceAllocationBE.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("APPROVED Successfully");
+            return new JsonResult(" Successfully");
         }
 
 
@@ -266,7 +269,7 @@ namespace ResourceAllocationBE.Controllers
         }
 
 
-        // SHOW ALL EMPLOYEE REQEUST  (chua xong) 
+        // SHOW ALL EMPLOYEE REQEUST  
         [HttpGet("Employee")]
         public JsonResult getListRequestEmp()
         {

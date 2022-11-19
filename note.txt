@@ -180,3 +180,8 @@ SELECT *
 
 // 19/11  7:28
 database them table Notifications 
+- thay doi password Usercontroller 
+- Thêm notificationController
+- notification sau khi approve hoặc reject trong statusRequestRoleToProject vaf statusRequestEmp  gửi thông báo tới admin
+
+- comment dong 80 - 127 REQUESTCONTROLLER
