@@ -29,7 +29,8 @@ namespace ResourceAllocationBE.Controllers
             string query = @"
                     select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id), ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, ResourcePlanning_Employee.Date_start, [user].Username,
-                    ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
+                    ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name,
+                    skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id 
                     from ResourcePlanning_Employee
 		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
 		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
@@ -98,7 +99,8 @@ namespace ResourceAllocationBE.Controllers
             string query = @"
                      select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, ResourcePlanning_Employee.Date_start, [User].[Username],
-                    ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name
+                    ResourcePlanning_Employee.Date_end, Effort,ResourcePlanning_Employee.Bill_rate, Department.Department_name,
+                    skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id 
                     from ResourcePlanning_Employee
 		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
 		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 

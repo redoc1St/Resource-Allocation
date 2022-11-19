@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ResourceAllocationBE.Controllers
@@ -230,12 +231,13 @@ WHERE [User_id] = @id";
         }
 
 
-        //Get Detail PROJECT
-        [HttpGet("{id}")]
-        public JsonResult GetDetail(string id)
+        //Get Detail user
+        [HttpGet("getuser")]
+        public JsonResult GetDetail()
         {
-            string query = @"select *  from [User] where [User_id] =@Uid";
+            string query = @"select *  from [User] where [email] =@Uid";
             DataTable table = new DataTable();
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
@@ -243,7 +245,7 @@ WHERE [User_id] = @id";
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@Uid", id);
+                    myCommand.Parameters.AddWithValue("@Uid", userId);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

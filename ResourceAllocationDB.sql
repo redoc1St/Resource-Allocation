@@ -60,7 +60,7 @@ Start_Day date,
 Department_id int foreign key references Department(Department_id)
 )
 insert into [User] values('admin2022','123456a','Ad Van Min','admin2022@gmail.com','Ha Noi'
-,'admin','1','1985/05/05','2020/01/01','')
+,'admin','1','1985/05/05','2020/01/01',null)
 insert into [User] values('quangdd2000','123@123a','Do Duc Quang','quangdd123@gmail.com','Ha Noi'
 ,'leader','1','2000/12/14','2022/01/01',1)
 insert into [User] values('tungct2000','123@123a','Chu Trieu Tung','tungct2022@gmail.com','Ha Noi'
@@ -290,7 +290,10 @@ lastestTime datetime
 insert into ResourceRequestEmployee values(
 8,11,2,'','waiting', GETDATE())
 
+create table Notifications (
+user_id int foreign key references [User]([User_id]),
 
+)
 
 
 
@@ -306,30 +309,7 @@ insert into ResourceRequestEmployee values(
 go
 
 
---select RESOURCEPOOL by projectname and role
-SELECT [User].Fullname, 
-Roles.RoleName, 
-ResourcePlanning_Role.Date_start, 
-ResourcePlanning_Role.Date_end, 
-ResourcePlanning_Role.Effort_planned, 
-ResourcePlanning_Role.Bill_rate, 
-Levels.LevelName, 
-Skill.SkillName
-               
-FROM Project, ResourcePlanning_Role, [USER], Roles, 
-Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
-                
-WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
-                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
-				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
-				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
-                Roles.Role_id = ResourcePlanning_Role.Role_id AND
-                Levels.Level_id = ResourcePlanning_Role.Level_id AND
-                Skill.Skill_id = ResourcePlanning_Role.Skill_id
-                and ProjectName ='ProjectName1' AND Roles.RoleName = 'ba'
 
-
---
 --LIST RESOURCE POOL - OK NEW 
 select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),
 		ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
@@ -391,3 +371,23 @@ else select * from Emp_RolePlanning
 		join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
         left join Project on Project.Project_id = ResourcePlanning_Employee.project_id
 		join Department on Department.Department_id = [user].Department_id
+
+
+
+		select * from ResourcePlanning_Role
+		select ResourcePlanning_Role.id, ProjectName, RoleName, SkillName, LevelName from ResourcePlanning_Role
+		join Project on Project.Project_id = ResourcePlanning_Role.project_id
+		join Skill on Skill.Skill_id = ResourcePlanning_Role.Skill_id
+		join Levels on Levels.Level_id = ResourcePlanning_Role.Level_id
+		join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
+		where roles.Role_id=3 and Levels.Level_id= 5 and Skill.Skill_id=2
+
+	if not exists 
+	(select Project.Depeartment_id as [Project Department], [user].Department_id as [user_department], * from ResourcePlanning_Employee
+	join Project on Project.Project_id = ResourcePlanning_Employee.project_id
+	join [User] on [user].User_id = ResourcePlanning_Employee.Employee_id
+	)
+
+
+
+		

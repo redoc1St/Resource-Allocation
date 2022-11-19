@@ -154,7 +154,7 @@ namespace ResourceAllocationBE.Controllers
 
         // SHOW REQUEST BY BU (Leader Project can see)
 
-        // REQUEST EMPLOYEE TO ROLE PLANNING (KHAC BU)(Existed and Approved in Project) (CHUA XONG)
+        // REQUEST EMPLOYEE TO ROLE PLANNING (KHAC BU)(Existed and Approved in Project) 
         [HttpPost("EmpToRole")]
         public JsonResult requestEmployeeToRolePlanning(RequestModel request)
         {
@@ -162,7 +162,7 @@ namespace ResourceAllocationBE.Controllers
             //and not exists(select * from Emp_RolePlanning where ResourcePlannig_RoleId = 5 and Employee_id = 2)
             string query = @"
             insert into ResourceRequestEmployee values(
-            @rid,@eid,2,'','waiting',GETDATE())
+            @rid,@eid,2,'','In Progress',GETDATE())
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -184,30 +184,30 @@ namespace ResourceAllocationBE.Controllers
         }
 
         //APPROVED REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
-        [HttpPost("EmpToRole/approved")]
-        public JsonResult approvedRequestEmp(RequestModel request)
-        {
-            string query = @"
-            insert into Emp_RolePlanning values(@rid,@eid)
-            update ResourceRequestEmployee set [status] = 'Approved' where ResourcePlannig_RoleId =@rid and Employee_id = @eid";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
-                    myCommand.Parameters.AddWithValue("@eid", request.employee_id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("APPROVED Successfully");
-        }
+        //[HttpPost("EmpToRole/approved")]
+        //public JsonResult approvedRequestEmp(RequestModel request)
+        //{
+        //    string query = @"
+        //    insert into Emp_RolePlanning values(@rid,@eid)
+        //    update ResourceRequestEmployee set [status] = 'Approved' where ResourcePlannig_RoleId =@rid and Employee_id = @eid";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+        //            myCommand.Parameters.AddWithValue("@eid", request.employee_id);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
+        //        }
+        //    }
+        //    return new JsonResult("APPROVED Successfully");
+        //}
 
         //APPROVED / REJECT REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
         [HttpPost("EmpToRole/{status}")]
@@ -235,7 +235,36 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("APPROVED Successfully");
         }
-        // REQUEST EMPLOYEE TO ROLE PLANNING (cung BU)
+
+
+        // REQUEST truc tiep  EMPLOYEE TO ROLE PLANNING (cung BU)
+        [HttpPost("EmpToRoleDirect")]
+        public JsonResult requestDirectEmployeeToRolePlanning(RequestModel request)
+        {
+            //if not exists(select * from[ResourceRequestEmployee] where ResourcePlannig_RoleId = @rid and Employee_id = @eid)
+            //and not exists(select * from Emp_RolePlanning where ResourcePlannig_RoleId = 5 and Employee_id = 2)
+            string query = @"
+             insert into Emp_RolePlanning values(@rid,@eid)
+                ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@eid", request.employee_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Added Successfully");
+        }
+
 
         // SHOW ALL EMPLOYEE REQEUST  (chua xong) 
         [HttpGet("Employee")]
@@ -248,7 +277,8 @@ namespace ResourceAllocationBE.Controllers
                     join [User] on [user].[User_id] = ResourcePlanning_Employee.Employee_id
                     join Roles on ResourcePlanning_Employee.Role_id = Roles.Role_id
                     join Department on Department.Department_id = [user].Department_id
-                    join Project on Project.Depeartment_id = Department.Department_id
+                    join Project on Project.project_id = ResourcePlanning_Employee.[project_id]
+                    join skill on skill.skill_id=resourceplanning_employee.skill_id
   ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
