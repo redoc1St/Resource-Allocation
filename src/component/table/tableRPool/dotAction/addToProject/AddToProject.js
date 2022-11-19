@@ -65,13 +65,13 @@ export default function AddToProject(type) {
     // type?.record?.skill_id,
   ]);
   useEffect(() => {
-    dispatch(
-      getPNameByRLS(
-        type?.record?.Role_id,
-        type?.record?.level_id,
-        type?.record?.skill_id
-      )
-    )
+    // dispatch(
+    //   getPNameByRLS(
+    //     type?.record?.Role_id,
+    //     type?.record?.level_id,
+    //     type?.record?.skill_id
+    //   )
+    // )
     if (codeProject) {
       dispatch(
         getIdRoleByCodeRLS(
