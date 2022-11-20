@@ -1,20 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ScrollBar from "react-perfect-scrollbar";
 import styled from "styled-components";
+import useAuth from "../../hooks/useAuth";
 
 import "./index.css";
 export default function Profile() {
   const [editButton, setEditButton] = useState(false);
   const [showChangePass, setShowChangePass] = useState(false);
+  const { logout,user,verifyUserInfo } = useAuth();
+
   const changeStatus = (e) => {
     setEditButton(!editButton);
     e.preventDefault();
+  };
+  useEffect(() => {
+    verifyUserInfo();
+  }, []);
+  const onClickLogOut = () => {
+    // setAccount(false);
+    logout()
+    // Navigate("/login");
   };
   const showButton = () => {
     if (!editButton) {
       return (
         <div className="col-sm-12">
-          <button className="btn btn-info " href="#" onClick={changeStatus}>
+          <button className="btn btn-info "  onClick={changeStatus}>
             Edit
           </button>
         </div>
@@ -42,43 +53,69 @@ export default function Profile() {
     if (showChangePass === true) {
       return (
         <>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <label>
-                  Confirm <span className="d-none d-xl-inline">Password</span>
-                </label>
-                <input
-                  className="form-control"
-                  type="password"
-                  placeholder="••••••"
-                />
+          <div className="card border-info  mb-3 mt-2" style={{width:'500px',margin:'left'}}>
+            {" "}
+            {/* mb marginbot mt margin top */}
+            <div className="card-header" style={{textAlign:'center',fontWeight:'bold'}}>Change Password</div>
+            <form>
+              <div className="card-body text-secondary">
+              <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label>Current Password</label>
+                      <input
+                        className="form-control"
+                        type="password"
+                        placeholder="••••••"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label>
+                        Confirm{" "}
+                        <span className="d-none d-xl-inline">Password</span>
+                      </label>
+                      <input
+                        className="form-control"
+                        type="password"
+                        placeholder="••••••"
+                      />
+                    </div>
+                  </div>
+                </div>
+               
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label>New Password</label>
+                      <input
+                        className="form-control"
+                        type="password"
+                        placeholder="••••••"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="form-group" style={{marginTop:'15px'}}>
+                  <button
+                    type="reset"
+                    onClick={() =>
+                      this.props.getNewUser(
+                        this.state.name,
+                        this.state.tel,
+                        this.state.permission
+                      )
+                    }
+                    className="btn btn-block btn-warning "
+                  >
+                    Change
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <label>Current Password</label>
-                <input
-                  className="form-control"
-                  type="password"
-                  placeholder="••••••"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <label>New Password</label>
-                <input
-                  className="form-control"
-                  type="password"
-                  placeholder="••••••"
-                />
-              </div>
-            </div>
+            </form>
           </div>
         </>
       );
@@ -131,9 +168,9 @@ export default function Profile() {
                           <div className="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                             <div className="text-center text-sm-left mb-2 mb-sm-0">
                               <h4 className="pt-sm-2 pb-1 mb-0 text-nowrap">
-                                Duc Quang
+                                {user?.Fullname}
                               </h4>
-                              <p className="mb-0">@johnny.s</p>
+                              <p className="mb-0">{user?.Email}</p>
                               <div className="text-muted">
                                 <small>Last seen 2 hours ago</small>
                               </div>
@@ -148,18 +185,18 @@ export default function Profile() {
                               </div>
                             </div>
                             <div className="text-center text-sm-right">
-                              <span className="badge badge-secondary">
-                                administrator
+                              <span className=" text-secondary">
+                                {user?.UserType}
                               </span>
                               <div className="text-muted">
-                                <small>Joined 14 Dec 2000</small>
+                                <small>{user?.Start_Day}</small>
                               </div>
                             </div>
                           </div>
                         </div>
                         <ul className="nav nav-tabs">
                           <li className="nav-item">
-                            <a href className="active nav-link">
+                            <a  className="active nav-link">
                               Settings
                             </a>
                           </li>
@@ -176,7 +213,7 @@ export default function Profile() {
                                         <input
                                           className="form-control"
                                           type="text"
-                                          value="Duc Quang"
+                                          value={user?.Fullname || ""}
                                           disabled={!editButton}
                                         />
                                       </div>
@@ -192,6 +229,7 @@ export default function Profile() {
                                           className="form-control" disabled
                                         />} */}
                                         <input
+                                          value={user?.Username||""}
                                           type="text"
                                           className="form-control"
                                           disabled={!editButton}
@@ -202,15 +240,42 @@ export default function Profile() {
                                   <div className="row">
                                     <div className="col">
                                       <div className="form-group">
-                                        <label>Email</label>
+                                        <label>Address</label>
                                         <input
                                           className="form-control"
                                           type="text"
-                                          placeholder="user@example.com"
+                                          value={user?.Address||""}
+                                          disabled={!editButton}
                                         />
                                       </div>
                                     </div>
+                                    {/* <div className="col">
+                                      <div className="form-group">
+                                        <label>Email</label>
+                                       
+                                        <input
+                                          value={user.Email}
+                                          type="text"
+                                          className="form-control"
+                                          disabled={!editButton}
+                                        />
+                                      </div>
+                                    </div> */}
                                   </div>
+                                  {/* <div className="row">
+                                    <div className="col">
+                                      <div className="form-group">
+                                        <label>Email</label>
+                                        <input
+                                          value={user.Email}
+                                          className="form-control"
+                                          type="text"
+                                          placeholder="user@example.com"
+                                          disabled={!editButton}
+                                        />
+                                      </div>
+                                    </div>
+                                  </div> */}
                                   <div className="row">
                                     <div className="col mb-3">
                                       <div className="form-group">
@@ -235,9 +300,10 @@ export default function Profile() {
                                     >
                                       Change Password
                                     </b>
+                                    {changePass()}
                                   </div>
                                 </div>
-                                {changePass()}
+                                
 
                                 {/* <div className="col-12 col-sm-5 offset-sm-1 mb-3">
                                   <div className="mb-2">
@@ -308,7 +374,7 @@ export default function Profile() {
                       <div className="px-xl-3">
                         <button className="btn btn-block btn-secondary">
                           <i className="fa fa-sign-out" />
-                          <span>Logout</span>
+                          <span onClick={onClickLogOut}>Logout</span>
                         </button>
                       </div>
                     </div>

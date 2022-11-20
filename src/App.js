@@ -33,7 +33,7 @@ import RequestPage from "./component/Content/requestPage/RequestPage";
 import Profile from "./component/Content/Profile/Profile";
 import { useDispatch } from "react-redux";
 import { getProjects } from "./Store/Actions/ProjectActions";
-import axios from "axios";
+import axios from "./api/request";
 // import '../src/api/request'
 export const AuthContext = React.createContext(); //chuyền sang cái khác
 
@@ -50,17 +50,19 @@ function App() {
     if (!token) {
       setUserInfo({ status: "fail", data: null });
       return;
-    }else
-    // try {
-    // const res = await axios.get("/api/auth/verify");
-    // if (res.data.success) {
-    setUserInfo({ status: "success", data: 1 });
-    //   } else {
-    //     setUserInfo({ status: "success", data: 456 });
-    //   }
-    // } catch (error) {
-    //   // setUserInfo({ status: "success", data: 789 });
-    // }
+    } else {
+      try {
+        const res = await axios.get("/api/user/getuser");
+        // if (res.data.success) {
+        setUserInfo({ status: "success", data: res.data[0] });
+        console.log(res.data);
+        //   } else {
+        //     setUserInfo({ status: "success", data: 456 });
+        //   }
+      } catch (error) {
+        setUserInfo({ status: "success", data: 789 });
+      }
+    }
   };
 
   const login = ({ token }) => {
@@ -109,14 +111,17 @@ function App() {
         user: userInfo.data,
         login,
         logout,
+        verifyUserInfo
       }}
     >
       <Router>
         <div className="App">
-          {userInfo.data === 1 ? <Navbar /> : ""}
+          {/* {userInfo.data === 1 ? <Navbar /> : ""}
           <ContentContainer>
-            {userInfo.data === 1 ? <NavMenu /> : ""}
-
+            {userInfo.data === 1 ? <NavMenu /> : ""} */}
+            {userInfo.data === null ?"": <Navbar /> }
+          <ContentContainer>
+            {userInfo.data === null ?"": <NavMenu /> }
             {/* <Navbar />
           <ContentContainer>
             <NavMenu /> */}
@@ -162,7 +167,7 @@ function App() {
                     path="/resourcePool"
                     element={<ResourcePool />}
                   />
-                   <Route
+                  <Route
                     exact
                     path="/resourcePool/:code/:r/:l/:s"
                     element={<ResourcePool />}

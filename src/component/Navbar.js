@@ -21,7 +21,8 @@ import useAuth from "./hooks/useAuth";
 import { hover } from "@testing-library/user-event/dist/hover";
 import { Opacity } from "@mui/icons-material";
 export default function Navbar() {
-  const { logout, onclickShowLeft, setOnclickShowLeft } = useAuth();
+  const { logout, onclickShowLeft, setOnclickShowLeft,user } = useAuth();
+
   const onClickLogOut = () => {
     // setAccount(false);
     logout()
@@ -127,7 +128,7 @@ export default function Navbar() {
                 aria-expanded="false"
                 // style={{width:'300px'}}
               >
-                <span>Đỗ Đức Quang </span>
+                <span>{user?.Fullname}</span>
                 <svg
                   className="svg-inline--fa fa-user fa-fw "
                   aria-hidden="true"

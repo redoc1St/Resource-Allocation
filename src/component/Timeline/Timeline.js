@@ -6,7 +6,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import React, { useEffect, useState } from "react";
 import { getResourcePoolEmp } from "../../Store/Actions/ResourcePoolAction";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import AddToProject from "../table/tableRPool/dotAction/addToProject/AddToProject";
 
 export default function Timeline() {
@@ -84,7 +84,7 @@ export default function Timeline() {
     //     resource: 12
     // }]
   }, []);
-
+  // console.log(emps);
   const myResources = React.useMemo(() => {
     return emps.map((item) => ({
       id: item.number,
@@ -92,6 +92,11 @@ export default function Timeline() {
       unit: item?.Department_name,
       role: item?.RoleName,
       level: item?.LevelName,
+      SkillName: item?.SkillName,
+      roleId:item?.Role_id,
+      levelId:item?.level_id,
+      skillId:item?.skill_id,
+      id:item?.id,
       color: "#3fd890",
       // skill:item?.SkillName,
     }));
@@ -165,15 +170,34 @@ export default function Timeline() {
   //       "jsonp"
   //     );
   //   }, []);
-
+  const onClickIcon = (rowData) => {
+    console.log(rowData.role);
+    // <AddToProject type={"icon"} record={rowData} />;
+    setUserData({
+      Role_id:rowData.roleId,
+      level_id:rowData.levelId,
+      skill_id:rowData.skillId,
+      id:rowData.id
+    })
+    // setUserData(rowData.role,rowData.level,rowData.SkillName)
+    // <Link to={<AddToProject record={rowData}/>} > e</Link>
+  };
+const [userData,setUserData]=useState({
+  role:'',
+  level:'',
+  skill:'',
+  id:''
+})
   const renderCustomResource = (resource) => {
     return (
       <div className="md-resource-header-template-cont">
         <div className="md-resource-header-template-icon">
-          <Link to="">
-          <AddToProject type={'icon'}/>
-            {/* <PersonAddAlt1Icon /> */}
-          </Link>
+          <span onClick={()=>onClickIcon(resource)}>
+          <AddToProject type={'icon'} record={userData}/>
+          {/* <span onClick={() => onClickIcon(resource)}>
+            <PersonAddAlt1Icon />
+          </span> */}
+          </span>
         </div>
 
         <div className="md-resource-header-template-name">{resource.name}</div>
