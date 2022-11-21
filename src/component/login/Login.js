@@ -5,15 +5,14 @@ import { Navigate, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { fontSize } from "@mui/system";
 import axios from "axios";
+import { Alert, Space } from "antd";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { setAccount,login,logout } = useAuth();
+  const { setAccount, login, logout } = useAuth();
+  const [error, setError] = useState();
 
-  const accountLogin = {
-    username: "quang1412@gmail.com",
-    password: "123456",
-  };
+
 
   const {
     register,
@@ -40,25 +39,26 @@ export default function Login() {
         data: { email, password },
       });
       if (res.data) {
-
         // localStorage.setItem("token", res.data);
         // navigate('/candidateManage')
         // console.log('thanh cong')
         login({
-            // _id:res.data.data._id,
-            token:res.data
-        })
+          // _id:res.data.data._id,
+          token: res.data,
+        });
 
         // login({
         //   _id: res.data.data._id,
         //   token: res.data.data.token,
         //   returnUrl: searchParams.get("returnUrl") || "",
         // });
+      } else {
+        setError("email or password is incorrect");
       }
 
       // console.log("abc", res.data.data.token);
     } catch (error) {
-      console.log(error);
+      setError("Login failed");
     }
 
     // try {
@@ -121,10 +121,19 @@ export default function Login() {
                 {errors?.password?.type === "minLength" && (
                   <p style={{ color: "red" }}>Password phải lớn hơn 6 ký tự</p>
                 )}
+                {error ? (
+                  <Alert
+                    style={{ marginTop: "10px" }}
+                    message={"Email or password is incorrect"}
+                    type={"error"}
+                    showIcon
+                  />
+                ) : null}
                 {onSubmit}
 
                 <div className="d-flex justify-content-between align-items-center">
                   {/* Checkbox */}
+
                   <div className="form-check mb-0">
                     <input
                       className="form-check-input me-2"
@@ -151,12 +160,6 @@ export default function Login() {
                   >
                     Login
                   </button>
-                  <p className="small fw-bold mt-2 pt-1 mb-0">
-                    Don't have an account?{" "}
-                    <a href="#!" className="link-danger">
-                      Register
-                    </a>
-                  </p>
                 </div>
               </form>
             </div>

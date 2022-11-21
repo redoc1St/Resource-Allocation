@@ -44,6 +44,8 @@ function App() {
     status: "idle",
     data: null,
   });
+  var date1 = Date.parse('2012-05-30');
+  var date2 = Date.parse('2020-05-30');
   console.log(userInfo);
   const verifyUserInfo = async () => {
     const token = localStorage.getItem("token");
@@ -111,7 +113,7 @@ function App() {
         user: userInfo.data,
         login,
         logout,
-        verifyUserInfo
+        verifyUserInfo,
       }}
     >
       <Router>
@@ -119,9 +121,9 @@ function App() {
           {/* {userInfo.data === 1 ? <Navbar /> : ""}
           <ContentContainer>
             {userInfo.data === 1 ? <NavMenu /> : ""} */}
-            {userInfo.data === null ?"": <Navbar /> }
+          {userInfo.data === null ? "" : <Navbar />}
           <ContentContainer>
-            {userInfo.data === null ?"": <NavMenu /> }
+            {userInfo.data === null ? "" : <NavMenu />}
             {/* <Navbar />
           <ContentContainer>
             <NavMenu /> */}

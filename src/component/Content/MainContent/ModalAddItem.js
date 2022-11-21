@@ -8,10 +8,11 @@ import {
   message,
   notification,
   Row,
-  Select, 
+  Select,
 } from "antd";
-import { Modal, Table } from "antd";
-import { display, height } from "@mui/system";
+import { Alert } from "antd";
+
+import { Modal } from "antd";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 // import axios from "axios";
@@ -19,7 +20,6 @@ import axios from "../../../../src/api/request";
 import request from "../../../../src/api/request";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjects } from "../../../Store/Actions/ProjectActions";
-import Notification from "../../notification/Notification";
 
 export default function ModalAddItem() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,6 +27,7 @@ export default function ModalAddItem() {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
   const { moreRow, setMoreRow } = useAuth();
+  const [error, setError] = useState();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -63,52 +64,47 @@ export default function ModalAddItem() {
       quantity_actual,
     } = values;
     console.log(values);
-    try {
-      const res = await request({
-        url: process.env.REACT_APP_BASE_URL+"/api/project",
-        method: "POST",
-        data: {
-          code: JSON.parse(JSON.stringify(code)),
-          projectName: JSON.parse(JSON.stringify(projectName)),
-          department_id: JSON.parse(JSON.stringify(department_id)),
-          effort_planned: JSON.parse(JSON.stringify(effort_planned)),
-          effort_actual: JSON.parse(JSON.stringify(effort_actual)),
-          effort_billable: JSON.parse(JSON.stringify(effort_billable)),
-          start_plan: JSON.parse(JSON.stringify(start_plan)),
-          start_actual: JSON.parse(JSON.stringify(start_actual)),
-          end_plan: JSON.parse(JSON.stringify(end_plan)),
-          end_actual: JSON.parse(JSON.stringify(end_actual)),
-        },
-      });
-      if (res.data.success) {
-        // moreRow++;
-        // console.log(res.data.success);
-        // console.log(moreRow);
-        // navigate('/')
+    if (Date.parse(start_plan) >= Date.parse(end_plan)) {
+      setError("End date (plan) must greater than start date (plan)");
+      return;
+    } else if (Date.parse(start_actual) >= Date.parse(end_actual)) {
+      setError("End date (actual) must greater than start date (actual)");
+      return;
+    } else
+      try {
+        const res = await request({
+          url: process.env.REACT_APP_BASE_URL + "/api/project",
+          method: "POST",
+          data: {
+            code: JSON.parse(JSON.stringify(code)),
+            projectName: JSON.parse(JSON.stringify(projectName)),
+            department_id: JSON.parse(JSON.stringify(department_id)),
+            effort_planned: JSON.parse(JSON.stringify(effort_planned)),
+            effort_actual: JSON.parse(JSON.stringify(effort_actual)),
+            effort_billable: JSON.parse(JSON.stringify(effort_billable)),
+            start_plan: JSON.parse(JSON.stringify(start_plan)),
+            start_actual: JSON.parse(JSON.stringify(start_actual)),
+            end_plan: JSON.parse(JSON.stringify(end_plan)),
+            end_actual: JSON.parse(JSON.stringify(end_actual)),
+          },
+        });
+        if (res.data.success) {
+          // moreRow++;
+          // console.log(res.data.success);
+          // console.log(moreRow);
+          // navigate('/')
+        }
+
+        message.success({
+          content: "Add project successfully",
+          style: { marginTop: "50px" },
+        });
+        dispatch(getProjects());
+
+        setIsModalOpen(false);
+      } catch (err) {
+        console.log(err);
       }
-
-
-      message.success({
-        content:"Add project successfully",
-        style:{marginTop:'50px'},
-      });
-      dispatch(getProjects());
-
-      setIsModalOpen(false);
-
-    } catch (err) {
-      console.log(err);
-    }
-
-    // const { username, password } = values;
-    // try {
-    //   /// axios
-    // } catch (error) {}
-    // console.log(username);
-    // if (username === accountLogin.username && password === accountLogin.password) {
-    //   setAccount(true);
-    //   navigate("/resourceAllocation");
-    // }
   };
 
   return (
@@ -137,7 +133,7 @@ export default function ModalAddItem() {
                   <tr>
                     <td>Project ID</td>
                     <td>
-                      <input {...register("code")} />
+                      <input required {...register("code")} />
                     </td>
                   </tr>
                 </tbody>
@@ -181,6 +177,7 @@ export default function ModalAddItem() {
                         {...register("start_plan")}
                         placeholder="dd/MM/YYYY"
                         format={"YYYY/MM/DD"}
+                        required
                       />
                     </td>
                   </tr>
@@ -195,6 +192,7 @@ export default function ModalAddItem() {
                         {...register("start_actual")}
                         placeholder="dd/MM/YYYY"
                         format={"YYYY/MM/DD"}
+                        required
                       />
                     </td>
                   </tr>
@@ -248,6 +246,7 @@ export default function ModalAddItem() {
                         {...register("end_plan")}
                         placeholder="dd/MM/YYYY"
                         format={"YYYY/MM/DD"}
+                        required
                       />
                     </td>
                   </tr>
@@ -261,48 +260,44 @@ export default function ModalAddItem() {
                         {...register("end_actual")}
                         placeholder="dd/MM/YYYY"
                         format={"YYYY/MM/DD"}
+                        required
                       />
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <button
-                        style={{ marginLeft: "50px", marginTop: "30px" }}
-                        type="submit"
-                      >
-                        Create
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        style={{
-                          backgroundColor: "white",
-                          color: " #4CAF50",
-                          border: "1px solid",
-                          marginLeft: "50px",
-                          marginTop: "30px",
-                        }}
-                        onClick={handleCancel}
-                        type={"reset"}
-                      >
-                        Cancel
-                      </button>
-                    </td>
-                  </tr>
+                  <tr></tr>
                 </tbody>
               </table>
-            </Col>
+              <button
+                style={{ marginLeft: "50px", marginTop: "30px" }}
+                type="submit"
+              >
+                Create
+              </button>
 
-            {/* <Form.Item label="Project ID">
-                
-              </Form.Item> */}
-            {/* <Form.Item label="Unit">
-              <Select placeholder="Choose Unit">
-                <Select.Option value="demo">Demo</Select.Option>
-              </Select>
-            </Form.Item> */}
+              <button
+                style={{
+                  backgroundColor: "white",
+                  color: " #4CAF50",
+                  border: "1px solid",
+                  marginLeft: "50px",
+                  marginTop: "30px",
+                }}
+                onClick={handleCancel}
+                type={"reset"}
+              >
+                Cancel
+              </button>
+            </Col>
           </Row>
         </form>
+        {error ? (
+          <Alert
+            style={{ marginTop: "10px" }}
+            message={error}
+            type={"error"}
+            showIcon
+          />
+        ) : null}
       </Modal>
     </div>
   );

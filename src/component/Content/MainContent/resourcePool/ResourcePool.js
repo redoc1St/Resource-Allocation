@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import BasicBreadcrumbs from "../../../breadcrumbs/BasicBreadcrumbs";
 import TableRPool from "../../../table/tableRPool/TableRPool";
-// import styles from './ResourcePool.css'
 import { Radio } from "antd";
 import ViewByChart from "./viewByChart/ViewByChart";
 

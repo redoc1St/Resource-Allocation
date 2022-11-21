@@ -60,7 +60,7 @@ export default function TableData(sText) {
   const [expandable, setExpandable] = useState(defaultExpandable);
 
   // const [gridData, setGridData] = useState([]);
-
+  
   useAuth();
   const { onclickShowLeft, setOnclickShowLeft } = useAuth();
   const [isUpdated, setIsUpdated] = useState(false);
@@ -136,7 +136,7 @@ export default function TableData(sText) {
       title: "No.",
       dataIndex: "id",
       onFilter: (value, record) => record.name.indexOf(value) === 0,
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.id - b.id,
       sortDirections: ["descend"],
       width: 50,
     },
@@ -146,6 +146,7 @@ export default function TableData(sText) {
       // defaultSortOrder: "descend",
       // sorter: (a, b) => a.age - b.age,
       width: 100,
+      sorter: (a, b) => a.pId.localeCompare(b.pId),
       // editTable: true, 
     },
     {
@@ -153,25 +154,33 @@ export default function TableData(sText) {
       dataIndex: "pName",
       width: 200,
       // editTable:true,
-
-      filters: [
-        {
-          text: "London",
-          value: "London",
-        },
-        {
-          text: "New York",
-          value: "New York",
-        },
-      ],
-      onFilter: (value, record) => record.pName.indexOf(value) === 0,
     },
     {
       title: "Unit",
       dataIndex: "unit",
       // defaultSortOrder: "descend",
-      sorter: (a, b) => a.unit - b.unit,
-      width: 50,
+      // sorter: (a, b) => a.unit - b.unit,
+      width: 70,
+      filters: [
+        {
+          text: "BU 1",
+          value: "BU 1",
+        },
+        {
+          text: "BU 2",
+          value: "BU 2",
+        },{
+          text: "BU 3",
+          value: "BU 3",
+        },{
+          text: "BU 4",
+          value: "BU 4",
+        },{
+          text: "BU 5",
+          value: "BU 5",
+        },
+      ],
+      onFilter: (value, record) => record.unit.indexOf(value) === 0
     },
     {
       title: "% Allocation",

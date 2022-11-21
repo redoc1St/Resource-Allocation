@@ -8,9 +8,7 @@ import TableResourcePlanning from "../../table/tableRPlanning/TableRPlanning";
 import BtnViewEmp from "./BtnViewEmp";
 import { Dropdown, Menu, Space, Card, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjects } from "../../../Store/Actions/ProjectActions";
 import { getRoleByCode } from "../../../Store/Actions/PlanningRoleAction";
-import ScrollBar from "react-perfect-scrollbar";
 import ModalAddRole from "./ModalAddItem";
 import {
   getLeaderByCode,
@@ -20,7 +18,6 @@ import {
 } from "../../../Store/Actions/ExtraObjectActions";
 import axios from "axios";
 import { useState } from "react";
-import styled from "styled-components";
 export default function ResourcePlanning() {
   const { pName } = useParams();
 
@@ -59,7 +56,6 @@ export default function ResourcePlanning() {
         console.log(error);
       });
   }, [pName]);
-// console.log(getBU);
 
   const menu = (
     
@@ -67,9 +63,6 @@ export default function ResourcePlanning() {
       items={projects.map((item) => ({
         key: item.id,
         label: (
-          // <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-          //   1st menu item
-          // </a>
           <Link to={`/resourcePlaning/${item.code}`}>{item.name}</Link>
         ),
       }))}
@@ -116,12 +109,6 @@ export default function ResourcePlanning() {
     );
   }
 
-  // useEffect(()=>{
-  //   // if(!pName){
-  //   //   // Navigate()
-  //   //   return
-  //   // }
-  // },[])
   return (
     <div>
       <h3 style={{ fontWeight: "bold", color: "#121843" }}>

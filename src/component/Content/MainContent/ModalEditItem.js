@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  message,
-  Row,
-  Select,
-} from "antd";
-import { Modal, Table } from "antd";
-import { display, height } from "@mui/system";
+import { Col, message, Row, Select } from "antd";
+import { Modal } from "antd";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import request from "../../../../src/api/request";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjects, getProjectsByName } from "../../../Store/Actions/ProjectActions";
+import { Alert } from "antd";
+
+import {
+  getProjects,
+  getProjectsByName,
+} from "../../../Store/Actions/ProjectActions";
 
 export default function ModalEditItem(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
-  const { dataProject, setDataProject,valueInput } = useAuth();
+  const {  valueInput } = useAuth();
+  const [error, setError] = useState();
+
   useEffect(() => {}, []);
 
   const showModal = () => {
@@ -64,67 +60,55 @@ export default function ModalEditItem(data) {
     console.log(values);
     const { pId, pName, unit, planE, actualE, billE, sdp, sda, edp, eda } =
       values;
-    try {
-      const res = await request({
-        url: process.env.REACT_APP_BASE_URL+`/api/project/${data.data.key}`,
-        method: "PUT",
-        data: {
-          code: JSON.parse(JSON.stringify(pId)),
-          projectName: JSON.parse(JSON.stringify(pName)),
-          department_id: JSON.parse(JSON.stringify(unit)),
-          effort_planned: JSON.parse(JSON.stringify(planE)),
-          effort_actual: JSON.parse(JSON.stringify(actualE)),
-          effort_billable: JSON.parse(JSON.stringify(billE)),
-          start_plan: JSON.parse(JSON.stringify(sdp)),
-          start_actual: JSON.parse(JSON.stringify(sda)),
-          end_plan: JSON.parse(JSON.stringify(edp)),
-          end_actual: JSON.parse(JSON.stringify(eda)),
-        },
-      });
-      setIsModalOpen(false);
-      // dispatch(getProjects());
-      // dispatch(getProjectsByName(valueInput ? valueInput : ""));
-      message.success({
-        content:"Edit project successfully",
-        style:{marginTop:'50px'},
-      });
-      if (valueInput) {
-        dispatch(getProjectsByName(valueInput));
-      } else {
-        dispatch(getProjects());
+    if (Date.parse(sdp) >= Date.parse(edp)) {
+      setError("End date (plan) must greater than start date (plan)");
+      return;
+    } else if (Date.parse(sda) >= Date.parse(eda)) {
+      setError("End date (actual) must greater than start date (actual)");
+      return;
+    } else
+      try {
+        const res = await request({
+          url: process.env.REACT_APP_BASE_URL + `/api/project/${data.data.key}`,
+          method: "PUT",
+          data: {
+            code: JSON.parse(JSON.stringify(pId)),
+            projectName: JSON.parse(JSON.stringify(pName)),
+            department_id: JSON.parse(JSON.stringify(unit)),
+            effort_planned: JSON.parse(JSON.stringify(planE)),
+            effort_actual: JSON.parse(JSON.stringify(actualE)),
+            effort_billable: JSON.parse(JSON.stringify(billE)),
+            start_plan: JSON.parse(JSON.stringify(sdp)),
+            start_actual: JSON.parse(JSON.stringify(sda)),
+            end_plan: JSON.parse(JSON.stringify(edp)),
+            end_actual: JSON.parse(JSON.stringify(eda)),
+          },
+        });
+        setIsModalOpen(false);
+        // dispatch(getProjects());
+        // dispatch(getProjectsByName(valueInput ? valueInput : ""));
+        message.success({
+          content: "Edit project successfully",
+          style: { marginTop: "50px" },
+        });
+        if (valueInput) {
+          dispatch(getProjectsByName(valueInput));
+        } else {
+          dispatch(getProjects());
+        }
+      } catch (err) {
+        console.log(err);
       }
-      
-    } catch (err) {
-      console.log(err);
-    }
-    // if (res.data.success) {
-
-    // }
-    // else{
-    //   message.warning("wrong");
-
-    // }
     setIsModalOpen(false);
-
-    // const { username, password } = values;
-    // try {
-    //   /// axios
-    // } catch (error) {}
-    // console.log(username);
-    // if (username === accountLogin.username && password === accountLogin.password) {
-    //   setAccount(true);
-    //   navigate("/resourceAllocation");
-    // }
   };
 
   return (
     <div>
-      <span style={{ border: "0"}} onClick={showModal}>
-        <BorderColorIcon style={{cursor:'pointer'}}/>
+      <span style={{ border: "0" }} onClick={showModal}>
+        <BorderColorIcon style={{ cursor: "pointer" }} />
       </span>
 
       <Modal
-        // style={{color:'#424a80'}}
         width={700}
         title="Edit the project"
         open={isModalOpen}
@@ -181,10 +165,10 @@ export default function ModalEditItem(data) {
                         // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
                       />
-                      {/* {errors?.sdp?.type === "pattern" && (
-                        <p style={{ color: "red" }}>
-                          Wrong format date(dd/mm/YYYY)
-                        </p>
+                      {/* {errors.sdp && (
+                        <span style={{ color: "red" }} role="alert">
+                          faileddd
+                        </span>
                       )} */}
                     </td>
                   </tr>
@@ -262,35 +246,41 @@ export default function ModalEditItem(data) {
                   </tr>
 
                   <tr>
-                    <td>
-                      <button
-                        style={{ marginLeft: "50px", marginTop: "30px" }}
-                        type="submit"
-                      >
-                        Edit
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        style={{
-                          backgroundColor: "white",
-                          color: " #4CAF50",
-                          border: "1px solid",
-                          marginLeft: "50px",
-                          marginTop: "30px",
-                        }}
-                        type="button"
-                        onClick={handleCancel}
-                      >
-                        Cancel
-                      </button>
-                    </td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
+              <button
+                style={{ marginLeft: "50px", marginTop: "30px" }}
+                type="submit"
+              >
+                Edit
+              </button>
+
+              <button
+                style={{
+                  backgroundColor: "white",
+                  color: " #4CAF50",
+                  border: "1px solid",
+                  marginLeft: "50px",
+                  marginTop: "30px",
+                }}
+                type="button"
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
             </Col>
           </Row>
         </form>
+        {error ? (
+          <Alert
+            style={{ marginTop: "10px" }}
+            message={error}
+            type={"error"}
+            showIcon
+          />
+        ) : null}
       </Modal>
     </div>
   );

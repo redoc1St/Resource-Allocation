@@ -1,26 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  message,
-  Row,
-  Select,
-} from "antd";
-import { Modal, Table } from "antd";
-import { display, height } from "@mui/system";
+import { Col, message, Row, Select } from "antd";
+import { Modal } from "antd";
 import { useForm } from "react-hook-form";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
 import request from "../../../../src/api/request";
 import { useParams } from "react-router-dom";
 import { getRoleByCode } from "../../../Store/Actions/PlanningRoleAction";
 import { useDispatch } from "react-redux";
+import { Alert } from "antd";
 
 export default function ModalAddRole(record) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState();
 
   useEffect(() => {}, []);
 
@@ -49,26 +39,28 @@ export default function ModalAddRole(record) {
   const dispatch = useDispatch();
 
   const onSubmit = async (values) => {
-    // const{pId,unit, pName}= values;
-    console.log(values);
-    setIsModalOpen(false);
-    try {
-      const res = await request({
-        url: process.env.REACT_APP_BASE_URL+"/api/ResourcePlanning/",
-        method: "POST",
-        data: { Project_id: record.pId, ...values },
-      });
+    // console.log(values);
+    if (Date.parse(values.Date_start) >= Date.parse(values.Date_end)) {
+      setError("End date must greater than start date");
+      return;
+    } else
+      try {
+        const res = await request({
+          url: process.env.REACT_APP_BASE_URL + "/api/ResourcePlanning/",
+          method: "POST",
+          data: { Project_id: record.pId, ...values },
+        });
 
-      message.success({
-        content: "Add planning role successfully",
-        style: { marginTop: "50px" },
-      });
-      dispatch(getRoleByCode(pName));
+        message.success({
+          content: "Add planning role successfully",
+          style: { marginTop: "50px" },
+        });
+        dispatch(getRoleByCode(pName));
 
-      setIsModalOpen(false);
-    } catch (err) {
-      console.log(err);
-    }
+        setIsModalOpen(false);
+      } catch (err) {
+        console.log(err);
+      }
   };
 
   return (
@@ -104,7 +96,7 @@ export default function ModalAddRole(record) {
                         required
                       >
                         <Select.Option required></Select.Option>
-                        {record.roles.map((item,index) => {
+                        {record.roles.map((item, index) => {
                           return (
                             <option value={item.Role_id} key={index}>
                               {item.RoleName}
@@ -121,7 +113,7 @@ export default function ModalAddRole(record) {
                         // value={data?.data?.sdp}
                         type="date"
                         {...register("Date_start")}
-                        // placeholder="dd/MM/YYYY"
+                        required
                         format={"DD/MM/YYYY"}
                       />
                     </td>
@@ -148,14 +140,13 @@ export default function ModalAddRole(record) {
                         required
                       >
                         <Select.Option required></Select.Option>
-                        {record.levels.map((item,index) => {
+                        {record.levels.map((item, index) => {
                           return (
                             <option value={item.Level_id} key={index}>
                               {item.LevelName}
                             </option>
                           );
                         })}
-                        
                       </select>
                     </td>
                   </tr>
@@ -178,7 +169,7 @@ export default function ModalAddRole(record) {
                         // value={data?.data?.sdp}
                         type="date"
                         {...register("Date_end")}
-                        // placeholder="dd/MM/YYYY"
+                        required
                         format={"DD/MM/YYYY"}
                       />
                     </td>
@@ -201,7 +192,7 @@ export default function ModalAddRole(record) {
                     <td>
                       <select {...register("Skill_id")} required>
                         <Select.Option required></Select.Option>
-                        {record?.skills?.map((item,index) => {
+                        {record?.skills?.map((item, index) => {
                           return (
                             <option value={item.Skill_id} key={index}>
                               {item.SkillName}
@@ -213,35 +204,41 @@ export default function ModalAddRole(record) {
                   </tr>
 
                   <tr>
-                    <td>
-                      <button
-                        style={{ marginLeft: "50px", marginTop: "30px" }}
-                        type="submit"
-                      >
-                        Add
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        style={{
-                          backgroundColor: "white",
-                          color: " #4CAF50",
-                          border: "1px solid",
-                          marginLeft: "50px",
-                          marginTop: "30px",
-                        }}
-                        onClick={handleCancel}
-                        type="reset"
-                      >
-                        Cancel
-                      </button>
-                    </td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
+              <button
+                style={{ marginLeft: "50px", marginTop: "30px" }}
+                type="submit"
+              >
+                Add
+              </button>
+
+              <button
+                style={{
+                  backgroundColor: "white",
+                  color: " #4CAF50",
+                  border: "1px solid",
+                  marginLeft: "50px",
+                  marginTop: "30px",
+                }}
+                onClick={handleCancel}
+                type="reset"
+              >
+                Cancel
+              </button>
             </Col>
           </Row>
         </form>
+        {error ? (
+          <Alert
+            style={{ marginTop: "10px" }}
+            message={error}
+            type={"error"}
+            showIcon
+          />
+        ) : null}
       </Modal>
     </div>
   );

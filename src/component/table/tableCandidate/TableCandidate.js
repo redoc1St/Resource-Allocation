@@ -2,12 +2,16 @@ import React, { useEffect } from "react";
 import { Table, Dropdown, Progress, Popconfirm, Menu } from "antd";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers, getUsersByName, getUsersByNameAStatus } from "../../../Store/Actions/UserActions";
+import {
+  getUsers,
+  getUsersByName,
+  getUsersByNameAStatus,
+} from "../../../Store/Actions/UserActions";
 import { Divider, Tag } from "antd";
 
 export default function TableCandidate() {
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
-  const { valueInput, setValueInput,statusCand, setStatusCand } = useAuth();
+  const { valueInput, setValueInput, statusCand, setStatusCand } = useAuth();
 
   const dispatch = useDispatch();
   const users = useSelector((state) => state?.Users?.users);
@@ -23,15 +27,14 @@ export default function TableCandidate() {
   // }, [valueInput, dispatch]);
 
   useEffect(() => {
-  //   if (valueInput) {
-  //     // dispatch(getUsersByName(valueInput));
-  //     dispatch(getUsersByNameAStatus(valueInput, statusCand));
-  //   }else if(statusCand==="all"){
-  //  dispatch(getUsers());
-
-  //   } else {
-  //     dispatch(getUsersByNameAStatus(" ", statusCand));
-  //   }
+    //   if (valueInput) {
+    //     // dispatch(getUsersByName(valueInput));
+    //     dispatch(getUsersByNameAStatus(valueInput, statusCand));
+    //   }else if(statusCand==="all"){
+    //  dispatch(getUsers());
+    //   } else {
+    //     dispatch(getUsersByNameAStatus(" ", statusCand));
+    //   }
   }, [statusCand, dispatch]);
 
   const columns = [
@@ -39,12 +42,15 @@ export default function TableCandidate() {
       title: "No.",
       dataIndex: "no",
       width: 50,
+      sorter: (a, b) => a.no - b.no,
     },
 
     {
       title: "Name",
       dataIndex: "Fullname",
       width: 100,
+      sorter: (a, b) => a.Fullname.localeCompare(b.Fullname),
+
       //   editTable: true,
     },
     {
@@ -66,6 +72,17 @@ export default function TableCandidate() {
     {
       title: "User Type",
       dataIndex: "UserType",
+      filters: [
+        {
+          text: "leader",
+          value: "leader",
+        },
+        {
+          text: "employee",
+          value: "employee",
+        },
+      ],
+      onFilter: (value, record) => record.UserType.indexOf(value) === 0,
       width: 80,
     },
     // {
@@ -88,13 +105,37 @@ export default function TableCandidate() {
     {
       title: "Department",
       dataIndex: "Department_id",
-      width: 150,
+      filters: [
+        {
+          text: "BU 1",
+          value: "BU 1",
+        },
+        {
+          text: "BU 2",
+          value: "BU 2",
+        },
+        {
+          text: "BU 3",
+          value: "BU 3",
+        },
+        {
+          text: "BU 4",
+          value: "BU 4",
+        },
+        {
+          text: "BU 5",
+          value: "BU 5",
+        },
+      ],
+      onFilter: (value, record) => record.Department_id.indexOf(value) === 0,
+
+      width: 80,
     },
 
     {
       title: "Status",
       dataIndex: "isActive",
-      width: 130,
+      width: 80,
     },
 
     {
@@ -128,12 +169,13 @@ export default function TableCandidate() {
   //     leader: "QuangDD",
   //   },
   // ];
-console.log(users);
+  console.log(users);
   const data = users.map((item) => ({
     no: countId++,
-    key:item.User_id,
+    key: item.User_id,
 
     ...item,
+    Department_id: "BU " + item.Department_id,
     isActive:
       item.isActive === true ? (
         <Tag color="#87d068" style={{ width: "60px", textAlign: "center" }}>
