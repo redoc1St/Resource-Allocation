@@ -144,7 +144,7 @@ namespace ResourceAllocationBE.Controllers
                 ,@Bill_rate
                 ,@Level_id
                 ,@Skill_id,
-@project_id) ";
+                @project_id) ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

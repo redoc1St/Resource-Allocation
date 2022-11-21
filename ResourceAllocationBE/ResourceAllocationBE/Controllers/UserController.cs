@@ -33,7 +33,7 @@ namespace ResourceAllocationBE.Controllers
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
 
-                SqlDataAdapter da = new SqlDataAdapter("select * from [User] where email = '" + user.Email + "' and Password = '" + user.Password + "'", myCon);
+                SqlDataAdapter da = new SqlDataAdapter("select * from [User] where email = '" + user.Email + "' and Password = '" + user.Password + "' and [isActive] = 1", myCon);
                 myCon.Open();
                 da.Fill(table);
                 if (table.Rows.Count > 0)
@@ -51,6 +51,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
                                select * from
+                                join Department on Department.Department_id = [User].Department_id
                                 dbo.[User] where UserType != 'admin' ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -153,12 +154,14 @@ namespace ResourceAllocationBE.Controllers
         [HttpPost]
         public JsonResult CreateNewUser(User user)
         {
-            string query = @"insert into [User] values(
+            string query = @"
+        if not exists(select * from [User] where email = @Email)
+        insert into [User] values(
         @Username, @Password,
-@Fullname,@Email,
-@Address,@UserType,
-@isActive,@BirthDay,
-@Start_Day,@Department_id)";
+        @Fullname,@Email,
+        @Address,@UserType,
+        @isActive,@BirthDay,
+        @Start_Day,@Department_id)";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -193,7 +196,9 @@ namespace ResourceAllocationBE.Controllers
         [HttpPut("{id}")]
         public JsonResult Put(User user, int id)
         {
-            string query = @"update dbo.[User]
+            string query = @"
+        if not exists(select * from [User] where email = @Email)
+        update dbo.[User]
         set [Username] = @Username, [Password]= @Password, 
         [Fullname] = @Fullname, [Email] = @Email,
         [Address]=@Address, [UserType]=@UserType, 
@@ -231,7 +236,7 @@ namespace ResourceAllocationBE.Controllers
         }
 
        
-        //Get Detail user
+        //Get Detail user theo token
         [HttpGet("getuser")]
         public JsonResult GetDetail()
         {

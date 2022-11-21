@@ -244,8 +244,6 @@ namespace ResourceAllocationBE.Controllers
         [HttpPost("EmpToRoleDirect")]
         public JsonResult requestDirectEmployeeToRolePlanning(RequestModel request)
         {
-            //if not exists(select * from[ResourceRequestEmployee] where ResourcePlannig_RoleId = @rid and Employee_id = @eid)
-            //and not exists(select * from Emp_RolePlanning where ResourcePlannig_RoleId = 5 and Employee_id = 2)
             string query = @"
              insert into Emp_RolePlanning values(@rid,@eid)
                 ";
@@ -300,6 +298,36 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
         // SHOW EMPLOYEE REQEUST (CUNG BU) ()
-
+        [HttpGet("Employee/{de_name}")]
+        public JsonResult getListRequestEmpBU(string de_name)
+        {
+            string query = @"
+                    SELECT *
+                    FROM [ResourceRequestEmployee] 
+                    join ResourcePlanning_Employee on ResourceRequestEmployee.Employee_id = ResourcePlanning_Employee.id
+                    join [User] on [user].[User_id] = ResourcePlanning_Employee.Employee_id
+                    join Roles on ResourcePlanning_Employee.Role_id = Roles.Role_id
+                    join Department on Department.Department_id = [user].Department_id
+                    join Project on Project.project_id = ResourcePlanning_Employee.[project_id]
+                    join skill on skill.skill_id=resourceplanning_employee.skill_id
+	                where Department_name = @de_name
+  ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@de_name", de_name);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
     }
 }

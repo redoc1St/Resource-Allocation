@@ -183,5 +183,25 @@ database them table Notifications
 - thay doi password Usercontroller 
 - Thêm notificationController
 - notification sau khi approve hoặc reject trong statusRequestRoleToProject vaf statusRequestEmp  gửi thông báo tới admin
+-  phần này insert into Notifications values (12, 'De nghi Role cua ban da duoc @status', GETDATE()) được thêm ở trên. THAY SỐ 12 = id của user có tên admin (thường là 1 khi mới đầu chạy insert user)
+- phần notification mới chỉ đẩy thông báo cho admin biết approved hay reject 
+- còn  khi admin request thì chưa biết đưa thông báo cho leader của bu đấy ntn (chưa làm)
 
 - comment dong 80 - 127 REQUESTCONTROLLER
+- UserController theem is Active = 1 tại hàm LoginA
+
+// 20/112022
+- Check xem employee này đang ở project này, sang project khác có đổi chưa (chua check)
+- Check email của user khi UPDATE hay INSERT đều không trùng
+if not exists(select * from [User] where email = @Email)
+
+- GetListUser lấy tên BU cho vào profile
+select * from
+join Department on Department.Department_id = [User].Department_id
+dbo.[User] where UserType != 'admin' ";
+
+// 21/11/2022
+- insert, update bên ResourcePlanningControl thêm GETDATE() khi để ngày trống
+myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start == null ? "GETDATE()" : resource.Date_start);
+myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end == null ? "GETDATE()" : resource.Date_end);
+-  SHOW EMPLOYEE REQEUST (CUNG BU)

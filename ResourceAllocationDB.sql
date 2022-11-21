@@ -59,6 +59,7 @@ BirthDay date,
 Start_Day date,
 Department_id int foreign key references Department(Department_id)
 )
+if not exists(select * from [User] where email = 'admin2022@gmail.com')
 insert into [User] values('admin2022','123456a','Ad Van Min','admin2022@gmail.com','Ha Noi'
 ,'admin','1','1985/05/05','2020/01/01',null)
 insert into [User] values('quangdd2000','123@123a','Do Duc Quang','quangdd123@gmail.com','Ha Noi'
@@ -188,6 +189,8 @@ insert into ResourcePlanning_Role values(2,4,1,'2022/06/01', '2022/06/10'
 insert into ResourcePlanning_Role values(2,5,1,'2022/06/01', '2022/06/10'
 ,100,'',100,5,4,'Waiting')
 insert into ResourcePlanning_Role values(2,6,1,'2022/06/01', '2022/06/10'
+,100,'',100,5,3,'Waiting')
+insert into ResourcePlanning_Role values(1,3,1,GETDATE(), GETDATE()
 ,100,'',100,5,3,'Waiting')
 
 
@@ -389,6 +392,10 @@ else select * from Emp_RolePlanning
 	join [User] on [user].User_id = ResourcePlanning_Employee.Employee_id
 	)
 
+	select * from emp_Roleplanning
+		join ResourcePlanning_Employee on ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
+		join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
 
-
-		
+		select * from dbo.[User]
+		join Department on Department.Department_id = [User].Department_id
+		where UserType != 'admin' 

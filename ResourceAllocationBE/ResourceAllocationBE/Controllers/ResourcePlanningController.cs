@@ -158,8 +158,8 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Project_id", resource.Project_id);
                     myCommand.Parameters.AddWithValue("@Role_id", resource.Role_id);
                     myCommand.Parameters.AddWithValue("@Quantity", resource.Quantity);
-                    myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start);
-                    myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end);
+                    myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start == null ? "GETDATE()" : resource.Date_start);
+                    myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end == null ? "GETDATE()" : resource.Date_end);
                     myCommand.Parameters.AddWithValue("@Effort_planned", resource.Effort_planned);
                     myCommand.Parameters.AddWithValue("@Effort_actual", resource.Effort_actual);
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
@@ -202,8 +202,8 @@ namespace ResourceAllocationBE.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@id", id);
                     myCommand.Parameters.AddWithValue("@Quantity", resource.Quantity);
-                    myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start);
-                    myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end);
+                    myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start == null ? "GETDATE()" : resource.Date_start);
+                    myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end == null ? "GETDATE()" : resource.Date_end);
                     myCommand.Parameters.AddWithValue("@Effort_planned", resource.Effort_planned);
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
                     myCommand.Parameters.AddWithValue("@Level_id", resource.Level_id);
