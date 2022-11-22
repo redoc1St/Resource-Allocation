@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import "./index.css";
 import { useForm, useWatch } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 import { fontSize } from "@mui/system";
 import axios from "axios";
 import { Alert, Space } from "antd";
 import { Link } from "react-router-dom";
 
-export default function Login() {
+export default function Forgot() {
   const navigate = useNavigate();
   const { setAccount, login, logout } = useAuth();
   const [error, setError] = useState();
+
+
 
   const {
     register,
@@ -29,45 +30,25 @@ export default function Login() {
   const p = <p style={{ color: "red", fontSize: "20px" }}> Login Fail</p>;
 
   const onSubmit = async (values) => {
-    const { email, password } = values;
+    const { email } = values;
     console.log(values);
     try {
-      const res = await axios({
-        url: process.env.REACT_APP_BASE_URL + "/api/user/login",
-        method: "post",
-        data: { email, password },
-      });
-      if (res.data) {
-        // localStorage.setItem("token", res.data);
-        // navigate('/candidateManage')
-        // console.log('thanh cong')
-        login({
-          // _id:res.data.data._id,
-          token: res.data,
-        });
+    //   const res = await axios({
+    //     url: process.env.REACT_APP_BASE_URL + "/api/user/login",
+    //     method: "post",
+    //     data: { email, password },
+    //   });
 
-        // login({
-        //   _id: res.data.data._id,
-        //   token: res.data.data.token,
-        //   returnUrl: searchParams.get("returnUrl") || "",
-        // });
-      } else {
-        setError("email or password is incorrect");
-      }
+    //   if (res.data) {
+
+    //   } else {
+    //     setError("email or password is incorrect");
+    //   }
 
       // console.log("abc", res.data.data.token);
     } catch (error) {
       setError("Login failed");
     }
-
-    // try {
-    //   /// axios
-    // } catch (error) {}
-    // console.log(username);
-    // if (username === accountLogin.username && password === accountLogin.password) {
-    //   setAccount(true);
-    //   navigate("/resourceAllocation");
-    // }
   };
 
   return (
@@ -83,10 +64,12 @@ export default function Login() {
               />
             </div>
             <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            <h3 style={{textAlign:'center'}}>Forgot password</h3>
               <form onSubmit={handleSubmit(onSubmit)}>
                 {/* Email input */}
                 <div className="form-outline mb-4">
                   <input
+                  
                     type="email"
                     id="form3Example3"
                     className="form-control form-control-lg"
@@ -100,55 +83,15 @@ export default function Login() {
                 {errors?.email?.type === "required" && (
                   <p style={{ color: "red" }}>Email không được để trống</p>
                 )}
-                {/* Password input */}
-                <div className="form-outline mb-3">
-                  <input
-                    name="password"
-                    type="password"
-                    id="form3Example4"
-                    className="form-control form-control-lg"
-                    placeholder="Enter password"
-                    {...register("password", { required: true, minLength: 6 })}
-                  />
-                  <label className="form-label" htmlFor="form3Example4">
-                    Password
-                  </label>
-                </div>
-                {errors?.password?.type === "required" && (
-                  <p style={{ color: "red" }}>Password không được để trống</p>
-                )}
-                {errors?.password?.type === "minLength" && (
-                  <p style={{ color: "red" }}>Password phải lớn hơn 6 ký tự</p>
-                )}
-                {error ? (
-                  <Alert
-                    style={{ marginTop: "10px" }}
-                    message={"Email or password is incorrect"}
-                    type={"error"}
-                    showIcon
-                  />
-                ) : null}
+    
+               
+               
+             
                 {onSubmit}
 
                 <div className="d-flex justify-content-between align-items-center">
-                  {/* Checkbox */}
-
-                  <div className="form-check mb-0">
-                    <input
-                      className="form-check-input me-2"
-                      type="checkbox"
-                      defaultValue
-                      id="form2Example3"
-                    />
-
-                    <label className="form-check-label" htmlFor="form2Example3">
-                      Remember me
-                    </label>
-                  </div>
-                  <Link to="/forgot" className="text-body">
-                   
-                    <span style={{color:'blue'}}> forgot password</span>
-
+                  <Link  to="/login" className="text-body">
+                    <span style={{color:'blue',marginLeft:'200px'}}>Already have an account</span>
                   </Link>
                 </div>
 
@@ -159,7 +102,7 @@ export default function Login() {
                     style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
                     value="submit"
                   >
-                    Login
+                    Submit
                   </button>
                 </div>
               </form>

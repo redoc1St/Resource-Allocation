@@ -159,7 +159,7 @@ export default function ModalAddRole(record) {
                   <tr>
                     <td>Quantity</td>
                     <td>
-                      <input {...register("Quantity")} />
+                      <input {...register("Quantity")} type="number" required />
                     </td>
                   </tr>
                   <tr>

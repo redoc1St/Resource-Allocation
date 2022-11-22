@@ -34,6 +34,7 @@ import Profile from "./component/Content/Profile/Profile";
 import { useDispatch } from "react-redux";
 import { getProjects } from "./Store/Actions/ProjectActions";
 import axios from "./api/request";
+import Forgot from "./component/login/forgot/Forgot.js";
 // import '../src/api/request'
 export const AuthContext = React.createContext(); //chuyền sang cái khác
 
@@ -141,6 +142,8 @@ function App() {
               <Routes>
                 <Route element={<GuestRouter />}>
                   <Route exact path="/login" element={<Login />} />
+                  <Route exact path="/forgot" element={<Forgot />} />
+                
                 </Route>
                 <Route element={<PrivateRoute />}>
                   <Route

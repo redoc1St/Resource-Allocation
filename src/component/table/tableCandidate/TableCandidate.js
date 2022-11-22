@@ -17,14 +17,7 @@ export default function TableCandidate() {
   const users = useSelector((state) => state?.Users?.users);
   let countId = 1;
 
-  // useEffect(() => {
-  //   if (valueInput) {
-  //     // dispatch(getUsersByName(valueInput));
-  //     dispatch(getUsersByNameAStatus(valueInput,statusCand))
-  //   } else {
-  //     dispatch(getUsers());
-  //   }
-  // }, [valueInput, dispatch]);
+
 
   useEffect(() => {
     //   if (valueInput) {
@@ -200,7 +193,7 @@ export default function TableCandidate() {
           onclickShowLeft
             ? {
                 width: "170vh",
-                marginTop: "20px",
+                marginTop: "10px",
               }
             : { width: "200vh" }
         }
