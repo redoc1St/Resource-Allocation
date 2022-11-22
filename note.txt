@@ -205,3 +205,7 @@ dbo.[User] where UserType != 'admin' ";
 myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start == null ? "GETDATE()" : resource.Date_start);
 myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end == null ? "GETDATE()" : resource.Date_end);
 -  SHOW EMPLOYEE REQEUST (CUNG BU)
+
+// 22/11/2022 By Quang
+Thay hộ dòng này vào trong hàm getDetail ở userController
+ myCommand.Parameters.AddWithValue("@Uid", userId!=null ? userId : "");

@@ -50,9 +50,9 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult GetListUser()
         {
             string query = @"
-                               select * from
-                                join Department on Department.Department_id = [User].Department_id
-                                dbo.[User] where UserType != 'admin' ";
+                                 select * from dbo.[User] 
+                                 
+								where UserType != 'admin' ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -250,7 +250,7 @@ namespace ResourceAllocationBE.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@Uid", userId);
+                    myCommand.Parameters.AddWithValue("@Uid", userId != null ? userId : "");
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

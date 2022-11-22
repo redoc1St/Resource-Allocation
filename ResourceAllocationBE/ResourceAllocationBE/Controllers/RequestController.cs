@@ -152,7 +152,6 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(" Successfully");
         }
-        // Request to ResourceRole Planning (Not Existed in Project)
 
         // SHOW REQUEST BY BU (Leader Project can see)
 
@@ -311,7 +310,7 @@ namespace ResourceAllocationBE.Controllers
                     join Project on Project.project_id = ResourcePlanning_Employee.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
 	                where Department_name = @de_name
-  ";
+                ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
