@@ -33,7 +33,7 @@ namespace ResourceAllocationBE.Controllers
         //ROLES
         [HttpGet]
         [Route("api/roles")]
-        public JsonResult GetListRole()
+        public JsonResult getListRole()
         {
             string query = @"
                                select * from
@@ -58,7 +58,7 @@ namespace ResourceAllocationBE.Controllers
         //Levels
         [HttpGet]
         [Route("api/levels")]
-        public JsonResult GetListLevels()
+        public JsonResult getListLevels()
         {
             string query = @"
                                select * from
@@ -84,7 +84,7 @@ namespace ResourceAllocationBE.Controllers
         //Skill
         [HttpGet]
         [Route("api/skills")]
-        public JsonResult GetListSkillss()
+        public JsonResult getListSkills()
         {
             string query = @"
                                select * from
@@ -135,45 +135,45 @@ namespace ResourceAllocationBE.Controllers
         //}
 
         //INSERT IN TO DB addEmp_Role
-        [Route("api/add/Emp_Role/{role}/{level}/{skill}")]
-        [HttpPost]
-        public JsonResult addEmp_Role(ResourcePlanningRole resource, int role, int level, int skill)
-        {
-            string query = @"
-            if not exists(select * from Emp_RolePlanning, ResourcePlanning_Role 
-            where Emp_RolePlanning.ResourcePlannig_RoleId = ResourcePlanning_Role.id
-            and Emp_RolePlanning.Employee_id = @emp_id and Role_id=@role and Level_id =@level and Skill_id=@skill and Project_id=@projectid)
-            insert into Emp_RolePlanning values (@resourcePid,@emp_id)";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
+        //[Route("api/add/Emp_Role/{role}/{level}/{skill}")]
+        //[HttpPost]
+        //public JsonResult addEmp_Role(ResourcePlanningRole resource, int role, int level, int skill)
+        //{
+        //    string query = @"
+        //    if not exists(select * from Emp_RolePlanning, ResourcePlanning_Role 
+        //    where Emp_RolePlanning.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+        //    and Emp_RolePlanning.Employee_id = @emp_id and Role_id=@role and Level_id =@level and Skill_id=@skill and Project_id=@projectid)
+        //    insert into Emp_RolePlanning values (@resourcePid,@emp_id)";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
 
-                    myCommand.Parameters.AddWithValue("@resourcePid", resource.Id);
-                    myCommand.Parameters.AddWithValue("@emp_id", resource.Employee_id);
-                    myCommand.Parameters.AddWithValue("@role", role);
-                    myCommand.Parameters.AddWithValue("@level", level);
-                    myCommand.Parameters.AddWithValue("@skill", skill);
-                    myCommand.Parameters.AddWithValue("@projectid", resource.Project_id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("Added Successfully");
-        }
+        //            myCommand.Parameters.AddWithValue("@resourcePid", resource.Id);
+        //            myCommand.Parameters.AddWithValue("@emp_id", resource.Employee_id);
+        //            myCommand.Parameters.AddWithValue("@role", role);
+        //            myCommand.Parameters.AddWithValue("@level", level);
+        //            myCommand.Parameters.AddWithValue("@skill", skill);
+        //            myCommand.Parameters.AddWithValue("@projectid", resource.Project_id);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
+        //        }
+        //    }
+        //    return new JsonResult("Added Successfully");
+        //}
 
 
         //get projectId by code 
         [HttpGet]
         [Route("api/{code}")]
 
-        public JsonResult GetPidByCode(string code)
+        public JsonResult getPidByCode(string code)
         {
             string query = @"SELECT [Project_id],[ProjectName],Depeartment_id   FROM Project WHERE [Code]=@code";
             DataTable table = new DataTable();
@@ -195,11 +195,10 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
-        // SHOW  LEADER  INFOR
-
+        // SHOW  LEADER  INFOR BY CODE AND DEPARTMENT
         [HttpGet]
         [Route("api/leader/{code}")]
-        public JsonResult GetLeaderInfor(string code)
+        public JsonResult getLeaderInfor(string code)
         {
             string query = @"SELECT TOP (1000) [User_id]
                         ,[Username]
@@ -213,8 +212,8 @@ namespace ResourceAllocationBE.Controllers
       ,[Start_Day]
       ,[Department_id],
 	  code
-  FROM [ResourceAllocationDB].[dbo].[User], Project
-  where Project.Depeartment_id = [user].Department_id and code = @code and UserType ='leader'";
+        FROM [ResourceAllocationDB].[dbo].[User], Project
+        where Project.Depeartment_id = [user].Department_id and code = @code and UserType ='leader'";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -237,7 +236,7 @@ namespace ResourceAllocationBE.Controllers
 
         [HttpGet]
         [Route("api/getPnameByRLS/{role_id}/{level_id}/{skill_id}")]
-        public JsonResult GetListPnameByRLS(string role_id, string level_id, string skill_id)
+        public JsonResult getListPnameByRLS(string role_id, string level_id, string skill_id)
         {
             string query = @"
         select * from ResourcePlanning_Role
@@ -274,7 +273,7 @@ namespace ResourceAllocationBE.Controllers
         // Lay id theo RLSCode => lay rid 
         [HttpGet]
         [Route("api/getPnameByRLS/{code}/{role_id}/{level_id}/{skill_id}")]
-        public JsonResult GetIdByRLSCode(string role_id, string level_id, string skill_id, string code)
+        public JsonResult getIdByRLSCode(string role_id, string level_id, string skill_id, string code)
         {
             string query = @"
         select * from ResourcePlanning_Role
@@ -301,6 +300,32 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@role_id", role_id);
                     myCommand.Parameters.AddWithValue("@level_id", level_id);
                     myCommand.Parameters.AddWithValue("@skill_id", skill_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+
+        // SHOW  LEADER  INFOR  DEPARTMENT ID
+        [HttpGet]
+        [Route("api/leaderInfor/{bu}")]
+        public JsonResult getLeaderInforByBu(string bu)
+        {
+            string query = @"SELECT *
+        FROM [ResourceAllocationDB].[dbo].[User]
+        where Department_id = @bu and UserType ='leader'";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@bu", bu);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

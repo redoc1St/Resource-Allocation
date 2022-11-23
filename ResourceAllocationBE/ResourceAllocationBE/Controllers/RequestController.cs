@@ -23,12 +23,13 @@ namespace ResourceAllocationBE.Controllers
         }
 
         // Request to ResourceRole Planning (Existed in Project)
-        [HttpPost("RolePlanning")]
-        public JsonResult RequestToRolePlanning(RequestModel request)
+        [HttpPost("RolePlanning/Noti/{user_id}")]
+        public JsonResult requestToRolePlanning(RequestModel request, int user_id)
         {
             string query = @"
             insert into ResourceRequestRole values(@rid,2,'',GETDATE())
             update ResourcePlanning_Role set [Status] = 'In Progress' where id = @rid
+            insert into Notifications values (@id, 'You get notification abour request....', GETDATE())
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -39,6 +40,7 @@ namespace ResourceAllocationBE.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@id", user_id);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -50,7 +52,7 @@ namespace ResourceAllocationBE.Controllers
 
         //ShOW All request ResourcePlanning
         [HttpGet("RolePlanning")]
-        public JsonResult GetListResourcePlanning()
+        public JsonResult getListRequestResourcePlanning()
         {
             string query = @"
                     select *
@@ -128,7 +130,7 @@ namespace ResourceAllocationBE.Controllers
 
         // APPROVED AND REJECT  ROLE TO PROJECT 
         [HttpPost("RolePlanning/{status}")]
-        public JsonResult statusRequestRoleToProject(RequestModel request, string status)
+        public JsonResult responseRequestRoleToProject(RequestModel request, string status)
         {
             string query = @"
             update ResourcePlanning_Role set [status] = @status where id =@rid
@@ -212,12 +214,12 @@ namespace ResourceAllocationBE.Controllers
 
         //APPROVED / REJECT REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
         [HttpPost("EmpToRole/{status}")]
-        public JsonResult statusRequestEmp(RequestModel request, string status)
+        public JsonResult responseRequestEmp(RequestModel request, string status)
         {
             string query = @"
             insert into Emp_RolePlanning values(@rid,@eid)
             update ResourceRequestEmployee set [status] = @status where ResourcePlannig_RoleId =@rid and Employee_id = @eid
-             insert into Notifications values (12, 'De nghi Employee cua ban da duoc @status', GETDATE())";
+            insert into Notifications values (12, 'De nghi Employee cua ban da duoc @status', GETDATE())";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -268,7 +270,7 @@ namespace ResourceAllocationBE.Controllers
 
         // SHOW ALL EMPLOYEE REQEUST  
         [HttpGet("Employee")]
-        public JsonResult getListRequestEmp()
+        public JsonResult getListRequestEmployee()
         {
             string query = @"
                     SELECT *
@@ -298,7 +300,7 @@ namespace ResourceAllocationBE.Controllers
         }
         // SHOW EMPLOYEE REQEUST (CUNG BU) ()
         [HttpGet("Employee/{de_name}")]
-        public JsonResult getListRequestEmpBU(string de_name)
+        public JsonResult getListRequestEmployeeBU(string de_name)
         {
             string query = @"
                     SELECT *

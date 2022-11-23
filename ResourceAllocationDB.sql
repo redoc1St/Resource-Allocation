@@ -117,31 +117,32 @@ Quantity_actual int,
 Start_plan date,
 Start_actual date,
 End_plan date,
-End_actual date
+End_actual date,
+note nvarchar(200)
 )
 
 insert into Project values('AIS_0000','No project',null,'','','','','',
-'','','',''
+'','','','',''
 )
 if not exists ( select * from Project where Code = 'AIS_0001')
 insert into Project values('AIS_0001','ProjectName1',1,2,5,1,2,2,
-'2022/06/01','2022/06/01','2022/06/10','2022/06/10'
+'2022/06/01','2022/06/01','2022/06/10','2022/06/10',''
 )
 if not exists ( select * from Project where Code = 'AIS_0002')
 insert into Project values('AIS_0002','ProjectName2',2,5,4,3,3,3,
-'2022/05/01','2022/05/01','2022/06/10','2022/06/10'
+'2022/05/01','2022/05/01','2022/06/10','2022/06/10',''
 )
 insert into Project values('AIS_0003','ProjectName3',3,2,1,0,2,2,
-'2022/06/01','2022/06/01','2022/06/10','2022/06/10'
+'2022/06/01','2022/06/01','2022/06/10','2022/06/10',''
 )
 insert into Project values('AIS_0004','ProjectName4',4,4,3,3,3,3,
-'2022/06/01','2022/06/01','2022/06/10','2022/06/10'
+'2022/06/01','2022/06/01','2022/06/10','2022/06/10',''
 )
 insert into Project values('AIS_0005','ProjectName5',5,2,5,1,2,2,
-'2022/07/01','2022/07/01','2022/07/10','2022/07/10'
+'2022/07/01','2022/07/01','2022/07/10','2022/07/10',''
 )
 insert into Project values('AIS_0006','ProjectName6',1,2,5,1,2,2,
-'2022/07/01','2022/07/01','2022/07/10','2022/07/10'
+'2022/07/01','2022/07/01','2022/07/10','2022/07/10',''
 )
 
 
@@ -399,3 +400,28 @@ else select * from Emp_RolePlanning
 		select * from dbo.[User]
 		join Department on Department.Department_id = [User].Department_id
 		where UserType != 'admin' 
+
+
+		select *
+                    from ResourcePlanning_Role, Roles,Project, Levels,Skill, ResourceRequestRole
+                    where ResourcePlanning_Role.Project_id = Project.Project_id and
+                    Roles.Role_id = ResourcePlanning_Role.Role_id and
+                    ResourcePlanning_Role.Level_id = Levels.Level_id and
+                    ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
+                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+
+				if not exists ( select * from [ResourcePlanning_Employee] where Role_id = 1 and Level_id =2 and Skill_id =3 and Employee_id = 3)
+                update dbo.Project
+                set [Employee_id] = 3, 
+                [Role_id]= 1, 
+                [Date_start] = '',
+                [Date_end] = '',
+                [Effort]=50,
+                [Bill_rate]=50, 
+                [Level_id]=2, 
+                [Skill_id]=3
+                WHERE [id] = 3
+
+				SELECT *
+        FROM [ResourceAllocationDB].[dbo].[User]
+        where Department_id = 1 and UserType ='leader'

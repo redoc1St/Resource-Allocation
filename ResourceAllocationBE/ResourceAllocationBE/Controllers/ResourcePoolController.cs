@@ -24,7 +24,7 @@ namespace ResourceAllocationBE.Controllers
 
         //LOAD LIST RESOURCE POOL
         [HttpGet]
-        public JsonResult GetListResourcePool(string pid)
+        public JsonResult getListResourcePool(string pid)
         {
             string query = @"
                     select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id), ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
@@ -59,7 +59,7 @@ namespace ResourceAllocationBE.Controllers
 
         //LOAD LIST RESOURCE POOL
         [HttpGet("search/{name}")]
-        public JsonResult GetListResourcePoolByName(string name)
+        public JsonResult getListResourcePoolByName(string name)
         {
             string query = @"
                 select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
@@ -94,7 +94,7 @@ namespace ResourceAllocationBE.Controllers
 
         //List by role, level, skill
         [HttpGet("{role}/{level}/{skill}")]
-        public JsonResult GetListResourcePoolByMany( int role, int level, int skill)
+        public JsonResult getListResourcePoolByRLS( int role, int level, int skill)
         {
             string query = @"
                      select ResourcePlanning_Employee.id, [User].Fullname, Roles.RoleName, Levels.LevelName, Skill.SkillName,
@@ -132,7 +132,7 @@ namespace ResourceAllocationBE.Controllers
         
         //INSERT IN TO DB
         [HttpPost]
-        public JsonResult Post(ResourcePlanningEmployee resource)
+        public JsonResult insertResourcePool(ResourcePlanningEmployee resource)
         {
             string query = @" if not exists ( select * from [ResourcePlanning_Employee] where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and Employee_id = @Employee_id )
                 insert into [ResourcePlanning_Employee](Employee_id,Role_id,Date_start, Date_end, Effort, Bill_rate,Level_id,Skill_id, Project_id) 
@@ -175,19 +175,15 @@ namespace ResourceAllocationBE.Controllers
 
         //UPDATE IN TO DB
         [HttpPut("update/{id}")]
-        public JsonResult UpdateResourcePool(ResourcePlanningEmployee resource, int id)
+        public JsonResult updateResourcePool(ResourcePlanningEmployee resource, int id)
         {
             string query = @"
-                if not exists ( select * from [ResourcePlanning_Employee] where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and Employee_id = @Employee_id)
-                update dbo.Project
-                set [Employee_id] = @Employee_id, 
-                [Role_id]= @Role_id, 
+                update dbo.ResourcePlanning_Employee
+                set
                 [Date_start] = @Date_start,
                 [Date_end] = @Date_end,
                 [Effort]=@Effort,
-                [Bill_rate]=@Bill_rate, 
-                [Level_id]=@Level_id, 
-                [Skill_id]=@Skill_id
+                [Bill_rate]=@Bill_rate
                 WHERE [id] = @id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -198,14 +194,10 @@ namespace ResourceAllocationBE.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@id", id);
-                    myCommand.Parameters.AddWithValue("@Employee_id", resource.Employee_id);
-                    myCommand.Parameters.AddWithValue("@Role_id", resource.Role_id);
                     myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start);
                     myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end);
                     myCommand.Parameters.AddWithValue("@Effort", resource.Effort);
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
-                    myCommand.Parameters.AddWithValue("@Level_id", resource.Level_id);
-                    myCommand.Parameters.AddWithValue("@Skill_id", resource.Skill_id);
 
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);

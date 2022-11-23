@@ -26,7 +26,7 @@ namespace ResourceAllocationBE.Controllers
         }
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult LoginA(User user)
+        public IActionResult login(User user)
         {
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -47,7 +47,7 @@ namespace ResourceAllocationBE.Controllers
         
         //LOAD LIST USER
         [HttpGet]
-        public JsonResult GetListUser()
+        public JsonResult getListUser()
         {
             string query = @"
                                  select * from dbo.[User] 
@@ -73,7 +73,7 @@ namespace ResourceAllocationBE.Controllers
 
         //LOAD LIST USER by active
         [HttpGet("list/{isActive}")]
-        public JsonResult GetListUserByActive(string isActive)
+        public JsonResult getListUserByActive(string isActive)
         {
             string query = @"
                                select * from
@@ -99,7 +99,7 @@ namespace ResourceAllocationBE.Controllers
 
         //SEARCH USER BY NAME
         [HttpGet("search/{name}/{isactive}")]
-        public JsonResult SearchByName(string name,string isactive)
+        public JsonResult searchByName(string name,string isactive)
         {
             string query = @"
                                select * from
@@ -126,33 +126,33 @@ namespace ResourceAllocationBE.Controllers
 
          
         //PAGING  LIST USER
-        [HttpGet("page/{number}")]
-        public JsonResult Paging(int number)
-        {
-            string query = @"
-                                       select * from
-                                        dbo.[User] order by [User_id] OFFSET @from Rows fetch next 4 rows only";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@from", (number - 1) * 4+1);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+        //[HttpGet("page/{number}")]
+        //public JsonResult Paging(int number)
+        //{
+        //    string query = @"
+        //                               select * from
+        //                                dbo.[User] order by [User_id] OFFSET @from Rows fetch next 4 rows only";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@from", (number - 1) * 4+1);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
 
-                }
-            }
-            return new JsonResult(table);
-        }
+        //        }
+        //    }
+        //    return new JsonResult(table);
+        //}
         //INSERT IN TO DB
         [HttpPost]
-        public JsonResult CreateNewUser(User user)
+        public JsonResult createNewUser(User user)
         {
             string query = @"
         if not exists(select * from [User] where email = @Email)
@@ -194,7 +194,7 @@ namespace ResourceAllocationBE.Controllers
 
         //UPDATE INFOR USER INTO DB
         [HttpPut("{id}")]
-        public JsonResult Put(User user, int id)
+        public JsonResult updateUser(User user, int id)
         {
             string query = @"
         if not exists(select * from [User] where email = @Email)
@@ -238,7 +238,7 @@ namespace ResourceAllocationBE.Controllers
        
         //Get Detail user theo token
         [HttpGet("getuser")]
-        public JsonResult GetDetail()
+        public JsonResult getUserDetail()
         {
             string query = @"select *  from [User] where [email] =@Uid";
             DataTable table = new DataTable();

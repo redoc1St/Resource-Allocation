@@ -26,7 +26,7 @@ namespace ResourceAllocationBE.Controllers
         //LOAD LIST PROJECTS
         //[Authorize]
         [HttpGet]
-        public JsonResult GetListProject()
+        public JsonResult getListProject()
         {
             string query = @"
                                select * from
@@ -52,7 +52,7 @@ namespace ResourceAllocationBE.Controllers
 
         //SEARCH BY NAME
         [HttpGet("search/{name}")]
-        public JsonResult SearchByName(string name)
+        public JsonResult searchProjectByName(string name)
         {
             string query = @"
                                select * from
@@ -77,38 +77,38 @@ namespace ResourceAllocationBE.Controllers
         }
 
         //PAGING 
-        [HttpGet("page/{number}")]
+        //[HttpGet("page/{number}")]
 
-        public JsonResult Paging(int number)
-        {
-            string query = @"
-                                       select * from
-                                        dbo.Project order by [Project_id] OFFSET @from Rows fetch next 4 rows only";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@from", (number - 1) * 4);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+        //public JsonResult Paging(int number)
+        //{
+        //    string query = @"
+        //                               select * from
+        //                                dbo.Project order by [Project_id] OFFSET @from Rows fetch next 4 rows only";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@from", (number - 1) * 4);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
 
-                }
-            }
-            return new JsonResult(table);
-        }
+        //        }
+        //    }
+        //    return new JsonResult(table);
+        //}
 
 
         //INSERT IN TO DB
         [HttpPost]
         //[EnableCors("SpecificOrigin")]
 
-        public JsonResult Post(Project project)
+        public JsonResult insertProject(Project project)
         {
             string query = @"
         if not exists ( select * from Project where Code = @Code)
@@ -157,7 +157,7 @@ namespace ResourceAllocationBE.Controllers
 
         //UPDATE IN TO DB
         [HttpPut("{id}")]
-        public JsonResult Put(Project project, int id)
+        public JsonResult updateProject(Project project, int id)
         {
             string query = @"
             update dbo.Project set Code = @Code, ProjectName= @ProjectName, Depeartment_id = @Depeartment_id,
@@ -200,7 +200,7 @@ namespace ResourceAllocationBE.Controllers
 
         //Delete IN DB
         [HttpDelete("{id}")]
-        public JsonResult Delete(string id)
+        public JsonResult deleteProject(string id)
         {
             string query = @"
                     delete from dbo.Project
@@ -227,7 +227,7 @@ namespace ResourceAllocationBE.Controllers
 
         //Get Detail PROJECT
         [HttpGet("{id}")]
-        public JsonResult GetDetail(string id)
+        public JsonResult getDetailProject(string id)
         {
             string query = @"select *  from Project where [Code] =@Pid";
             DataTable table = new DataTable();

@@ -191,7 +191,7 @@ database them table Notifications
 - UserController theem is Active = 1 tại hàm LoginA
 
 // 20/112022
-- Check xem employee này đang ở project này, sang project khác có đổi chưa (chua check)
+- Check xem employee này đang ở project này, sang project khác có đổi chưa
 - Check email của user khi UPDATE hay INSERT đều không trùng
 if not exists(select * from [User] where email = @Email)
 
@@ -209,3 +209,34 @@ myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end == null ? "GETD
 // 22/11/2022 By Quang
 Thay hộ dòng này vào trong hàm getDetail ở userController
  myCommand.Parameters.AddWithValue("@Uid", userId!=null ? userId : "");
+
+// 23/11/2022
+- tach Approved vs reject ben resourceEmptoRole
+- theem ham getLeaderInforByBu
+        // SHOW  LEADER  INFOR  DEPARTMENT ID
+        [HttpGet]
+        [Route("api/leader/{bu}")]
+        public JsonResult getLeaderInforByBu(string bu)
+        {
+            string query = @"SELECT *
+        FROM [ResourceAllocationDB].[dbo].[User]
+        where Department_id = @bu and UserType ='leader'";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@bu", bu);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+- sua? update ben resourcePoolController
+- Admin gui thon gbao cho leader sau khi requests

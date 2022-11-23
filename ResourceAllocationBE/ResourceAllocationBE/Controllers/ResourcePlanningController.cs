@@ -24,7 +24,7 @@ namespace ResourceAllocationBE.Controllers
 
         //LOAD LIST ResourcePlanning
         [HttpGet("{pid}")]
-        public JsonResult GetListResourcePlanning(string pid)
+        public JsonResult getListResourcePlanning(string pid)
         {
             string query = @"
                     select id,Roles.RoleName, ProjectName, Roles.Role_id, 
@@ -59,7 +59,7 @@ namespace ResourceAllocationBE.Controllers
 
         //--select RESOURCEPOOL by projectname and role
         [HttpGet("view/{name}/{role}")]
-        public JsonResult ViewResourcePoolByRole(string name, string role)
+        public JsonResult viewResourcePoolByRole(string name, string role)
         {
             string query = @"
              SELECT [User].Fullname, 
@@ -102,9 +102,9 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
-        //Get Detail ResourcePlanning_Role
+        //Get Detail ResourcePlanning_Role (ko caanf)
         [HttpGet("one/{id}")]
-        public JsonResult GetDetail(string id)
+        public JsonResult getResourcePlanningDetail(string id)
         {
             string query = @"select *  from ResourcePlanning_Role where [id] =@id";
             DataTable table = new DataTable();
@@ -128,7 +128,7 @@ namespace ResourceAllocationBE.Controllers
 
         //INSERT ResourcePlanningRole
         [HttpPost]
-        public JsonResult Post(ResourcePlanningRole resource)
+        public JsonResult insertResourcePlanning(ResourcePlanningRole resource)
         {
             string query = @"
             if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id)
@@ -178,7 +178,7 @@ namespace ResourceAllocationBE.Controllers
 
         //UPDATE IN TO DB
         [HttpPut("{id}")]
-        public JsonResult Put(ResourcePlanningRole resource, int id)
+        public JsonResult updateResourcePlanning(ResourcePlanningRole resource, int id)
         {
             string query = @"
                 if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id)
@@ -275,31 +275,31 @@ namespace ResourceAllocationBE.Controllers
         //    return new JsonResult("Update Successfully");
         //}
         //PAGING 
-        [HttpGet("page/{number}")]
+        //[HttpGet("page/{number}")]
 
-        public JsonResult Paging(int number)
-        {
-            string query = @"
-                                       select * from
-                                        dbo.ResourcePlanning_Role order by [id] OFFSET @from Rows fetch next 4 rows only";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@from", (number - 1) * 4);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+        //public JsonResult Paging(int number)
+        //{
+        //    string query = @"
+        //                               select * from
+        //                                dbo.ResourcePlanning_Role order by [id] OFFSET @from Rows fetch next 4 rows only";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@from", (number - 1) * 4);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
 
-                }
-            }
-            return new JsonResult(table);
-        }
+        //        }
+        //    }
+        //    return new JsonResult(table);
+        //}
 
 
        // REQUEST
