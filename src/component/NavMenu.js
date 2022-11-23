@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { LayoutFilled, UserOutlined } from "@ant-design/icons";
 import useAuth from "./hooks/useAuth";
+import CircleIcon from '@mui/icons-material/Circle';
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 export default function NavMenu() {
 
 
@@ -26,13 +28,13 @@ export default function NavMenu() {
             <div className="sb-sidenav-menu">
               <div className="nav">
                 <div className="sb-sidenav-menu-heading">MAIN MENU</div>
-                <Link className="nav-link" to="/candidateManage">
+                <NavLink className="nav-link" to="/candidateManage">
                   <LayoutFilled style={{ margin: "5px" }} />
                   {/* <div className="sb-nav-link-icon">
                   <i className="fas fa-tachometer-alt" />
                 </div> */}
                   Candidate Management
-                </Link>
+                </NavLink>
                 <div className="sb-sidenav-menu-heading">Interface</div>
                 <Link
                   className="nav-link collapsed"
@@ -59,16 +61,16 @@ export default function NavMenu() {
                 >
                   <nav className="sb-sidenav-menu-nested nav">
                     <NavLink className="nav-link" to="/resourceAllocation">
-                      Resource Allocation
+                     <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Resource Allocation
                     </NavLink>
                     <NavLink className="nav-link" to="/resourcePlaning">
-                      Resource Planing
+                    <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Resource Planing
                     </NavLink>
                     <NavLink className="nav-link" to="/resourcePool">
-                      Resource Pool
+                    <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Resource Pool
                     </NavLink>
                     <NavLink className="nav-link" to="/requests">
-                      Requests
+                    <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Requests
                     </NavLink>
                   </nav>
                 </div>
@@ -83,7 +85,7 @@ export default function NavMenu() {
                   <div className="sb-nav-link-icon">
                     <i className="fas fa-book-open" />
                   </div>
-                  Pages
+                  Data Information
                   <div className="sb-sidenav-collapse-arrow">
                     <i className="fas fa-angle-down" />
                   </div>
@@ -98,7 +100,10 @@ export default function NavMenu() {
                     className="sb-sidenav-menu-nested nav accordion"
                     id="sidenavAccordionPages"
                   >
-                    <Link
+                  <NavLink className="nav-link" to="/report">
+                    <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Report
+                    </NavLink>
+                    {/* <Link
                       className="nav-link collapsed"
                       to="/"
                       data-bs-toggle="collapse"
@@ -128,7 +133,7 @@ export default function NavMenu() {
                           Forgot Password
                         </a>
                       </nav>
-                    </div>
+                    </div> */}
                     <Link
                       className="nav-link collapsed"
                       to="/"

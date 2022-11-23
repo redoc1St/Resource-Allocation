@@ -20,7 +20,7 @@ const handleStyleStatus = (status) => {
     );
   } else if (status === "In Progress") {
     return "In Progress";
-  } else if (status === "reject") {
+  } else if (status === "Reject") {
     return <Tag style={{ width: "85px", textAlign: "center" }} color="red">
       Rejected
     </Tag>;

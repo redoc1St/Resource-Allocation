@@ -9,24 +9,39 @@ import {
   message,
   Row,
   Select,
+  Card,
 } from "antd";
+
 import { Modal, Table } from "antd";
 import { display, height } from "@mui/system";
 import { useForm } from "react-hook-form";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { Alert } from "antd";
 
+import {
+  getLeaderByCode,
+  getLevels,
+  getRoles,
+  getSkills,
+} from "../../../../../Store/Actions/ExtraObjectActions";
+import { getResourcePoolEmp } from "../../../../../Store/Actions/ResourcePoolAction";
 export default function ModalEditPoolEmp(record) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const roles = useSelector((state) => state.ExtraObject.roles);
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
+  const [error, setError] = useState();
 
   const dispatch = useDispatch();
   console.log(record?.record);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(getRoles());
+    dispatch(getLevels());
+    dispatch(getSkills());
+  }, []);
   // console.log(record?.record)
   const showModal = () => {
     setIsModalOpen(true);
@@ -49,9 +64,9 @@ export default function ModalEditPoolEmp(record) {
       Date_start: record?.record?.Date_start,
       Date_end: record?.record?.Date_end,
       Effort: record?.record?.Effort,
-      RoleName: record?.record?.RoleName,
-      LevelName: record?.record?.Level_id,
-      SkillName: record?.record?.SkillName,
+      RoleName: record?.record?.Role_id,
+      LevelName: record?.record?.level_id,
+      SkillName: record?.record?.skill_id,
       Bill_rate: record?.record?.Bill_rate,
       Fullname: record?.record?.Fullname,
       ProjectName: record?.record?.ProjectName,
@@ -65,32 +80,34 @@ export default function ModalEditPoolEmp(record) {
     // const{pId,unit, pName}= values;
     // record?.record.id
     console.log(values);
+    if (Date.parse(values.Date_start) >= Date.parse(values.Date_end)) {
+      setError("End date must greater than start date");
+      return;
+    } else
+      try {
+        const res = await axios({
+          url:
+            process.env.REACT_APP_BASE_URL +
+            `/api/ResourcePool/update/${record?.record?.id}`,
+          method: "PUT",
+          data: {
+            Date_start: values.Date_start,
+            Date_end: values.Date_end,
+            Effort: values.Effort,
+            Bill_rate: values.Bill_rate,
+          },
+        });
+        dispatch(getResourcePoolEmp());
 
-    try {
-      const res = await axios({
-        url:
-          process.env.REACT_APP_BASE_URL +
-          `/api/ResourcePlanning/${record?.record.id}`,
-        method: "PUT",
-        data: {
-          Quantity: values.Quantity,
-          Date_start: values.Date_start,
-          Date_end: values.Date_end,
-          Effort_planned: values.Effort_planned,
-          Bill_rate: values.Bill_rate,
-          Level_id: values.LevelName,
-          Skill_id: values.SkillName,
-        },
-      });
+        message.success({
+          content: "Edit resource pool successfully",
+          style: { marginTop: "50px" },
+        });
+      } catch (err) {
+        console.log(err);
+      }
       setIsModalOpen(false);
-      // dispatch(getProjectsByName(valueInput ? valueInput : ""));
-      message.success({
-        content: "Edit resource pool successfully",
-        style: { marginTop: "50px" },
-      });
-    } catch (err) {
-      console.log(err);
-    }
+
   };
 
   return (
@@ -105,6 +122,16 @@ export default function ModalEditPoolEmp(record) {
         footer={null}
         onCancel={handleCancel}
       >
+        {/* <Card style={{width:'600px'}}> */}
+        <div style={{ textAlign: "center" }}>
+          <h5>
+            Role: {record?.record?.RoleName}&nbsp;&nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp; Level: {record?.record?.LevelName}&nbsp;&nbsp;
+            &nbsp;&nbsp; &nbsp;&nbsp; Skill: {record?.record?.SkillName}
+          </h5>
+        </div>
+        {/* </Card> */}
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <Row>
             <Col span={12}>
@@ -114,27 +141,28 @@ export default function ModalEditPoolEmp(record) {
                     <td>Name</td>
                     <td>
                       <input
+                        disabled
                         {...register("Fullname")}
                         // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
                       />
                     </td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <td>Role</td>
                     <td>
-                      <select {...register("RoleName")}>
+                      <select disabled {...register("RoleName")}>
                         <Select.Option required></Select.Option>
                         {roles.map((item, index) => {
                           return (
-                            <option value={item.RoleName} key={index}>
+                            <option value={item.Role_id} key={index}>
                               {item.RoleName}
                             </option>
                           );
                         })}
                       </select>
                     </td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <td>Start date </td>
                     <td>
@@ -154,7 +182,7 @@ export default function ModalEditPoolEmp(record) {
                     </td>
                   </tr>
 
-                  <tr>
+                  {/* <tr>
                     <td>Level</td>
                     <td>
                       <select
@@ -162,6 +190,7 @@ export default function ModalEditPoolEmp(record) {
                         // value={record.data.unit}
                         {...register("LevelName")}
                         required
+                        disabled
                         // defaultValue={3}
                       >
                         <Select.Option required></Select.Option>
@@ -174,7 +203,7 @@ export default function ModalEditPoolEmp(record) {
                         })}
                       </select>
                     </td>
-                  </tr>
+                  </tr> */}
                 </tbody>
               </table>
             </Col>
@@ -184,7 +213,7 @@ export default function ModalEditPoolEmp(record) {
                   <tr>
                     <td>Project Name</td>
                     <td>
-                      <input {...register("ProjectName")} />
+                      <input disabled {...register("ProjectName")} />
                     </td>
                   </tr>
                   <tr>
@@ -212,10 +241,10 @@ export default function ModalEditPoolEmp(record) {
                     </td>
                   </tr>
 
-                  <tr>
+                  {/* <tr>
                     <td>Skill</td>
                     <td>
-                      <select {...register("SkillName")} required>
+                      <select disabled {...register("SkillName")} required>
                         <Select.Option required></Select.Option>
                         {skills.map((item, index) => {
                           return (
@@ -226,7 +255,7 @@ export default function ModalEditPoolEmp(record) {
                         })}
                       </select>
                     </td>
-                  </tr>
+                  </tr> */}
                 </tbody>
               </table>
               <button
@@ -252,6 +281,14 @@ export default function ModalEditPoolEmp(record) {
             </Col>
           </Row>
         </form>
+        {error ? (
+          <Alert
+            style={{ marginTop: "10px" }}
+            message={error}
+            type={"error"}
+            showIcon
+          />
+        ) : null}
       </Modal>
     </div>
   );

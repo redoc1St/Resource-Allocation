@@ -4,7 +4,8 @@ import {
   GET_SKILLS,
   GET_LEADER_BY_CODE,
   GET_PNAME_BY_RLS,
-  GET_IDROLE_BY_CODERLS
+  GET_IDROLE_BY_CODERLS,
+  GET_LEADER_BY_BU,
 } from "../types";
 
 const initialState = {
@@ -13,7 +14,7 @@ const initialState = {
   skills: [],
   leader: null,
   pName: [],
-  id:null
+  id: null,
   //   project: null,
 };
 
@@ -27,10 +28,11 @@ const ExtraReducer = (state = initialState, { type, payload }) => {
       return { ...state, skills: payload };
     case GET_LEADER_BY_CODE:
       return { ...state, leader: payload };
-
+    case GET_LEADER_BY_BU:
+      return { ...state, leader: payload };
     case GET_PNAME_BY_RLS:
       return { ...state, pName: payload };
-      case GET_IDROLE_BY_CODERLS:
+    case GET_IDROLE_BY_CODERLS:
       return { ...state, id: payload };
     default:
       return state;

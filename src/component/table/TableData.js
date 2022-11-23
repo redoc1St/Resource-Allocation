@@ -17,6 +17,7 @@ import {
   getProjects,
   getProjectsByName,
 } from "../../Store/Actions/ProjectActions";
+import ModalNote from "../Content/MainContent/ModalNote";
 
 const onChange1 = (value) => {
   console.log("changed", value);
@@ -230,38 +231,17 @@ export default function TableData(sText) {
       title: "Action",
       key: "operation",
       fixed: "right",
-      width: 175,
+      width: 90,
       render: (_, record) => {
-        // <Link to="/">
-        //   <BorderColorIcon />
-        // </Link>
         const editable = isEditting(record);
-        // console.log(record)
-        // return data.length >= 1 ? (
-        //   <Space>
-        //     {editable ? (
-        //       <span>
-        //         <Space size="middle">
-        //           <Button
-        //             onClick={() => save(record.key)}
-        //             type="primary"
-        //             style={{ marginRight: 8 }}
-        //           >
-        //             Save
-        //           </Button>
-        //           <Popconfirm title="Are you sure to cancel" onConfirm={cancel}>
-        //             <Button>Cancel</Button>
-        //           </Popconfirm>
-        //         </Space>
-        //       </span>
-        //     ) : (
-        //       <Button style={{ border: "0" }} onClick={() => edit(record)}>
-        //         <BorderColorIcon />
-        //       </Button>
-        //     )}
-        //   </Space>
-        // ) : null;
-        return <ModalEditItem data={record} />;
+
+        return <>
+        <div style={{display:'flex'}}>
+        <ModalEditItem data={record} />
+          <ModalNote/>
+        </div>
+        
+        </>;
       },
     },
   ];

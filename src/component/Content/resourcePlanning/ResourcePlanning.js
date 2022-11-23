@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRoleByCode } from "../../../Store/Actions/PlanningRoleAction";
 import ModalAddRole from "./ModalAddItem";
 import {
-  getLeaderByCode,
+  getLeaderByBU,
   getLevels,
   getRoles,
   getSkills,
@@ -41,7 +41,6 @@ export default function ResourcePlanning() {
     dispatch(getRoles());
     dispatch(getLevels());
     dispatch(getSkills());
-    // dispatch(getLeaderByCode(pName))
     axios
       .get(process.env.REACT_APP_BASE_URL + `/api/${pName}`)
       .then(function (response) {

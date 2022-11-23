@@ -16,18 +16,21 @@ import { useParams } from "react-router-dom";
 import request from "../../../../../../src/api/request";
 import { useDispatch, useSelector } from "react-redux";
 import { getRoleByCode } from "../../../../../Store/Actions/PlanningRoleAction";
-import { getLeaderByCode } from "../../../../../Store/Actions/ExtraObjectActions";
+import { getLeaderByBU, getLeaderByCode } from "../../../../../Store/Actions/ExtraObjectActions";
+import { fontWeight } from "@mui/system";
 
 export default function Request(record) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-
+const leader = useSelector((state)=>state.ExtraObject.leader)
   const { pName } = useParams();
   const { pQuantity, aQuantity, sDate, eDate } = record.record.record;
   const quantity = parseInt(pQuantity) - parseInt(aQuantity);
-  // useEffect(() => {
-  // }, [pName]);
-  // console.log(record.record.record);
+  useEffect(() => {
+    dispatch(getLeaderByBU(record.record.record.Depeartment_id));
+  }, [pName]);
+  // console.log(leader.Username);  //23-11  
+  // console.log(record.record.record.Depeartment_id);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -41,7 +44,7 @@ export default function Request(record) {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      requestTo: record.record?.leader?.Username,
+      requestTo: leader.Username,   //hoặc ntn record.record?.leader?.Username,
       role: record.record.record.RoleName,
       sd: record.record.record.Date_start,
       pe: record.record.record.Effort_planned,
@@ -79,22 +82,10 @@ export default function Request(record) {
     } catch (err) {
       console.log(err);
     }
-    // console.log(values);
-    // setIsModalOpen(false);
-
-    // const { username, password } = values;
-    // try {
-    //   /// axios
-    // } catch (error) {}
-    // console.log(username);
-    // if (username === accountLogin.username && password === accountLogin.password) {
-    //   setAccount(true);
-    //   navigate("/resourceAllocation");
-    // }
   };
   return (
     <div>
-      <span onClick={showModal} >Request</span>
+      <span onClick={showModal}>Request</span>
       <Modal
         width={700}
         title="Create a general request"
@@ -103,7 +94,7 @@ export default function Request(record) {
         footer={null}
         onCancel={handleCancel}
       >
-        <form  onSubmit={handleSubmit(onSubmit)} >
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Row>
             <Col span={12}>
               <table>
@@ -111,7 +102,7 @@ export default function Request(record) {
                   <tr>
                     <th>Request to</th>
                     <td>
-                      <input  {...register("requestTo")} />
+                      <input style={{fontWeight:'bold'}} disabled {...register("requestTo")} />
                       {/* <select {...register("request")} required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="ThaiBA">
@@ -173,16 +164,6 @@ export default function Request(record) {
                     <th>Level</th>
                     <td>
                       <input disabled {...register("level")} />
-
-                      {/* <select {...register("level")} disabled required>
-                        <Select.Option required></Select.Option>
-                        <option defaultValue value="Junior">
-                          Junior
-                        </option>
-                        <option defaultValue value="Senior">
-                          Senior
-                        </option>
-                      </select> */}
                     </td>
                   </tr>
                 </tbody>
@@ -235,14 +216,7 @@ export default function Request(record) {
                   <tr>
                     <th>% Bill</th>
                     <td>
-                      <input
-                        disabled
-                        // type="number"
-                        min={0}
-                        {...register("pBill")}
-                        // placeholder="0"
-                        // required
-                      />
+                      <input disabled min={0} {...register("pBill")} />
                     </td>
                   </tr>
 

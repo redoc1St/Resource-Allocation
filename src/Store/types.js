@@ -20,6 +20,8 @@ export const GET_SKILLS='GET_SKILLS'
 export const GET_ROLES='GET_ROLES'
 export const GET_PNAME_BY_RLS='GET_PNAME_BY_RLS'
 export const GET_IDROLE_BY_CODERLS='GET_IDROLE_BY_CODERLS'
+export const GET_LEADER_BY_BU='GET_LEADER_BY_BU'
+
 
 
 //resource pool

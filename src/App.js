@@ -35,6 +35,7 @@ import { useDispatch } from "react-redux";
 import { getProjects } from "./Store/Actions/ProjectActions";
 import axios from "./api/request";
 import Forgot from "./component/login/forgot/Forgot.js";
+import Report from "./component/Content/report/Report";
 // import '../src/api/request'
 export const AuthContext = React.createContext(); //chuyền sang cái khác
 
@@ -178,6 +179,8 @@ function App() {
                     element={<ResourcePool />}
                   />
                   <Route exact path="/requests" element={<RequestPage />} />
+                  <Route exact path="/report" element={<Report />} />
+                 
                   <Route exact path="/profile" element={<Profile />} />
                 </Route>
                 {/* {console.log(onclickShowLeft)} */}
