@@ -240,3 +240,8 @@ Thay hộ dòng này vào trong hàm getDetail ở userController
         }
 - sua? update ben resourcePoolController
 - Admin gui thon gbao cho leader sau khi requests
+
+-- check emp_role neu trung..
+- forgotpassword gui mail 
+Install-Package MailKit
+Install-Package MimeKit

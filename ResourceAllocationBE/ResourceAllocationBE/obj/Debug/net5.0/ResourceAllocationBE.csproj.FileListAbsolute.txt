@@ -83,3 +83,12 @@ D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\Mic
 D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\MailKit.dll
+D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\MimeKit.dll
+D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\System.Formats.Asn1.dll
+D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\System.Security.Cryptography.Pkcs.dll
+D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\System.Text.Encoding.CodePages.dll
+D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.1\System.Security.Cryptography.Pkcs.dll
+D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocationBE\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.1\System.Text.Encoding.CodePages.dll

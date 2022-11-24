@@ -286,5 +286,7 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("Update Successfully");
         }
+
+
     }
 }
