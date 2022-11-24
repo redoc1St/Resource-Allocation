@@ -410,18 +410,17 @@ else select * from Emp_RolePlanning
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
                     ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
 
-				if not exists ( select * from [ResourcePlanning_Employee] where Role_id = 1 and Level_id =2 and Skill_id =3 and Employee_id = 3)
-                update dbo.Project
-                set [Employee_id] = 3, 
-                [Role_id]= 1, 
-                [Date_start] = '',
-                [Date_end] = '',
-                [Effort]=50,
-                [Bill_rate]=50, 
-                [Level_id]=2, 
-                [Skill_id]=3
-                WHERE [id] = 3
 
-				SELECT *
-        FROM [ResourceAllocationDB].[dbo].[User]
-        where Department_id = 1 and UserType ='leader'
+	if not exists(	SELECT *  FROM Project, ResourcePlanning_Role, [USER], Roles, Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
+           WHERE	Project.Project_id = ResourcePlanning_Role.Project_id AND
+                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
+				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
+				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
+                Roles.Role_id = ResourcePlanning_Role.Role_id AND
+                Levels.Level_id = ResourcePlanning_Role.Level_id AND
+                Skill.Skill_id = ResourcePlanning_Role.Skill_id
+                and ProjectName ='projectname2' AND Roles.RoleName = 'DEV' and ResourcePlanning_Employee.id=11)
+				insert into ResourceRequestEmployee values(
+                6,11,2,'','In Progress',GETDATE())
+                else
+				select * from [user]

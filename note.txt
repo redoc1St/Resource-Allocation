@@ -245,3 +245,14 @@ Thay hộ dòng này vào trong hàm getDetail ở userController
 - forgotpassword gui mail 
 Install-Package MailKit
 Install-Package MimeKit
+
+//24/11/2022
+report Emp
+SELECT *
+  FROM [ResourceAllocationDB].[dbo].[ResourcePlanning_Employee]
+ left join project on project.[Project_id] = [ResourcePlanning_Employee].[Project_id]
+ join emp_roleplanning on emp_roleplanning.[Employee_id] = [ResourcePlanning_Employee].id
+
+- check emp_roleplanning
+- them else -> Fails
+- note trong project
