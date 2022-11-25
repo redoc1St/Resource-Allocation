@@ -146,7 +146,9 @@ namespace ResourceAllocationBE.Controllers
                 @Bill_rate,@Level_id,
                 @Skill_id,
                 'Waiting'
-                )";
+                )
+                else
+select * from [user]";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -171,6 +173,10 @@ namespace ResourceAllocationBE.Controllers
                     myCon.Close();
 
                 }
+            }
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult("FAILS");
             }
             return new JsonResult("Added Successfully");
         }

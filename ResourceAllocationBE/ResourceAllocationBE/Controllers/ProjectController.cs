@@ -118,7 +118,10 @@ namespace ResourceAllocationBE.Controllers
         @Effort_actual,@Effort_billable,
         @Quantity_plan,@Quantity_actual,
         @Start_plan,@Start_actual,
-        @End_plan,@End_actual)";
+        @End_plan,@End_actual)
+        else
+        select * from [user]
+";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -147,6 +150,10 @@ namespace ResourceAllocationBE.Controllers
                     myCon.Close();
 
                 }
+            }
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult("FAILS");
             }
             return new JsonResult("Added Successfully");
         }

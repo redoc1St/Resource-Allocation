@@ -240,8 +240,8 @@ namespace ResourceAllocationBE.Controllers
         }
 
         // REQUEST EMPLOYEE TO ROLE PLANNING (KHAC BU)(Existed and Approved in Project) 
-        [HttpPost("EmpToRole/{projectName}/{roleName}")]
-        public JsonResult requestEmployeeToRolePlanning(RequestModel request, string projectName, string roleName)
+        [HttpPost("EmpToRole")]
+        public JsonResult requestEmployeeToRolePlanning(RequestModel request)
         {
             string query = @"
             	if not exists(SELECT * FROM Project, ResourcePlanning_Role, [USER], Roles, Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
@@ -252,7 +252,7 @@ namespace ResourceAllocationBE.Controllers
                 Roles.Role_id = ResourcePlanning_Role.Role_id AND
                 Levels.Level_id = ResourcePlanning_Role.Level_id AND
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
-                and ProjectName = @projectName AND Roles.RoleName = @roleName and ResourcePlanning_Employee.id = @eid)
+                and ResourcePlanning_Role.id = @rid and ResourcePlanning_Employee.id = @eid)
                 insert into ResourceRequestEmployee values(
                 @rid,@eid,2,'','In Progress',GETDATE())
                 else
@@ -268,8 +268,6 @@ namespace ResourceAllocationBE.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
                     myCommand.Parameters.AddWithValue("@eid", request.employee_id);
-                    myCommand.Parameters.AddWithValue("@roleName", roleName);
-                    myCommand.Parameters.AddWithValue("@projectName", projectName);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -283,8 +281,8 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult("Added Successfully");
         }
         // REQUEST truc tiep  EMPLOYEE TO ROLE PLANNING (cung BU)
-        [HttpPost("EmpToRoleDirect/{projectName}/{roleName}")]
-        public JsonResult requestDirectEmployeeToRolePlanning(RequestModel request, string projectName, string roleName)
+        [HttpPost("EmpToRoleDirect")]
+        public JsonResult requestDirectEmployeeToRolePlanning(RequestModel request)
         {
             string query = @"
                 if not exists(SELECT * FROM Project, ResourcePlanning_Role, [USER], Roles, Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
@@ -295,8 +293,10 @@ namespace ResourceAllocationBE.Controllers
                 Roles.Role_id = ResourcePlanning_Role.Role_id AND
                 Levels.Level_id = ResourcePlanning_Role.Level_id AND
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
-                and ProjectName = @projectName AND Roles.RoleName = @roleName and ResourcePlanning_Employee.id = @eid)
+               AND ResourcePlanning_Role.id = @rid and ResourcePlanning_Employee.id = @eid)
              insert into Emp_RolePlanning values(@rid,@eid)
+                else
+				select * from [user]
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -308,13 +308,15 @@ namespace ResourceAllocationBE.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
                     myCommand.Parameters.AddWithValue("@eid", request.employee_id);
-                    myCommand.Parameters.AddWithValue("@roleName", roleName);
-                    myCommand.Parameters.AddWithValue("@projectName", projectName);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
                     myCon.Close();
                 }
+            }
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult("FAILS");
             }
             return new JsonResult("Added Successfully");
         }
