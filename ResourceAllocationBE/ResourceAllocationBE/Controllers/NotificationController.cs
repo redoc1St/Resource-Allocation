@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using ResourceAllocationBE.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,11 +22,11 @@ namespace ResourceAllocationBE.Controllers
             _configuration = configuration;
         }
         [HttpGet]
-        public JsonResult getNotification()
+        public JsonResult getNotification(User user)
         {
             string query = @"
                                select * from
-                                dbo.[Notifications]";
+                                dbo.[Notifications] where [user_id] = @id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -34,6 +35,7 @@ namespace ResourceAllocationBE.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    myCommand.Parameters.AddWithValue("@id",user.User_id);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

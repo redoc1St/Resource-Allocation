@@ -21,13 +21,17 @@ namespace ResourceAllocationBE.Controllers
         }
         //report Emp
         [HttpGet("Employee")]
-        public JsonResult getListRequestResourcePlanning()
+        public JsonResult getListReportResourceAllocation()
         {
             string query = @"
                     SELECT *
                     FROM [ResourceAllocationDB].[dbo].[ResourcePlanning_Employee]
                     left join project on project.[Project_id] = [ResourcePlanning_Employee].[Project_id]
-                    join emp_roleplanning on emp_roleplanning.[Employee_id] = [ResourcePlanning_Employee].id";
+                    join emp_roleplanning on emp_roleplanning.[Employee_id] = [ResourcePlanning_Employee].id
+                    join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
+                    join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
+		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

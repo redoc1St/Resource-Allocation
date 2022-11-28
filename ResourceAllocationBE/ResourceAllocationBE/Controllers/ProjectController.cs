@@ -255,5 +255,33 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
+
+        //UPDATE NOTE IN TO DB
+        [HttpPut("{id}")]
+        public JsonResult updateNoteProject(Project project, int id)
+        {
+            string query = @"
+            update dbo.Project set note = @note
+            WHERE [Project_id] = @id";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@id", id);
+                    myCommand.Parameters.AddWithValue("@note", project.Note);
+                   
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult("Update Successfully");
+        }
     }
 }

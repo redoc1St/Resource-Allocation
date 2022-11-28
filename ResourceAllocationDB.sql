@@ -411,16 +411,13 @@ else select * from Emp_RolePlanning
                     ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
 
 
-	if not exists(	SELECT *  FROM Project, ResourcePlanning_Role, [USER], Roles, Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
-           WHERE	Project.Project_id = ResourcePlanning_Role.Project_id AND
-                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
-				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
-				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
-                Roles.Role_id = ResourcePlanning_Role.Role_id AND
-                Levels.Level_id = ResourcePlanning_Role.Level_id AND
-                Skill.Skill_id = ResourcePlanning_Role.Skill_id
-                and ProjectName ='projectname2' AND Roles.RoleName = 'DEV' and ResourcePlanning_Employee.id=11)
-				insert into ResourceRequestEmployee values(
-                6,11,2,'','In Progress',GETDATE())
-                else
-				select * from [user]
+
+
+				SELECT *
+                    FROM [ResourceAllocationDB].[dbo].[ResourcePlanning_Employee]
+                    left join project on project.[Project_id] = [ResourcePlanning_Employee].[Project_id]
+                    join emp_roleplanning on emp_roleplanning.[Employee_id] = [ResourcePlanning_Employee].id
+                    join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
+                    join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
+		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id

@@ -19,6 +19,7 @@ namespace ResourceAllocationBE.Model
         public string Start_plan { get; set; }
         public string Start_actual { get; set; }
         public string End_plan { get; set; }
-        public string End_actual { get; set; }
+        public string End_actual { get; set;}
+        public string Note { get; set; }
     }
 }
