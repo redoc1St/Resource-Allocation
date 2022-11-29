@@ -6,7 +6,33 @@ using System.Threading.Tasks;
 
 namespace ResourceAllocation.UnitTest.ResourcePoolTest
 {
-    class ResourcePoolProcessor
+    public class ResourcePoolProcessor : IResourcePoolProcessor
     {
+        private readonly IResourceAllocationProcessor resourceAllocationProcessor;
+
+        public ResourcePoolProcessor(IResourceAllocationProcessor resourceAllocationProcessor)
+        {
+            this.resourceAllocationProcessor = resourceAllocationProcessor;
+        }
+        public bool getListResourcePool(string type)
+        {
+            if(type != "admin")
+            throw new ArgumentException("Cannot see this list");
+            return true;
+        }
+
+        public bool getListResourcePoolByName(string name)
+        {
+            return true;
+        }
+
+        public bool getListResourcePoolByRLS(string role, string levels, string skill)
+        {
+            if (role == "" || levels == "" || skill =="")
+            {
+                throw new ArgumentNullException("Cannot find employee");
+            }
+            return true;
+        }
     }
 }
