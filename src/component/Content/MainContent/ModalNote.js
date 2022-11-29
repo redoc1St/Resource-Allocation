@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
-import MessageIcon from '@mui/icons-material/Message';
-export default function ModalNote() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+import MessageIcon from "@mui/icons-material/Message";
+import { getProjects } from "../../../Store/Actions/ProjectActions";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { Col, message, Row, Select } from "antd";
 
+export default function ModalNote(data) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+// console.log(data.data.id);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -15,9 +21,33 @@ export default function ModalNote() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const handleSubmitNote = async (e) => {
+    e.preventDefault();
+    console.log(e.target.elements.note.value);
+    try {
+      const res = await axios({
+        url: process.env.REACT_APP_BASE_URL + `/api/project/Note/${data.data.id}`,
+        method: "PUT",
+        data: {
+          note: e.target.elements.note.value,
+        },
+      });
+      setIsModalOpen(false);
+      // dispatch(getProjects());
+      // dispatch(getProjectsByName(valueInput ? valueInput : ""));
+      message.success({
+        content: "Edit note successfully",
+        style: { marginTop: "50px" },
+      });
+
+      dispatch(getProjects());
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
-      <span style={{ border: "0", marginLeft:'10px' }} onClick={showModal}>
+      <span style={{ border: "0", marginLeft: "10px" }} onClick={showModal}>
         <MessageIcon style={{ cursor: "pointer" }} />
       </span>
       <Modal
@@ -26,9 +56,12 @@ export default function ModalNote() {
         footer={null}
         onCancel={handleCancel}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <form onSubmit={handleSubmitNote}>
+          <h4>Note for project:</h4>
+          <textarea  name="note" rows={4} cols={50} required defaultValue={data.data.note}/>
+          <br />
+          <input type="submit" />
+        </form>
       </Modal>
     </>
   );

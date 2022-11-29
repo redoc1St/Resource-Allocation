@@ -50,11 +50,17 @@ export default function ModalAddRole(record) {
           method: "POST",
           data: { Project_id: record.pId, ...values },
         });
-
-        message.success({
-          content: "Add planning role successfully",
-          style: { marginTop: "50px" },
-        });
+        if (res.data == "Added Successfully") {
+          message.success({
+            content: "Add planning role successfully",
+            style: { marginTop: "50px" },
+          });
+        } else if (res.data == "FAILS") {
+          message.error({
+            content: "This role level skill already exist in this project",
+            style: { marginTop: "50px" },
+          });
+        }
         dispatch(getRoleByCode(pName));
 
         setIsModalOpen(false);

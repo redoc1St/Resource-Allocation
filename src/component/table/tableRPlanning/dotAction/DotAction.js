@@ -33,9 +33,9 @@ export default function DotAction(record) {
           key: "2",
           // label: <Link to={{pathname:'/resourcePool'}} state={record} >Request</Link>,
           label:
-            record.record.Status.props.children === "Approved" ||
-            record.record.Status.props.children === "Rejected" ||
-            record.record.Status.props.children === "In Progress" 
+            record.record.Status?.props.children === "Approved" ||
+            record.record.Status?.props.children === "Rejected" ||
+            record.record.Status?.props.children === "In Progress" 
              ? (
               ""
             ) : (

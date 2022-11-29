@@ -112,12 +112,12 @@ export default function GeneralRequests() {
         {console.log(id)}
           <div style={{ textAlign: "center" }}>
             <HowToRegRoundedIcon
-              onClick={() => handleAccept({status:"approved", id:id})}
+              onClick={() => handleAccept({status:"Approved", id:id})}
               style={{ color: "green", cursor: "pointer" }}
             />
 
             <CancelRoundedIcon
-              onClick={() => handleAccept({status:"reject", id:id})}
+              onClick={() => handleAccept({status:"Reject", id:id})}
               style={{ marginLeft: "10px", color: "red", cursor: "pointer" }}
             />
           </div>

@@ -24,6 +24,7 @@ export const getProjects = () => async (dispatch) => {
         sda: new Date(project.Start_actual).toLocaleDateString("fr-CA"),
         edp: new Date(project.End_plan).toLocaleDateString("fr-CA"),
         eda: new Date(project.End_actual).toLocaleDateString("fr-CA"),
+        note:project.note
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_PROJECTS, payload: projects });

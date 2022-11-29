@@ -12,6 +12,7 @@ export default function Profile() {
   const { logout, user, verifyUserInfo } = useAuth();
   const [error, setError] = useState();
   const [typeMessage, setTypeMessage] = useState("error");
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   console.log(user);
   const changeStatus = (e) => {
@@ -50,6 +51,9 @@ export default function Profile() {
     }
   };
 
+  const onClickShowPass = () => {
+    setPasswordVisible(!passwordVisible);
+  };
   const onClickChange = () => {
     setShowChangePass(!showChangePass);
   };
@@ -68,7 +72,7 @@ export default function Profile() {
   });
   const onSubmit = async (values) => {
     console.log(values);
-    if (values.curPass != values.conPass) {
+    if (values.conPass != values.newPass) {
       setError("Confirm password does not match ");
     } else {
       if (user?.Password != values.curPass) {
@@ -114,28 +118,30 @@ export default function Profile() {
                   <div className="col">
                     <div className="form-group">
                       <label>Current Password</label>
+                  <div style={{ display: "flex" }}>
+                  {passwordVisible ?
+
                       <input
                         {...register("curPass")}
                         className="form-control"
                         type="password"
                         placeholder="••••••"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <div className="form-group">
-                      <label>
-                        Confirm{" "}
-                        <span className="d-none d-xl-inline">Password</span>
-                      </label>
-                      <input
-                        {...register("conPass")}
+                      /> : <input
+                        {...register("curPass")}
                         className="form-control"
-                        type="password"
-                        placeholder="••••••"
-                      />
+                        type="text"
+                        placeholder="••••••"></input>}
+                      <i
+                        className="bi bi-eye-slash"
+                        onClick={onClickShowPass}
+                        style={{
+                          fontSize: "25px",
+                          cursor: "pointer",
+                          marginLeft: "-40px",
+                        }}
+                        id="togglePassword"
+                      ></i>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -144,6 +150,8 @@ export default function Profile() {
                   <div className="col">
                     <div className="form-group">
                       <label>New Password</label>
+                  <div style={{ display: "flex" }}>
+                     
                       <input
                         {...register("newPass", {
                           required: true,
@@ -153,6 +161,17 @@ export default function Profile() {
                         type="password"
                         placeholder="••••••"
                       />
+                       {/* <i
+                        className="bi bi-eye-slash"
+                        onClick={onClickShowPass}
+                        style={{
+                          fontSize: "25px",
+                          cursor: "pointer",
+                          marginLeft: "-40px",
+                        }}
+                        id="togglePassword"
+                      ></i> */}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -162,6 +181,36 @@ export default function Profile() {
                 {errors?.newPass?.type === "minLength" && (
                   <p style={{ color: "red" }}>Password phải lớn hơn 6 ký tự</p>
                 )}
+
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label>
+                        Confirm{" "}
+                        <span className="d-none d-xl-inline">Password</span>
+                      </label>
+                  <div style={{ display: "flex" }}>
+
+                      <input
+                        {...register("conPass")}
+                        className="form-control"
+                        type="password"
+                        placeholder="••••••"
+                      />
+                        {/* <i
+                        className="bi bi-eye-slash"
+                        onClick={onClickShowPass}
+                        style={{
+                          fontSize: "25px",
+                          cursor: "pointer",
+                          marginLeft: "-40px",
+                        }}
+                        id="togglePassword"
+                      ></i> */}
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 {error ? (
                   <Alert
@@ -218,8 +267,12 @@ export default function Profile() {
                       <div className="e-profile">
                         <div className="row">
                           <div className="col-12 col-sm-auto mb-3">
-                            <div className="mx-auto" style={{ width: "140px" }}>
-                              <div
+                            {/* <div className="mx-auto" style={{ width: "140px" }}> */}
+                            <img
+                              style={{ width: "160px" }}
+                              src="https://cdn1.iconfinder.com/data/icons/business-and-finance-flat-4/128/Personnel_man_staff_avatar_people_star_rating-512.png"
+                            ></img>
+                            {/* <div
                                 className="d-flex justify-content-center align-items-center rounded"
                                 style={{
                                   height: "140px",
@@ -234,8 +287,8 @@ export default function Profile() {
                                 >
                                   140x140
                                 </span>
-                              </div>
-                            </div>
+                              </div> */}
+                            {/* </div> */}
                           </div>
                           <div className="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                             <div className="text-center text-sm-left mb-2 mb-sm-0">
@@ -253,12 +306,15 @@ export default function Profile() {
                                 </button>
                               </div>
                             </div>
-                            <div className="text-center text-sm-right" style={{fontSize:'20px'}}>
+                            <div
+                              className="text-center text-sm-right"
+                              style={{ fontSize: "20px" }}
+                            >
                               <span className=" text-secondary">
                                 {user?.UserType}
                               </span>
                               <div className="text-muted">
-                                <small>{user?.Start_Day.split('T')[0]}</small>
+                                <small>{user?.Start_Day.split("T")[0]}</small>
                               </div>
                             </div>
                           </div>
@@ -318,9 +374,9 @@ export default function Profile() {
                                     </div>
                                     <div className="col">
                                       <div className="form-group">
-                                        <label>BirthDay</label>                                       
+                                        <label>BirthDay</label>
                                         <input
-                                          value={user?.BirthDay.split('T')[0]}
+                                          value={user?.BirthDay.split("T")[0]}
                                           type="text"
                                           className="form-control"
                                           disabled
@@ -329,9 +385,9 @@ export default function Profile() {
                                     </div>
                                     <div className="col-2">
                                       <div className="form-group">
-                                        <label>Department</label>                                       
+                                        <label>Department</label>
                                         <input
-                                          value={'BU '+user?.Department_id} 
+                                          value={"BU " + user?.Department_id}
                                           type="text"
                                           className="form-control"
                                           disabled

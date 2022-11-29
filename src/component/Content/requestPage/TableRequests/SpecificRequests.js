@@ -107,7 +107,7 @@ export default function SpecificRequests() {
         {console.log(item)}
         <div style={{ textAlign: "center" }}>
           <HowToRegRoundedIcon
-            onClick={() => handleAccept({ status: "approved", item: item })}
+            onClick={() => handleAccept({ status: "Approved", item: item })}
             style={{ color: "green", cursor: "pointer" }}
           />
 
@@ -122,7 +122,6 @@ export default function SpecificRequests() {
 
   const handleAccept = async (value) => {
     // console.log(value);
-
     try {
       const res = await request({
         url:

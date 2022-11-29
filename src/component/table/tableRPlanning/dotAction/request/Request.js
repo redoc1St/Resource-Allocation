@@ -16,20 +16,23 @@ import { useParams } from "react-router-dom";
 import request from "../../../../../../src/api/request";
 import { useDispatch, useSelector } from "react-redux";
 import { getRoleByCode } from "../../../../../Store/Actions/PlanningRoleAction";
-import { getLeaderByBU, getLeaderByCode } from "../../../../../Store/Actions/ExtraObjectActions";
+import {
+  getLeaderByBU,
+  getLeaderByCode,
+} from "../../../../../Store/Actions/ExtraObjectActions";
 import { fontWeight } from "@mui/system";
 
 export default function Request(record) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-const leader = useSelector((state)=>state.ExtraObject.leader)
+  const leader = useSelector((state) => state.ExtraObject.leader);
   const { pName } = useParams();
   const { pQuantity, aQuantity, sDate, eDate } = record.record.record;
   const quantity = parseInt(pQuantity) - parseInt(aQuantity);
   useEffect(() => {
     dispatch(getLeaderByBU(record.record.record.Depeartment_id));
   }, [pName]);
-  // console.log(leader.Username);  //23-11  
+  // console.log(leader.Username);  //23-11
   // console.log(record.record.record.Depeartment_id);
   const showModal = () => {
     setIsModalOpen(true);
@@ -44,7 +47,7 @@ const leader = useSelector((state)=>state.ExtraObject.leader)
     handleSubmit,
   } = useForm({
     defaultValues: {
-      requestTo: leader.Username,   //hoặc ntn record.record?.leader?.Username,
+      requestTo: leader.Username, //hoặc ntn record.record?.leader?.Username,
       role: record.record.record.RoleName,
       sd: record.record.record.Date_start,
       pe: record.record.record.Effort_planned,
@@ -64,7 +67,9 @@ const leader = useSelector((state)=>state.ExtraObject.leader)
     console.log(values);
     try {
       const res = await request({
-        url: process.env.REACT_APP_BASE_URL + "/api/Request/RolePlanning",
+        url:
+          process.env.REACT_APP_BASE_URL +
+          `/api/Request/RolePlanning/Noti/${leader.User_id}`,
         method: "POST",
         data: {
           resourceRole_id: record.record.record.id,
@@ -102,7 +107,11 @@ const leader = useSelector((state)=>state.ExtraObject.leader)
                   <tr>
                     <th>Request to</th>
                     <td>
-                      <input style={{fontWeight:'bold'}} disabled {...register("requestTo")} />
+                      <input
+                        style={{ fontWeight: "bold" }}
+                        disabled
+                        {...register("requestTo")}
+                      />
                       {/* <select {...register("request")} required>
                         <Select.Option required></Select.Option>
                         <option defaultValue value="ThaiBA">

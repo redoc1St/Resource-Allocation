@@ -7,11 +7,15 @@ import { fontSize } from "@mui/system";
 import axios from "axios";
 import { Alert, Space } from "antd";
 import { Link } from "react-router-dom";
-
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Button, Input } from "antd";
+import { Helmet } from "react-helmet"
+// import { Input } from 'antd';
 export default function Login() {
   const navigate = useNavigate();
   const { setAccount, login, logout } = useAuth();
   const [error, setError] = useState();
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   const {
     register,
@@ -25,6 +29,7 @@ export default function Login() {
     },
     mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
+
 
   const p = <p style={{ color: "red", fontSize: "20px" }}> Login Fail</p>;
 
@@ -70,6 +75,9 @@ export default function Login() {
     // }
   };
 
+  const onClickShowPass=()=>{
+    setPasswordVisible(!passwordVisible)    
+  }
   return (
     <div>
       <section className="vh-100">
@@ -98,27 +106,57 @@ export default function Login() {
                   </label>
                 </div>
                 {errors?.email?.type === "required" && (
-                  <p style={{ color: "red" }}>Email không được để trống</p>
+                  <p style={{ color: "red" }}>Email cannot be blank</p>
                 )}
                 {/* Password input */}
                 <div className="form-outline mb-3">
-                  <input
-                    name="password"
-                    type="password"
-                    id="form3Example4"
-                    className="form-control form-control-lg"
-                    placeholder="Enter password"
-                    {...register("password", { required: true, minLength: 6 })}
-                  />
+                  <div style={{ display: "flex" }}>
+                  {passwordVisible ?
+                    <input
+                      name="password"
+                      type="password"
+                      id="form3Example4"
+                      className="form-control form-control-lg"
+                      placeholder="Enter password"
+                      {...register("password", {
+                        required: true,
+                        minLength: 6,
+                      })}
+                    /> : <input
+                      name="password"
+                      type="text"
+                      id="form3Example4"
+                      className="form-control form-control-lg"
+                      placeholder="Enter password"
+                      {...register("password", {
+                        required: true,
+                        minLength: 6,
+                      })}
+                    />}
+                    <i
+                      className="bi bi-eye-slash"
+                      onClick={onClickShowPass}
+                      style={{
+                        fontSize: "25px",
+                        cursor: "pointer",
+                        marginTop: "3px",
+                        marginLeft: "-40px",
+                      }}
+                      id="togglePassword"
+                    ></i>
+                  </div>
+
                   <label className="form-label" htmlFor="form3Example4">
                     Password
                   </label>
                 </div>
                 {errors?.password?.type === "required" && (
-                  <p style={{ color: "red" }}>Password không được để trống</p>
+                  <p style={{ color: "red" }}>Password cannot be blank</p>
                 )}
                 {errors?.password?.type === "minLength" && (
-                  <p style={{ color: "red" }}>Password phải lớn hơn 6 ký tự</p>
+                  <p style={{ color: "red" }}>
+                    Password must be more than 6 characters
+                  </p>
                 )}
                 {error ? (
                   <Alert
@@ -146,9 +184,7 @@ export default function Login() {
                     </label>
                   </div>
                   <Link to="/forgot" className="text-body">
-                   
-                    <span style={{color:'blue'}}> forgot password</span>
-
+                    <span style={{ color: "blue" }}> forgot password</span>
                   </Link>
                 </div>
 
@@ -167,6 +203,7 @@ export default function Login() {
           </div>
         </div>
       </section>
+      
     </div>
   );
 }

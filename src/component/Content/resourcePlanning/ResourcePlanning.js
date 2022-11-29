@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 // import { Card, Dropdown } from "antd";
 import { DownOutlined, UserOutlined } from "@ant-design/icons";
 import "../../../css/styles.css";
@@ -16,10 +16,13 @@ import {
   getRoles,
   getSkills,
 } from "../../../Store/Actions/ExtraObjectActions";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
 import axios from "axios";
 import { useState } from "react";
 export default function ResourcePlanning() {
   const { pName } = useParams();
+  const navigate = useNavigate();
 
   const projects = useSelector((state) => state.Projects.projects);
   const planningRoles = useSelector((state) => state.PlanningRoles.roles);
@@ -114,7 +117,8 @@ export default function ResourcePlanning() {
         Resource Planning
       </h3>
       <h5 style={{ color: "#162274" }}>
-        Resource Planning | <span style={{ color: "#f66800" }}>{getPName}</span>
+       
+      <span onClick={() => navigate(-1)}><ArrowBackIosIcon style={{cursor:'pointer',color:'black'}} /></span> | Resource Planning | <span style={{ color: "#f66800" }}>{getPName}</span>
       </h5>
       <div
         className="site-card-border-less-wrapper"

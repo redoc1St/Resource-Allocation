@@ -193,7 +193,7 @@ export default function ModalEditItem(data) {
                   <tr>
                     <td>Project Name *</td>
                     <td>
-                      <input name="pName" {...register("pName")} required />
+                      <input name="pName" {...register("pName")} maxLength='50' required />
                     </td>
                   </tr>
                   <tr>

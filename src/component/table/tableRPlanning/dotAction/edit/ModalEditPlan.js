@@ -181,7 +181,7 @@ export default function ModalEditPlan(record) {
                   <tr>
                     <td>Quantity</td>
                     <td>
-                      <input {...register("Quantity")} />
+                      <input type={'number'} {...register("Quantity")} />
                     </td>
                   </tr>
                   <tr>

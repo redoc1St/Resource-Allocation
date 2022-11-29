@@ -36,6 +36,7 @@ import { getProjects } from "./Store/Actions/ProjectActions";
 import axios from "./api/request";
 import Forgot from "./component/login/forgot/Forgot.js";
 import Report from "./component/Content/report/Report";
+import ReportRSPLanning from "./component/table/tableReport/ReportRSPlanning/ReportRSPLanning";
 // import '../src/api/request'
 export const AuthContext = React.createContext(); //chuyền sang cái khác
 
@@ -180,6 +181,7 @@ function App() {
                   />
                   <Route exact path="/requests" element={<RequestPage />} />
                   <Route exact path="/report" element={<Report />} />
+                  <Route exact path="/report/resourcePlaning/:pName" element={<ReportRSPLanning />} />
                  
                   <Route exact path="/profile" element={<Profile />} />
                 </Route>

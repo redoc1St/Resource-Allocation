@@ -12,8 +12,6 @@ export default function Forgot() {
   const { setAccount, login, logout } = useAuth();
   const [error, setError] = useState();
 
-
-
   const {
     register,
     formState: { errors },
@@ -22,7 +20,6 @@ export default function Forgot() {
   } = useForm({
     defaultValues: {
       email: "",
-      password: "",
     },
     mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
@@ -32,18 +29,19 @@ export default function Forgot() {
   const onSubmit = async (values) => {
     const { email } = values;
     console.log(values);
+    var bodyFormData = new FormData();
+    bodyFormData.append("ToEmail", email);
+    bodyFormData.append("Subject", "Forgot password");
+    // bodyFormData.append("ToEmail",email)
+
     try {
-    //   const res = await axios({
-    //     url: process.env.REACT_APP_BASE_URL + "/api/user/login",
-    //     method: "post",
-    //     data: { email, password },
-    //   });
+      const res = await axios({
+        url: process.env.REACT_APP_BASE_URL + "/api/mail/sendMail",
+        method: "post",
+        data: bodyFormData,
+      });
 
-    //   if (res.data) {
-
-    //   } else {
-    //     setError("email or password is incorrect");
-    //   }
+      setError("Your password has been changed, please check your mail !!!");
 
       // console.log("abc", res.data.data.token);
     } catch (error) {
@@ -64,12 +62,11 @@ export default function Forgot() {
               />
             </div>
             <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <h3 style={{textAlign:'center'}}>Forgot password</h3>
+              <h3 style={{ textAlign: "center" }}>Forgot password</h3>
               <form onSubmit={handleSubmit(onSubmit)}>
                 {/* Email input */}
                 <div className="form-outline mb-4">
                   <input
-                  
                     type="email"
                     id="form3Example3"
                     className="form-control form-control-lg"
@@ -81,17 +78,24 @@ export default function Forgot() {
                   </label>
                 </div>
                 {errors?.email?.type === "required" && (
-                  <p style={{ color: "red" }}>Email không được để trống</p>
+                  <p style={{ color: "red" }}>Email cannot be blank</p>
                 )}
-    
-               
-               
-             
+                {error ? (
+                  <Alert
+                    style={{ marginTop: "10px" }}
+                    message={error}
+                    type={"success"}
+                    showIcon
+                  />
+                ) : null}
+
                 {onSubmit}
 
                 <div className="d-flex justify-content-between align-items-center">
-                  <Link  to="/login" className="text-body">
-                    <span style={{color:'blue',marginLeft:'200px'}}>Already have an account</span>
+                  <Link to="/login" className="text-body">
+                    <span style={{ color: "blue", marginLeft: "200px" }}>
+                      Already have an account
+                    </span>
                   </Link>
                 </div>
 

@@ -29,7 +29,6 @@ export default function AddToProject(type) {
   // },[codeProject])
 
   useEffect(() => {
-    // console.log(PNames);
     // console.log(type?.record.Role_id);
     // console.log(type?.record.level_id);
     // console.log(type?.record.skill_id);
@@ -270,9 +269,10 @@ export default function AddToProject(type) {
           <form onSubmit={handleSubmit(onSubmit2)}>
             <h5>Project name</h5>
             <select {...register("pName")} required>
-              {/* <Select.Option required></Select.Option> */}
-              {/* {listPName} */}
-              {/* <option>{PNames[0]?.ProjectName}</option> */}
+             {
+    console.log(PNames)
+
+             }
 
               {PNames.map((item, index) => {
                 return (

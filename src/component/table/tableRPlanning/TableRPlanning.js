@@ -135,7 +135,7 @@ export default function TableResourcePlanning(data) {
 
           action: <DotAction record={item} leader={leader} />,
           employee:
-            item.Status.props.children === "Approved" ? (
+            item?.Status?.props?.children === "Approved" ? (
               <Link
                 to={{ pathname: `/resourcePool/${pName}/${item.Role_id}/${item.Level_id}/${ item.Skill_id}` }}
                 state={[item.Role_id, item.Level_id, item.Skill_id,pName,data.bu, item.id]}

@@ -76,7 +76,7 @@ export default function ModalAddItem() {
           url: process.env.REACT_APP_BASE_URL + "/api/project",
           method: "POST",
           data: {
-            code: JSON.parse(JSON.stringify(code)),
+            code: JSON.parse(JSON.stringify(code)).trim(),
             projectName: JSON.parse(JSON.stringify(projectName)),
             department_id: JSON.parse(JSON.stringify(department_id)),
             effort_planned: JSON.parse(JSON.stringify(effort_planned)),
@@ -88,18 +88,20 @@ export default function ModalAddItem() {
             end_actual: JSON.parse(JSON.stringify(end_actual)),
           },
         });
-        if (res.data.success) {
-          // moreRow++;
-          // console.log(res.data.success);
-          // console.log(moreRow);
-          // navigate('/')
+        if (res.data=='Added Successfully') {
+          message.success({
+            content: "Add project successfully",
+            style: { marginTop: "50px" },
+          });
+          dispatch(getProjects());
+        }else if(res.data=='FAILS'){
+          message.error({
+            content: "Project ID already exist",
+            style: { marginTop: "50px" },
+          });
         }
 
-        message.success({
-          content: "Add project successfully",
-          style: { marginTop: "50px" },
-        });
-        dispatch(getProjects());
+        
 
         setIsModalOpen(false);
       } catch (err) {
@@ -205,7 +207,7 @@ export default function ModalAddItem() {
                   <tr>
                     <td>Project Name *</td>
                     <td>
-                      <input {...register("projectName")} required />
+                      <input {...register("projectName")}  maxLength='50' required />
                     </td>
                   </tr>
                 </tbody>

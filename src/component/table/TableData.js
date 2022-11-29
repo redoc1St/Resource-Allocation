@@ -56,7 +56,7 @@ export default function TableData(sText) {
   const [form] = Form.useForm();
   const { valueInput, setValueInput } = useAuth();
   const defaultExpandable = {
-    expandedRowRender: (record) => <p>Note: ...</p>,
+    expandedRowRender: (record) => <p>Note: {record.note }</p>,
   };
   const [expandable, setExpandable] = useState(defaultExpandable);
 
@@ -238,7 +238,7 @@ export default function TableData(sText) {
         return <>
         <div style={{display:'flex'}}>
         <ModalEditItem data={record} />
-          <ModalNote/>
+          <ModalNote data={record}/>
         </div>
         
         </>;
@@ -275,8 +275,7 @@ export default function TableData(sText) {
     children,
     ...restProps
   }) => {
-    const input = <Input />;
-    const datex = <DatePicker />;
+
     return (
       <td {...restProps}>
         {editing ? (
@@ -308,6 +307,7 @@ export default function TableData(sText) {
       <Form form={form} component={false}>
         <Table
           {...tableProps}
+          
           // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
           className="table-striped-rows"
           bordered

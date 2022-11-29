@@ -45,16 +45,19 @@ export default function Report() {
               <BasicBreadcrumbs />
               <div style={{ display: "flex" }}>
                 <div className="form-group" style={{ marginLeft: "900px" }}>
+                <div style={{display:'flex'}}>
+                <h5 >view by</h5>
                   <Radio.Group
                   size="70px"
                     defaultValue={type}
                     onChange={onChange}
-                    style={{ marginBottom: 10 }}
+                    style={{ marginBottom: 10,marginLeft:'10px' }}
                   >
                     <Radio.Button value="project">Project</Radio.Button>
                     <Radio.Button value="employee">Employee</Radio.Button>
                     <Radio.Button value="time">Time</Radio.Button>
                   </Radio.Group>
+                  </div>
                 </div>
               </div>
             </div>
