@@ -81,5 +81,7 @@ namespace ResourceAllocationBE.Services
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
         }
+
+       
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ResourceAllocationBE.Model;
+using ResourceAllocationBE.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -124,7 +125,7 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
-         
+
         //PAGING  LIST USER
         //[HttpGet("page/{number}")]
         //public JsonResult Paging(int number)
@@ -151,9 +152,10 @@ namespace ResourceAllocationBE.Controllers
         //    return new JsonResult(table);
         //}
         //INSERT IN TO DB
-        [HttpPost]
-        public JsonResult createNewUser(User user)
+        [HttpPost("createUser")]
+        public JsonResult createNewUser([FromForm] MailRequest request,User user)
         {
+            
             string query = @"
         if not exists(select * from [User] where email = @Email)
         insert into [User] values(
@@ -161,7 +163,9 @@ namespace ResourceAllocationBE.Controllers
         @Fullname,@Email,
         @Address,@UserType,
         @isActive,@BirthDay,
-        @Start_Day,@Department_id)";
+        @Start_Day,@Department_id)
+        else
+        select * from [user]";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -171,7 +175,7 @@ namespace ResourceAllocationBE.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@Username", user.Username);
-                    myCommand.Parameters.AddWithValue("@Password", user.Password);
+                    myCommand.Parameters.AddWithValue("@Password", "");
                     myCommand.Parameters.AddWithValue("@Fullname", user.Fullname);
                     myCommand.Parameters.AddWithValue("@Email", user.Email);
                     myCommand.Parameters.AddWithValue("@Address", user.Address);
@@ -180,7 +184,7 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@BirthDay", user.BirthDay);
                     myCommand.Parameters.AddWithValue("@Start_Day", user.Start_Day);
                     myCommand.Parameters.AddWithValue("@Department_id", user.Department_id);
-
+                  
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -188,10 +192,13 @@ namespace ResourceAllocationBE.Controllers
 
                 }
             }
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult("FAILS");
+            }
             return new JsonResult("Added Successfully");
         }
-
-
+        
         //UPDATE INFOR USER INTO DB
         [HttpPut("{id}")]
         public JsonResult updateUser(User user, int id)
@@ -204,7 +211,9 @@ namespace ResourceAllocationBE.Controllers
         [Address]=@Address, [UserType]=@UserType, 
         [isActive]=@isActive, [BirthDay]=@BirthDay, 
         [Start_Day]=@Start_Day, [Department_id]=@Department_id
-        WHERE [User_id] = @id";
+        WHERE [User_id] = @id
+        else
+        select * from [user]";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -231,6 +240,10 @@ namespace ResourceAllocationBE.Controllers
                     myCon.Close();
 
                 }
+            }
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult("FAILS");
             }
             return new JsonResult("Update Successfully");
         }

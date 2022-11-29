@@ -257,7 +257,7 @@ namespace ResourceAllocationBE.Controllers
         }
 
         //UPDATE NOTE IN TO DB
-        [HttpPut("{id}")]
+        [HttpPut("Note/{id}")]
         public JsonResult updateNoteProject(Project project, int id)
         {
             string query = @"
