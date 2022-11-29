@@ -28,9 +28,39 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             return true;
         }
 
+        public bool insertProject(Project project)
+        {
+            if (project.Code == "" || project.ProjectName=="")
+            {
+                throw new ArgumentNullException("Input not null");
+            }
+            if(project.Effort_planned == 0)
+            {
+                throw new ArgumentOutOfRangeException("Effort plan not equal 0");
+            }
+            if (project.Code == "ais_0001")
+            {
+                throw new ArgumentException("Project code had existed");
+            }
+            return true;
+        }
+
         public bool searchProjectByName(Project project)
         {
            
+            return true;
+        }
+
+        public bool updateProject(Project project)
+        {
+            if ( project.ProjectName == "")
+            {
+                throw new ArgumentNullException("Input not null");
+            }
+            if (project.Effort_planned == 0)
+            {
+                throw new ArgumentOutOfRangeException("Effort plan not equal 0");
+            }
             return true;
         }
     }

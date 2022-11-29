@@ -93,18 +93,14 @@ namespace ResourceAllocation.UnitTest.UserTest
 
         public bool createNewUser(User user, string confirmPass)
         {
-            if(user.Username == "" || user.Password == "" || user.Email == null)
+            if(user.Username == "" || user.Email == null)
             {
                 throw new ArgumentNullException("Username or Password or Email not null");
             }
-            if(user.Username.Length<6 || user.Password.Length<6)
+            if(user.Username.Length<6)
             {
                 throw new ArgumentOutOfRangeException("User or Password is more than 6 character");
 
-            }
-            if (confirmPass != user.Password)
-            {
-                throw new ArgumentException("Confirm pass is not matched");
             }
             
             foreach (var item in userMock.GetUsers())
@@ -120,6 +116,15 @@ namespace ResourceAllocation.UnitTest.UserTest
                 throw new ArgumentException("Email not right format");
             }
             return resourceAllocationProcessor.InsertUser(user);
+        }
+
+        public bool updateUser(string fullName, string address)
+        {
+            if (fullName.Any(char.IsDigit))
+            {
+                throw new ArgumentException("Name does not contain number");
+            }
+            return true;
         }
     }
 }

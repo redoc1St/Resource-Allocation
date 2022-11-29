@@ -234,24 +234,7 @@ namespace ResourceAllocation.UnitTest.UserTest
             Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.createNewUser(new User { Username = "abcx", Email = "quangdd12@gmail.com", Password = "quangdd1234" }, "quangdd1234"
                 ));
         }
-        // password <6
-        [Fact]
-        public void Test_Invalid_CreatePasswordMoreThan6Char()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.createNewUser(new User { Username = "quangdd1234", Email = "quangdd12@gmail.com", Password = "abcx" }, "quangdd1234"
-                ));
-        }
-        // confirm pass not right
-        [Fact]
-        public void Test_Invalid_CreateUserThatConfirmPasswordNotMatch()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => userProcessor.createNewUser(new User { Username = "quangdd1234", Email = "quangdd12@gmail.com", Password = "123@123a" }, "123a123"
-                ));
-        }
+        
         // email not right
         [Fact]
         public void Test_Invalid_CreateUserThatEmailNotRightFormat()
@@ -280,5 +263,21 @@ namespace ResourceAllocation.UnitTest.UserTest
                 ));
         }
         // TEST UPDATE USER INFORMATION
+        [Fact]
+        public void Test_Valid_UpdateUserReturnTrue()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.True(userProcessor.updateUser("do duc quang", "Ha Noi"
+                ));
+        }
+        [Fact]
+        public void Test_InValid_UpdateUserReturnTrue()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentException>(() => userProcessor.updateUser("do duc quang232 ", "Ha Noi"
+                ));
+        }
     }
 }

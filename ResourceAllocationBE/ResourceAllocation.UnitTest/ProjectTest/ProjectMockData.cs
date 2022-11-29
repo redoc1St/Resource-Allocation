@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ResourceAllocation.UnitTest.ProjectTest
 {
-   public class ProjectMockData
+   public static class ProjectMockData
     {
         public static List<Project> GetProjectList()
         {

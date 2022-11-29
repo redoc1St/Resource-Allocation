@@ -11,5 +11,6 @@ namespace ResourceAllocation.UnitTest.UserTest
         bool getUserDetail(User user);
         bool changePass(User user,string newPass, string confirmPass);
         bool createNewUser(User user, string confirmPass);
+        bool updateUser(string fullName, string address);
     }
 }

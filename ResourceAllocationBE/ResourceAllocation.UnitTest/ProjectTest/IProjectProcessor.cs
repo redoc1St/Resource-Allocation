@@ -7,5 +7,8 @@ namespace ResourceAllocation.UnitTest.ProjectTest
     {
         bool searchProjectByName(Project project);
         bool getDetailProject(Project project);
+        bool insertProject(Project project);
+        bool updateProject(Project project);
+
     }
 }
