@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ResourceAllocation.UnitTest.ResourcePoolTest
 {
-    interface IResourcePoolProcessor
+    public interface IResourcePoolProcessor
     {
+        bool getListResourcePool(string type);
+        bool getListResourcePoolByName(string name);
+        bool getListResourcePoolByRLS(string role, string levels, string skill);
     }
 }

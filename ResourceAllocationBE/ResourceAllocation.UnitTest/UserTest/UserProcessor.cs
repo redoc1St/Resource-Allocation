@@ -9,7 +9,12 @@ namespace ResourceAllocation.UnitTest.UserTest
 {
     public class UserProcessor : IUserProcessor
     {
-        
+        private readonly IResourceAllocationProcessor resourceAllocationProcessor;
+        public UserProcessor(IResourceAllocationProcessor resourceAllocationProcessor)
+        {
+            this.resourceAllocationProcessor = resourceAllocationProcessor;
+        }
+        UserMockData userMock = new UserMockData();
         public bool login(User user)
         {
 
@@ -18,6 +23,7 @@ namespace ResourceAllocation.UnitTest.UserTest
             {
                 throw new ArgumentOutOfRangeException("Email is not < 0");
             }
+
             if(user.Email != "tungchu2000@gmail.com")
             {
                 throw new ArgumentOutOfRangeException("Email is not true");
@@ -83,6 +89,37 @@ namespace ResourceAllocation.UnitTest.UserTest
                 throw new ArgumentException("Old password is not true");
             }
             return true;
+        }
+
+        public bool createNewUser(User user, string confirmPass)
+        {
+            if(user.Username == "" || user.Password == "" || user.Email == null)
+            {
+                throw new ArgumentNullException("Username or Password or Email not null");
+            }
+            if(user.Username.Length<6 || user.Password.Length<6)
+            {
+                throw new ArgumentOutOfRangeException("User or Password is more than 6 character");
+
+            }
+            if (confirmPass != user.Password)
+            {
+                throw new ArgumentException("Confirm pass is not matched");
+            }
+            
+            foreach (var item in userMock.GetUsers())
+            {
+                if (user.Email == item.Email)
+                {
+                    throw new ArgumentException("Email had existed");
+                }
+            }
+            
+            if (!user.Email.Contains("@gmail.com"))
+            {
+                throw new ArgumentException("Email not right format");
+            }
+            return resourceAllocationProcessor.InsertUser(user);
         }
     }
 }

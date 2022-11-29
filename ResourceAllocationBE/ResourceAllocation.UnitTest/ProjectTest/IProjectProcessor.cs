@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ResourceAllocationBE.Model;
 
 namespace ResourceAllocation.UnitTest.ProjectTest
 {
-    interface IProjectProcessor
+    public interface IProjectProcessor
     {
+        bool searchProjectByName(Project project);
+        bool getDetailProject(Project project);
     }
 }

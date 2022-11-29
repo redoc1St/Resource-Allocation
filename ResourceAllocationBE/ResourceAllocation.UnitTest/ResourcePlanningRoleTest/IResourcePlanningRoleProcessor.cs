@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ResourceAllocationBE.Model;
+using System;
 
 namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
 {
-    interface IResourcePlanningRoleProcessor
+    public interface IResourcePlanningRoleProcessor
     {
+        bool viewResourcePoolByRole(string projectName, string roleName);
+        bool getResourcePlanningDetail(ResourcePlanningRole resourcePlanningRole);
     }
 }
