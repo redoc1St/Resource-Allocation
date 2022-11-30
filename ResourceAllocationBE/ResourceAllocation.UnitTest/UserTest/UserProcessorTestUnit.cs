@@ -258,6 +258,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         public void Test_Valid_CreateUserReturnTrue()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            resourceAllocationProcessor.Setup(p => p.InsertUser(It.IsAny<User>())).Returns(true);
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
             Assert.True(userProcessor.createNewUser(new User { Username = "quangdd1234", Email = "quangdd1234@gmail.com", Password = "123@123a" }, "123@123a"
                 ));
@@ -267,6 +268,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         public void Test_Valid_UpdateUserReturnTrue()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            resourceAllocationProcessor.Setup(p => p.UpdateUser(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
             Assert.True(userProcessor.updateUser("do duc quang", "Ha Noi"
                 ));

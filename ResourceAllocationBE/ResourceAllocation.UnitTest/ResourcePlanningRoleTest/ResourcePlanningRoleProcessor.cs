@@ -33,5 +33,30 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
             }
             return true;
         }
+
+        public bool insertResourcePlanning(ResourcePlanningRole resourcePlanningRole)
+        {
+            if (resourcePlanningRole.Date_start == "" || resourcePlanningRole.Date_end=="")
+            {
+                throw new ArgumentNullException("Input not null");
+            }
+            if (resourcePlanningRole.Quantity <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Quantity not equal 0");
+            }
+            
+            return resourceAllocationProcessor.InsertResourcePlanningRole(resourcePlanningRole);
+        }
+
+        public bool updateResourcePlanning(ResourcePlanningRole resourcePlanningRole)
+        {
+            if (resourcePlanningRole.Quantity <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Quantity not equal 0");
+            }
+
+            return resourceAllocationProcessor.UpdateResourcePlanningRole(resourcePlanningRole);
+        }
+
     }
 }

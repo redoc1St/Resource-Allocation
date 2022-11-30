@@ -7,7 +7,7 @@ namespace ResourceAllocation.UnitTest
     {
         // User
         bool InsertUser(User user);
-        bool UpdateUser(User user);
+        bool UpdateUser(string fullname, string address);
 
         // Project
         bool InsertProject(Project project);

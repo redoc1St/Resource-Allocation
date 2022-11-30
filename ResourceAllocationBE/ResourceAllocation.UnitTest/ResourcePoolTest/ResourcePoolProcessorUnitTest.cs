@@ -61,5 +61,35 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
             Assert.True(resourcePoolProcessor.getListResourcePoolByRLS("ba", "fresher", ".NET"));
         }
 
+
+        // test update
+        // null
+        [Fact]
+        public void TestInvalidInsertResourcePlanningRoleInputNull()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.updateResourcePool(new ResourcePlanningEmployee
+            {
+                Date_start = "",
+                Date_end = ""
+            }));
+        }
+        // true
+        [Fact]
+        public void TestValidUpdateResourcePlanningRole()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            resourceAllocationProcessor.Setup(p => p.UpdateResourcePool(It.IsAny<ResourcePlanningEmployee>())).Returns(true);
+
+            var projectProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
+            Assert.True(projectProcessor.updateResourcePool(new ResourcePlanningEmployee
+            {
+                Date_start = "05/05/2022",
+                Date_end = "10/05/2022",
+                Effort=50,
+                Bill_rate=50
+            }));
+        }
     }
 }

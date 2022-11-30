@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ResourceAllocationBE.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,16 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
                 throw new ArgumentNullException("Cannot find employee");
             }
             return true;
+        }
+
+        public bool updateResourcePool(ResourcePlanningEmployee resourcePlanningEmployee)
+        {
+            if (resourcePlanningEmployee.Date_start == "")
+            {
+                throw new ArgumentNullException("Input not null");
+            }
+            return resourceAllocationProcessor.UpdateResourcePool(resourcePlanningEmployee);
+
         }
     }
 }

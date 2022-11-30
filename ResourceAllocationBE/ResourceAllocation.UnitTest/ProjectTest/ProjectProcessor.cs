@@ -42,7 +42,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             {
                 throw new ArgumentException("Project code had existed");
             }
-            return true;
+            return resourceAllocationProcessor.InsertProject(project);
         }
 
         public bool searchProjectByName(Project project)
@@ -61,7 +61,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             {
                 throw new ArgumentOutOfRangeException("Effort plan not equal 0");
             }
-            return true;
+            return resourceAllocationProcessor.UpdateProject(project);
         }
     }
 }

@@ -22,6 +22,7 @@ namespace ResourceAllocationBE.Controllers
             _configuration = configuration;
         }
 
+        //ADMIN
         //LOAD LIST RESOURCE POOL
         [HttpGet]
         public JsonResult getListResourcePool(string pid)
@@ -129,6 +130,10 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
+
+
+        // LEADER
+
         
         //INSERT IN TO DB
         [HttpPost]

@@ -7,5 +7,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
     {
         bool viewResourcePoolByRole(string projectName, string roleName);
         bool getResourcePlanningDetail(ResourcePlanningRole resourcePlanningRole);
+        bool insertResourcePlanning(ResourcePlanningRole resourcePlanningRole);
+        bool updateResourcePlanning(ResourcePlanningRole resourcePlanningRole);
     }
 }

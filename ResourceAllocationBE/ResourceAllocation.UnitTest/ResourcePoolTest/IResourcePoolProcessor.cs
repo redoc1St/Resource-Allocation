@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ResourceAllocationBE.Model;
 
 namespace ResourceAllocation.UnitTest.ResourcePoolTest
 {
@@ -11,5 +8,6 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
         bool getListResourcePool(string type);
         bool getListResourcePoolByName(string name);
         bool getListResourcePoolByRLS(string role, string levels, string skill);
+        bool updateResourcePool(ResourcePlanningEmployee resourcePlanningEmployee);
     }
 }

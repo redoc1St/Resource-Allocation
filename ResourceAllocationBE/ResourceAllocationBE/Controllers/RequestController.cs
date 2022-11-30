@@ -157,7 +157,7 @@ namespace ResourceAllocationBE.Controllers
 
         // SHOW REQUEST BY BU (Leader Project can see)
 
-        
+
 
         //APPROVED REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
         //[HttpPost("EmpToRole/approved")]
@@ -187,7 +187,7 @@ namespace ResourceAllocationBE.Controllers
 
         //APPROVED REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
         [HttpPost("EmpToRole/Approved")]
-        public JsonResult responseRequestEmp(RequestModel request, string status)
+        public JsonResult approveRequestEmp(RequestModel request)
         {
             string query = @"
             insert into Emp_RolePlanning values(@rid,@eid)
@@ -212,12 +212,11 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(" Successfully");
         }
 
-        //REJECT REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
+        //REJECT REQUEST EMPLOYEE ->  update status o bang requestEmp
         [HttpPost("EmpToRole/Reject")]
-        public JsonResult rệctRequestEmp(RequestModel request, string status)
+        public JsonResult rejectRequestEmp(RequestModel request)
         {
             string query = @"
-            insert into Emp_RolePlanning values(@rid,@eid)
             update ResourceRequestEmployee set [status] = 'Reject' where ResourcePlannig_RoleId =@rid and Employee_id = @eid
             insert into Notifications values (12, 'De nghi Employee cua ban da duoc Reject', GETDATE())";
             DataTable table = new DataTable();
@@ -244,15 +243,8 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult requestEmployeeToRolePlanning(RequestModel request)
         {
             string query = @"
-            	if not exists(SELECT * FROM Project, ResourcePlanning_Role, [USER], Roles, Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
-                WHERE Project.Project_id = ResourcePlanning_Role.Project_id AND
-                ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId and
-                Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
-                ResourcePlanning_Employee.Employee_id =[USER].[User_id] AND
-                Roles.Role_id = ResourcePlanning_Role.Role_id AND
-                Levels.Level_id = ResourcePlanning_Role.Level_id AND
-                Skill.Skill_id = ResourcePlanning_Role.Skill_id
-                and ResourcePlanning_Role.id = @rid and ResourcePlanning_Employee.id = @eid)
+            	if not exists(SELECT * FROM [ResourceRequestEmployee]
+                where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and (status='In Progress' or status='Approved') )
                 insert into ResourceRequestEmployee values(
                 @rid,@eid,2,'','In Progress',GETDATE())
                 else

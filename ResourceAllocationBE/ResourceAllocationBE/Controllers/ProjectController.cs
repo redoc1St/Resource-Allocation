@@ -48,7 +48,32 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
+        //LOAD LIST PROJECTS BY BU FOR LEADER 
+        //[Authorize]
+        [HttpGet("{bu}")]
+        public JsonResult getListProjectByBu(string bu)
+        {
+            string query = @"
+                               select * from
+                                dbo.[Project] where depeartment_id=@bu";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@bu", bu);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
 
+                }
+            }
+            return new JsonResult(table);
+        }
 
         //SEARCH BY NAME
         [HttpGet("search/{name}")]
@@ -76,6 +101,32 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
+        //SEARCH BY NAME AND BU
+        [HttpGet("search/{name}/{bu}")]
+        public JsonResult searchProjectByNameAndBU(string name, string bu)
+        {
+            string query = @"
+                               select * from
+                                dbo.[Project] where [ProjectName] like @PName and depeartment_id=@bu";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@PName", '%' + name + '%');
+                    myCommand.Parameters.AddWithValue("@bu", bu);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
         //PAGING 
         //[HttpGet("page/{number}")]
 
@@ -283,5 +334,7 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("Update Successfully");
         }
+
+
     }
 }

@@ -124,7 +124,7 @@ namespace ResourceAllocation.UnitTest.UserTest
             {
                 throw new ArgumentException("Name does not contain number");
             }
-            return true;
+            return resourceAllocationProcessor.UpdateUser(fullName, address);
         }
     }
 }

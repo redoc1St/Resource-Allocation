@@ -195,43 +195,7 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
-        // SHOW  LEADER  INFOR BY CODE AND DEPARTMENT
-        [HttpGet]
-        [Route("api/leader/{code}")]
-        public JsonResult getLeaderInfor(string code)
-        {
-            string query = @"SELECT TOP (1000) [User_id]
-                        ,[Username]
-                        ,[Password]
-      ,[Fullname]
-      ,[Email]
-      ,[Address]
-      ,[UserType]
-      ,[isActive]
-      ,[BirthDay]
-      ,[Start_Day]
-      ,[Department_id],
-	  code
-        FROM [ResourceAllocationDB].[dbo].[User], Project
-        where Project.Depeartment_id = [user].Department_id and code = @code and UserType ='leader'";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@code", code);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-
-                }
-            }
-            return new JsonResult(table);
-        }
+       
 
 
         [HttpGet]
@@ -273,7 +237,7 @@ namespace ResourceAllocationBE.Controllers
         // Lay id theo RLSCode => lay rid 
         [HttpGet]
         [Route("api/getPnameByRLS/{code}/{role_id}/{level_id}/{skill_id}")]
-        public JsonResult getIdByRLSCode(string role_id, string level_id, string skill_id, string code)
+        public JsonResult getRoleIdByRLSCode(string role_id, string level_id, string skill_id, string code)
         {
             string query = @"
         select * from ResourcePlanning_Role
@@ -308,7 +272,43 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
+        // SHOW  LEADER  INFOR BY CODE AND DEPARTMENT
+        [HttpGet]
+        [Route("api/leader/{code}")]
+        public JsonResult getLeaderInfor(string code)
+        {
+            string query = @"SELECT TOP (1000) [User_id]
+                        ,[Username]
+                        ,[Password]
+      ,[Fullname]
+      ,[Email]
+      ,[Address]
+      ,[UserType]
+      ,[isActive]
+      ,[BirthDay]
+      ,[Start_Day]
+      ,[Department_id],
+	  code
+        FROM [ResourceAllocationDB].[dbo].[User], Project
+        where Project.Depeartment_id = [user].Department_id and code = @code and UserType ='leader'";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@code", code);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
 
+                }
+            }
+            return new JsonResult(table);
+        }
         // SHOW  LEADER  INFOR  DEPARTMENT ID
         [HttpGet]
         [Route("api/leaderInfor/{bu}")]

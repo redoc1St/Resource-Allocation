@@ -131,6 +131,8 @@ namespace ResourceAllocation.UnitTest.ProjectTest
         public void TestValidInsertProjectReturnTrue()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            resourceAllocationProcessor.Setup(p => p.InsertProject(It.IsAny<Project>())).Returns(true);
+
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
             Assert.True(projectProcessor.insertProject(new Project { Code = "ais_00012",
                 ProjectName= "project name 1",
@@ -145,8 +147,9 @@ namespace ResourceAllocation.UnitTest.ProjectTest
         public void TestInvalidUpdateProjectInputNull()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = ""
             }));
@@ -157,7 +160,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = "",
                 Effort_planned = 50,
@@ -175,7 +178,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.insertProject(new Project
+            Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = "projectname2",
                 Effort_planned = 0,
@@ -192,8 +195,10 @@ namespace ResourceAllocation.UnitTest.ProjectTest
         public void TestValidUpdateProjectReturnTrue()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            resourceAllocationProcessor.Setup(p => p.UpdateProject(It.IsAny<Project>())).Returns(true);
+
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.True(projectProcessor.insertProject(new Project
+            Assert.True(projectProcessor.updateProject(new Project
             {
                 ProjectName = "projectname2",
                 Effort_planned = 50,
