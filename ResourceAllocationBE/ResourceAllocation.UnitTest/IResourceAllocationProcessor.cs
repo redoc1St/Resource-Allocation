@@ -22,7 +22,8 @@ namespace ResourceAllocation.UnitTest
         bool UpdateResourcePool(ResourcePlanningEmployee resourcePlanningEmployee);
 
         // Request
-        bool InsertRequest(RequestModel request);
+        bool InsertRequestRole(string rid);
+        bool InsertRequestEmployeeToRole(string rid, string eid);
 
     }
 }

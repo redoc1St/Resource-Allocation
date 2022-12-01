@@ -103,28 +103,28 @@ namespace ResourceAllocationBE.Controllers
         }
 
         //Get Detail ResourcePlanning_Role (ko caanf)
-        [HttpGet("one/{id}")]
-        public JsonResult getResourcePlanningDetail(string id)
-        {
-            string query = @"select *  from ResourcePlanning_Role where [id] =@id";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@id", id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+        //[HttpGet("one/{id}")]
+        //public JsonResult getResourcePlanningDetail(string id)
+        //{
+        //    string query = @"select *  from ResourcePlanning_Role where [id] =@id";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@id", id);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
 
-                }
-            }
-            return new JsonResult(table);
-        }
+        //        }
+        //    }
+        //    return new JsonResult(table);
+        //}
 
         //INSERT ResourcePlanningRole
         [HttpPost]
@@ -226,89 +226,6 @@ select * from [user]";
             return new JsonResult("Update Successfully");
         }
 
-        ////Delete IN DB
-        //[HttpDelete("{id}")]
-        //public JsonResult Delete(string id)
-        //{
-        //    string query = @"
-        //            delete from dbo.ResourcePlanning_Role
-        //                            where [id] = @id";
-        //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-        //    SqlDataReader myReader;
-        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-        //    {
-        //        myCon.Open();
-        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
-        //        {
-        //            myCommand.Parameters.AddWithValue("@id", id);
-        //            myReader = myCommand.ExecuteReader();
-        //            table.Load(myReader);
-        //            myReader.Close();
-        //            myCon.Close();
-
-        //        }
-        //    }
-        //    return new JsonResult("Delete Successfully");
-        //}
-
-        ////UPDATE STATUS
-        //[HttpPut("status/{id}")]
-        //public JsonResult updateStatus(ResourcePlanningRole resource, int id)
-        //{
-        //    string query = @"
-        //        update dbo.ResourcePlanning_Role
-        //        set  
-        //        [Status]=@status
-        //        WHERE id = @id";
-        //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-        //    SqlDataReader myReader;
-        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-        //    {
-        //        myCon.Open();
-        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
-        //        {
-        //            myCommand.Parameters.AddWithValue("@id", id);
-        //            myCommand.Parameters.AddWithValue("@status", resource.Status);
-        //            myReader = myCommand.ExecuteReader();
-        //            table.Load(myReader);
-        //            myReader.Close();
-        //            myCon.Close();
-
-        //        }
-        //    }
-        //    return new JsonResult("Update Successfully");
-        //}
-        //PAGING 
-        //[HttpGet("page/{number}")]
-
-        //public JsonResult Paging(int number)
-        //{
-        //    string query = @"
-        //                               select * from
-        //                                dbo.ResourcePlanning_Role order by [id] OFFSET @from Rows fetch next 4 rows only";
-        //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-        //    SqlDataReader myReader;
-        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-        //    {
-        //        myCon.Open();
-        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
-        //        {
-        //            myCommand.Parameters.AddWithValue("@from", (number - 1) * 4);
-        //            myReader = myCommand.ExecuteReader();
-        //            table.Load(myReader);
-        //            myReader.Close();
-        //            myCon.Close();
-
-        //        }
-        //    }
-        //    return new JsonResult(table);
-        //}
-
-
-       // REQUEST
 
     }
 }

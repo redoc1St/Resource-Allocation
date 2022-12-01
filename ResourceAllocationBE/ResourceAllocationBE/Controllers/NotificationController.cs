@@ -21,8 +21,8 @@ namespace ResourceAllocationBE.Controllers
         {
             _configuration = configuration;
         }
-        [HttpGet]
-        public JsonResult getNotification(User user)
+        [HttpGet("{id}")]
+        public JsonResult getNotification(int id)
         {
             string query = @"
                                select * from
@@ -35,7 +35,7 @@ namespace ResourceAllocationBE.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@id",user.User_id);
+                    myCommand.Parameters.AddWithValue("@id",id);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

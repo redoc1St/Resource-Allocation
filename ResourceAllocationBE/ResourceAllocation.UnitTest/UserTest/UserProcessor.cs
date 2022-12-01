@@ -95,11 +95,11 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             if(user.Username == "" || user.Email == null)
             {
-                throw new ArgumentNullException("Username or Password or Email not null");
+                throw new ArgumentNullException("Usernameor Email not null");
             }
             if(user.Username.Length<6)
             {
-                throw new ArgumentOutOfRangeException("User or Password is more than 6 character");
+                throw new ArgumentOutOfRangeException("User is more than 6 character");
 
             }
             
