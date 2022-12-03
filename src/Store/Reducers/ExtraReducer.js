@@ -6,6 +6,7 @@ import {
   GET_PNAME_BY_RLS,
   GET_IDROLE_BY_CODERLS,
   GET_LEADER_BY_BU,
+  GET_ALL_EMPS,
 } from "../types";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   leader: null,
   pName: [],
   id: null,
+  allEmps:[]
   //   project: null,
 };
 
@@ -34,6 +36,9 @@ const ExtraReducer = (state = initialState, { type, payload }) => {
       return { ...state, pName: payload };
     case GET_IDROLE_BY_CODERLS:
       return { ...state, id: payload };
+      case GET_ALL_EMPS:
+        return { ...state, allEmps: payload };
+      
     default:
       return state;
   }

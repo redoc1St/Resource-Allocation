@@ -4,37 +4,35 @@ import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { LayoutFilled, UserOutlined } from "@ant-design/icons";
 import useAuth from "./hooks/useAuth";
-import CircleIcon from '@mui/icons-material/Circle';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
+import CircleIcon from "@mui/icons-material/Circle";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+import { ROLES } from "../App";
 export default function NavMenu() {
-
-
-  const { setAccount,onclickShowLeft,setOnclickShowLeft } = useAuth();
-
+  const { user } = useAuth();
+  console.log(user?.UserType + "," + ROLES.ADMIN + "," + ROLES.LEADER);
   return (
     <div id="layoutSidenav">
       <div id="layoutSidenav_nav">
-      
         {/* {
           onclickShowLeft ?  <NavMenuPane style={{marginLeft:'-100%'}}> : <NavMenuPane/> 
         } */}
-      
-        <NavMenuPane > 
+
+        <NavMenuPane>
           <nav
             className="sb-sidenav accordion sb-sidenav-white"
             id="sidenavAccordion"
-            
           >
             <div className="sb-sidenav-menu">
               <div className="nav">
-                <div className="sb-sidenav-menu-heading">MAIN MENU</div>
-                <NavLink className="nav-link" to="/candidateManage">
-                  <LayoutFilled style={{ margin: "5px" }} />
-                  {/* <div className="sb-nav-link-icon">
-                  <i className="fas fa-tachometer-alt" />
-                </div> */}
-                  Candidate Management
-                </NavLink>
+                <>
+                
+                  <div className="sb-sidenav-menu-heading">MAIN MENU</div>
+                  <NavLink className="nav-link"   to="/candidateManage" >
+                    <LayoutFilled style={{ margin: "5px" }} />
+                    Candidate Management
+                  </NavLink>
+                </>
+
                 <div className="sb-sidenav-menu-heading">Interface</div>
                 <Link
                   className="nav-link collapsed"
@@ -61,16 +59,28 @@ export default function NavMenu() {
                 >
                   <nav className="sb-sidenav-menu-nested nav">
                     <NavLink className="nav-link" to="/resourceAllocation">
-                     <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Resource Allocation
+                      <CircleOutlinedIcon
+                        style={{ fontSize: "12px", color: "black" }}
+                      />{" "}
+                      &nbsp;&nbsp; Resource Allocation
                     </NavLink>
                     <NavLink className="nav-link" to="/resourcePlaning">
-                    <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Resource Planing
+                      <CircleOutlinedIcon
+                        style={{ fontSize: "12px", color: "black" }}
+                      />{" "}
+                      &nbsp;&nbsp; Resource Planing
                     </NavLink>
                     <NavLink className="nav-link" to="/resourcePool">
-                    <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Resource Pool
+                      <CircleOutlinedIcon
+                        style={{ fontSize: "12px", color: "black" }}
+                      />{" "}
+                      &nbsp;&nbsp; Resource Pool
                     </NavLink>
                     <NavLink className="nav-link" to="/requests">
-                    <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Requests
+                      <CircleOutlinedIcon
+                        style={{ fontSize: "12px", color: "black" }}
+                      />{" "}
+                      &nbsp;&nbsp; Requests
                     </NavLink>
                   </nav>
                 </div>
@@ -100,8 +110,11 @@ export default function NavMenu() {
                     className="sb-sidenav-menu-nested nav accordion"
                     id="sidenavAccordionPages"
                   >
-                  <NavLink className="nav-link" to="/report">
-                    <CircleOutlinedIcon  style={{fontSize:'12px',color:'black'}}/> &nbsp;&nbsp;  Report
+                    <NavLink className="nav-link" to="/report">
+                      <CircleOutlinedIcon
+                        style={{ fontSize: "12px", color: "black" }}
+                      />{" "}
+                      &nbsp;&nbsp; Report
                     </NavLink>
                     {/* <Link
                       className="nav-link collapsed"
@@ -194,7 +207,7 @@ const NavMenuPane = styled.div`
   height: 100vh;
   z-index: 1000;
   width: 100%;
-  background-color: #ECFEFF;
+  background-color: #ecfeff;
   /* margin-left:-100%; */
   position: fixed;
   /* max-height: auto; */

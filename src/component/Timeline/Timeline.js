@@ -1,5 +1,6 @@
-import { Eventcalendar } from "@mobiscroll/react"; /* or import any other component */
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+
+import { Eventcalendar } from '@mobiscroll/react'; /* or import any other component */
+import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import { Switch, Table } from "antd";
 import "./index.css";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
@@ -98,6 +99,7 @@ export default function Timeline() {
       skillId:item?.skill_id,
       id:item?.id,
       color: "#3fd890",
+      // Math.floor(Math.random()*16777215).toString(16)
       // skill:item?.SkillName,
     }));
     // [
@@ -161,15 +163,7 @@ export default function Timeline() {
     // ];
   }, []);
 
-  //   React.useEffect(() => {
-  //     getJson(
-  //       "https://trial.mobiscroll.com/daily-weekly-events/",
-  //       (events) => {
-  //         setEvents(events);
-  //       },
-  //       "jsonp"
-  //     );
-  //   }, []);
+
   const onClickIcon = (rowData) => {
     console.log(rowData.role);
     // <AddToProject type={"icon"} record={rowData} />;

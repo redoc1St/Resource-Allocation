@@ -15,9 +15,12 @@ import ModalEditItem from "../Content/MainContent/ModalEditItem";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getProjects,
+  getProjectsByBuId,
   getProjectsByName,
+  getProjectsInBUByBuNameNId,
 } from "../../Store/Actions/ProjectActions";
 import ModalNote from "../Content/MainContent/ModalNote";
+import { ROLES } from "../../App";
 
 const onChange1 = (value) => {
   console.log("changed", value);
@@ -54,15 +57,15 @@ const formatUrl = (str) => {
 export default function TableData(sText) {
   const [editRowkey, SetEditRowKey] = useState("");
   const [form] = Form.useForm();
-  const { valueInput, setValueInput } = useAuth();
+  const { valueInput, user } = useAuth();
+
   const defaultExpandable = {
-    expandedRowRender: (record) => <p>Note: {record.note }</p>,
+    expandedRowRender: (record) => <p>Note: {record.note}</p>,
   };
   const [expandable, setExpandable] = useState(defaultExpandable);
 
   // const [gridData, setGridData] = useState([]);
-  
-  useAuth();
+
   const { onclickShowLeft, setOnclickShowLeft } = useAuth();
   const [isUpdated, setIsUpdated] = useState(false);
   const dispatch = useDispatch();
@@ -72,12 +75,19 @@ export default function TableData(sText) {
   // let totalRow= projects.length
 
   useEffect(() => {
-    if (valueInput) {
-      dispatch(getProjectsByName(valueInput));
-    } else {
-      dispatch(getProjects());
-    }
-  }, [valueInput, dispatch]);
+    if (user)
+      if (valueInput) {
+        user?.UserType == ROLES.EMPLOYEE
+          ? dispatch(
+              getProjectsInBUByBuNameNId(valueInput, user?.Department_id)
+            )
+          : dispatch(getProjectsByName(valueInput));
+      } else {
+        user?.UserType == ROLES.EMPLOYEE
+          ? dispatch(getProjectsByBuId(user?.Department_id))
+          : dispatch(getProjects());
+      }
+  }, [valueInput, dispatch, user?.UserType]);
 
   const modifiedData = projects.map((item) => ({
     key: item.id,
@@ -148,7 +158,7 @@ export default function TableData(sText) {
       // sorter: (a, b) => a.age - b.age,
       width: 100,
       sorter: (a, b) => a.pId.localeCompare(b.pId),
-      // editTable: true, 
+      // editTable: true,
     },
     {
       title: "Project Name",
@@ -170,18 +180,21 @@ export default function TableData(sText) {
         {
           text: "BU 2",
           value: "BU 2",
-        },{
+        },
+        {
           text: "BU 3",
           value: "BU 3",
-        },{
+        },
+        {
           text: "BU 4",
           value: "BU 4",
-        },{
+        },
+        {
           text: "BU 5",
           value: "BU 5",
         },
       ],
-      onFilter: (value, record) => record.unit.indexOf(value) === 0
+      onFilter: (value, record) => record.unit.indexOf(value) === 0,
     },
     {
       title: "% Allocation",
@@ -227,23 +240,24 @@ export default function TableData(sText) {
       dataIndex: "eda",
       width: 130,
     },
-    {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
-      width: 90,
-      render: (_, record) => {
-        const editable = isEditting(record);
-
-        return <>
-        <div style={{display:'flex'}}>
-        <ModalEditItem data={record} />
-          <ModalNote data={record}/>
-        </div>
-        
-        </>;
-      },
-    },
+    user?.UserType != ROLES.EMPLOYEE
+      ? {
+          title: "Action",
+          key: "operation",
+          fixed: "right",
+          width: 90,
+          render: (_, record) => {
+            return (
+              <>
+                <div style={{ display: "flex" }}>
+                  <ModalEditItem data={record} />
+                  <ModalNote data={record} />
+                </div>
+              </>
+            );
+          },
+        }
+      : { fixed: "right", width: 20 },
   ];
 
   const onChange = (pagination, filters, sorter, extra) => {
@@ -275,7 +289,6 @@ export default function TableData(sText) {
     children,
     ...restProps
   }) => {
-
     return (
       <td {...restProps}>
         {editing ? (
@@ -307,7 +320,6 @@ export default function TableData(sText) {
       <Form form={form} component={false}>
         <Table
           {...tableProps}
-          
           // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
           className="table-striped-rows"
           bordered

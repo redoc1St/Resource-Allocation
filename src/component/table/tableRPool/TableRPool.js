@@ -5,32 +5,36 @@ import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getResourcePoolEmp,
+  getResourcePoolEmpByBU,
   getResourcePoolEmpByRLK,
 } from "../../../Store/Actions/ResourcePoolAction";
+import { ROLES } from "../../../App";
 
 export default function TableRPool(data) {
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
- 
- 
+  const { user } = useAuth();
+
   // console.log(data?.Role_id, data?.Level_id, data?.Skill_id);
   //  console.log(data[4]);   // BU NAME
   //  console.log(data[5]);   // resourcePlanning_id
 
-   console.log(emps[0]?.Department_id);
+  console.log(emps[0]?.Department_id);
   useEffect(() => {
-    if (Object.keys(data).length === 0) {
-      //check data rỗng
-
-      dispatch(getResourcePoolEmp());
-    } else {
-      dispatch(
-        // 3 vị trí  0,1,2 tương đương với 3 vị trí role level skill lấy bên tableRPlanning lúc truyền vào state
-        getResourcePoolEmpByRLK(data[0], data[1], data[2])
-      );
-    }
-  }, [data?.Role_id, dispatch]);
+    if (user)
+      if (Object.keys(data).length === 0) {
+        //check data rỗng
+        user?.UserType == ROLES.EMPLOYEE
+          ? dispatch(getResourcePoolEmpByBU(user?.Department_id))
+          : dispatch(getResourcePoolEmp());
+      } else {
+        dispatch(
+          // 3 vị trí  0,1,2 tương đương với 3 vị trí role level skill lấy bên tableRPlanning lúc truyền vào state
+          getResourcePoolEmpByRLK(data[0], data[1], data[2])
+        );
+      }
+  }, [data?.Role_id, dispatch, user]);
 
   const columns = [
     {
@@ -62,11 +66,11 @@ export default function TableRPool(data) {
       width: 110,
     },
 
-    {
-      title: "Project",
-      dataIndex: "ProjectName",
-      width: 150,
-    },
+    // {
+    //   title: "Project",
+    //   dataIndex: "ProjectName",
+    //   width: 150,
+    // },
 
     {
       title: "Start date",
@@ -103,15 +107,23 @@ export default function TableRPool(data) {
       dataIndex: "leader",
       width: 100,
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      fixed: "right",
-      width: 70,
-      render: (_, record) => {
-        return <DotAction record={record} buProject={data[4]} resourceRole_id={data[5]}/>;
-      },
-    },
+    user?.UserType != ROLES.EMPLOYEE
+      ? {
+          title: "Action",
+          dataIndex: "action",
+          fixed: "right",
+          width: 70,
+          render: (_, record) => {
+            return (
+              <DotAction
+                record={record}
+                buProject={data[4]}
+                resourceRole_id={data[5]}
+              />
+            );
+          },
+        }
+      : {},
   ];
   let countEmp = 0;
   const modifiedData = emps.map((item, index) => ({

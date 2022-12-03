@@ -37,7 +37,16 @@ import axios from "./api/request";
 import Forgot from "./component/login/forgot/Forgot.js";
 import Report from "./component/Content/report/Report";
 import ReportRSPLanning from "./component/table/tableReport/ReportRSPlanning/ReportRSPLanning";
+import RequireAuth from "./component/Route/RequireAuth";
+import Unauthorized from "./component/Content/Authorization/Unauthorized";
 // import '../src/api/request'
+
+export const ROLES = {
+  ADMIN: "admin",
+  LEADER: "leader",
+  EMPLOYEE: "employee",
+};
+
 export const AuthContext = React.createContext(); //chuyền sang cái khác
 
 function App() {
@@ -47,8 +56,7 @@ function App() {
     status: "idle",
     data: null,
   });
-  var date1 = Date.parse('2012-05-30');
-  var date2 = Date.parse('2020-05-30');
+
   console.log(userInfo);
   const verifyUserInfo = async () => {
     const token = localStorage.getItem("token");
@@ -75,7 +83,7 @@ function App() {
     // navigate('/candidateManage')      //không dùng đc cái này vì k render lại => k gọi được verifyUserInfo trong useEffect
     console.log(userInfo.data);
     // Navigate('/candidateManage')
-    window.location.href = "/candidateManage"; // ?? gần giống ||, kiểu nếu không có returnUrl thì trả về trang home
+    window.location.href = "/resourceAllocation"; // ?? gần giống ||, kiểu nếu không có returnUrl thì trả về trang home
   };
 
   const logout = () => {
@@ -96,7 +104,7 @@ function App() {
   const [quantity, setQuantity] = useState([]);
 
   useEffect(() => {
-    dispatch(getProjects());
+    // dispatch(getProjects());
     verifyUserInfo();
   }, [dispatch]);
 
@@ -145,19 +153,25 @@ function App() {
                 <Route element={<GuestRouter />}>
                   <Route exact path="/login" element={<Login />} />
                   <Route exact path="/forgot" element={<Forgot />} />
-                
                 </Route>
                 <Route element={<PrivateRoute />}>
-                  <Route
-                    exact
-                    path="/candidateManage"
-                    element={<CandidateManage />}
-                  />
                   <Route
                     exact
                     path="/resourceAllocation"
                     element={<MainContent />}
                   />
+                  <Route
+                    element={
+                      <RequireAuth allowedRoles={[ROLES.LEADER, ROLES.ADMIN]} />
+                    }
+                  >
+                    <Route
+                      exact
+                      path="/candidateManage"
+                      element={<CandidateManage />}
+                    />
+                  </Route>
+
                   <Route
                     exact
                     path="/resourcePlaning/:pName"
@@ -179,10 +193,25 @@ function App() {
                     path="/resourcePool/:code/:r/:l/:s"
                     element={<ResourcePool />}
                   />
-                  <Route exact path="/requests" element={<RequestPage />} />
+                  <Route
+                    element={
+                      <RequireAuth allowedRoles={[ROLES.LEADER, ROLES.ADMIN]} />
+                    }
+                  >
+                    <Route exact path="/requests" element={<RequestPage />} />
+                  </Route>
                   <Route exact path="/report" element={<Report />} />
-                  <Route exact path="/report/resourcePlaning/:pName" element={<ReportRSPLanning />} />
-                 
+                  <Route
+                    exact
+                    path="/report/resourcePlaning/:pName"
+                    element={<ReportRSPLanning />}
+                  />
+                  <Route
+                    exact
+                    path="/unauthorized"
+                    element={<Unauthorized />}
+                  />
+
                   <Route exact path="/profile" element={<Profile />} />
                 </Route>
                 {/* {console.log(onclickShowLeft)} */}

@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux'
 import ExtraReducer from './ExtraReducer'
 import GenRequestReducer from './GenRequestReducer'
+import NotifiReducer from './NotificationReducer'
 import PlanningRoleReducer from './PlanningRoleReducer'
 import ProjectsReducer from './ProjectReducer'
 import ReportReducer from './ReportReducer'
@@ -15,6 +16,7 @@ const rootReducer= combineReducers({
     ExtraObject:ExtraReducer,
     GenRequest:GenRequestReducer,
     SpecRequest:SpecRequestReducer,
-    Report:ReportReducer
+    Report:ReportReducer,
+    Notification:NotifiReducer
 })
 export default rootReducer

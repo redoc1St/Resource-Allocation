@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-// import { Card, Dropdown } from "antd";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { DownOutlined, UserOutlined } from "@ant-design/icons";
 import "../../../css/styles.css";
 
 import TableResourcePlanning from "../../table/tableRPlanning/TableRPlanning";
-import BtnViewEmp from "./BtnViewEmp";
 import { Dropdown, Menu, Space, Card, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getRoleByCode } from "../../../Store/Actions/PlanningRoleAction";
@@ -16,10 +14,13 @@ import {
   getRoles,
   getSkills,
 } from "../../../Store/Actions/ExtraObjectActions";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import axios from "axios";
 import { useState } from "react";
+import { ROLES } from "../../../App";
+import useAuth from "../../hooks/useAuth";
+import { getProjects, getProjectsByBuId } from "../../../Store/Actions/ProjectActions";
 export default function ResourcePlanning() {
   const { pName } = useParams();
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function ResourcePlanning() {
   const [getPId, setPID] = useState();
   const [getPName, setPName] = useState();
   const [getBU, setBU] = useState();
-
+  const { user } = useAuth();
 
   const roles = useSelector((state) => state.ExtraObject.roles);
   const levels = useSelector((state) => state.ExtraObject.levels);
@@ -39,6 +40,9 @@ export default function ResourcePlanning() {
 
   useEffect(() => {
     dispatch(getRoleByCode(pName));
+    user?.UserType == ROLES.EMPLOYEE
+      ? dispatch(getProjectsByBuId(user?.Department_id))
+      : dispatch(getProjects());
   }, [pName]);
   useEffect(() => {
     dispatch(getRoles());
@@ -60,53 +64,30 @@ export default function ResourcePlanning() {
   }, [pName]);
 
   const menu = (
-    
     <Menu
       items={projects.map((item) => ({
         key: item.id,
-        label: (
-          <Link to={`/resourcePlaning/${item.code}`}>{item.name}</Link>
-        ),
+        label: <Link to={`/resourcePlaning/${item.code}`}>{item.name}</Link>,
       }))}
     />
-    
   );
-  /////////////////
-  // const menu = (
-  //   <Menu
-  //   // {projects.map((item)-)}
-
-  //     items={[
-  //       {
-  //         key: "1",
-  //         label: (
-  //           // <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-  //           //   1st menu item
-  //           // </a>
-  //           <Link to={`/resourcePlaning/project_name_1`}>project_name_1</Link>
-  //         ),
-  //       }
-
-  //     ]}
-  //   />
-  // );
 
   if (!pName) {
     return (
       // <ListPane>
-        <Dropdown overlay={menu}>
-          <Button
-            style={{
-              border: "4px",
-              boxShadow: " 0 4px 10px rgba(0, 0, 0, 0.3)",
-            }}
-          >
-            <Space>
-              Project Name
-              <DownOutlined />
-            </Space>
-          </Button>
-        </Dropdown>
+      <Dropdown overlay={menu}>
+        <Button
+          style={{
+            border: "4px",
+            boxShadow: " 0 4px 10px rgba(0, 0, 0, 0.3)",
+          }}
+        >
+          <Space>
+            Project Name
+            <DownOutlined />
+          </Space>
+        </Button>
+      </Dropdown>
       // </ListPane>
     );
   }
@@ -117,8 +98,11 @@ export default function ResourcePlanning() {
         Resource Planning
       </h3>
       <h5 style={{ color: "#162274" }}>
-       
-      <span onClick={() => navigate(-1)}><ArrowBackIosIcon style={{cursor:'pointer',color:'black'}} /></span> | Resource Planning | <span style={{ color: "#f66800" }}>{getPName}</span>
+        <span onClick={() => navigate(-1)}>
+          <ArrowBackIosIcon style={{ cursor: "pointer", color: "black" }} />
+        </span>{" "}
+        | Resource Planning |{" "}
+        <span style={{ color: "#f66800" }}>{getPName}</span>
       </h5>
       <div
         className="site-card-border-less-wrapper"
@@ -136,9 +120,9 @@ export default function ResourcePlanning() {
             margin: "0 30px ",
           }}
         >
-            Planned effort
-            <br />
-            (MM)<p style={{ fontSize: "30px" }}>5</p>
+          Planned effort
+          <br />
+          (MM)<p style={{ fontSize: "30px" }}>5</p>
         </Card>
         <Card
           style={{
@@ -152,9 +136,9 @@ export default function ResourcePlanning() {
             margin: "0 30px ",
           }}
         >
-            Planned effort
-            <br />
-            (MM)<p style={{ fontSize: "30px" }}>5</p>
+          Planned effort
+          <br />
+          (MM)<p style={{ fontSize: "30px" }}>5</p>
         </Card>
         <Card
           style={{
@@ -168,35 +152,24 @@ export default function ResourcePlanning() {
             margin: "0 30px ",
           }}
         >
-            Planned effort
-            <br />
-            (MM)<p style={{ fontSize: "30px" }}>5</p>
+          Planned effort
+          <br />
+          (MM)<p style={{ fontSize: "30px" }}>5</p>
         </Card>
-        {/* <Card
-          style={{
-            color: "#646464",
-            fontWeight: "bold",
-            border: "2px solid",
-            backgroundColor: "#ededed",
-            width: 300,
-            height: 140,
-          }}
-        >
-          <p>Planned effort:</p>
-          <p>Billable effort:</p>
-          <p>Actual effort:</p>
-        </Card> */}
-        {/* <div style={{ marginLeft: "700px" }}><BtnViewEmp /></div> */}
       </div>
 
       <div style={{ marginTop: "5px" }}>
         <TableResourcePlanning planningRoles={planningRoles} bu={getBU} />
-        <ModalAddRole
-          roles={roles}
-          skills={skills}
-          levels={levels}
-          pId={getPId}
-        />
+        {user?.UserType != ROLES.EMPLOYEE ? (
+          <ModalAddRole
+            roles={roles}
+            skills={skills}
+            levels={levels}
+            pId={getPId}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

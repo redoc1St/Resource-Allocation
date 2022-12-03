@@ -15,7 +15,7 @@ export default function Login() {
   const navigate = useNavigate();
   const { setAccount, login, logout } = useAuth();
   const [error, setError] = useState();
-  const [passwordVisible, setPasswordVisible] = React.useState(false);
+  const [passwordVisible, setPasswordVisible] = React.useState(true);
 
   const {
     register,

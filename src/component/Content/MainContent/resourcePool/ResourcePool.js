@@ -5,6 +5,7 @@ import BasicBreadcrumbs from "../../../breadcrumbs/BasicBreadcrumbs";
 import TableRPool from "../../../table/tableRPool/TableRPool";
 import { Radio } from "antd";
 import ViewByChart from "./viewByChart/ViewByChart";
+import ModalAddPool from "./ModalAddPool";
 
 export default function ResourcePool(record) {
   const location = useLocation();
@@ -84,6 +85,7 @@ export default function ResourcePool(record) {
       ) : (
         <ViewByChart />
       )}
+      <ModalAddPool/>
     </div>
   );
 }

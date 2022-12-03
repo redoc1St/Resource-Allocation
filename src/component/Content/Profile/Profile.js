@@ -12,7 +12,7 @@ export default function Profile() {
   const { logout, user, verifyUserInfo } = useAuth();
   const [error, setError] = useState();
   const [typeMessage, setTypeMessage] = useState("error");
-  const [passwordVisible, setPasswordVisible] = React.useState(false);
+  const [passwordVisible, setPasswordVisible] = React.useState(true);
 
   console.log(user);
   const changeStatus = (e) => {
@@ -314,7 +314,7 @@ export default function Profile() {
                                 {user?.UserType}
                               </span>
                               <div className="text-muted">
-                                <small>{user?.Start_Day.split("T")[0]}</small>
+                                <small>{user?.Start_Day?.split("T")[0]}</small>
                               </div>
                             </div>
                           </div>
@@ -376,7 +376,7 @@ export default function Profile() {
                                       <div className="form-group">
                                         <label>BirthDay</label>
                                         <input
-                                          value={user?.BirthDay.split("T")[0]}
+                                          value={user?.BirthDay?.split("T")[0]}
                                           type="text"
                                           className="form-control"
                                           disabled

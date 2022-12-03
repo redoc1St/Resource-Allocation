@@ -1,13 +1,15 @@
 import { height } from "@mui/system";
 import React, { useState } from "react";
-import App from "../../../App";
+import App, { ROLES } from "../../../App";
 import BasicBreadcrumbs from "../../breadcrumbs/BasicBreadcrumbs";
+import useAuth from "../../hooks/useAuth";
 import Search from "../../option/Search";
 import TableData from "../../table/TableData";
 import "./MainContent.css";
 import ModalAddItem from "./ModalAddItem";
 
 export default function MainContent() {
+  const { user } = useAuth();
 
 
 
@@ -31,7 +33,8 @@ export default function MainContent() {
           <TableData/>
         </div>
         <div>
-          <ModalAddItem />
+          
+          {user?.UserType ==ROLES.ADMIN ? <ModalAddItem /> :''} 
         </div>
       </div>
     </div>

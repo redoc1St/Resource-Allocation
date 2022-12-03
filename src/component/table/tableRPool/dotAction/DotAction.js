@@ -16,10 +16,12 @@ import AddToProject from "./addToProject/AddToProject";
 import ModalEditPoolEmp from "./edit/ModalEditEmp";
 import { useDispatch, useSelector } from "react-redux";
 import { getPNameByRLS } from "../../../../Store/Actions/ExtraObjectActions";
+import useAuth from "../../../hooks/useAuth";
 
 export default function DotAction(record) {
   const dispatch = useDispatch();
-
+  const { user } = useAuth();
+console.log(record);
   // const PNames = useSelector((state) => state.ExtraObject.pName);
   // // console.log(record.record);
   // useEffect(() => {
@@ -33,11 +35,11 @@ export default function DotAction(record) {
           key: "1",
           label: <ModalEditPoolEmp {...record} />,
         },
-        {
-          key: "2",
-          label: "Add item",
-          // label: <Link onClick={handleRequest}>Request</Link>,
-        },
+        // {
+        //   key: "2",
+        //   label: "Add item",
+        //   // label: <Link onClick={handleRequest}>Request</Link>,
+        // },
         {
           key: "3",
           label: <AddToProject {...record} />,

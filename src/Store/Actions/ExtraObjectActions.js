@@ -8,7 +8,8 @@ import {
   GET_SKILLS,
   GET_PNAME_BY_RLS,
   GET_IDROLE_BY_CODERLS,
-  GET_LEADER_BY_BU
+  GET_LEADER_BY_BU,
+  GET_ALL_EMPS
 } from "../types";
 const projectsApi = process.env.REACT_APP_BASE_URL;
 
@@ -111,3 +112,20 @@ export const getIdRoleByCodeRLS =
       })
       .catch((err) => console.log("Get role error", err));
   };
+
+  
+export const getAllEmps = () => async (dispatch) => {
+  // dispatch({ type: SET_LOADING, payload: true })
+
+  await axios
+    .get(projectsApi + "/api/user/employee")
+    .then((res) => {
+      // console.log(res)
+      const emps = res.data.map((item) => ({
+        ...item,
+      }));
+      // dispatch({ type: SET_LOADING, payload: false })
+      dispatch({ type: GET_ALL_EMPS, payload: emps });
+    })
+    .catch((err) => console.log("Get project api error", err));
+};

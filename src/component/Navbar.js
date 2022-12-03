@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import { Button, Popover } from "antd";
+import { Divider } from "antd";
 
 import "./navBar.css";
 import Badge from "@mui/material/Badge";
@@ -20,34 +21,65 @@ import {
 import useAuth from "./hooks/useAuth";
 import { hover } from "@testing-library/user-event/dist/hover";
 import { Opacity } from "@mui/icons-material";
+import { Dropdown, Space } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { getNotiByUserId } from "../Store/Actions/NotificationActions";
+import { useDispatch, useSelector } from "react-redux";
+
 export default function Navbar() {
-  const { logout, onclickShowLeft, setOnclickShowLeft,user } = useAuth();
+  const { logout, onclickShowLeft, setOnclickShowLeft, user } = useAuth();
+  const notiList = useSelector((state) => state.Notification.notiList);
+  const dispatch = useDispatch();
+
+  // console.log(user);
+  // const items = [
+
+  // ];
+  useEffect(() => {
+    dispatch(getNotiByUserId(user?.User_id));
+  }, []);
+  let arr = [];
+  const listContent = notiList.map((item) => {
+    arr.push(item.content);
+  });
+
+  const items = arr.map((item) => (
+    <div>
+      <p>{item}</p>
+      <Divider />
+
+    </div>
+  ));
 
   const onClickLogOut = () => {
     // setAccount(false);
-    logout()
+    logout();
     // Navigate("/login");
   };
   const onClickBaGach = () => {
-    document.body.classList.toggle('sb-sidenav-toggled');
-    localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-    setOnclickShowLeft(!onclickShowLeft)
+    document.body.classList.toggle("sb-sidenav-toggled");
+    localStorage.setItem(
+      "sb|sidebar-toggle",
+      document.body.classList.contains("sb-sidenav-toggled")
+    );
+    setOnclickShowLeft(!onclickShowLeft);
   };
   return (
     <NavbarPane>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-white">
         {/* Navbar Brand*/}
-        <span className="navbar-brand ps-3" style={{ color: "black" }} >
+        <span className="navbar-brand ps-3" style={{ color: "black" }}>
           Project
         </span>
         {/* Sidebar Toggle*/}
-        
+        {console.log(notiList)}
         <button
           style={{ color: "black" }}
           className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
           id="sidebarToggle"
           onClick={() => onClickBaGach()}
-          
+
           // href="#!"
         >
           <svg
@@ -78,7 +110,8 @@ export default function Navbar() {
           )} */}
         {/* Navbar*/}
         {/* <ImageAvatars /> */}
-
+        {listContent}
+        {console.log(arr)}
         <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 ">
           <div
             style={{
@@ -91,32 +124,39 @@ export default function Navbar() {
             <Popover
               placement="bottom"
               title={"Notifications"}
-              content={"ass"}
+              content={items}
               trigger="click"
-              
             >
               <Badge
                 variant="dot"
                 badgeContent=""
                 style={{ margin: "8px 5px" }}
-                
                 color="primary"
               >
-                {/* <MailIcon /> */}
                 <NotificationsNoneTwoToneIcon
                   color="action"
                   style={{ fontSize: "25px" }}
                 ></NotificationsNoneTwoToneIcon>
               </Badge>
             </Popover>
-            {/* <Stack direction="row" spacing={2}>
-              <Link to="/">
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://khoinguonsangtao.vn/wp-content/uploads/2022/02/anh-dai-dien-fb-dep.jpg"
-                />
-              </Link>
-            </Stack> */}
+
+            {/* <div>
+              <React.Fragment>
+                <Dropdown
+                  menu={{
+                    items,
+                  }}
+                  trigger={["click"]}
+                >
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      Click me
+                      <DownOutlined />
+                    </Space>
+                  </a>
+                </Dropdown>
+              </React.Fragment>
+            </div> */}
             <li className="nav-item dropdown ">
               <Link
                 className="nav-link dropdown-toggle "
@@ -152,7 +192,7 @@ export default function Navbar() {
                 aria-labelledby="navbarDropdown"
               >
                 <li>
-                  <Link className="dropdown-item" to='/profile'>
+                  <Link className="dropdown-item" to="/profile">
                     Profile
                   </Link>
                 </li>
@@ -179,6 +219,5 @@ export default function Navbar() {
 }
 const NavbarPane = styled.div`
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  background-color: #FAE4D7;
-
+  background-color: #fae4d7;
 `;

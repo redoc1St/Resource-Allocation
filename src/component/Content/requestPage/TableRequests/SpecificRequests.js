@@ -121,12 +121,12 @@ export default function SpecificRequests() {
   };
 
   const handleAccept = async (value) => {
-    // console.log(value);
+    console.log(value.item);
     try {
       const res = await request({
         url:
           process.env.REACT_APP_BASE_URL +
-          `/api/Request/EmpToRole/${value.status}`,
+          `/api/Request/EmpToRole/${value.status}/noti/${value.item.Employee_id1}`,
         method: "POST",
         data: { resourceRole_id: value?.item?.ResourcePlannig_RoleId, employee_id: value?.item?.Employee_id },
       });

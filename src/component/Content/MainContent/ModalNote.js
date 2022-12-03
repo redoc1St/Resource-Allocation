@@ -12,6 +12,7 @@ export default function ModalNote(data) {
 // console.log(data.data.id);
   const showModal = () => {
     setIsModalOpen(true);
+
   };
 
   const handleOk = () => {

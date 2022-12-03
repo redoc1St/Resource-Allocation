@@ -7,6 +7,8 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getIdRoleByCodeRLS,
+  getLeaderByBU,
+  getLeaderByCode,
   getPNameByRLS,
 } from "../../../../../Store/Actions/ExtraObjectActions";
 import { useParams } from "react-router-dom";
@@ -21,9 +23,10 @@ export default function AddToProject(type) {
   // console.log(r,l,s);
   const PNames = useSelector((state) => state.ExtraObject.pName);
   const IdPLanningRole = useSelector((state) => state.ExtraObject.id);
+  const leader = useSelector((state) => state.ExtraObject.leader);
   const [codeProject, setCodeProject] = useState("");
   const [buId, setbuId] = useState("");
-  // console.log(type);
+  // console.log(type?.record);
   // useEffect(()={
 
   // },[codeProject])
@@ -35,6 +38,7 @@ export default function AddToProject(type) {
     if ((r, l, s)) {
       dispatch(getPNameByRLS(r, l, s));
     } else {
+      dispatch(getLeaderByBU(type?.record?.Department_id));
       type?.record?.skill_id
         ? dispatch(
             getPNameByRLS(
@@ -49,7 +53,10 @@ export default function AddToProject(type) {
     }
   }, [isModalOpen2]);
   useEffect(() => {
+    console.log("code project" + codeProject);
     if (codeProject) {
+      // dispatch(getLeaderByCode(codeProject));
+
       dispatch(
         getIdRoleByCodeRLS(
           codeProject,
@@ -59,7 +66,7 @@ export default function AddToProject(type) {
         )
       );
     }
-  }, [isModalOpen, codeProject]);
+  }, [isModalOpen, codeProject, isModalOpen2]);
   // console.log(PNames[0]?.ProjectName);
   // console.log("id"+type);
 
@@ -96,20 +103,34 @@ export default function AddToProject(type) {
 
   // const {handleSubmit2}=useForm({defaultValues:{}})
   const onSubmit2 = async (values) => {
-    console.log("jhahahahahaha");
-  
-    console.log(values);
-    setCodeProject(values.pName.split(",")[1]); //setcodeProject
+    // console.log(values);
+    // setCodeProject(values.pName.split(",")[1]); //setcodeProject
+    dispatch(
+      getIdRoleByCodeRLS(
+        codeProject,
+        type?.record?.Role_id,
+        type?.record?.level_id,
+        type?.record?.skill_id
+      )
+    );
     setbuId(values.pName.split(",")[0]); //setbuId
-    console.log('****');
-    console.log(IdPLanningRole?.id);
-    console.log(type?.record?.id);
-    console.log('****');
+    // console.log("****");
+    // console.log(IdPLanningRole?.id);
+    // console.log(type?.record?.id);
+    // console.log("****");
 
     showModal();
   };
 
+  const handleChangeName = (e) => {
+    console.log(e.target.value);
+    setCodeProject(e.target.value.split(",")[1]); //setcodeProject
+  };
+
   const onSubmit = async (values) => {
+    // console.log(leader.User_id);
+    // console.log(type?.record?User_id);
+
     // const{pId,unit, pName}= values;
     // console.log(dataProject);
     // setDataProject([...dataProject, values])
@@ -118,10 +139,10 @@ export default function AddToProject(type) {
     if (type.buProject) {
       if (type?.buProject === type?.record?.Department_id) {
         try {
-          console.log("hello");
           const res = await axios({
             url:
-              process.env.REACT_APP_BASE_URL + "/api/Request/EmpToRoleDirect",
+              process.env.REACT_APP_BASE_URL +
+              `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}`,
             method: "POST",
             data: {
               resourceRole_id: type?.resourceRole_id,
@@ -134,7 +155,6 @@ export default function AddToProject(type) {
             style: { marginTop: "50px" },
           });
           // dispatch(getRoleByCode());
-
           setIsModalOpen(false);
         } catch (err) {
           console.log(err);
@@ -142,9 +162,10 @@ export default function AddToProject(type) {
       } else {
         //k cos truoc khác bu
         try {
-          console.log("hello2");
           const res = await axios({
-            url: process.env.REACT_APP_BASE_URL + "/api/Request/EmpToRole",
+            url:
+              process.env.REACT_APP_BASE_URL +
+              `/api/Request/EmpToRole/noti/${leader.User_id}`,
             method: "POST",
             data: {
               resourceRole_id: type?.resourceRole_id,
@@ -157,7 +178,6 @@ export default function AddToProject(type) {
             style: { marginTop: "50px" },
           });
           // dispatch(getRoleByCode());
-
           setIsModalOpen(false);
         } catch (err) {
           console.log(err);
@@ -170,16 +190,15 @@ export default function AddToProject(type) {
         type?.record?.level_id,
         type?.record?.skill_id
       );
-
       //cùng bu khi không theo luồng project
       // console.log(IdPLanningRole);
       if (buId == type?.record?.Department_id) {
         //[0] laf buId, lấy từ value truyền từ pName dưới
         try {
-          console.log("hello");
           const res = await axios({
             url:
-              process.env.REACT_APP_BASE_URL + "/api/Request/EmpToRoleDirect",
+              process.env.REACT_APP_BASE_URL +
+              `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}`,
             method: "POST",
             data: {
               resourceRole_id: IdPLanningRole?.id,
@@ -192,7 +211,6 @@ export default function AddToProject(type) {
             style: { marginTop: "50px" },
           });
           // dispatch(getRoleByCode());
-
           setIsModalOpen(false);
           setIsModalOpen2(false);
         } catch (err) {
@@ -200,9 +218,14 @@ export default function AddToProject(type) {
         }
       } else {
         try {
+          // console.log(
+          //   "loi o day" + IdPLanningRole?.id + "," + type?.record?.id
+          // );
           //khác bu khi không theo luồng project
           const res = await axios({
-            url: process.env.REACT_APP_BASE_URL + "/api/Request/EmpToRole",
+            url:
+              process.env.REACT_APP_BASE_URL +
+              `/api/Request/EmpToRole/noti/${leader.User_id}`,
             method: "POST",
             data: {
               resourceRole_id: IdPLanningRole?.id,
@@ -215,7 +238,6 @@ export default function AddToProject(type) {
             style: { marginTop: "50px" },
           });
           // dispatch(getRoleByCode());
-
           setIsModalOpen(false);
           setIsModalOpen2(false);
         } catch (err) {
@@ -268,11 +290,15 @@ export default function AddToProject(type) {
         >
           <form onSubmit={handleSubmit(onSubmit2)}>
             <h5>Project name</h5>
-            <select {...register("pName")} required>
-             {
-    console.log(PNames)
-
-             }
+            <select
+              {...register("pName")}
+              onClick={(e) => handleChangeName(e)}
+              defaultValue=""
+              required
+            >
+              <option selected value="">
+                Select project
+              </option>
 
               {PNames.map((item, index) => {
                 return (
@@ -280,11 +306,13 @@ export default function AddToProject(type) {
                     required
                     key={index}
                     value={[item.Depeartment_id, item.Code]}
+                    // onChange={setCodeProject(item.Code)}
                   >
                     {item.Code}
                   </option>
                 );
               })}
+              {/* {console.log(codeProject)} */}
             </select>
             <button
               style={{
@@ -343,6 +371,7 @@ export default function AddToProject(type) {
                     <input type="date" {...register("eDate")} />
                   </td>
                 </tr>
+                {/* {console.log(leader.User_id)} */}
                 {/* <tr>
                   <th>Role</th>
                   <td>

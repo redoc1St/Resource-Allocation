@@ -1,5 +1,4 @@
-import { DownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Space } from "antd";
+
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ScrollBar from "react-perfect-scrollbar";
@@ -8,7 +7,7 @@ import {
   getUsers,
   getUsersByName,
   getUsersByNameAStatus,
-  getUsersByStatus,
+  
 } from "../../../Store/Actions/UserActions";
 import BasicBreadcrumbs from "../../breadcrumbs/BasicBreadcrumbs";
 import PieChart from "../../Chart/Pie";
@@ -17,8 +16,10 @@ import Search from "../../option/Search";
 import TableCandidate from "../../table/tableCandidate/TableCandidate";
 import { Card } from "antd";
 import styled from "styled-components";
+import DrawerAddUser from "./DrawerAddUser";
+import { ROLES } from "../../../App";
 export default function CandidateManage() {
-  const { valueInput, setValueInput, statusCand, setStatusCand } = useAuth();
+  const { valueInput, user, statusCand, setStatusCand } = useAuth();
   const dispatch = useDispatch();
   const users = useSelector((state) => state?.Users?.users);
 
@@ -26,7 +27,6 @@ export default function CandidateManage() {
     console.log(e.target.value);
     setStatusCand(e.target.value);
   };
-  // let arr[5];
 
 
   var arr = new Array(0, 0, 0, 0, 0);
@@ -45,20 +45,8 @@ export default function CandidateManage() {
 
 
   useEffect(() => {
-    // if (valueInput && statusCand) {
-    //   // dispatch(getUsersByName(valueInput));
-    //   dispatch(getUsersByNameAStatus(valueInput?valueInput:" ", statusCand));
-    // } else if (statusCand == "all" && !valueInput) {
-    //   dispatch(getUsers());
-    // } else {
-    //   dispatch(getUsersByNameAStatus(" ", statusCand));
-    // }
-
     if (statusCand == "all") {
       valueInput ? dispatch(getUsersByName(valueInput)) : dispatch(getUsers());
-      // if (valueInput) {
-      //   dispatch(getUsersByName(valueInput));
-      // } else dispatch(getUsers());
     } else {
       dispatch(
         getUsersByNameAStatus(valueInput ? valueInput : " ", statusCand)
@@ -110,6 +98,7 @@ export default function CandidateManage() {
               <PieChart data={arr}/>
             </Card>
             <TableCandidate />
+            {user?.UserType ==ROLES.ADMIN ? <DrawerAddUser/> :''} 
           </div>
         </Pane>
       </ScrollBar>
@@ -118,7 +107,7 @@ export default function CandidateManage() {
 }
 
 const Pane = styled.div`
-  height: 100px;
+  height: 150px;
 
   /* width: 600px; */
 `;

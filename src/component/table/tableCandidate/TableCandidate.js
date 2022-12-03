@@ -8,16 +8,17 @@ import {
   getUsersByNameAStatus,
 } from "../../../Store/Actions/UserActions";
 import { Divider, Tag } from "antd";
+import { Link } from "react-router-dom";
+import UpdatePass from "./UpdatePass";
+import { ROLES } from "../../../App";
 
 export default function TableCandidate() {
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
-  const { valueInput, setValueInput, statusCand, setStatusCand } = useAuth();
+  const { statusCand, user } = useAuth();
 
   const dispatch = useDispatch();
   const users = useSelector((state) => state?.Users?.users);
   let countId = 1;
-
-
 
   useEffect(() => {
     //   if (valueInput) {
@@ -130,38 +131,20 @@ export default function TableCandidate() {
       dataIndex: "isActive",
       width: 80,
     },
-
-    {
-      title: "Action",
-      dataIndex: "action",
-      fixed: "right",
-      width: 70,
-      render: (_, record) => {
-        // return <DotAction />;
-      },
-    },
+    user?.UserType===ROLES.ADMIN
+      ? {
+          title: "Action",
+          dataIndex: "action",
+          fixed: "right",
+          width: 130,
+          render: (_, record) => {
+            // <a>Update password</a>
+            return <UpdatePass {...record} />;
+          },
+        }
+      : { fixed: "right", width: 20 },
   ];
 
-  // const data = [
-  //   {
-  //     no: 1,
-  //     employee: "Tinh Tri",
-  //     level: "",
-  //     skills: "Dev",
-  //     office: "Cầu Giấy",
-  //     role: "Tester",
-  //     level: "Junior",
-  //     skills: "Testing",
-  //     project: "Project name 1",
-  //     sDate: "14/12/2000",
-  //     eDate: "23/09/2000",
-  //     pEffort: "50%",
-  //     bill: "Bill",
-  //     pBill: "60%",
-  //     unit: "BU1",
-  //     leader: "QuangDD",
-  //   },
-  // ];
   console.log(users);
   const data = users.map((item) => ({
     no: countId++,

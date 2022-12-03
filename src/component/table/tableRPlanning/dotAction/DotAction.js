@@ -14,8 +14,12 @@ import { Link, Navigate, Route } from "react-router-dom";
 import BtnViewEmp from "../../../Content/resourcePlanning/BtnViewEmp";
 import ViewEmp from "./viewEmp/ViewEmp";
 import Request from "./request/Request";
+import useAuth from "../../../hooks/useAuth";
+import { ROLES } from "../../../../App";
 
 export default function DotAction(record) {
+  const { user } = useAuth();
+
   // console.log(record.record.Status);
   const menu = (
     <Menu
@@ -24,28 +28,31 @@ export default function DotAction(record) {
           key: "4",
           label: <ViewEmp {...record} />,
         },
-        {
-          key: "1",
-          // label: <ModalEditPlan record={record} />,
-          label: <ModalEditPlan {...record} />,
-        },
-        {
-          key: "2",
-          // label: <Link to={{pathname:'/resourcePool'}} state={record} >Request</Link>,
-          label:
-            record.record.Status?.props.children === "Approved" ||
-            record.record.Status?.props.children === "Rejected" ||
-            record.record.Status?.props.children === "In Progress" 
-             ? (
-              ""
-            ) : (
-              <Request record={record} />
-            ),
-        },
-        {
-          key: "3",
-          label: "Delete",
-        },
+        user?.UserType != ROLES.EMPLOYEE
+          ? {
+              key: "1",
+              // label: <ModalEditPlan record={record} />,
+              label: <ModalEditPlan {...record} />,
+            }
+          : {},
+        user?.UserType != ROLES.EMPLOYEE
+          ? {
+              key: "2",
+              // label: <Link to={{pathname:'/resourcePool'}} state={record} >Request</Link>,
+              label:
+                record.record.Status?.props.children === "Approved" ||
+                record.record.Status?.props.children === "Rejected" ||
+                record.record.Status?.props.children === "In Progress" ? (
+                  ""
+                ) : (
+                  <Request record={record} />
+                ),
+            }
+          : {},
+        // {
+        //   key: "3",
+        //   label: "Delete",
+        // },
         // {
         //   key: "4",
         //   label: "Action 2"

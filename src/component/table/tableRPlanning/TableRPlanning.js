@@ -11,32 +11,25 @@ import { useDispatch, useSelector } from "react-redux";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Link, useParams } from "react-router-dom";
 import { getLeaderByCode } from "../../../Store/Actions/ExtraObjectActions";
+import { ROLES } from "../../../App";
 export default function TableResourcePlanning(data) {
   const { onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const { pName } = useParams();
+  const { user } = useAuth();
 
   const projects = useSelector((state) => state.Projects.projects);
   const { quantity, setQuantity } = useAuth();
-  let pQuantity = 0;
   const leader = useSelector((state) => state.ExtraObject.leader);
   useEffect(() => {
     dispatch(getLeaderByCode(pName));
   }, []);
-// console.log(data.bu)
   const columns = [
     {
       title: "Role",
       dataIndex: "RoleName",
       width: 100,
     },
-
-    // {
-    //   title: "Planned quantity",
-    //   dataIndex: "pQuantity",
-    //   width: 100,
-    //   editTable: true,
-    // },
     {
       title: "Planned quantity",
       dataIndex: "Quantity",
@@ -59,12 +52,13 @@ export default function TableResourcePlanning(data) {
       dataIndex: "SkillName",
       width: 130,
     },
+    user?.UserType !=ROLES.EMPLOYEE ?
     {
       title: "Employee",
       dataIndex: "employee",
       width: 85,
       editTable: true,
-    },
+    } : {},
     {
       title: "Start date ",
       dataIndex: "Date_start",
@@ -110,7 +104,7 @@ export default function TableResourcePlanning(data) {
       title: "Action",
       dataIndex: "action",
       fixed: "right",
-      width: 130,
+      width: 70,
       // render: (_, record) => {
       //   return <DotAction record={record} />;
       // },
