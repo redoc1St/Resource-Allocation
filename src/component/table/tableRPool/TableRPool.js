@@ -66,11 +66,11 @@ export default function TableRPool(data) {
       width: 110,
     },
 
-    // {
-    //   title: "Project",
-    //   dataIndex: "ProjectName",
-    //   width: 150,
-    // },
+    {
+      title: "Project",
+      dataIndex: "ProjectName",
+      width: 150,
+    },
 
     {
       title: "Start date",

@@ -1,0 +1,40 @@
+22/10/2022
+usercontroller: phần search thêm by name + active
+
+resourcePlaningController: update - bỏ 3 phần role_id, e_id, status
+
+ProjectController:  insert thêm check code
+
+--- (2)
+resourcePoolController - theem //List by role, level, skill
+					 //INSERT check INTO DB
+
+--
+
+23/10/2022
+database: sửa 2 bảng ResourcePlanning_Role, [ResourcePlanning_Employee] và thêm bảng  		Emp_RolePlanning
+
+.NET - sửa lại ResourcePoolController và ResourcePlanningController
+
+
+25/10/2022 
+- ExtraObject: add employee vao planning_role
+- ResourcePlanningController: them phan update status 
+
+
+25/10/2022
+- Dem soluong view employee vao load list resourceplaning (chua lam, note lai)
+
+26/10/2022
+ResourcePlanningController: - them phan check update
+ResourcePoolController: - them UpdateResourcePool + check
+
+
+29/10/2022
+- Dang nhap xong co token
+
+31/10/2022
+- Hien email khi nhap token
+- Resource Planning Role: Add Role to project 
+- Request: - // Request ResourceRole Planning to Project
+		- //ShOW All request ResourcePlanning 
