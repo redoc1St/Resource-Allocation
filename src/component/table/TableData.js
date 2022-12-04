@@ -77,13 +77,13 @@ export default function TableData(sText) {
   useEffect(() => {
     if (user)
       if (valueInput) {
-        user?.UserType == ROLES.EMPLOYEE
+        user?.UserType != ROLES.ADMIN
           ? dispatch(
               getProjectsInBUByBuNameNId(valueInput, user?.Department_id)
             )
           : dispatch(getProjectsByName(valueInput));
       } else {
-        user?.UserType == ROLES.EMPLOYEE
+        user?.UserType != ROLES.ADMIN
           ? dispatch(getProjectsByBuId(user?.Department_id))
           : dispatch(getProjects());
       }

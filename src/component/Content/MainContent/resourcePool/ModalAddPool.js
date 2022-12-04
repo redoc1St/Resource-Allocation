@@ -20,23 +20,26 @@ import useAuth from "../../../hooks/useAuth";
 import axios from "axios";
 import {
   getAllEmps,
+  getAllEmpsByBU,
   getLevels,
   getRoles,
   getSkills,
 } from "../../../../Store/Actions/ExtraObjectActions";
 import { getResourcePoolEmp } from "../../../../Store/Actions/ResourcePoolAction";
+import { ROLES } from "../../../../App";
 
 export default function ModalAddPool() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
-  const { moreRow, setMoreRow } = useAuth();
+  const { user } = useAuth();
   const [error, setError] = useState();
   const roles = useSelector((state) => state.ExtraObject.roles);
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
   const allEmps = useSelector((state) => state.ExtraObject.allEmps);
+  const allEmpsByBU = useSelector((state) => state.ExtraObject.allEmpsByBU);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -54,7 +57,8 @@ export default function ModalAddPool() {
     dispatch(getRoles());
     dispatch(getLevels());
     dispatch(getSkills());
-    dispatch(getAllEmps());
+    if (user?.UserType == "leader")
+      dispatch(getAllEmpsByBU(user?.Department_id));
   }, []);
 
   const { register, handleSubmit } = useForm({
@@ -127,7 +131,7 @@ export default function ModalAddPool() {
                         required
                       >
                         <Select.Option required></Select.Option>
-                        {allEmps?.map((item, index) => {
+                        {allEmpsByBU?.map((item, index) => {
                           return (
                             <option value={item.User_id} key={index}>
                               {item.Username}

@@ -40,7 +40,7 @@ export default function ResourcePlanning() {
 
   useEffect(() => {
     dispatch(getRoleByCode(pName));
-    user?.UserType == ROLES.EMPLOYEE
+    user?.UserType != ROLES.ADMIN
       ? dispatch(getProjectsByBuId(user?.Department_id))
       : dispatch(getProjects());
   }, [pName]);

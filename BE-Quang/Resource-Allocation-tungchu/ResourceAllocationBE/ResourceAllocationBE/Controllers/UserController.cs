@@ -44,7 +44,7 @@ namespace ResourceAllocationBE.Controllers
                 return Unauthorized();
             }
         }
-        
+
         //LOAD LIST USER
         [HttpGet]
         public JsonResult GetListUser()
@@ -69,13 +69,39 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
+        //LOAD LIST USER BY BU
+        [HttpGet("{bu}")]
+        public JsonResult GetListUserByBU(int bu)
+        {
+            string query = @"
+                               select * from
+                                dbo.[User] where UserType != 'admin' and  UserType != 'leader'  and department_id=@bu and isActive =1";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@bu", bu);
+
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
         //LOAD LIST USER to add employee role
         [HttpGet("employee")]
         public JsonResult getListUserEmployee()
         {
             string query = @"
                                select * from
-                                dbo.[User] where UserType != 'admin' and UserType != 'leader'  ";
+                                dbo.[User] where UserType != 'admin' and UserType != 'leader'  and isActive =1 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

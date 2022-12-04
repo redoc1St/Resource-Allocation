@@ -4659,11 +4659,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ACER\\Downloads\\Resource-Allocation-tungchu\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
+      "projectUniqueName": "D:\\Project\\client\\BE-Quang\\Resource-Allocation-tungchu\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
       "projectName": "ResourceAllocationBE",
-      "projectPath": "C:\\Users\\ACER\\Downloads\\Resource-Allocation-tungchu\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
+      "projectPath": "D:\\Project\\client\\BE-Quang\\Resource-Allocation-tungchu\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
       "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ACER\\Downloads\\Resource-Allocation-tungchu\\ResourceAllocationBE\\ResourceAllocationBE\\obj\\",
+      "outputPath": "D:\\Project\\client\\BE-Quang\\Resource-Allocation-tungchu\\ResourceAllocationBE\\ResourceAllocationBE\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "j9m1lWQgCx9IbLQeILXX8qf0z5oqvf5qtUQ/pMiSkhS8vo15acOXsBBvrE6GQDmTzstMDalY3glYQzm8heIXCg==",
+  "dgSpecHash": "1Bj8LdtgtudRueX2LlWc4GPA++JeLcO4y+VFr92BtSXr+l3E+dc5/GkCGefVdi6oFtJpL+fyuNQVUa5jtDmHSw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ACER\\Downloads\\Resource-Allocation-tungchu\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
+  "projectFilePath": "D:\\Project\\client\\BE-Quang\\Resource-Allocation-tungchu\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ACER\\.nuget\\packages\\mailkit\\3.4.2\\mailkit.3.4.2.nupkg.sha512",
     "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

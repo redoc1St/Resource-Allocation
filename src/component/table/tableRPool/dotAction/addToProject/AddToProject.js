@@ -37,8 +37,8 @@ export default function AddToProject(type) {
     // console.log(type?.record.skill_id);
     if ((r, l, s)) {
       dispatch(getPNameByRLS(r, l, s));
+
     } else {
-      dispatch(getLeaderByBU(type?.record?.Department_id));
       type?.record?.skill_id
         ? dispatch(
             getPNameByRLS(
@@ -51,7 +51,10 @@ export default function AddToProject(type) {
 
       // console.log(PNames)
     }
+    dispatch(getLeaderByBU(type?.record?.Department_id));
+
   }, [isModalOpen2]);
+
   useEffect(() => {
     console.log("code project" + codeProject);
     if (codeProject) {
@@ -102,9 +105,14 @@ export default function AddToProject(type) {
   });
 
   // const {handleSubmit2}=useForm({defaultValues:{}})
+
   const onSubmit2 = async (values) => {
     // console.log(values);
     // setCodeProject(values.pName.split(",")[1]); //setcodeProject
+    // console.log('day nay '+codeProject,
+    //   type?.record?.Role_id,
+    //   type?.record?.level_id,
+    //   type?.record?.skill_id);
     dispatch(
       getIdRoleByCodeRLS(
         codeProject,
@@ -113,6 +121,7 @@ export default function AddToProject(type) {
         type?.record?.skill_id
       )
     );
+    // console.log(IdPLanningRole);
     setbuId(values.pName.split(",")[0]); //setbuId
     // console.log("****");
     // console.log(IdPLanningRole?.id);
@@ -150,10 +159,17 @@ export default function AddToProject(type) {
             },
           });
           // if(res.data)
-          message.success({
-            content: "Request employee successfull",
-            style: { marginTop: "50px" },
-          });
+          if (res.data == "Added Successfully") {
+            message.success({
+              content: "Add employee successfully",
+              style: { marginTop: "50px" },
+            });
+          } else if (res.data == "FAILS") {
+            message.error({
+              content: "Employee has existed in this project",
+              style: { marginTop: "50px" },
+            });
+          }
           // dispatch(getRoleByCode());
           setIsModalOpen(false);
         } catch (err) {
@@ -165,7 +181,7 @@ export default function AddToProject(type) {
           const res = await axios({
             url:
               process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRole/noti/${leader.User_id}`,
+              `/api/Request/EmpToRole/noti/${leader?.User_id}`,
             method: "POST",
             data: {
               resourceRole_id: type?.resourceRole_id,
@@ -205,11 +221,17 @@ export default function AddToProject(type) {
               employee_id: type?.record?.id,
             },
           });
-          // if(res.data)
-          message.success({
-            content: "Request employee direct successfull",
-            style: { marginTop: "50px" },
-          });
+          if (res.data == "Added Successfully") {
+            message.success({
+              content: "Add employee successfully",
+              style: { marginTop: "50px" },
+            });
+          } else if (res.data == "FAILS") {
+            message.error({
+              content: "Employee has existed in this project",
+              style: { marginTop: "50px" },
+            });
+          }
           // dispatch(getRoleByCode());
           setIsModalOpen(false);
           setIsModalOpen2(false);
@@ -225,7 +247,7 @@ export default function AddToProject(type) {
           const res = await axios({
             url:
               process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRole/noti/${leader.User_id}`,
+              `/api/Request/EmpToRole/noti/${leader?.User_id}`,
             method: "POST",
             data: {
               resourceRole_id: IdPLanningRole?.id,

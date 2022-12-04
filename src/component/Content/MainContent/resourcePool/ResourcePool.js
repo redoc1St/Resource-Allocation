@@ -6,11 +6,14 @@ import TableRPool from "../../../table/tableRPool/TableRPool";
 import { Radio } from "antd";
 import ViewByChart from "./viewByChart/ViewByChart";
 import ModalAddPool from "./ModalAddPool";
+import useAuth from "../../../hooks/useAuth";
 
 export default function ResourcePool(record) {
   const location = useLocation();
   const [value, setValue] = useState("list");
   console.log('33',location?.state);
+  const { user } = useAuth();
+
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
@@ -85,7 +88,7 @@ export default function ResourcePool(record) {
       ) : (
         <ViewByChart />
       )}
-      <ModalAddPool/>
+      {user?.UserType=='leader' ? <ModalAddPool/> : '' }
     </div>
   );
 }

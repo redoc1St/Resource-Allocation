@@ -29,7 +29,7 @@ namespace ResourceAllocationBE.Controllers
             string query = @"
             insert into ResourceRequestRole values(@rid,2,'',GETDATE())
             update ResourcePlanning_Role set [Status] = 'In Progress' where id = @rid
-            insert into Notifications values (@id, 'You get notification abour request....', GETDATE())
+            insert into Notifications values (@id, 'You get notification abour  request....', GETDATE())
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -155,8 +155,36 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(" Successfully");
         }
 
-        // SHOW REQUEST BY BU (Leader Project can see)
+        // SHOW REQUEST role BY BU (Leader Project can see)
+        [HttpGet("RolePlanning/{bu}")]
+        public JsonResult getListRequestResourcePlanningByBU(int bu)
+        {
+            string query = @"
+                    select *
+                    from ResourcePlanning_Role, Roles,Project, Levels,Skill, ResourceRequestRole
+                    where ResourcePlanning_Role.Project_id = Project.Project_id and
+                    Roles.Role_id = ResourcePlanning_Role.Role_id and
+                    ResourcePlanning_Role.Level_id = Levels.Level_id and
+                    ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
+                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id and depeartment_id =@bu";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@bu", bu);
 
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
 
 
         //APPROVED REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
@@ -260,12 +288,7 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
         public JsonResult requestEmployeeToRolePlanning(RequestModel request,int leader_id)
         {
             string query = @"
-            	  if not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =@rid and Employee_id = @eid)
-			begin	
-			insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE())
-                insert into Notifications values (@leader_id, 'LEADER You get notification about request employee....', GETDATE())
-			end
-			else if not exists(SELECT * FROM [ResourceRequestEmployee]
+            	  if not exists(SELECT * FROM [ResourceRequestEmployee]
                 where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and 
 				(status='In Progress' or status='Approved'))
 			begin 
@@ -378,8 +401,8 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
             return new JsonResult(table);
         }
         // SHOW EMPLOYEE REQEUST (CUNG BU) ()
-        [HttpGet("Employee/{de_name}")]
-        public JsonResult getListRequestEmployeeBU(string de_name)
+        [HttpGet("Employee/{bu}")]
+        public JsonResult getListRequestEmployeeBU(int bu )
         {
             string query = @"
                     SELECT *
@@ -391,7 +414,7 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
 					join ResourcePlanning_Role on ResourcePlanning_Role.id = ResourceRequestEmployee.ResourcePlannig_RoleId
                     join Project on Project.project_id = ResourcePlanning_Role.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
-	                where Department_name = @de_name
+	                 where Department.Department_id =@bu
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -401,7 +424,7 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@de_name", de_name);
+                    myCommand.Parameters.AddWithValue("@bu", bu);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

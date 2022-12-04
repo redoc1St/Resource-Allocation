@@ -35,20 +35,23 @@ export default function DotAction(record) {
               label: <ModalEditPlan {...record} />,
             }
           : {},
-        user?.UserType != ROLES.EMPLOYEE
-          ? {
-              key: "2",
-              // label: <Link to={{pathname:'/resourcePool'}} state={record} >Request</Link>,
-              label:
-                record.record.Status?.props.children === "Approved" ||
-                record.record.Status?.props.children === "Rejected" ||
-                record.record.Status?.props.children === "In Progress" ? (
-                  ""
-                ) : (
-                  <Request record={record} />
-                ),
-            }
-          : {},
+        // user?.UserType != ROLES.ADMIN
+        //   ?
+        {
+          key: "2",
+          // label: <Link to={{pathname:'/resourcePool'}} state={record} >Request</Link>,
+          label:
+            record.record.Status?.props.children === "Approved" ||
+            record.record.Status?.props.children === "Rejected" ||
+            record.record.Status?.props.children === "In Progress" ? (
+              ""
+            ) : user?.UserType == ROLES.ADMIN ? (
+              <Request record={record} />
+            ) : (
+              ""
+            ),
+        },
+        // : {},
         // {
         //   key: "3",
         //   label: "Delete",

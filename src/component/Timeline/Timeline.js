@@ -1,6 +1,5 @@
-
-import { Eventcalendar } from '@mobiscroll/react'; /* or import any other component */
-import '@mobiscroll/react/dist/css/mobiscroll.min.css';
+import { Eventcalendar } from "@mobiscroll/react"; /* or import any other component */
+import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import { Switch, Table } from "antd";
 import "./index.css";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
@@ -9,12 +8,15 @@ import { getResourcePoolEmp } from "../../Store/Actions/ResourcePoolAction";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import AddToProject from "../table/tableRPool/dotAction/addToProject/AddToProject";
+import useAuth from "../hooks/useAuth";
 
 export default function Timeline() {
   //   const [myEvents, setEvents] = React.useState([]);
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
   // const [idEmp, setIdEmp]= useState(0);
+  const { user } = useAuth();
+
   useEffect(() => {
     dispatch(getResourcePoolEmp());
   }, []);
@@ -94,10 +96,10 @@ export default function Timeline() {
       role: item?.RoleName,
       level: item?.LevelName,
       SkillName: item?.SkillName,
-      roleId:item?.Role_id,
-      levelId:item?.level_id,
-      skillId:item?.skill_id,
-      id:item?.id,
+      roleId: item?.Role_id,
+      levelId: item?.level_id,
+      skillId: item?.skill_id,
+      id: item?.id,
       color: "#3fd890",
       // Math.floor(Math.random()*16777215).toString(16)
       // skill:item?.SkillName,
@@ -163,36 +165,39 @@ export default function Timeline() {
     // ];
   }, []);
 
-
   const onClickIcon = (rowData) => {
     console.log(rowData.role);
     // <AddToProject type={"icon"} record={rowData} />;
     setUserData({
-      Role_id:rowData.roleId,
-      level_id:rowData.levelId,
-      skill_id:rowData.skillId,
-      id:rowData.id
-    })
+      Role_id: rowData.roleId,
+      level_id: rowData.levelId,
+      skill_id: rowData.skillId,
+      id: rowData.id,
+    });
     // setUserData(rowData.role,rowData.level,rowData.SkillName)
     // <Link to={<AddToProject record={rowData}/>} > e</Link>
   };
-const [userData,setUserData]=useState({
-  role:'',
-  level:'',
-  skill:'',
-  id:''
-})
+  const [userData, setUserData] = useState({
+    role: "",
+    level: "",
+    skill: "",
+    id: "",
+  });
   const renderCustomResource = (resource) => {
     return (
       <div className="md-resource-header-template-cont">
-        <div className="md-resource-header-template-icon">
-          <span onClick={()=>onClickIcon(resource)}>
-          <AddToProject type={'icon'} record={userData}/>
-          {/* <span onClick={() => onClickIcon(resource)}>
+        {user?.UserType == "leader" ? (
+          <div className="md-resource-header-template-icon">
+            <span onClick={() => onClickIcon(resource)}>
+              <AddToProject type={"icon"} record={userData} />
+              {/* <span onClick={() => onClickIcon(resource)}>
             <PersonAddAlt1Icon />
           </span> */}
-          </span>
-        </div>
+            </span>
+          </div>
+        ) : (
+          ""
+        )}
 
         <div className="md-resource-header-template-name">{resource.name}</div>
         <div className="md-resource-header-template-unit">{resource.unit}</div>
@@ -207,7 +212,11 @@ const [userData,setUserData]=useState({
   const renderCustomHeader = () => {
     return (
       <div className="md-resource-header-template-title">
-        <div className="md-resource-header-template-icon">Action</div>
+        {user?.UserType == "leader" ? (
+          <div className="md-resource-header-template-icon">Action</div>
+        ) : (
+          ""
+        )}
 
         <div className="md-resource-header-template-name">Employee</div>
         <div className="md-resource-header-template-unit">Unit</div>

@@ -2,19 +2,28 @@ import { message, Table } from "antd";
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSpecRequest } from "../../../../Store/Actions/SpecRequestActions";
+import {
+  getSpecRequest,
+  getSpecRequestByBU,
+} from "../../../../Store/Actions/SpecRequestActions";
 import useAuth from "../../../hooks/useAuth";
 import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import request from "../../../../../src/api/request";
+import { Tag } from "antd";
 
 export default function SpecificRequests() {
   const dispatch = useDispatch();
+  const { setAccount, onclickShowLeft, user } = useAuth();
+
   const specRequests = useSelector((state) => state.SpecRequest.specRequests);
   useEffect(() => {
-    dispatch(getSpecRequest());
+    if (user?.UserType == "leader") {
+      dispatch(getSpecRequestByBU(user?.UserType));
+    } else {
+      dispatch(getSpecRequest());
+    }
   }, [dispatch]);
-  const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const columns = [
     {
       title: "No.",
@@ -128,13 +137,23 @@ export default function SpecificRequests() {
           process.env.REACT_APP_BASE_URL +
           `/api/Request/EmpToRole/${value.status}/noti/${value.item.Employee_id1}`,
         method: "POST",
-        data: { resourceRole_id: value?.item?.ResourcePlannig_RoleId, employee_id: value?.item?.Employee_id },
+        data: {
+          resourceRole_id: value?.item?.ResourcePlannig_RoleId,
+          employee_id: value?.item?.Employee_id,
+        },
       });
 
-      message.success({
-        content: value.status + " successfully",
-        style: { marginTop: "50px" },
-      });
+      if (res.data == "Added Successfully") {
+        message.success({
+          content: "Add employee successfully",
+          style: { marginTop: "50px" },
+        });
+      } else if (res.data == "FAILS") {
+        message.error({
+          content: "Employee has existed in this project",
+          style: { marginTop: "50px" },
+        });
+      }
       dispatch(getSpecRequest());
 
       // setIsModalOpen(false);
@@ -149,7 +168,20 @@ export default function SpecificRequests() {
     key: id,
     no: (countReqs += 1),
     ...item,
-    Status: item.Status === "In Progress" ? handleAcpt(item) : item.Status,
+    Status:
+      user?.UserType != "leader" ? (
+        item.Status === "In Progress" ? (
+          <Tag style={{ width: "85px", textAlign: "center" }} color="#DEDA23">
+            In Progress
+          </Tag>
+        ) : (
+          item.Status
+        )
+      ) : item.Status === "In Progress" ? (
+        handleAcpt(item)
+      ) : (
+        item.Status
+      ),
   }));
 
   return (

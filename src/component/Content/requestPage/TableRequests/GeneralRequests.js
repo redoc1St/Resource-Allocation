@@ -2,7 +2,7 @@ import { message, Table } from "antd";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGeneralRequest } from "../../../../Store/Actions/GenRequestActions";
+import { getGeneralRequest, getGeneralRequestByBU } from "../../../../Store/Actions/GenRequestActions";
 import useAuth from "../../../hooks/useAuth";
 import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import { Divider, Tag } from "antd";
@@ -13,10 +13,19 @@ import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 export default function GeneralRequests() {
   const dispatch = useDispatch();
   const genRequests = useSelector((state) => state.GenRequest.genRequests);
+  // const genRequestsByBU = useSelector((state) => state.GenRequest.genRequestsByBU);
+  
   // dispatch(getGeneralRequest())
-// console.log(genRequests);
+  // console.log(genRequests);
+  const { user } = useAuth();
+
   useEffect(() => {
-    dispatch(getGeneralRequest());
+    if(user?.UserType=='leader'){
+dispatch(getGeneralRequestByBU(user?.Department_id))
+    }else{
+      dispatch(getGeneralRequest());
+    }
+    
   }, [dispatch]);
   // console.log(genRequests);
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
@@ -107,40 +116,42 @@ export default function GeneralRequests() {
   let countReqs = 0;
 
   const handleAcpt = (id) => {
-      return (
-        <>
+    return (
+      <>
         {console.log(id)}
-          <div style={{ textAlign: "center" }}>
-            <HowToRegRoundedIcon
-              onClick={() => handleAccept({status:"Approved", id:id})}
-              style={{ color: "green", cursor: "pointer" }}
-            />
+        <div style={{ textAlign: "center" }}>
+          <HowToRegRoundedIcon
+            onClick={() => handleAccept({ status: "Approved", id: id })}
+            style={{ color: "green", cursor: "pointer" }}
+          />
 
-            <CancelRoundedIcon
-              onClick={() => handleAccept({status:"Reject", id:id})}
-              style={{ marginLeft: "10px", color: "red", cursor: "pointer" }}
-            />
-          </div>
-        </>
-      );
+          <CancelRoundedIcon
+            onClick={() => handleAccept({ status: "Reject", id: id })}
+            style={{ marginLeft: "10px", color: "red", cursor: "pointer" }}
+          />
+        </div>
+      </>
+    );
   };
-  const handleAccept =async (value) => {
+  const handleAccept = async (value) => {
     console.log(value);
     // if (value === "accepted") {
-      
+
     //   setStatus("accepted");
     // } else if (value === "rejected") {
     //   setStatus("rejected");
     // }
     try {
       const res = await request({
-        url: process.env.REACT_APP_BASE_URL+`/api/Request/RolePlanning/${value.status}`,
+        url:
+          process.env.REACT_APP_BASE_URL +
+          `/api/Request/RolePlanning/${value.status}`,
         method: "POST",
         data: { resourceRole_id: value.id },
       });
 
       message.success({
-        content: value.status+ " successfully",
+        content: value.status + " successfully",
         style: { marginTop: "50px" },
       });
       dispatch(getGeneralRequest());
@@ -152,10 +163,17 @@ export default function GeneralRequests() {
   };
 
   const modifiedData = genRequests.map((item) => ({
-    key:item.ResourcePlannig_RoleId,
+    key: item.ResourcePlannig_RoleId,
     no: (countReqs += 1),
     ...item,
-    Status: item.Status === "In Progress" ? handleAcpt(item.id) : item.Status,
+    Status:
+      user?.UserType != "leader"
+        ? item.Status === "In Progress"
+          ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+          : item.Status
+        : item.Status === "In Progress"
+        ? handleAcpt(item.id)
+        : item.Status,
   }));
   return (
     <div>
@@ -179,6 +197,7 @@ export default function GeneralRequests() {
         //   dataSource={data}
         size="small"
       ></Table>
+
     </div>
   );
 }

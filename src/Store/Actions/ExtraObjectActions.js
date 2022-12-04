@@ -9,7 +9,8 @@ import {
   GET_PNAME_BY_RLS,
   GET_IDROLE_BY_CODERLS,
   GET_LEADER_BY_BU,
-  GET_ALL_EMPS
+  GET_ALL_EMPS,
+  GET_ALL_EMPS_BY_BU
 } from "../types";
 const projectsApi = process.env.REACT_APP_BASE_URL;
 
@@ -126,6 +127,22 @@ export const getAllEmps = () => async (dispatch) => {
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_ALL_EMPS, payload: emps });
+    })
+    .catch((err) => console.log("Get project api error", err));
+};
+
+export const getAllEmpsByBU = (bu) => async (dispatch) => {
+  // dispatch({ type: SET_LOADING, payload: true })
+
+  await axios
+    .get(projectsApi + `/api/user/${bu}`)
+    .then((res) => {
+      // console.log(res)
+      const emps = res.data.map((item) => ({
+        ...item,
+      }));
+      // dispatch({ type: SET_LOADING, payload: false })
+      dispatch({ type: GET_ALL_EMPS_BY_BU, payload: emps });
     })
     .catch((err) => console.log("Get project api error", err));
 };

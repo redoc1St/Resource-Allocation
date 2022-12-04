@@ -11,7 +11,7 @@ const handleStyleStatus = (status) => {
     // return 'Approved'
     return <Tag style={{width:'85px',textAlign:'center'}} color="#87d068">Approved</Tag>;
   } else if (status === "Waiting") {
-    return <Tag style={{width:'85px',textAlign:'center'}} color="#62B0A8">Waiting</Tag>;
+    return <Tag style={{width:'85px',textAlign:'center'}} color="#62B0A8">Draft</Tag>;
   } else if (status === "In Progress") {
     return <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>;
   } else if (status === "Reject") {
