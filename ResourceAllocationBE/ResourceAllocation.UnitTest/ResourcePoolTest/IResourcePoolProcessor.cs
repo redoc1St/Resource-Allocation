@@ -9,5 +9,6 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
         bool getListResourcePoolByName(string name);
         bool getListResourcePoolByRLS(string role, string levels, string skill);
         bool updateResourcePool(ResourcePlanningEmployee resourcePlanningEmployee);
+        bool insertResourcePool(ResourcePlanningEmployee resourcePlanningEmployee);
     }
 }

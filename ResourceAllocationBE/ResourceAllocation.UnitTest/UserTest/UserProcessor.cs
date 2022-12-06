@@ -21,22 +21,22 @@ namespace ResourceAllocation.UnitTest.UserTest
             //Email null
             if(user.Email.Length <= 0)
             {
-                throw new ArgumentOutOfRangeException("Email is not < 0");
+                throw new ArgumentNullException("Email is not NULL");
             }
 
             if(user.Email != "tungchu2000@gmail.com")
             {
-                throw new ArgumentOutOfRangeException("Email is not true");
+                throw new ArgumentException("Email is not true");
             }
 
             //Password null
             if (user.Password.Length <= 0)
             {
-                throw new ArgumentOutOfRangeException("Password is not null");
+                throw new ArgumentNullException("Password is not null");
             }
             if (user.Password != "123456")
             {
-                throw new ArgumentOutOfRangeException("Password is not true");
+                throw new ArgumentException("Password is not true");
             }
             return true;
         }

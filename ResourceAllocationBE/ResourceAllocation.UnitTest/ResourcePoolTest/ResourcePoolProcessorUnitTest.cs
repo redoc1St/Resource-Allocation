@@ -63,21 +63,22 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
 
 
         // test update
+        // check lại
         // null
         [Fact]
-        public void TestInvalidInsertResourcePlanningRoleInputNull()
+        public void TestInvalidUpdateResourceEmployeeInputNull()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var projectProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => projectProcessor.updateResourcePool(new ResourcePlanningEmployee
+            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => resourcePoolProcessor.updateResourcePool(new ResourcePlanningEmployee
             {
-                Date_start = "",
-                Date_end = ""
+             
+                
             }));
         }
         // true
         [Fact]
-        public void TestValidUpdateResourcePlanningRole()
+        public void TestValidUpdateResourceEmployee()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             resourceAllocationProcessor.Setup(p => p.UpdateResourcePool(It.IsAny<ResourcePlanningEmployee>())).Returns(true);
@@ -85,11 +86,42 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
             var projectProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
             Assert.True(projectProcessor.updateResourcePool(new ResourcePlanningEmployee
             {
-                Date_start = "05/05/2022",
-                Date_end = "10/05/2022",
-                Effort=50,
-                Bill_rate=50
+                
             }));
         }
+
+
+        // INSERT 
+        //true
+        [Fact]
+        public void TestValidInsertResourceEmployee()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            resourceAllocationProcessor.Setup(p => p.InsertResourcePool(It.IsAny<ResourcePlanningEmployee>())).Returns(true);
+
+            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
+            Assert.True(resourcePoolProcessor.insertResourcePool(new ResourcePlanningEmployee
+            {
+                Employee_id=1,
+                Role_id=1,
+                Level_id=1,
+                Skill_id=1,
+            }));
+        }
+        // null
+        [Fact]
+        public void TestInvalidInsertResourceEmployee()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => resourcePoolProcessor.insertResourcePool(new ResourcePlanningEmployee
+            {
+                Employee_id = 1,
+                Role_id = 1,
+                Level_id = 1,
+                Skill_id = 1,
+            }));
+        }
+
     }
 }

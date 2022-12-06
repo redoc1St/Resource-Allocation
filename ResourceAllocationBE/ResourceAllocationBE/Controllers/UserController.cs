@@ -46,7 +46,7 @@ namespace ResourceAllocationBE.Controllers
             }
         }
         
-        //LOAD LIST USER
+        //LOAD LIST USER ADMIN XEM
         [HttpGet]
         public JsonResult getListUser()
         {
@@ -54,6 +54,31 @@ namespace ResourceAllocationBE.Controllers
                                  select * from dbo.[User] 
                                  
 								where UserType != 'admin' ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
+        //LOAD LIST USER de add employee role
+        [HttpGet("Employee")]
+        public JsonResult getListUserEmployee()
+        {
+            string query = @"
+                                 select * from dbo.[User] 
+                                 
+								where UserType != 'admin' and  UserType != 'leader'";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

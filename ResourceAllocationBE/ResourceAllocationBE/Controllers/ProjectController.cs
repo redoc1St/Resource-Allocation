@@ -50,8 +50,8 @@ namespace ResourceAllocationBE.Controllers
         }
         //LOAD LIST PROJECTS BY BU FOR LEADER 
         //[Authorize]
-        [HttpGet("{bu}")]
-        public JsonResult getListProjectByBu(string bu)
+        [HttpGet("bu/{bu}")]
+        public JsonResult getListProjectByBu(int bu)
         {
             string query = @"
                                select * from
@@ -101,9 +101,10 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
+       
         //SEARCH BY NAME AND BU
-        [HttpGet("search/{name}/{bu}")]
-        public JsonResult searchProjectByNameAndBU(string name, string bu)
+        [HttpGet("search/bu/{name}/{bu}")]
+        public JsonResult SearchInBuByName(string name, int bu)
         {
             string query = @"
                                select * from
@@ -118,6 +119,7 @@ namespace ResourceAllocationBE.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@PName", '%' + name + '%');
                     myCommand.Parameters.AddWithValue("@bu", bu);
+
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -169,7 +171,8 @@ namespace ResourceAllocationBE.Controllers
         @Effort_actual,@Effort_billable,
         @Quantity_plan,@Quantity_actual,
         @Start_plan,@Start_actual,
-        @End_plan,@End_actual)
+        @End_plan,@End_actual,
+@note)
         else
         select * from [user]
 ";
@@ -193,7 +196,7 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Start_actual", project.Start_actual == null ? "GETDATE()" : project.Start_actual);
                     myCommand.Parameters.AddWithValue("@End_plan", project.End_plan == null ? "GETDATE()" : project.End_plan);
                     myCommand.Parameters.AddWithValue("@End_actual", project.End_actual == null ? "GETDATE()" : project.End_actual);
-
+                    myCommand.Parameters.AddWithValue("@note", project.Note == null ? "" : project.Note);
 
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);

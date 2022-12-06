@@ -253,7 +253,7 @@ namespace ResourceAllocationBE.Controllers
         // SHOW  LEADER  INFOR  DEPARTMENT ID
         [HttpGet]
         [Route("api/leaderInfor/{bu}")]
-        public JsonResult getLeaderInforByBu(string bu)
+        public JsonResult getLeaderInforByBu(int bu)
         {
             string query = @"SELECT *
         FROM [ResourceAllocationDB].[dbo].[User]

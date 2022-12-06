@@ -12,7 +12,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(()=> userProcessor.login(new User {Email="", Password="" }
+            Assert.Throws<ArgumentNullException>(()=> userProcessor.login(new User {Email="", Password="" }
                 ));
         }
         // Email null and password false
@@ -21,7 +21,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.login(new User { Email = "", Password = "abcxyz" }
+            Assert.Throws<ArgumentNullException>(() => userProcessor.login(new User { Email = "", Password = "abcxyz" }
                 ));
         }
 
@@ -31,7 +31,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.login(new User { Email = "", Password = "123456" }
+            Assert.Throws<ArgumentNullException>(() => userProcessor.login(new User { Email = "", Password = "123456" }
                 ));
         }
 
@@ -41,7 +41,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.login(new User { Email = "tungchu2000@gmail.com", Password = "" }
+            Assert.Throws<ArgumentNullException>(() => userProcessor.login(new User { Email = "tungchu2000@gmail.com", Password = "" }
                 ));
         }
 
@@ -51,7 +51,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.login(new User { Email = "abcxyz@gmail.com", Password = "" }
+            Assert.Throws<ArgumentException>(() => userProcessor.login(new User { Email = "abcxyz@gmail.com", Password = "" }
                 ));
         }
 
@@ -61,7 +61,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.login(new User { Email = "abcxyz@gmail.com", Password = "123456" }
+            Assert.Throws<ArgumentException>(() => userProcessor.login(new User { Email = "abcxyz@gmail.com", Password = "123456" }
                 ));
         }
         // Email true, passwrod fail
@@ -70,7 +70,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.login(new User { Email = "tungchu2000@gmail.com", Password = "abcxyz" }
+            Assert.Throws<ArgumentException>(() => userProcessor.login(new User { Email = "tungchu2000@gmail.com", Password = "abcxyz" }
                 ));
         }
         // Email fail, password fail
@@ -79,7 +79,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.login(new User { Email = "abcxyz@gmail.com", Password = "abcxyz" }
+            Assert.Throws<ArgumentException>(() => userProcessor.login(new User { Email = "abcxyz@gmail.com", Password = "abcxyz" }
                 ));
         }
         
@@ -181,13 +181,14 @@ namespace ResourceAllocation.UnitTest.UserTest
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
             Assert.Throws<ArgumentException>(() => userProcessor.changePass(new User { Password = "abcxyz" }, "123@123b", "123@123b"));
         }
+
         // o true, n true, e 123
         [Fact]
         public void TestInvalidUserInputInChangePassword2()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => userProcessor.changePass(new User { Password = "123@123a" }, "123@123b", "abc"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.changePass(new User { Password = "123@123a" }, "123@123b", "abc"));
         }
         // true
         [Fact]

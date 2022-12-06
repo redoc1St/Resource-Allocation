@@ -36,9 +36,18 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
             return true;
         }
 
+        public bool insertResourcePool(ResourcePlanningEmployee resourcePlanningEmployee)
+        {
+            if (resourcePlanningEmployee.Skill_id<=0)
+            {
+                throw new ArgumentOutOfRangeException("not positive number");
+            }
+            return resourceAllocationProcessor.InsertResourcePool(resourcePlanningEmployee);
+        }
+
         public bool updateResourcePool(ResourcePlanningEmployee resourcePlanningEmployee)
         {
-            if (resourcePlanningEmployee.Date_start == "")
+            if (resourcePlanningEmployee.Skill_id == 0)
             {
                 throw new ArgumentNullException("Input not null");
             }
