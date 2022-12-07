@@ -8,6 +8,7 @@ import {
   GET_LEADER_BY_BU,
   GET_ALL_EMPS,
   GET_ALL_EMPS_BY_BU,
+  GET_PNAME_FOR_LEADER_BY_RLS,
 } from "../types";
 
 const initialState = {
@@ -41,8 +42,10 @@ const ExtraReducer = (state = initialState, { type, payload }) => {
     case GET_ALL_EMPS:
       return { ...state, allEmps: payload };
     case GET_ALL_EMPS_BY_BU:
-      return { ...state, allEmpsByBU: payload };
-
+      return { ...state, allEmps: payload };
+      
+      case GET_PNAME_FOR_LEADER_BY_RLS:
+        return { ...state, pName: payload };
     default:
       return state;
   }

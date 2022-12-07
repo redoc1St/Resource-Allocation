@@ -88,9 +88,11 @@ export default function ModalEditPoolEmp(record) {
         const res = await axios({
           url:
             process.env.REACT_APP_BASE_URL +
-            `/api/ResourcePool/update/${record?.record?.id}`,
+            `/api/ResourcePool/update`,
           method: "PUT",
           data: {
+            resourceRole_id:record?.record?.ResourcePlannig_RoleId,
+            employee_id:record?.record?.Employee_id,
             Date_start: values.Date_start,
             Date_end: values.Date_end,
             Effort: values.Effort,

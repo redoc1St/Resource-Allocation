@@ -28,7 +28,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[Notifications] where [user_id] = @id  order by noti_time DESC";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

@@ -10,7 +10,8 @@ import {
   GET_IDROLE_BY_CODERLS,
   GET_LEADER_BY_BU,
   GET_ALL_EMPS,
-  GET_ALL_EMPS_BY_BU
+  GET_ALL_EMPS_BY_BU,
+  GET_PNAME_FOR_LEADER_BY_RLS
 } from "../types";
 const projectsApi = process.env.REACT_APP_BASE_URL;
 
@@ -96,6 +97,19 @@ export const getPNameByRLS = (role, level, skill) => async (dispatch) => {
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_PNAME_BY_RLS, payload: projectName });
+    })
+    .catch((err) => console.log("Get role error", err));
+};
+
+export const getPNameForLeaderByRLSB = (role, level, skill,bu) => async (dispatch) => {
+  await axios
+    .get(projectsApi + `/api/getPnameForLeaderByRLS/${role}/${level}/${skill}/${bu}`)
+    .then((res) => {
+      const projectName = res.data.map((item) => ({
+        ...item,
+      }));
+      // dispatch({ type: SET_LOADING, payload: false })
+      dispatch({ type: GET_PNAME_FOR_LEADER_BY_RLS, payload: projectName });
     })
     .catch((err) => console.log("Get role error", err));
 };

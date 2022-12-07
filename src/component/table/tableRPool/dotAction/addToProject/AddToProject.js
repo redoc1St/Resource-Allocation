@@ -10,9 +10,13 @@ import {
   getLeaderByBU,
   getLeaderByCode,
   getPNameByRLS,
+  getPNameForLeaderByRLSB,
 } from "../../../../../Store/Actions/ExtraObjectActions";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { getResourcePoolEmp } from "../../../../../Store/Actions/ResourcePoolAction";
+import { ROLES } from "../../../../../App";
+import useAuth from "../../../../hooks/useAuth";
 
 export default function AddToProject(type) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,34 +30,58 @@ export default function AddToProject(type) {
   const leader = useSelector((state) => state.ExtraObject.leader);
   const [codeProject, setCodeProject] = useState("");
   const [buId, setbuId] = useState("");
+  const { user } = useAuth();
+
   // console.log(type?.record);
   // useEffect(()={
 
   // },[codeProject])
 
   useEffect(() => {
-    // console.log(type?.record.Role_id);
-    // console.log(type?.record.level_id);
-    // console.log(type?.record.skill_id);
-    if ((r, l, s)) {
-      dispatch(getPNameByRLS(r, l, s));
-
-    } else {
-      type?.record?.skill_id
-        ? dispatch(
-            getPNameByRLS(
+    console.log(type?.record.Role_id);
+    console.log(type?.record.level_id);
+    console.log(type?.record.skill_id);
+    if (type?.record.Role_id) {
+      console.log(type?.record.Role_id);
+      console.log(type?.record.level_id);
+      console.log(type?.record.skill_id);
+      if ((r, l, s)) {
+        if (user?.UserType == ROLES.LEADER) {
+          dispatch(
+            getPNameForLeaderByRLSB(
               type?.record?.Role_id,
               type?.record?.level_id,
-              type?.record?.skill_id
+              type?.record?.skill_id,
+              user?.Department_id
             )
-          )
-        : console.log("hello");
+          );
+        } else dispatch(getPNameByRLS(r, l, s));
+      } else {
+        if (user?.UserType == ROLES.LEADER) {
+          dispatch(
+            getPNameForLeaderByRLSB(
+              type?.record?.Role_id,
+              type?.record?.level_id,
+              type?.record?.skill_id,
+              user?.Department_id
+            )
+          );
+        } else
+          type?.record?.skill_id
+            ? dispatch(
+                getPNameByRLS(
+                  type?.record?.Role_id,
+                  type?.record?.level_id,
+                  type?.record?.skill_id
+                )
+              )
+            : console.log("hello");
 
-      // console.log(PNames)
+        // console.log(PNames)
+      }
+      console.log(type);
+      dispatch(getLeaderByBU(type?.record?.Department_id));
     }
-    // console.log(type);
-    dispatch(getLeaderByBU(type?.record?.Department_id));
-
   }, [isModalOpen2]);
 
   useEffect(() => {
@@ -138,7 +166,8 @@ export default function AddToProject(type) {
   };
 
   const onSubmit = async (values) => {
-    // console.log(leader.User_id);
+    // console.log(new Date(values.sDate).toLocaleDateString("en-US"));
+    console.log(type?.record);
     // console.log(type?.record?User_id);
 
     // const{pId,unit, pName}= values;
@@ -157,8 +186,15 @@ export default function AddToProject(type) {
             data: {
               resourceRole_id: type?.resourceRole_id,
               employee_id: type?.record?.id,
+              Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
+              Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
+              // Date_start:values.sDate,
+              Date_end: values.eDate,
+              Effort: values.pEffort,
+              Bill_rate: values.pBill,
             },
           });
+
           // if(res.data)
           if (res.data == "Added Successfully") {
             message.success({
@@ -171,8 +207,11 @@ export default function AddToProject(type) {
               style: { marginTop: "50px" },
             });
           }
+          dispatch(getResourcePoolEmp());
           // dispatch(getRoleByCode());
           setIsModalOpen(false);
+          setIsModalOpen2(false);
+          // dispatch(getRoleByCode());
         } catch (err) {
           console.log(err);
         }
@@ -187,6 +226,10 @@ export default function AddToProject(type) {
             data: {
               resourceRole_id: type?.resourceRole_id,
               employee_id: type?.record?.id,
+              Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
+              Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
+              Effort: values.pEffort,
+              Bill_rate: values.pBill,
             },
           });
           // if(res.data)
@@ -194,8 +237,10 @@ export default function AddToProject(type) {
             content: "Request employee indirect successfull",
             style: { marginTop: "50px" },
           });
+          dispatch(getResourcePoolEmp());
           // dispatch(getRoleByCode());
           setIsModalOpen(false);
+          setIsModalOpen2(false);
         } catch (err) {
           console.log(err);
         }
@@ -220,6 +265,10 @@ export default function AddToProject(type) {
             data: {
               resourceRole_id: IdPLanningRole?.id,
               employee_id: type?.record?.id,
+              Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
+              Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
+              Effort: values.pEffort,
+              Bill_rate: values.pBill,
             },
           });
           if (res.data == "Added Successfully") {
@@ -233,6 +282,7 @@ export default function AddToProject(type) {
               style: { marginTop: "50px" },
             });
           }
+          dispatch(getResourcePoolEmp());
           // dispatch(getRoleByCode());
           setIsModalOpen(false);
           setIsModalOpen2(false);
@@ -253,6 +303,10 @@ export default function AddToProject(type) {
             data: {
               resourceRole_id: IdPLanningRole?.id,
               employee_id: type?.record?.id,
+              Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
+              Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
+              Effort: values.pEffort,
+              Bill_rate: values.pBill,
             },
           });
           // if(res.data)
@@ -260,6 +314,7 @@ export default function AddToProject(type) {
             content: "Request employee indirect successfull",
             style: { marginTop: "50px" },
           });
+          dispatch(getResourcePoolEmp());
           // dispatch(getRoleByCode());
           setIsModalOpen(false);
           setIsModalOpen2(false);
@@ -316,13 +371,12 @@ export default function AddToProject(type) {
             <select
               {...register("pName")}
               onClick={(e) => handleChangeName(e)}
-              defaultValue=""
+              defaultValue="DEFAULT"
               required
             >
-              <option selected value="">
+              <option value="DEFAULT" disabled key={20}>
                 Select project
               </option>
-
               {PNames.map((item, index) => {
                 return (
                   <option
@@ -385,13 +439,13 @@ export default function AddToProject(type) {
                 <tr>
                   <th>Start date </th>
                   <td>
-                    <input type="date" {...register("sDate")} />
+                    <input type="date" required {...register("sDate")} />
                   </td>
                 </tr>
                 <tr>
                   <th>End date </th>
                   <td>
-                    <input type="date" {...register("eDate")} />
+                    <input type="date" required {...register("eDate")} />
                   </td>
                 </tr>
                 {/* {console.log(leader.User_id)} */}
@@ -493,7 +547,7 @@ export default function AddToProject(type) {
                 Cancel
               </button>
             </div>
-            {console.log(PNames)}
+            {/* {console.log(PNames)} */}
           </form>
         </Modal>
       </div>

@@ -11,8 +11,8 @@ export const getResourcePoolEmp = () => async (dispatch) => {
     .then((res) => {
       const emp = res.data.map((item) => ({
         ...item,
-        Date_start: new Date(item.Date_start).toLocaleDateString("fr-CA"),
-        Date_end: new Date(item.Date_end).toLocaleDateString("fr-CA"),
+        Date_start: item.Date_start ? new Date(item.Date_start).toLocaleDateString("fr-CA") :'',
+        Date_end: item.Date_end ? new Date(item.Date_end).toLocaleDateString("fr-CA"): '',
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_RESOURCEPOOL_EMP, payload: emp });
@@ -29,8 +29,8 @@ export const getResourcePoolEmpByRLK =
       .then((res) => {
         const emp = res.data.map((item) => ({
           ...item,
-          Date_start: new Date(item.Date_start).toLocaleDateString("fr-CA"),
-          Date_end: new Date(item.Date_end).toLocaleDateString("fr-CA"),
+          Date_start: item.Date_start ? new Date(item.Date_start).toLocaleDateString("fr-CA") :'',
+        Date_end: item.Date_end ? new Date(item.Date_end).toLocaleDateString("fr-CA"): '',
         }));
         // dispatch({ type: SET_LOADING, payload: false })
         dispatch({ type: GET_RESOURCEPOOL_EMP_BY_RLK, payload: emp });
@@ -47,8 +47,8 @@ export const getResourcePoolEmpByBU = (bu) => async (dispatch) => {
     .then((res) => {
       const emp = res.data.map((item) => ({
         ...item,
-        Date_start: new Date(item.Date_start).toLocaleDateString("fr-CA"),
-        Date_end: new Date(item.Date_end).toLocaleDateString("fr-CA"),
+        Date_start: item.Date_start ? new Date(item.Date_start).toLocaleDateString("fr-CA") :'',
+        Date_end: item.Date_end ? new Date(item.Date_end).toLocaleDateString("fr-CA"): '',
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_RESOURCEPOOL_EMP_BY_BU, payload: emp });

@@ -56,24 +56,24 @@ export default function SpecificRequests() {
     },
     {
       title: "Start date",
-      dataIndex: "Date_start",
+      dataIndex: "request_start",
       width: 130,
     },
     {
       title: "End date",
-      dataIndex: "Date_end",
+      dataIndex: "request_end",
       width: 130,
     },
 
     {
       title: "% Effort",
-      dataIndex: "Effort",
+      dataIndex: "request_effort",
       width: 90,
     },
 
     {
       title: "Bill/Unbill",
-      dataIndex: "bill",
+      dataIndex: "request_bill",
       width: 90,
     },
 
@@ -131,7 +131,8 @@ export default function SpecificRequests() {
   };
 
   const handleAccept = async (value) => {
-    console.log(value);
+    // console.log(value.item.request_start);
+    // console.log(new Date(value.item.request_start).toLocaleDateString("en-US"));
     try {
       const res = await request({
         url:
@@ -141,6 +142,14 @@ export default function SpecificRequests() {
         data: {
           resourceRole_id: value?.item?.ResourcePlannig_RoleId,
           employee_id: value?.item?.Employee_id,
+          Date_start: new Date(value.item.request_start).toLocaleDateString(
+            "en-US"
+          ),
+          Date_end: new Date(value.item.request_end).toLocaleDateString(
+            "en-US"
+          ),
+          Effort: value.item.request_effort,
+          Bill_rate: value.item.request_bill,
         },
       });
 
@@ -157,7 +166,6 @@ export default function SpecificRequests() {
       }
       // dispatch(getSpecRequest());
       dispatch(getSpecRequestByBU(user?.Department_id));
-      
 
       // setIsModalOpen(false);
     } catch (err) {
@@ -171,34 +179,38 @@ export default function SpecificRequests() {
     key: id,
     no: (countReqs += 1),
     ...item,
-    Department_name:"BU "+item.Depeartment_id,
-    Status:
-      user?.UserType != "leader" ? (
-        item.Status === "In Progress" ? (
-          <Tag style={{ width: "85px", textAlign: "center" }} color="#DEDA23">
-            In Progress
-          </Tag>
-        ) : (
-          item.Status
-        )
-      ) : item.Status === "In Progress" ? (
-        handleAcpt(item)
-      ) : (
-        item.Status
-      ),
-    ///cmt
+    Department_name: "BU " + item.Depeartment_id,
+    request_start : item.request_start.substring(0,10),
+    request_end : item.request_end.substring(0,10),
+
     // Status:
-    // // user?.UserType != "leader" ?
-    //    item.Status === "In Progress"
-    //     // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
-    //     // : 
-    //     // item.Status
-    //   // : item.Status === "In Progress"
-    //   ?
-    //    handleAcpt(item)
-    //   : item.Status,
-  })
-  );
+    //   user?.UserType != "leader" ? (
+    //     item.Status === "In Progress" ? (
+    //       <Tag style={{ width: "85px", textAlign: "center" }} color="#DEDA23">
+    //         In Progress
+    //       </Tag>
+    //     ) : (
+    //       item.Status
+    //     )
+    //   ) : item.Status === "In Progress" ? (
+    //     handleAcpt(item)
+    //   ) : (
+    //     item.Status
+    //   ),
+
+    ///cmt
+    
+    Status:
+    // user?.UserType != "leader" ?
+       item.Status === "In Progress"
+        // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+        // :
+        // item.Status
+      // : item.Status === "In Progress"
+      ?
+       handleAcpt(item)
+      : item.Status,
+  }));
 
   return (
     <div>

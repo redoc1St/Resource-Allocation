@@ -59,7 +59,7 @@ namespace ResourceAllocationBE.Services
                 set [Password]= @Password
                 WHERE email = @email";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

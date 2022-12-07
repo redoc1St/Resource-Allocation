@@ -9,6 +9,7 @@ import { Divider, Tag } from "antd";
 import request from "../../../../../src/api/request";
 
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+import { ROLES } from "../../../../App";
 
 export default function GeneralRequests() {
   const dispatch = useDispatch();
@@ -154,7 +155,11 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
         content: value.status + " successfully",
         style: { marginTop: "50px" },
       });
-      dispatch(getGeneralRequest());
+      if(user?.UserType==ROLES.LEADER){
+        dispatch(getGeneralRequestByBU(user?.Department_id))
+
+      }else 
+      dispatch(getGeneralRequest())
 
       // setIsModalOpen(false);
     } catch (err) {
@@ -166,27 +171,27 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
     key: item.ResourcePlannig_RoleId,
     no: (countReqs += 1),
     ...item,
-    // Status:
-    //   // user?.UserType != "leader" ?
-    //      item.Status === "In Progress"
-    //       // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
-    //       // : 
-    //       // item.Status
-    //     // : item.Status === "In Progress"
-    //     ?
-    //      handleAcpt(item.id)
-    //     : item.Status,
+    Status:
+      // user?.UserType != "leader" ?
+         item.Status === "In Progress"
+          // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+          // : 
+          // item.Status
+        // : item.Status === "In Progress"
+        ?
+         handleAcpt(item.id)
+        : item.Status,
     
-        Status:
-        user?.UserType != "leader" ?
-           item.Status === "In Progress"
-            ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
-            : 
-            item.Status
-          : item.Status === "In Progress"
-          ?
-           handleAcpt(item.id)
-          : item.Status,
+        // Status:
+        // user?.UserType != "leader" ?
+        //    item.Status === "In Progress"
+        //     ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+        //     : 
+        //     item.Status
+        //   : item.Status === "In Progress"
+        //   ?
+        //    handleAcpt(item.id)
+        //   : item.Status,
   }));
   return (
     <div>

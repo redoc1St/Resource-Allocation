@@ -151,7 +151,7 @@ function App() {
             >
               <Routes>
                 <Route element={<GuestRouter />}>
-                  <Route exact path="/login" element={<Login />} />
+                  <Route exact path="/login"  element={<Login />} />
                   <Route exact path="/forgot" element={<Forgot />} />
                 </Route>
                 <Route element={<PrivateRoute />}>

@@ -25,7 +25,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
                      SELECT *
-  FROM [ResourceAllocationDB].[dbo].[ResourcePlanning_Employee]
+  FROM [ResourceAllocationDB_2].[dbo].[ResourcePlanning_Employee]
  left join project on project.[Project_id] = [ResourcePlanning_Employee].[Project_id]
  join emp_roleplanning on emp_roleplanning.[Employee_id] = [ResourcePlanning_Employee].id join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
                     join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
@@ -33,7 +33,7 @@ namespace ResourceAllocationBE.Controllers
 		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id  "
 ;
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

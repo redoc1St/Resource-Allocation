@@ -38,7 +38,7 @@ namespace ResourceAllocationBE.Controllers
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id
                     and Project.code = @pid";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -82,7 +82,7 @@ namespace ResourceAllocationBE.Controllers
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
                 and ProjectName =@name AND Roles.RoleName = @role";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -107,7 +107,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"select *  from ResourcePlanning_Role where [id] =@id";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -149,7 +149,7 @@ namespace ResourceAllocationBE.Controllers
                 else
 				select * from [user]";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -198,7 +198,7 @@ namespace ResourceAllocationBE.Controllers
                 Skill_id=@Skill_id 
                 WHERE id = @id";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -233,7 +233,7 @@ namespace ResourceAllocationBE.Controllers
         //            delete from dbo.ResourcePlanning_Role
         //                            where [id] = @id";
         //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
         //    SqlDataReader myReader;
         //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
         //    {
@@ -261,7 +261,7 @@ namespace ResourceAllocationBE.Controllers
                 [Status]=@status
                 WHERE id = @id";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -288,7 +288,7 @@ namespace ResourceAllocationBE.Controllers
                                        select * from
                                         dbo.ResourcePlanning_Role order by [id] OFFSET @from Rows fetch next 4 rows only";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

@@ -17,10 +17,10 @@ export default function TableRPool(data) {
   const { user } = useAuth();
 
   // console.log(data?.Role_id, data?.Level_id, data?.Skill_id);
-  //  console.log(data[4]);   // BU NAME
+  //  console.log(data);   // BU NAME
   //  console.log(data[5]);   // resourcePlanning_id
 
-  console.log(emps[0]?.Department_id);
+  // console.log(emps[14].ProjectName ==null);
   useEffect(() => {
     if (user)
       if (Object.keys(data).length === 0) {
@@ -128,7 +128,7 @@ export default function TableRPool(data) {
   let countEmp = 0;
   const modifiedData = emps.map((item, index) => ({
     no: (countEmp += 1),
-    key: item.id,
+    key: index,
 
     ...item,
   }));

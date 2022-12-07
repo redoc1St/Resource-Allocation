@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import AddToProject from "../table/tableRPool/dotAction/addToProject/AddToProject";
 import useAuth from "../hooks/useAuth";
+import Login from "../login/Login";
 
 export default function Timeline() {
   //   const [myEvents, setEvents] = React.useState([]);
@@ -20,10 +21,11 @@ export default function Timeline() {
   useEffect(() => {
     dispatch(getResourcePoolEmp());
   }, []);
-  //  let idEmp=0
+   let idEmp=0
 
   const myEvents = React.useMemo(() => {
-    return emps.map((item) => ({
+    return emps.map((item,index) => ({
+      key:index,
       start: item?.Date_start,
       end: item?.Date_end,
       title:
@@ -92,7 +94,8 @@ export default function Timeline() {
   }, []);
   // console.log(emps);
   const myResources = React.useMemo(() => {
-    return emps.map((item) => ({
+    return emps.map((item,index) => ({
+      key:index,
       id: item.number,
       name: item?.Username,
       unit: item?.Department_name,
@@ -103,6 +106,7 @@ export default function Timeline() {
       levelId: item?.level_id,
       skillId: item?.skill_id,
       id: item?.id,
+      User_id:item?.User_id,
       // color: "#3fd890",
       color: Math.floor(Math.random()*16777215).toString(16)
       // skill:item?.SkillName,
@@ -169,14 +173,15 @@ export default function Timeline() {
   }, []);
 
   const onClickIcon = (rowData) => {
-    // console.log(rowData.unit.substring(2,4));
+    // console.log(rowData);
     // <AddToProject type={"icon"} record={rowData} />;
     setUserData({
       Role_id: rowData.roleId,
       level_id: rowData.levelId,
       skill_id: rowData.skillId,
       id: rowData.id,
-      Department_id:rowData.unit.substring(2,4)
+      Department_id:rowData.unit.substring(2,4),
+      User_id:rowData.User_id
     });
     // setUserData(rowData.role,rowData.level,rowData.SkillName)
     // <Link to={<AddToProject record={rowData}/>} > e</Link>
@@ -206,13 +211,15 @@ export default function Timeline() {
 
         <div className="md-resource-header-template-name">{resource.name}</div>
         <div className="md-resource-header-template-unit">{resource.unit}</div>
-        <div className="md-resource-header-template-role">{resource.role}</div>
+       
+        <div className="md-resource-header-template-skill">
+          {resource.SkillName}
+        </div>
         <div className="md-resource-header-template-level">
           {resource.level}
         </div>
-        <div className="md-resource-header-template-skill">
-          {resource.skill}
-        </div>
+        <div className="md-resource-header-template-role">{resource.role}</div>
+
       </div>
     );
   };
@@ -228,9 +235,11 @@ export default function Timeline() {
 
         <div className="md-resource-header-template-name">Employee</div>
         <div className="md-resource-header-template-unit">Unit</div>
-        <div className="md-resource-header-template-role">Role</div>
-        <div className="md-resource-header-template-level">Level</div>
         <div className="md-resource-header-template-skill">Skill</div>
+        <div className="md-resource-header-template-level">Level</div>
+       
+        <div className="md-resource-header-template-role">Role</div>
+     
       </div>
     );
   };
@@ -238,7 +247,7 @@ export default function Timeline() {
   const [switchType, SetSwitchType] = useState(true);
   const onChangeSwitch = () => {
     SetSwitchType(!switchType);
-    console.log(switchType);
+    // console.log(switchType);
   };
 
   return (
@@ -249,6 +258,9 @@ export default function Timeline() {
         unCheckedChildren="year"
         defaultChecked
       />
+      {
+        console.log(emps)
+      }
       <Eventcalendar
         theme="ios"
         themeVariant="light"

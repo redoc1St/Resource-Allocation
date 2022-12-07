@@ -52,8 +52,8 @@ export default function Navbar() {
     }
   });
   // }
-  const items = notiList.map((item) => (
-    <div style={{ display: "flex" }}>
+  const items = notiList.map((item,index) => (
+    <div style={{ display: "flex" }} key={index}>
       <img
         width={70}
         height={70}

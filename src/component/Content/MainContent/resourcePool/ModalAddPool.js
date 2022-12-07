@@ -57,8 +57,11 @@ export default function ModalAddPool() {
     dispatch(getRoles());
     dispatch(getLevels());
     dispatch(getSkills());
-    if (user?.UserType == "leader")
+    if (user?.UserType ==ROLES.LEADER) {
       dispatch(getAllEmpsByBU(user?.Department_id));
+    } else {
+      dispatch(getAllEmps())
+    }
   }, []);
 
   const { register, handleSubmit } = useForm({
@@ -86,7 +89,7 @@ export default function ModalAddPool() {
           });
         } else if (res.data == "FAILS") {
           message.error({
-            content: "Project ID already exist",
+            content: " Employee with this role,level,skill already exist ",
             style: { marginTop: "50px" },
           });
         }
@@ -131,7 +134,7 @@ export default function ModalAddPool() {
                         required
                       >
                         <Select.Option required></Select.Option>
-                        {allEmpsByBU?.map((item, index) => {
+                        {allEmps?.map((item, index) => {
                           return (
                             <option value={item.User_id} key={index}>
                               {item.Username}
@@ -162,7 +165,7 @@ export default function ModalAddPool() {
                       </select>
                     </td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <td>Effort</td>
                     <td>
                       <input
@@ -185,7 +188,7 @@ export default function ModalAddPool() {
                         required
                       />
                     </td>
-                  </tr>
+                  </tr> */}
                 </tbody>
               </table>
             </Col>
@@ -228,7 +231,7 @@ export default function ModalAddPool() {
                     </td>
                   </tr>
 
-                  <tr>
+                  {/* <tr>
                     <td>Bill_rate</td>
                     <td>
                       <input
@@ -253,7 +256,7 @@ export default function ModalAddPool() {
                       />
                     </td>
                   </tr>
-                  <tr></tr>
+                  <tr></tr> */}
                 </tbody>
               </table>
               <button

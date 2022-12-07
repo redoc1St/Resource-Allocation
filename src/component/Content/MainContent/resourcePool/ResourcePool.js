@@ -7,6 +7,7 @@ import { Radio } from "antd";
 import ViewByChart from "./viewByChart/ViewByChart";
 import ModalAddPool from "./ModalAddPool";
 import useAuth from "../../../hooks/useAuth";
+import { ROLES } from "../../../../App";
 
 export default function ResourcePool(record) {
   const location = useLocation();
@@ -88,7 +89,7 @@ export default function ResourcePool(record) {
       ) : (
         <ViewByChart />
       )}
-      {user?.UserType=='leader' ? <ModalAddPool/> : '' }
+      {user?.UserType!=ROLES.EMPLOYEE ? <ModalAddPool/> : '' }
     </div>
   );
 }
