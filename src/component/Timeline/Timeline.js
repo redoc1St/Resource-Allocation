@@ -26,7 +26,10 @@ export default function Timeline() {
     return emps.map((item) => ({
       start: item?.Date_start,
       end: item?.Date_end,
-      title: item?.ProjectName + "|" + item?.Date_start + "|" + item?.Date_end,
+      title:
+        item?.ProjectName == null
+          ? "Waiting for leader accept to the project"
+          : item?.ProjectName + "|" + item?.Date_start + "|" + item?.Date_end,
       resource: item?.number,
     }));
     // [{
@@ -100,8 +103,8 @@ export default function Timeline() {
       levelId: item?.level_id,
       skillId: item?.skill_id,
       id: item?.id,
-      color: "#3fd890",
-      // Math.floor(Math.random()*16777215).toString(16)
+      // color: "#3fd890",
+      color: Math.floor(Math.random()*16777215).toString(16)
       // skill:item?.SkillName,
     }));
     // [
@@ -166,13 +169,14 @@ export default function Timeline() {
   }, []);
 
   const onClickIcon = (rowData) => {
-    console.log(rowData.role);
+    // console.log(rowData.unit.substring(2,4));
     // <AddToProject type={"icon"} record={rowData} />;
     setUserData({
       Role_id: rowData.roleId,
       level_id: rowData.levelId,
       skill_id: rowData.skillId,
       id: rowData.id,
+      Department_id:rowData.unit.substring(2,4)
     });
     // setUserData(rowData.role,rowData.level,rowData.SkillName)
     // <Link to={<AddToProject record={rowData}/>} > e</Link>
@@ -182,6 +186,7 @@ export default function Timeline() {
     level: "",
     skill: "",
     id: "",
+    department_id:""
   });
   const renderCustomResource = (resource) => {
     return (
@@ -205,6 +210,9 @@ export default function Timeline() {
         <div className="md-resource-header-template-level">
           {resource.level}
         </div>
+        <div className="md-resource-header-template-skill">
+          {resource.skill}
+        </div>
       </div>
     );
   };
@@ -222,6 +230,7 @@ export default function Timeline() {
         <div className="md-resource-header-template-unit">Unit</div>
         <div className="md-resource-header-template-role">Role</div>
         <div className="md-resource-header-template-level">Level</div>
+        <div className="md-resource-header-template-skill">Skill</div>
       </div>
     );
   };
@@ -240,7 +249,6 @@ export default function Timeline() {
         unCheckedChildren="year"
         defaultChecked
       />
-
       <Eventcalendar
         theme="ios"
         themeVariant="light"

@@ -51,6 +51,7 @@ export default function AddToProject(type) {
 
       // console.log(PNames)
     }
+    // console.log(type);
     dispatch(getLeaderByBU(type?.record?.Department_id));
 
   }, [isModalOpen2]);
@@ -190,7 +191,7 @@ export default function AddToProject(type) {
           });
           // if(res.data)
           message.success({
-            content: "Request employee successfull",
+            content: "Request employee indirect successfull",
             style: { marginTop: "50px" },
           });
           // dispatch(getRoleByCode());
@@ -330,7 +331,7 @@ export default function AddToProject(type) {
                     value={[item.Depeartment_id, item.Code]}
                     // onChange={setCodeProject(item.Code)}
                   >
-                    {item.Code}
+                    {item.ProjectName}
                   </option>
                 );
               })}
@@ -492,6 +493,7 @@ export default function AddToProject(type) {
                 Cancel
               </button>
             </div>
+            {console.log(PNames)}
           </form>
         </Modal>
       </div>

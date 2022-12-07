@@ -167,7 +167,7 @@ function App() {
                   >
                     <Route
                       exact
-                      path="/candidateManage"
+                      path="/userManage"
                       element={<CandidateManage />}
                     />
                   </Route>

@@ -415,7 +415,9 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
                     join Project on Project.project_id = ResourcePlanning_Role.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
 	                 where Department.Department_id =@bu
+
                 ";
+            //project.depeartment_id=@bu
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

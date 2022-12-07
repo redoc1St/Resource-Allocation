@@ -26,16 +26,18 @@ import { DownOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { getNotiByUserId } from "../Store/Actions/NotificationActions";
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 
 export default function Navbar() {
   const { logout, onclickShowLeft, setOnclickShowLeft, user } = useAuth();
   const notiList = useSelector((state) => state.Notification.notiList);
   const dispatch = useDispatch();
-
+  const [onBlueNoti, setOnBlueNoti] = useState(true);
   // console.log(user);
   // const items = [
 
   // ];
+  // noti_time
   useEffect(() => {
     dispatch(getNotiByUserId(user?.User_id));
   }, []);
@@ -43,12 +45,27 @@ export default function Navbar() {
   const listContent = notiList.map((item) => {
     arr.push(item.content);
   });
+  // const knowNewNoti=()=>{
+  notiList.map((item) => {
+    if (moment(new Date(item.noti_time)).fromNow() == "a few seconds ago") {
+      setOnBlueNoti(true);
+    }
+  });
+  // }
+  const items = notiList.map((item) => (
+    <div style={{ display: "flex" }}>
+      <img
+        width={70}
+        height={70}
+        src="https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png"
+      ></img>
+      <div style={{ marginLeft: "10px" }}>
+        <h6>{item.content}</h6>
+        {/* <p> ... {moment.utc(item.noti_time).local().startOf('seconds').fromNow()}</p> */}
+        <p> {moment(new Date(item.noti_time)).fromNow()}</p>
 
-  const items = arr.map((item) => (
-    <div>
-      <p>{item}</p>
-      <Divider />
-
+        <Divider />
+      </div>
     </div>
   ));
 
@@ -64,6 +81,9 @@ export default function Navbar() {
       document.body.classList.contains("sb-sidenav-toggled")
     );
     setOnclickShowLeft(!onclickShowLeft);
+  };
+  const clickIc = () => {
+    setOnBlueNoti(false);
   };
   return (
     <NavbarPane>
@@ -127,17 +147,29 @@ export default function Navbar() {
               content={items}
               trigger="click"
             >
-              <Badge
+              {/* {onBlueNoti ?  */}
+              {/* <Badge
                 variant="dot"
                 badgeContent=""
                 style={{ margin: "8px 5px" }}
                 color="primary"
-              >
+              > */}
                 <NotificationsNoneTwoToneIcon
+                  onClick={clickIc}
                   color="action"
-                  style={{ fontSize: "25px" }}
+                  style={{ fontSize: "25px",marginTop:'7px' }}
                 ></NotificationsNoneTwoToneIcon>
-              </Badge>
+                {onBlueNoti ? (
+                  <Badge
+                    variant="dot"
+                    badgeContent=""
+                    style={{ margin: "8px 5px" }}
+                    color="primary"
+                  ></Badge>
+                ) : (
+                  ""
+                )}
+              {/* </Badge> */}
             </Popover>
 
             {/* <div>

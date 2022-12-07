@@ -166,14 +166,27 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
     key: item.ResourcePlannig_RoleId,
     no: (countReqs += 1),
     ...item,
-    Status:
-      user?.UserType != "leader"
-        ? item.Status === "In Progress"
-          ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
-          : item.Status
-        : item.Status === "In Progress"
-        ? handleAcpt(item.id)
-        : item.Status,
+    // Status:
+    //   // user?.UserType != "leader" ?
+    //      item.Status === "In Progress"
+    //       // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+    //       // : 
+    //       // item.Status
+    //     // : item.Status === "In Progress"
+    //     ?
+    //      handleAcpt(item.id)
+    //     : item.Status,
+    
+        Status:
+        user?.UserType != "leader" ?
+           item.Status === "In Progress"
+            ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+            : 
+            item.Status
+          : item.Status === "In Progress"
+          ?
+           handleAcpt(item.id)
+          : item.Status,
   }));
   return (
     <div>

@@ -1,7 +1,7 @@
 import { GET_GENERAL_REQUEST, GET_GENERAL_REQUEST_BY_BU } from "../types";
 const initialState = {
   genRequests: [],
-  genRequestsByBU: [],
+  // genRequestsByBU: [],
 
   //   project: null,
 };

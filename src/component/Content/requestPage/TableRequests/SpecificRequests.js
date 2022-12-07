@@ -18,8 +18,9 @@ export default function SpecificRequests() {
 
   const specRequests = useSelector((state) => state.SpecRequest.specRequests);
   useEffect(() => {
+    console.log(user);
     if (user?.UserType == "leader") {
-      dispatch(getSpecRequestByBU(user?.UserType));
+      dispatch(getSpecRequestByBU(user?.Department_id));
     } else {
       dispatch(getSpecRequest());
     }
@@ -44,7 +45,7 @@ export default function SpecificRequests() {
       //   editTable: true,
     },
     {
-      title: "Unit",
+      title: "To unit",
       dataIndex: "Department_name",
       width: 70,
     },
@@ -130,7 +131,7 @@ export default function SpecificRequests() {
   };
 
   const handleAccept = async (value) => {
-    console.log(value.item);
+    console.log(value);
     try {
       const res = await request({
         url:
@@ -154,7 +155,9 @@ export default function SpecificRequests() {
           style: { marginTop: "50px" },
         });
       }
-      dispatch(getSpecRequest());
+      // dispatch(getSpecRequest());
+      dispatch(getSpecRequestByBU(user?.Department_id));
+      
 
       // setIsModalOpen(false);
     } catch (err) {
@@ -168,6 +171,7 @@ export default function SpecificRequests() {
     key: id,
     no: (countReqs += 1),
     ...item,
+    Department_name:"BU "+item.Depeartment_id,
     Status:
       user?.UserType != "leader" ? (
         item.Status === "In Progress" ? (
@@ -182,7 +186,19 @@ export default function SpecificRequests() {
       ) : (
         item.Status
       ),
-  }));
+    ///cmt
+    // Status:
+    // // user?.UserType != "leader" ?
+    //    item.Status === "In Progress"
+    //     // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+    //     // : 
+    //     // item.Status
+    //   // : item.Status === "In Progress"
+    //   ?
+    //    handleAcpt(item)
+    //   : item.Status,
+  })
+  );
 
   return (
     <div>

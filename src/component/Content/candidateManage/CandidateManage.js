@@ -72,7 +72,7 @@ export default function CandidateManage() {
           >
             {calEmp()}
             {console.log(totalUsers)}
-            Candidate Management
+            Staff Management
           </h3>
           <div>
             <BasicBreadcrumbs />
