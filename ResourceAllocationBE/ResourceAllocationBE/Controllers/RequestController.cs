@@ -371,11 +371,11 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
             return new JsonResult(table);
         }
         // SHOW EMPLOYEE REQEUST (CUNG BU) ()
-        [HttpGet("Employee/{de_name}")]
-        public JsonResult getListRequestEmployeeBU(string de_name)
+        [HttpGet("Employee/{bu}")]
+        public JsonResult getListRequestEmployeeBU(int bu)
         {
             string query = @"
-                    	SELECT *
+                   SELECT *
                     FROM [ResourceRequestEmployee] 
                     join ResourcePlanning_Employee on ResourceRequestEmployee.Employee_id = ResourcePlanning_Employee.id
                     join [User] on [user].[User_id] = ResourcePlanning_Employee.Employee_id
@@ -384,8 +384,9 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
 					join ResourcePlanning_Role on ResourcePlanning_Role.id = ResourceRequestEmployee.ResourcePlannig_RoleId
                     join Project on Project.project_id = ResourcePlanning_Role.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
-	                where Department_name = @de_name
+	                 where Department.Department_id =@bu
                 ";
+            //project.depeartment_id=@bu
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -394,7 +395,7 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@de_name", de_name);
+                    myCommand.Parameters.AddWithValue("@bu", bu);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

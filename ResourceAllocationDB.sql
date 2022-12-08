@@ -298,8 +298,8 @@ Approved_by nvarchar(50),
 lastestTime datetime,
 request_start date,
 request_end date,
-request_Effort int, 
-request_Bill int
+request_effort int, 
+request_bill int
 )
 
 
