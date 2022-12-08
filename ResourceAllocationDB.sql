@@ -270,10 +270,10 @@ Effort int,
 Bill_rate int
 )
 insert into Emp_RolePlanning values(1,1,'2022/06/01','2022/06/11',50,50)
-insert into Emp_RolePlanning values(2,3,'2022/06/03','2022/06/12',30,30)
+insert into Emp_RolePlanning values(2,1,'2022/06/03','2022/06/12',30,30)
 insert into Emp_RolePlanning values(1,2,'2022/06/04','2022/06/13',20,40)
-insert into Emp_RolePlanning values(5,4,'2022/06/05','2022/06/14',20,50)
-insert into Emp_RolePlanning values(2,5,'2022/06/06','2022/06/15',10,30)
+insert into Emp_RolePlanning values(5,2,'2022/06/05','2022/06/14',20,50)
+insert into Emp_RolePlanning values(2,2,'2022/06/06','2022/06/15',10,30)
 insert into Emp_RolePlanning values(3,1,'2022/06/07','2022/06/16',20,10)
 insert into Emp_RolePlanning values(4,1,'2022/06/08','2022/06/17',30,20)
 
@@ -317,3 +317,16 @@ noti_time datetime
 
 
 go
+ select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
+                    Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
+                    Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
+					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
+                    from ResourcePlanning_Employee
+		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
+		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
+		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
+		            join Department on Department.Department_id = [user].Department_id
+					left join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
+					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+left join Project on Project.Project_id = ResourcePlanning_Role.project_id
