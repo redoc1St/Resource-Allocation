@@ -7,6 +7,7 @@ import {
   getResourcePoolEmp,
   getResourcePoolEmpByBU,
   getResourcePoolEmpByRLK,
+  getSearchResourcePoolEmpByName,
 } from "../../../Store/Actions/ResourcePoolAction";
 import { ROLES } from "../../../App";
 
@@ -14,7 +15,7 @@ export default function TableRPool(data) {
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
-  const { user } = useAuth();
+  const { valueInput, user } = useAuth();
 
   // console.log(data?.Role_id, data?.Level_id, data?.Skill_id);
   //  console.log(data);   // BU NAME
@@ -23,19 +24,22 @@ export default function TableRPool(data) {
   // console.log(emps[14].ProjectName ==null);
   useEffect(() => {
     if (user)
-      if (Object.keys(data).length === 0) {
-        //check data rỗng
-        user?.UserType == ROLES.EMPLOYEE
-          ? dispatch(getResourcePoolEmpByBU(user?.Department_id))
-          : dispatch(getResourcePoolEmp());
+      if (valueInput?.emp_planning) {
+        dispatch(getSearchResourcePoolEmpByName(valueInput.emp_planning));
       } else {
-        dispatch(
-          // 3 vị trí  0,1,2 tương đương với 3 vị trí role level skill lấy bên tableRPlanning lúc truyền vào state
-          getResourcePoolEmpByRLK(data[0], data[1], data[2])
-        );
+        if (Object.keys(data).length === 0) {
+          //check data rỗng
+          user?.UserType == ROLES.EMPLOYEE
+            ? dispatch(getResourcePoolEmpByBU(user?.Department_id))
+            : dispatch(getResourcePoolEmp());
+        } else {
+          dispatch(
+            // 3 vị trí  0,1,2 tương đương với 3 vị trí role level skill lấy bên tableRPlanning lúc truyền vào state
+            getResourcePoolEmpByRLK(data[0], data[1], data[2])
+          );
+        }
       }
-  }, [data?.Role_id, dispatch, user]);
-
+  }, [data?.Role_id, dispatch, user, valueInput]);
   const columns = [
     {
       title: "No.",

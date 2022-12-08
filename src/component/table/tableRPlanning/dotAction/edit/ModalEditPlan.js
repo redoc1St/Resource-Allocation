@@ -144,7 +144,7 @@ export default function ModalEditPlan(record) {
                     <td>
                       <input
                         type="number"
-                        min={0}
+                        min={0} max={100}
                         {...register("Effort_planned")}
                         required
                       />
@@ -206,7 +206,7 @@ export default function ModalEditPlan(record) {
                       <input
                         type="number"
                         {...register("Bill_rate")}
-                        min={0}
+                        min={0} max={100}
                         // placeholder="0"
                         required
                       />

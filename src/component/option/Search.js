@@ -9,7 +9,15 @@ export default function Search(data) {
   const { valueInput,setValueInput}= useAuth()
   const handleSearch = (e) => {
     // console.log(e);
-    setValueInput(e)
+    if(data.type=='employee'){
+      setValueInput({empSearch:e})
+
+    }else if(data.type=='project'){
+      setValueInput({prjSearch:e})
+    }else if(data.type=='emp_planning'){
+      setValueInput({emp_planning:e})
+
+    }
   };
   return (
     <div>

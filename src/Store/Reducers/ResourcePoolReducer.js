@@ -1,4 +1,4 @@
-import { GET_RESOURCEPOOL_EMP, GET_RESOURCEPOOL_EMP_BY_BU, GET_RESOURCEPOOL_EMP_BY_RLK } from "../types";
+import { GET_RESOURCEPOOL_EMP, GET_RESOURCEPOOL_EMP_BY_BU, GET_RESOURCEPOOL_EMP_BY_NAME, GET_RESOURCEPOOL_EMP_BY_RLK } from "../types";
 const initialState = {
   emps: [],
   //   project: null,
@@ -13,8 +13,9 @@ const ResourcePoolReducer = (state = initialState, { type, payload }) => {
 
     case GET_RESOURCEPOOL_EMP_BY_BU:
       return { ...state, emps: payload };
-    // case GET_PROJECT_BY_ID:
-    //   return { ...state, project: payload };
+
+    case GET_RESOURCEPOOL_EMP_BY_NAME:
+      return { ...state, emps: payload };
     default:
       return state;
   }

@@ -10,21 +10,35 @@ import { Link, Navigate } from "react-router-dom";
 import AddToProject from "../table/tableRPool/dotAction/addToProject/AddToProject";
 import useAuth from "../hooks/useAuth";
 import Login from "../login/Login";
+import { ROLES } from "../../App";
 
 export default function Timeline() {
   //   const [myEvents, setEvents] = React.useState([]);
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
   // const [idEmp, setIdEmp]= useState(0);
-  const { user } = useAuth();
+  const { user,valueInput } = useAuth();
 
   useEffect(() => {
     dispatch(getResourcePoolEmp());
   }, []);
    let idEmp=0
 
-  const myEvents = React.useMemo(() => {
-    return emps.map((item,index) => ({
+  //  const myEvents = React.useMemo(() => {
+  //   return emps.map((item,index) => ({
+  //     key:index,
+  //     start: item?.Date_start,
+  //     end: item?.Date_end,
+  //     title:
+  //       item?.ProjectName == null
+  //         ? "Waiting for leader accept to the project"
+  //         : item?.ProjectName + "|" + item?.Date_start + "|" + item?.Date_end,
+  //     resource: item?.number,
+  //   }));
+   
+  // }, [valueInput.emp_planning]);
+
+  const myEvents = emps.map((item,index) => ({
       key:index,
       start: item?.Date_start,
       end: item?.Date_end,
@@ -34,67 +48,13 @@ export default function Timeline() {
           : item?.ProjectName + "|" + item?.Date_start + "|" + item?.Date_end,
       resource: item?.number,
     }));
-    // [{
-    //     start: '2022-10-02T00:00',
-    //     end: '2022-10-05T00:00',
-    //     title: 'Event 1',
-    //     resource: idEmp
-    // }, {
-    //     start: '2022-10-02',
-    //     end: '2022-10-05',
-    //     title: 'Event 1',
-    //     resource: idEmp
-    // },
-    // {
-    //     start: '2022-10-10T09:00',
-    //     end: '2022-10-15T15:00',
-    //     title: 'Event 2',
-    //     resource: idEmp
-    // }, {
-    //     start: '2022-10-12T00:00',
-    //     end: '2022-10-14T00:00',
-    //     title: 'Event 3',
-    //     resource: idEmp
-    // }, {
-    //     start: '2022-10-15T07:00',
-    //     end: '2022-10-20T12:00',
-    //     title: 'Event 4',
-    //     resource: idEmp
-    // }, {
-    //     start: '2022-10-03T00:00',
-    //     end: '2022-10-10T00:00',
-    //     title: 'Event 5',
-    //     resource: 6
-    // }, {
-    //     start: '2022-10-10T08:00',
-    //     end: '2022-10-11T20:00',
-    //     title: 'Event 6',
-    //     resource: 7
-    // }, {
-    //     start: '2022-10-22T00:00',
-    //     end: '2022-10-28T00:00',
-    //     title: 'Event 7',
-    //     resource: 7
-    // }, {
-    //     start: '2022-10-08T00:00',
-    //     end: '2022-10-13T00:00',
-    //     title: 'Event 8',
-    //     resource: 15
-    // }, {
-    //     start: '2022-10-25T00:00',
-    //     end: '2022-10-27T00:00',
-    //     title: 'Event 9',
-    //     resource: 10
-    // }, {
-    //     start: '2022-10-20T00:00',
-    //     end: '2022-10-23T00:00',
-    //     title: 'Event 10',
-    //     resource: 12
-    // }]
-  }, []);
+   
+ 
   // console.log(emps);
-  const myResources = React.useMemo(() => {
-    return emps.map((item,index) => ({
+  const myResources = 
+  // React.useMemo(() => {
+  //   return
+     emps.map((item,index) => ({
       key:index,
       id: item.number,
       name: item?.Username,
@@ -170,7 +130,7 @@ export default function Timeline() {
     //     color: "#8f1ed6",
     //   },
     // ];
-  }, []);
+  // }, []);
 
   const onClickIcon = (rowData) => {
     // console.log(rowData);
@@ -196,7 +156,7 @@ export default function Timeline() {
   const renderCustomResource = (resource) => {
     return (
       <div className="md-resource-header-template-cont">
-        {user?.UserType == "leader" ? (
+        {user?.UserType != ROLES.EMPLOYEE ? (
           <div className="md-resource-header-template-icon">
             <span onClick={() => onClickIcon(resource)}>
               <AddToProject type={"icon"} record={userData} />
@@ -227,7 +187,7 @@ export default function Timeline() {
   const renderCustomHeader = () => {
     return (
       <div className="md-resource-header-template-title">
-        {user?.UserType == "leader" ? (
+        {user?.UserType != ROLES.EMPLOYEE ? (
           <div className="md-resource-header-template-icon">Action</div>
         ) : (
           ""

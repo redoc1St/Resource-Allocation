@@ -242,7 +242,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult GetListPnameByRLS(string role_id, string level_id, string skill_id)
         {
             string query = @"
-        select * from ResourcePlanning_Role
+           select * from ResourcePlanning_Role
         
         join Project on Project.Project_id = ResourcePlanning_Role.project_id
 
@@ -252,7 +252,8 @@ namespace ResourceAllocationBE.Controllers
 
         join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
 
-        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id";
+        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id and ResourcePlanning_Role.[status]='Approved'
+";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
@@ -279,7 +280,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult GetListPnameForLeaderByRLS(int role_id, int level_id, int skill_id,int bu_id)
         {
             string query = @"
-        select * from ResourcePlanning_Role
+          select * from ResourcePlanning_Role
         
         join Project on Project.Project_id = ResourcePlanning_Role.project_id
 
@@ -289,7 +290,8 @@ namespace ResourceAllocationBE.Controllers
 
         join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
 
-        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id and Depeartment_id=@bu_id";
+        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id and ResourcePlanning_Role.[status]='Approved' and Depeartment_id=@bu_id
+";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");

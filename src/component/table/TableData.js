@@ -76,18 +76,18 @@ export default function TableData(sText) {
 
   useEffect(() => {
     if (user)
-      if (valueInput) {
+      if (valueInput?.prjSearch) {
         user?.UserType != ROLES.ADMIN
           ? dispatch(
-              getProjectsInBUByBuNameNId(valueInput, user?.Department_id)
+              getProjectsInBUByBuNameNId(valueInput?.prjSearch, user?.Department_id)
             )
-          : dispatch(getProjectsByName(valueInput));
+          : dispatch(getProjectsByName(valueInput.prjSearch));
       } else {
         user?.UserType != ROLES.ADMIN
           ? dispatch(getProjectsByBuId(user?.Department_id))
           : dispatch(getProjects());
       }
-  }, [valueInput, dispatch, user?.UserType]);
+  }, [valueInput?.prjSearch, dispatch, user?.UserType]);
 
   const modifiedData = projects.map((item) => ({
     key: item.id,

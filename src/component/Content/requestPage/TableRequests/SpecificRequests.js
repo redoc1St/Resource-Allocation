@@ -11,6 +11,7 @@ import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import request from "../../../../../src/api/request";
 import { Tag } from "antd";
+import { ROLES } from "../../../../App";
 
 export default function SpecificRequests() {
   const dispatch = useDispatch();
@@ -165,7 +166,11 @@ export default function SpecificRequests() {
         });
       }
       // dispatch(getSpecRequest());
-      dispatch(getSpecRequestByBU(user?.Department_id));
+      if(user.UserType==ROLES.LEADER){
+        dispatch(getSpecRequestByBU(user?.Department_id));
+      }else{
+        dispatch(getSpecRequest());
+      }
 
       // setIsModalOpen(false);
     } catch (err) {

@@ -43,13 +43,13 @@ export default function CandidateManage() {
     });
   };
 
-
+console.log(valueInput);
   useEffect(() => {
     if (statusCand == "all") {
-      valueInput ? dispatch(getUsersByName(valueInput)) : dispatch(getUsers());
+      valueInput ? dispatch(getUsersByName(valueInput.empSearch)) : dispatch(getUsers());
     } else {
       dispatch(
-        getUsersByNameAStatus(valueInput ? valueInput : " ", statusCand)
+        getUsersByNameAStatus(valueInput.empSearch ? valueInput.empSearch : " ", statusCand)
       );
     }
   }, [statusCand, valueInput, dispatch]);
@@ -77,7 +77,7 @@ export default function CandidateManage() {
           <div>
             <BasicBreadcrumbs />
             <div style={{ display: "flex" }}>
-              <Search placeholder="Enter candidate name" />
+              <Search type='employee' placeholder="Enter candidate name" />
               <div className="form-group" style={{ marginLeft: "650px" }}>
                 <h5>Status </h5>
                 <select

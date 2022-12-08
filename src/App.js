@@ -97,7 +97,7 @@ function App() {
 
   const [moreRow, setMoreRow] = useState(0);
 
-  const [valueInput, setValueInput] = useState("");
+  const [valueInput, setValueInput] = useState({empSearch:''});
 
   const [statusCand, setStatusCand] = useState("");
 

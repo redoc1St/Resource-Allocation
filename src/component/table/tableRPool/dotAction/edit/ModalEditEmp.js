@@ -180,7 +180,7 @@ export default function ModalEditPoolEmp(record) {
                   <tr>
                     <td>Effort </td>
                     <td>
-                      <input type="number" min={0} {...register("Effort")} />
+                      <input type="number" min={0} max={100} {...register("Effort")} />
                     </td>
                   </tr>
 
@@ -236,7 +236,7 @@ export default function ModalEditPoolEmp(record) {
                       <input
                         type="number"
                         {...register("Bill_rate")}
-                        min={0}
+                        min={0} max={100}
                         // placeholder="0"
                         required
                       />

@@ -47,7 +47,7 @@ export default function Request(record) {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      requestTo: leader.Username, //hoặc ntn record.record?.leader?.Username,
+      requestTo: leader?.Username, //hoặc ntn record.record?.leader?.Username,
       role: record.record.record.RoleName,
       sd: record.record.record.Date_start,
       pe: record.record.record.Effort_planned,

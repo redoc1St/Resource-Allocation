@@ -24,7 +24,7 @@ export default function ViewEmp(data) {
     dispatch(
       getRolesByNameNRole(data?.record?.ProjectName, data?.record?.RoleName)
     );
-  }, [data?.record?.ProjectName]);
+  }, [data?.record?.ProjectName,isModalOpen]);
 
   let countEmp = 0;
   const mergedData = rolesEmp.map((item,id) => ({

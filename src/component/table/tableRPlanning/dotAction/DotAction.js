@@ -45,7 +45,7 @@ export default function DotAction(record) {
             record.record.Status?.props.children === "Rejected" ||
             record.record.Status?.props.children === "In Progress" ? (
               ""
-            ) : user?.UserType == ROLES.ADMIN ? (
+            ) : user?.UserType != ROLES.EMPLOYEE ? (
               <Request record={record} />
             ) : (
               ""

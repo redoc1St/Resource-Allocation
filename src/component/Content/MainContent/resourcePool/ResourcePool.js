@@ -8,11 +8,12 @@ import ViewByChart from "./viewByChart/ViewByChart";
 import ModalAddPool from "./ModalAddPool";
 import useAuth from "../../../hooks/useAuth";
 import { ROLES } from "../../../../App";
+import Search from "../../../option/Search";
 
 export default function ResourcePool(record) {
   const location = useLocation();
   const [value, setValue] = useState("list");
-  console.log('33',location?.state);
+  console.log("33", location?.state);
   const { user } = useAuth();
 
   const onChange = (e) => {
@@ -46,6 +47,8 @@ export default function ResourcePool(record) {
           </Radio.Group>
         </div>
       </div>
+      <Search type='emp_planning' placeholder="Enter employee name " />
+
       {value === "list" ? (
         <>
           <TablePane>
@@ -84,12 +87,13 @@ export default function ResourcePool(record) {
               </tr>
             </tbody>
           </TablePane>
+
           <TableRPool {...location?.state} />
         </>
       ) : (
         <ViewByChart />
       )}
-      {user?.UserType!=ROLES.EMPLOYEE ? <ModalAddPool/> : '' }
+      {user?.UserType != ROLES.EMPLOYEE ? <ModalAddPool /> : ""}
     </div>
   );
 }
@@ -98,6 +102,7 @@ const TablePane = styled.table`
   border: 0.5px solid black;
   width: 500px;
   background-color: #ededed;
+  margin-top:20px;
   th,
   td {
     border: 0.5px solid black;

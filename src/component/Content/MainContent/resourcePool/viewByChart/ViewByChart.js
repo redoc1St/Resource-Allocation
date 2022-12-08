@@ -4,7 +4,7 @@ import Timeline from '../../../../Timeline/Timeline'
 
 export default function ViewByChart() {
   return (
-    <div style={{height:'150px'}} >
+    <div style={{height:'150px',marginTop:'20px'}} >
     <ScrollBar
         style={{
           overflow: "hidden",

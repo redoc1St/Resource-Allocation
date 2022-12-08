@@ -28,7 +28,7 @@ export default function MainContent() {
       <div>
         <BasicBreadcrumbs />
 
-        <Search placeholder="Enter project name " />
+        <Search type='project' placeholder="Enter project name " />
         <div style={{ marginTop: "15px" }}>
           <TableData/>
         </div>
