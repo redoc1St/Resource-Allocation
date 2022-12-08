@@ -59,17 +59,19 @@ BirthDay date,
 Start_Day date,
 Department_id int foreign key references Department(Department_id)
 )
-if not exists(select * from [User] where email = 'admin2022@gmail.com')
 insert into [User] values('admin2022','123456a','Ad Van Min','admin2022@gmail.com','Ha Noi'
 ,'admin','1','1985/05/05','2020/01/01',1)
 insert into [User] values('quangdd2000','123@123a','Do Duc Quang','quangdd123@gmail.com','Ha Noi'
 ,'leader','1','2000/12/14','2022/01/01',1)
 insert into [User] values('tungct2000','123@123a','Chu Trieu Tung','tungct2022@gmail.com','Ha Noi'
 ,'employee','1','2000/05/19','2022/01/01',1)
-insert into [User] values('sinhtq2000','123@123a','Truong Quocs Sinh','2022@gmail.com','Ha Noi'
+insert into [User] values('sinhtq2000','123@123a','Truong Quocs Sinh','sinhtq2000@gmail.com','Ha Noi'
 ,'employee','1','2000/05/05','2022/01/01',1)
 insert into [User] values('haitl2000','123456a','Tran Long Hai','haitl2022@gmail.com','Ha Noi'
 ,'employee','1','2000/05/05','2022/01/01',1)
+insert into [User] values('ngocdk2000','123456a','Do Kien Ngoc','ngocdk2000@gmail.com','Ha Noi'
+,'employee','1','2000/05/05','2022/01/01',1)
+--2
 insert into [User] values('hieuhm2000','123456a','Hoang Minh Hieu','hieuhm2022@gmail.com','Ha Noi'
 ,'leader','1','2000/05/05','2022/01/01',2)
 insert into [User] values('huongnt2001','123456a','Nguyen Thu Huong','huongnt2022@gmail.com','Ha Noi'
@@ -79,11 +81,46 @@ insert into [User] values('longnt1999','123456a','Nguyen Thanh Long','longnt2022
 insert into [User] values('khanhnd1998','123456a','Nguyen Duc Khanh','khanhnd2022@gmail.com','Ha Noi'
 ,'employee','0','1998/05/05','2022/01/01',2)
 insert into [User] values('phatnt2000','123456a','Nguyen Thanh Phat','phatnt2022@gmail.com','Ha Noi'
-,'employee','0','2000/05/05','2022/01/01',2)
+,'employee','1','2000/05/05','2022/01/01',2)
 insert into [User] values('tuannt2000','123456a','Nguyen Thanh Tuan','tuannt2022@gmail.com','Ha Noi'
 ,'employee','0','2000/05/05','2022/01/01',2)
-
-
+--3
+insert into [User] values('anhdt1998','123456a','Dang Trong Anh','anhdt1998@gmail.com','Ha Noi'
+,'leader','1','1998/05/05','2022/01/01',3)
+insert into [User] values('hangnt2001','123456a','Nguyen Thu Hang','hangnt2001@gmail.com','Ha Noi'
+,'employee','1','2001/05/05','2022/01/01',3)
+insert into [User] values('longnv1999','123456a','Nguyen Van Long','longnv2022@gmail.com','Ha Noi'
+,'employee','1','1999/05/05','2022/01/01',3)
+insert into [User] values('khanhdd1998','123456a','Dao Duc Khanh','khanhdd2022@gmail.com','Ha Noi'
+,'employee','1','1998/05/05','2022/01/01',3)
+insert into [User] values('phatnh2002','123456a','Nguyen Huu Phat','phatnh2022@gmail.com','Ha Noi'
+,'employee','1','2002/05/05','2022/01/01',3)
+insert into [User] values('tuanct2003','123456a','Chu Thanh Tuan','tuanct2022@gmail.com','Ha Noi'
+,'employee','0','2003/05/05','2022/01/01',3)
+--4
+insert into [User] values('namvn1998','123456a','Vu Nhat Nam','namvn1998@gmail.com','Ha Noi'
+,'leader','1','1998/05/05','2022/01/01',4)
+insert into [User] values('haidd2001','123456a','Dam Duc Hai','haidd2001@gmail.com','Ha Noi'
+,'employee','1','2001/05/05','2022/01/01',4)
+insert into [User] values('hoangnh1999','123456a','Nguyen Huy Hoang','hoangnh1999@gmail.com','Ha Noi'
+,'employee','1','1999/05/05','2022/01/01',4)
+insert into [User] values('thuyct1998','123456a','Chu Thi Thuy','thuyct1998@gmail.com','Ha Noi'
+,'employee','1','1998/05/05','2022/01/01',4)
+insert into [User] values('duongnh2002','123456a','Nguyen Huu Duong','duongnh2002@gmail.com','Ha Noi'
+,'employee','1','2002/05/05','2022/01/01',4)
+insert into [User] values('huyenht2003','123456a','Hoang Thu Huyen','huyenht2003@gmail.com','Ha Noi'
+,'employee','1','2003/05/05','2022/01/01',4)
+--5
+insert into [User] values('minhdt1995','123456a','Dinh Tuan Minh','minhdt1995@gmail.com','Ha Noi'
+,'employee','1','1995/05/05','2020/01/01',5)
+insert into [User] values('huannn1999','123@123a','Nguyen Nhu Huan','huannn1999@gmail.com','Ha Noi'
+,'leader','1','1999/12/14','2022/01/01',5)
+insert into [User] values('vietnh1998','123@123a','Nguyen Hoang Viet','vietnh1998@gmail.com','Ha Noi'
+,'employee','1','1998/05/19','2022/01/01',5)
+insert into [User] values('ducnh2000','123@123a','Nguyen Huy Duc','ducnh2000@gmail.com','Ha Noi'
+,'employee','1','2000/05/05','2022/01/01',5)
+insert into [User] values('anhnt2000','123456a','Nguyen The Anh','anhnt2000@gmail.com','Ha Noi'
+,'employee','1','2000/05/05','2022/01/01',5)
 
 ---PROJECT
 create table Project(
@@ -102,26 +139,25 @@ End_plan date,
 End_actual date,
 note nvarchar(200)
 )
-
 if not exists ( select * from Project where Code = 'AIS_0001')
 insert into Project values('AIS_0001','ProjectName1',1,2,5,1,2,2,
-'2022/06/01','2022/06/01','2022/06/10','2022/06/10',''
+'2022/06/01','2022/06/01','2022/12/10','2022/12/10',''
 )
 if not exists ( select * from Project where Code = 'AIS_0002')
 insert into Project values('AIS_0002','ProjectName2',2,5,4,3,3,3,
-'2022/05/01','2022/05/01','2022/06/10','2022/06/10',''
+'2022/05/01','2022/05/01','2022/10/10','2022/12/10',''
 )
 insert into Project values('AIS_0003','ProjectName3',3,2,1,0,2,2,
-'2022/06/01','2022/06/01','2022/06/10','2022/06/10',''
+'2022/06/01','2022/06/01','2022/12/10','2022/12/10',''
 )
 insert into Project values('AIS_0004','ProjectName4',4,4,3,3,3,3,
-'2022/06/01','2022/06/01','2022/06/10','2022/06/10',''
+'2022/06/01','2022/06/01','2022/12/10','2022/12/10',''
 )
 insert into Project values('AIS_0005','ProjectName5',5,2,5,1,2,2,
-'2022/07/01','2022/07/01','2022/07/10','2022/07/10',''
+'2022/07/01','2022/07/01','2022/12/10','2022/12/10',''
 )
 insert into Project values('AIS_0006','ProjectName6',1,2,5,1,2,2,
-'2022/07/01','2022/07/01','2022/07/10','2022/07/10',''
+'2022/07/01','2022/07/01','2022/12/10','2022/12/10',''
 )
 
 
@@ -142,7 +178,6 @@ Skill_id int foreign key references Skill(Skill_id),
 [Status] nvarchar(50)
 )
 
-if not exists ( select * from ResourcePlanning_Role where Project_id=1 and Role_id = 3  and Level_id =5 and Skill_id =2  )
 insert into ResourcePlanning_Role (Project_id,
 Role_id,Quantity,
 Date_start ,
@@ -183,7 +218,6 @@ Level_id int foreign key references Levels(Level_id),
 Skill_id int foreign key references Skill(Skill_id)
 )
 
-if not exists ( select * from [ResourcePlanning_Employee] where Employee_id =3 and Role_id = 3 and Level_id =2 and Skill_id =1 )
 insert into ResourcePlanning_Employee values(
 3,3,2,1
 )
@@ -235,12 +269,11 @@ Date_end date,
 Effort int, 
 Bill_rate int
 )
-if not exists (select *from Emp_RolePlanning where ResourcePlannig_RoleId =1 and Employee_id = 1)
 insert into Emp_RolePlanning values(1,1,'2022/06/01','2022/06/11',50,50)
-insert into Emp_RolePlanning values(2,1,'2022/06/03','2022/06/12',30,30)
+insert into Emp_RolePlanning values(2,3,'2022/06/03','2022/06/12',30,30)
 insert into Emp_RolePlanning values(1,2,'2022/06/04','2022/06/13',20,40)
-insert into Emp_RolePlanning values(5,2,'2022/06/05','2022/06/14',20,50)
-insert into Emp_RolePlanning values(2,2,'2022/06/06','2022/06/15',10,30)
+insert into Emp_RolePlanning values(5,4,'2022/06/05','2022/06/14',20,50)
+insert into Emp_RolePlanning values(2,5,'2022/06/06','2022/06/15',10,30)
 insert into Emp_RolePlanning values(3,1,'2022/06/07','2022/06/16',20,10)
 insert into Emp_RolePlanning values(4,1,'2022/06/08','2022/06/17',30,20)
 
@@ -253,11 +286,6 @@ Approved_by nvarchar(50),
 lastestTime datetime
 )
 
-insert into ResourceRequestRole values(
-10,2,'', GETDATE())
-update ResourcePlanning_Role set [Status] = 'In Progress' where id = 10
-insert into ResourceRequestRole values(
-9,2,'', CURRENT_TIMESTAMP)
 
 --ResourceRequestEmployee
 create table ResourceRequestEmployee(
@@ -267,14 +295,13 @@ Employee_id int foreign key references ResourcePlanning_Employee(id),
 Requested_to int foreign key references [User]([User_id]),
 Approved_by nvarchar(50),
 [status] nvarchar(50),
-lastestTime datetime
+lastestTime datetime,
+request_start date,
+request_end date,
+request_Effort int, 
+request_Bill int
 )
---if not exists (select *from [ResourceRequestEmployee] where ResourcePlannig_RoleId =8 and Employee_id = 11) 
---and not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =8 and Employee_id = 11) 
-insert into ResourceRequestEmployee values(
-2,1,2,'','In Progress', GETDATE())
-insert into ResourceRequestEmployee values(
-2,5,2,'','In Progress', GETDATE())
+
 
 create table Notifications (
 id int primary key identity(1,1),
@@ -290,41 +317,3 @@ noti_time datetime
 
 
 go
-
-if not exists (select * from Emp_RolePlanning 
-join ResourcePlanning_Employee on ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
-join [User] on ResourcePlanning_Employee.Employee_id = [user].[User_id] )
-begin 
-
-			if not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =@rid and Employee_id = @eid)
-			begin	
-			insert into ResourceRequestEmployee values(@rid,@eid,2,'','In Progress',GETDATE())
-                insert into Notifications values (@leader_id, 'You get notification about request employee....', GETDATE())
-			end
-			else if not exists(SELECT * FROM [ResourceRequestEmployee]
-                where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and 
-				(status='In Progress' or status='Approved'))
-			begin 
-			insert into ResourceRequestEmployee values(@rid,@eid,2,'','In Progress',GETDATE())
-                insert into Notifications values (@leader_id, 'You get notification about request employee....', GETDATE())
-			end
-			else 
-			select * from [user]
-
-
-		
-
-				
-				 select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
-                    Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
-                    Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
-					,emp_RolePlanning.Employee_id
-                    from ResourcePlanning_Employee
-		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
-		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
-		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
-		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
-		            join Department on Department.Department_id = [user].Department_id
-					left join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
-					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
-left join Project on Project.Project_id = ResourcePlanning_Role.project_id
