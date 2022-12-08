@@ -71,6 +71,32 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
+        //LOAD LIST USER BY BU
+        [HttpGet("{bu}")]
+        public JsonResult GetListUserByBU(int bu)
+        {
+            string query = @"
+                               select * from
+                                dbo.[User] where UserType != 'admin' and  UserType != 'leader'  and department_id=@bu and isActive =1";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@bu", bu);
+
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
         //LOAD LIST USER de add employee role
         [HttpGet("Employee")]
         public JsonResult getListUserEmployee()
@@ -78,7 +104,7 @@ namespace ResourceAllocationBE.Controllers
             string query = @"
                                  select * from dbo.[User] 
                                  
-								where UserType != 'admin' and  UserType != 'leader'";
+								where UserType != 'admin' and  UserType != 'leader' and isActive =1";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -129,7 +155,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
                                select * from
-                                dbo.[User] where [Fullname] like @UName and [isActive] = @isactive";
+                                dbo.[User] where UserType != 'admin' and [Fullname] like @UName and [isActive] = @isactive";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

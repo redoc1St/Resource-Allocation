@@ -88,7 +88,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
             update ResourcePlanning_Role set [status] = @status where id =@rid
-            insert into Notifications values (12, 'De nghi Role cua ban da duoc @status', GETDATE())
+            insert into Notifications values (1, 'De nghi Role cua ban da duoc @status', GETDATE())
             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -170,14 +170,14 @@ namespace ResourceAllocationBE.Controllers
         //APPROVED REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
         // THONG BAO CHO LEADER BEN KIA(CHUA)
         [HttpPost("EmpToRole/Approved/Noti/{user_id}")]
-        public JsonResult approveRequestEmp(EmployeeRolePlaning employeeRole, int user_id)
+        public JsonResult approveRequestEmp(RequestModel request, int user_id)
         {
             string query = @"
-            if not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =@rid and Employee_id = @eid)
+ if not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =@rid and Employee_id = @eid)
 			begin	
             insert into Emp_RolePlanning values(@rid,@eid, @date_start,@date_end, @effort, @bill)
             update ResourceRequestEmployee set [status] = 'Approved' where ResourcePlannig_RoleId =@rid and Employee_id = @eid
-            insert into Notifications values (12, 'De nghi REQUEST Employee cua ban da duoc Approved', GETDATE())
+            insert into Notifications values (1, 'De nghi REQUEST Employee cua ban da duoc Approved', GETDATE())
 insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETDATE())
 end
 else select * from [user]";
@@ -190,18 +190,22 @@ else select * from [user]";
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@rid", employeeRole.resourceRole_id);
-                    myCommand.Parameters.AddWithValue("@eid", employeeRole.employee_id);
-                    myCommand.Parameters.AddWithValue("@date_start", employeeRole.Date_start);
-                    myCommand.Parameters.AddWithValue("@date_end", employeeRole.Date_end);
-                    myCommand.Parameters.AddWithValue("@effort", employeeRole.Effort);
-                    myCommand.Parameters.AddWithValue("@bill", employeeRole.Bill_rate);
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@eid", request.employee_id);
+                    myCommand.Parameters.AddWithValue("@date_start", request.Date_start);
+                    myCommand.Parameters.AddWithValue("@date_end", request.Date_end);
+                    myCommand.Parameters.AddWithValue("@effort", request.Effort);
+                    myCommand.Parameters.AddWithValue("@bill", request.Bill_rate);
                     myCommand.Parameters.AddWithValue("@user_id", user_id);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
                     myCon.Close();
                 }
+            }
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult("FAILS");
             }
             return new JsonResult(" Successfully");
         }
@@ -212,7 +216,7 @@ else select * from [user]";
         {
             string query = @"
             update ResourceRequestEmployee set [status] = 'Reject' where ResourcePlannig_RoleId =@rid and Employee_id = @eid
-            insert into Notifications values (12, 'De nghi REQUEST Employee cua ban da bi Reject', GETDATE())
+            insert into Notifications values (1, 'De nghi REQUEST Employee cua ban da bi Reject', GETDATE())
 insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETDATE())";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -239,15 +243,15 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
         }
 
         // REQUEST EMPLOYEE TO ROLE PLANNING (KHAC BU)(Existed and Approved in Project) 
-        [HttpPost("EmpToRole/Noti/{leader_id}")]
+        [HttpPost("EmpToRole/noti/{leader_id}")]
         public JsonResult requestEmployeeToRolePlanning(RequestModel request, int leader_id)
         {
             string query = @"
-            	if not exists(SELECT * FROM [ResourceRequestEmployee]
+            	  if not exists(SELECT * FROM [ResourceRequestEmployee]
                 where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and 
 				(status='In Progress' or status='Approved'))
 			begin 
-			insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE())
+			insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE(), @date_start,@date_end, @effort, @bill)
                 insert into Notifications values (@leader_id, 'LEADER You get notification about request employee....', GETDATE())
 			end
 			else 
@@ -261,16 +265,22 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
-                    myCommand.Parameters.AddWithValue("@eid", request.employee_id);
+                    myCommand.Parameters.AddWithValue("@rid", request?.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@eid", request?.employee_id);
+
+                    myCommand.Parameters.AddWithValue("@date_start", request.Date_start);
+                    myCommand.Parameters.AddWithValue("@date_end", request.Date_end);
+                    myCommand.Parameters.AddWithValue("@effort", request.Effort);
+                    myCommand.Parameters.AddWithValue("@bill", request.Bill_rate);
                     myCommand.Parameters.AddWithValue("@leader_id", leader_id);
+
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
                     myCon.Close();
                 }
             }
-            if(table.Rows.Count > 0)
+            if (table.Rows.Count > 0)
             {
                 return new JsonResult("FAILS");
             }
@@ -278,7 +288,7 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
         }
         // REQUEST truc tiep  EMPLOYEE TO ROLE PLANNING (cung BU)
         [HttpPost("EmpToRoleDirect/Noti/{leader_id}/{user_id}")]
-        public JsonResult requestDirectEmployeeToRolePlanning(EmployeeRolePlaning employeeRole, int user_id, int leader_id)
+        public JsonResult requestDirectEmployeeToRolePlanning(RequestModel request, int user_id, int leader_id)
         {
             string query = @"
                 if not exists(SELECT * FROM Project, ResourcePlanning_Role, [USER], Roles, Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
@@ -290,7 +300,7 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
                 Levels.Level_id = ResourcePlanning_Role.Level_id AND
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
                AND ResourcePlanning_Role.id = @rid and ResourcePlanning_Employee.id = @eid)
-            begin  insert into Emp_RolePlanning values(@rid,@eid,@date_start,@date_end)
+            begin  insert into Emp_RolePlanning values(@rid,@eid,@date_start,@date_end, @effort, @bill)
             insert into Notifications values (@leader_id, 'LEADER You get notification about request employee....', GETDATE())
             insert into Notifications values (@user_id, 'EMPLOYEE You get notification about request employee....', GETDATE())
             end
@@ -305,11 +315,13 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@rid", employeeRole.resourceRole_id);
-                    myCommand.Parameters.AddWithValue("@eid", employeeRole.employee_id);
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@eid", request.employee_id);
 
-                    myCommand.Parameters.AddWithValue("@date_start", employeeRole.Date_start);
-                    myCommand.Parameters.AddWithValue("@date_end", employeeRole.Date_end);
+                    myCommand.Parameters.AddWithValue("@date_start", request.Date_start);
+                    myCommand.Parameters.AddWithValue("@date_end", request.Date_end);
+                    myCommand.Parameters.AddWithValue("@effort", request.Effort);
+                    myCommand.Parameters.AddWithValue("@bill", request.Bill_rate);
                     myCommand.Parameters.AddWithValue("@leader_id", leader_id);
                     myCommand.Parameters.AddWithValue("@user_id", user_id);
                     myReader = myCommand.ExecuteReader();

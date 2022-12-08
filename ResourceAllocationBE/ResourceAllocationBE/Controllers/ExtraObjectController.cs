@@ -175,7 +175,7 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
-        // Lay id theo RLSCode => lay rid 
+        // Lay id theo RLSCode => lay rid  ADMIN
         [HttpGet]
         [Route("api/getPnameByRLS/{code}/{role_id}/{level_id}/{skill_id}")]
         public JsonResult getRoleIdByRLSCode(string role_id, string level_id, string skill_id, string code)
@@ -205,6 +205,42 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@role_id", role_id);
                     myCommand.Parameters.AddWithValue("@level_id", level_id);
                     myCommand.Parameters.AddWithValue("@skill_id", skill_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+
+        // Lay projectName theo RLS => lay rid LEADER
+        [HttpGet]
+        [Route("api/getPnameForLeaderByRLS/{role_id}/{level_id}/{skill_id}/{bu_id}")]
+        public JsonResult GetListPnameForLeaderByRLS(int role_id, int level_id, int skill_id, int bu_id)
+        {
+            string query = @"
+        select * from ResourcePlanning_Role
+        
+        join Project on Project.Project_id = ResourcePlanning_Role.project_id
+        join Skill on Skill.Skill_id = ResourcePlanning_Role.Skill_id
+        join Levels on Levels.Level_id = ResourcePlanning_Role.Level_id
+        join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
+        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id and Depeartment_id=@bu_id";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@role_id", role_id != null ? role_id : "");
+                    myCommand.Parameters.AddWithValue("@level_id", level_id != null ? level_id : "");
+                    myCommand.Parameters.AddWithValue("@skill_id", skill_id != null ? skill_id : "");
+                    myCommand.Parameters.AddWithValue("@bu_id", bu_id != null ? bu_id : "");
+
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

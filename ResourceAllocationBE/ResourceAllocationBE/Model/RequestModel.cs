@@ -11,5 +11,9 @@ namespace ResourceAllocationBE.Model
         public int type { get; set; }
         public int requestTo { get; set; }
         public int employee_id { get; set; }
+        public string Date_start { get; set; }
+        public string Date_end { get; set; }
+        public int Effort { get; set; }
+        public int Bill_rate { get; set; }
     }
 }
