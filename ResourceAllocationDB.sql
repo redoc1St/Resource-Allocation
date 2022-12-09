@@ -178,8 +178,10 @@ Skill_id int foreign key references Skill(Skill_id),
 [Status] nvarchar(50)
 )
 
-insert into ResourcePlanning_Role (Project_id,
-Role_id,Quantity,
+insert into ResourcePlanning_Role (
+Project_id,
+Role_id,
+Quantity,
 Date_start ,
 Date_end ,
 Effort_planned ,
