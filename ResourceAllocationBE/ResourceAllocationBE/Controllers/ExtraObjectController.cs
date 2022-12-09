@@ -154,7 +154,7 @@ namespace ResourceAllocationBE.Controllers
 
         join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
 
-        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id";
+        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id and ResourcePlanning_Role.[status]='Approved'";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -226,7 +226,8 @@ namespace ResourceAllocationBE.Controllers
         join Skill on Skill.Skill_id = ResourcePlanning_Role.Skill_id
         join Levels on Levels.Level_id = ResourcePlanning_Role.Level_id
         join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
-        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id and Depeartment_id=@bu_id";
+        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id and Depeartment_id=@bu_id  
+and ResourcePlanning_Role.[status]='Approved'";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");

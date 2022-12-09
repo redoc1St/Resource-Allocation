@@ -129,33 +129,7 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
-        //PAGING 
-        //[HttpGet("page/{number}")]
-
-        //public JsonResult Paging(int number)
-        //{
-        //    string query = @"
-        //                               select * from
-        //                                dbo.Project order by [Project_id] OFFSET @from Rows fetch next 4 rows only";
-        //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-        //    SqlDataReader myReader;
-        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-        //    {
-        //        myCon.Open();
-        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
-        //        {
-        //            myCommand.Parameters.AddWithValue("@from", (number - 1) * 4);
-        //            myReader = myCommand.ExecuteReader();
-        //            table.Load(myReader);
-        //            myReader.Close();
-        //            myCon.Close();
-
-        //        }
-        //    }
-        //    return new JsonResult(table);
-        //}
-
+        
 
         //INSERT IN TO DB
         [HttpPost]
@@ -259,31 +233,7 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult("Update Successfully");
         }
 
-        //Delete IN DB
-        [HttpDelete("{id}")]
-        public JsonResult deleteProject(string id)
-        {
-            string query = @"
-                    delete from dbo.Project
-                                    where [Code] = @Pid";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@Pid", id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-
-                }
-            }
-            return new JsonResult("Delete Successfully");
-        }
+     
 
 
         //Get Detail PROJECT

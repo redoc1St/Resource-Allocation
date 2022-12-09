@@ -16,23 +16,9 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
         {
             this.resourceAllocationProcessor = resourceAllocationProcessor;
         }
-        public bool getResourcePlanningDetail(ResourcePlanningRole resourcePlanningRole)
-        {
-            if(resourcePlanningRole.Id != 1)
-            {
-                throw new ArgumentException("Wrong id planning role");
-            }
-            return true;
-        }
+    
 
-        public bool viewResourcePoolByRole(string projectName, string roleName)
-        {
-            if (projectName != "projectname1" || roleName!= "tester")
-            {
-                throw new ArgumentException("Cannot define to show resource pool");
-            }
-            return true;
-        }
+    
 
         public bool insertResourcePlanning(ResourcePlanningRole resourcePlanningRole)
         {
@@ -48,14 +34,21 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
             return resourceAllocationProcessor.InsertResourcePlanningRole(resourcePlanningRole);
         }
 
-        public bool updateResourcePlanning(ResourcePlanningRole resourcePlanningRole)
+        public bool updateResourcePlanning(int quantity, int plannedEffort, int bill, string start_date, string end_date)
         {
-            if (resourcePlanningRole.Quantity <= 0)
+            if (quantity <= 0)
             {
                 throw new ArgumentOutOfRangeException("Quantity not equal 0");
             }
-
-            return resourceAllocationProcessor.UpdateResourcePlanningRole(resourcePlanningRole);
+            if (plannedEffort > 100 || bill > 100)
+            {
+                throw new ArgumentOutOfRangeException("%bill or %effort not more than 100%");
+            }
+            if (start_date == "" || end_date == "")
+            {
+                throw new ArgumentNullException("Input not null");
+            }
+            return resourceAllocationProcessor.UpdateResourcePlanningRole(quantity, plannedEffort, bill,start_date,end_date);
         }
 
     }

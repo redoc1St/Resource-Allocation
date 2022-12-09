@@ -5,10 +5,7 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
 {
     public interface IResourcePoolProcessor
     {
-        bool getListResourcePool(string type);
-        bool getListResourcePoolByName(string name);
-        bool getListResourcePoolByRLS(string role, string levels, string skill);
-        bool updateResourcePool(ResourcePlanningEmployee resourcePlanningEmployee);
+        bool updateResourcePool(string start_date, string end_date, int effort, int bill);
         bool insertResourcePool(ResourcePlanningEmployee resourcePlanningEmployee);
     }
 }

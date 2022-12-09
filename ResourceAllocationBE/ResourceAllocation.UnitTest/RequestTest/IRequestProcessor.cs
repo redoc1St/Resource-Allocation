@@ -8,11 +8,7 @@ namespace ResourceAllocation.UnitTest.RequestTest
 {
    public interface IRequestProcessor
     {
-        bool requestToRolePlanning(string rid);
-        bool responseRequestRoleToProject(string rid);
-        bool requestEmployeeToRolePlanning(string rid, string eid);
-        bool approveRequestEmp(string rid, string eid);
-        bool rejectRequestEmp(string rid, string eid);
-        bool requestDirectEmployeeToRolePlanning(string rid, string eid);
+        bool requestEmployeeToRolePlanning(string start_date, string end_date,int effort, int bill);
+        bool requestDirectEmployeeToRolePlanning(string start_date, string end_date, int effort, int bill);
     }
 }

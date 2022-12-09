@@ -15,44 +15,28 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
         {
             this.resourceAllocationProcessor = resourceAllocationProcessor;
         }
-        public bool getListResourcePool(string type)
-        {
-            if(type != "admin")
-            throw new ArgumentException("Cannot see this list");
-            return true;
-        }
-
-        public bool getListResourcePoolByName(string name)
-        {
-            return true;
-        }
-
-        public bool getListResourcePoolByRLS(string role, string levels, string skill)
-        {
-            if (role == "" || levels == "" || skill =="")
-            {
-                throw new ArgumentNullException("Cannot find employee");
-            }
-            return true;
-        }
+       
 
         public bool insertResourcePool(ResourcePlanningEmployee resourcePlanningEmployee)
         {
-            if (resourcePlanningEmployee.Skill_id<=0)
+            if (resourcePlanningEmployee.Level_id<=0 || resourcePlanningEmployee.Role_id==0)
             {
                 throw new ArgumentOutOfRangeException("not positive number");
             }
             return resourceAllocationProcessor.InsertResourcePool(resourcePlanningEmployee);
         }
 
-        public bool updateResourcePool(ResourcePlanningEmployee resourcePlanningEmployee)
+        public bool updateResourcePool(string start_date, string end_date, int effort, int bill)
         {
-            if (resourcePlanningEmployee.Skill_id == 0)
+            if (start_date == "" || end_date == "")
             {
                 throw new ArgumentNullException("Input not null");
             }
-            return resourceAllocationProcessor.UpdateResourcePool(resourcePlanningEmployee);
-
+            if (effort > 100 || bill > 100)
+            {
+                throw new ArgumentOutOfRangeException("%bill or %effort not more than 100%");
+            }
+            return resourceAllocationProcessor.UpdateResourcePool(start_date,end_date,effort,bill);
         }
     }
 }

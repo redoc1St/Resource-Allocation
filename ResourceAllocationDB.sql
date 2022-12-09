@@ -327,6 +327,6 @@ go
 		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
 		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
 		            join Department on Department.Department_id = [user].Department_id
-					left join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
+					join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
 					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
 left join Project on Project.Project_id = ResourcePlanning_Role.project_id

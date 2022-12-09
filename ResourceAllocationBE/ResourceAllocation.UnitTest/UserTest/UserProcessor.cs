@@ -43,17 +43,14 @@ namespace ResourceAllocation.UnitTest.UserTest
 
         public bool getListUser(string type)
         {
-            if (type != "admin")
+            if (type != "admin" && type != "leader")
             {
                 return false;
             }
                 return true;
         }
 
-        public bool serchByName(User user)
-        {
-            return true;
-        }
+        
 
         public bool getUserDetail(User user)
         {
@@ -91,31 +88,29 @@ namespace ResourceAllocation.UnitTest.UserTest
             return true;
         }
 
-        public bool createNewUser(User user, string confirmPass)
+        public bool createNewUser(string username, string fullname, string email, string address, string typeOfUser, string department, string bithDate, string startDate)
         {
-            if(user.Username == "" || user.Email == null)
+            if(username == "" || fullname == "" || startDate == "" || email == "" || address == "" || typeOfUser == "" || department == "" || bithDate == "")
             {
                 throw new ArgumentNullException("Usernameor Email not null");
             }
-            if(user.Username.Length<6)
+            if(username.Length<6)
             {
                 throw new ArgumentOutOfRangeException("User is more than 6 character");
 
             }
-            
-            foreach (var item in userMock.GetUsers())
-            {
-                if (user.Email == item.Email)
+           
+                if (email == "quangdd123@gmail.com")
                 {
                     throw new ArgumentException("Email had existed");
                 }
-            }
             
-            if (!user.Email.Contains("@gmail.com"))
+            
+            if (!email.Contains("@gmail.com"))
             {
                 throw new ArgumentException("Email not right format");
             }
-            return resourceAllocationProcessor.InsertUser(user);
+            return resourceAllocationProcessor.InsertUser(username,fullname,email,address,typeOfUser,department,bithDate,startDate);
         }
 
         public bool updateUser(string fullName, string address)
@@ -123,6 +118,10 @@ namespace ResourceAllocation.UnitTest.UserTest
             if (fullName.Any(char.IsDigit))
             {
                 throw new ArgumentException("Name does not contain number");
+            }
+            if(fullName==""||address=="")
+            {
+                throw new ArgumentException("Input not null");
             }
             return resourceAllocationProcessor.UpdateUser(fullName, address);
         }

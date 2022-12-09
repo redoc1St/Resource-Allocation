@@ -226,6 +226,33 @@ select * from [user]";
             return new JsonResult("Update Successfully");
         }
 
+        //Delete IN DB
+        [HttpDelete("delete")]
+        public JsonResult deleteProject(RequestModel request)
+        {
+            string query = @"
+                    delete from dbo.Emp_RolePlanning
+                                    where [ResourcePlannig_RoleId] = @rid and Employee_id=@eid";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@eid", request.employee_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult("Delete Successfully");
+        }
+
 
     }
 }

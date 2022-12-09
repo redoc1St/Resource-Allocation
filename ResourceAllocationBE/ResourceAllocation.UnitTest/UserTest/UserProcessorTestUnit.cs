@@ -110,7 +110,7 @@ namespace ResourceAllocation.UnitTest.UserTest
 
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.False(userProcessor.getListUser("leader"));
+            Assert.True(userProcessor.getListUser("leader"));
         }
         [Fact]
         public void TestValidTypeToGetListUser()
@@ -120,23 +120,13 @@ namespace ResourceAllocation.UnitTest.UserTest
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
             Assert.True(userProcessor.getListUser("admin"));
         }
-
-
-
-        // TEST SEARCH BY NAME
         [Fact]
-        public void TestEmptyInputSearch()
+        public void TestInValidTypeToGetListUser3()
         {
+
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.True(userProcessor.serchByName(new User { Username=""}));
-        }
-        [Fact]
-        public void TestInputSearchBar()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.True(userProcessor.serchByName(new User { Username = "quang" }));
+            Assert.False(userProcessor.getListUser(""));
         }
 
 
@@ -223,8 +213,57 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => userProcessor.createNewUser(new User {Username="", Email = "", Password = "" }, ""
-                ));
+            Assert.Throws<ArgumentNullException>(() => userProcessor.createNewUser(username: "quangdd1234", fullname: "", email: "quangdd12@gmail.com", address: "Ha Noi"
+                , typeOfUser: "Employee", department: "Bu1", bithDate: "05/05/2000", startDate: "05/05/2022"));
+        }
+        [Fact]
+        public void Test_Invalid_CreateUserNull2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => userProcessor.createNewUser(username: "quangdd1234", fullname: "Do Duc Quang", email: "", address: "Ha Noi"
+                , typeOfUser: "Employee", department: "Bu1", bithDate: "05/05/2000", startDate: "05/05/2022"));
+        }
+        [Fact]
+        public void Test_Invalid_CreateUserNull3()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => userProcessor.createNewUser(username: "quangdd1234", fullname: "Do Duc Quang", email: "quangdd12@gmail.com", address: ""
+                , typeOfUser: "Employee", department: "Bu1", bithDate: "05/05/2000", startDate: "05/05/2022"));
+        }
+        [Fact]
+        public void Test_Invalid_CreateUserNull4()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => userProcessor.createNewUser(username: "quangdd1234", fullname: "Do Duc Quang", email: "quangdd12@gmail.com", address: "Ha Noi"
+                , typeOfUser: "Employee", department: "", bithDate: "05/05/2000", startDate: "05/05/2022"));
+        }
+        [Fact]
+        public void Test_Invalid_CreateUserNull5()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => userProcessor.createNewUser(username: "quangdd1234", fullname: "Do Duc Quang", email: "quangdd12@gmail.com", address: "Ha Noi"
+                , typeOfUser: "Employee", department: "Bu1", bithDate: "", startDate: "05/05/2022"));
+        }
+        [Fact]
+        public void Test_Invalid_CreateUserNull6()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => userProcessor.createNewUser(username: "quangdd1234", fullname: "Do Duc Quang", email: "quangdd12@gmail.com", address: "Ha Noi"
+                , typeOfUser: "", department: "Bu1", bithDate: "05/05/2000", startDate: "05/05/2022"));
+        }
+        [Fact]
+        public void Test_Invalid_CreateUserNull7()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => userProcessor.createNewUser(username: "quangdd1234", fullname: "Do Duc Quang", email: "quangdd12@gmail.com", address: "Ha Noi"
+                , typeOfUser: "Employee", department: "Bu1", bithDate: "05/05/2000", startDate: ""));
+           
         }
         // username < 6
         [Fact]
@@ -232,8 +271,8 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.createNewUser(new User { Username = "abcx", Email = "quangdd12@gmail.com", Password = "quangdd1234" }, "quangdd1234"
-                ));
+            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.createNewUser(username: "abc", fullname: "Do Duc Quang", email: "quangdd12@gmail.com", address: "Ha Noi"
+                , typeOfUser: "Employee", department: "Bu1", bithDate: "05/05/2000", startDate: "05/05/2022"));
         }
         
         // email not right
@@ -242,8 +281,8 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => userProcessor.createNewUser(new User { Username = "quangdd1234", Email = "quangdd12gmailcom", Password = "123@123a" }, "123@123a"
-                ));
+            Assert.Throws<ArgumentException>(() => userProcessor.createNewUser(username:"quangdd1234", fullname: "Do Duc Quang", email: "quangdd12", address: "Ha Noi"
+                , typeOfUser: "Employee", department: "Bu1", bithDate: "05/05/2000", startDate: "05/05/2022"));
         }
         // email has existed
         [Fact]
@@ -251,19 +290,22 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => userProcessor.createNewUser(new User { Username = "quangdd1234", Email = "quangdd123@gmail.com", Password = "123@123a" }, "123@123a"
-                ));
+            Assert.Throws<ArgumentException>(() => userProcessor.createNewUser(username: "quangdd1234", fullname: "Do Duc Quang", email: "quangdd123@gmail.com", address: "Ha Noi"
+                , typeOfUser: "Employee", department: "Bu1", bithDate: "05/05/2000", startDate: "05/05/2022"));
         }
         //true
         [Fact]
         public void Test_Valid_CreateUserReturnTrue()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            resourceAllocationProcessor.Setup(p => p.InsertUser(It.IsAny<User>())).Returns(true);
+            resourceAllocationProcessor.Setup(p => p.InsertUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.True(userProcessor.createNewUser(new User { Username = "quangdd1234", Email = "quangdd1234@gmail.com", Password = "123@123a" }, "123@123a"
-                ));
+            Assert.True(userProcessor.createNewUser(username:"quangdd1234",fullname:"Do Duc Quang",email:"quangdd12@gmail.com",address:"Ha Noi"
+                ,typeOfUser:"Employee",department:"Bu1",bithDate:"05/05/2000",startDate:"05/05/2022"));
         }
+
+
+
         // TEST UPDATE USER INFORMATION
         [Fact]
         public void Test_Valid_UpdateUserReturnTrue()
@@ -275,11 +317,19 @@ namespace ResourceAllocation.UnitTest.UserTest
                 ));
         }
         [Fact]
-        public void Test_InValid_UpdateUserReturnTrue()
+        public void Test_InValid_UpdateUserReturnFail()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
             Assert.Throws<ArgumentException>(() => userProcessor.updateUser("do duc quang232 ", "Ha Noi"
+                ));
+        }
+        [Fact]
+        public void Test_InValid_UpdateUserReturnFail2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentException>(() => userProcessor.updateUser("", "Ha Noi"
                 ));
         }
     }

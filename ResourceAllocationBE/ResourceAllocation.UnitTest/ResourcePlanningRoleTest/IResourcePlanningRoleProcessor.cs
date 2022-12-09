@@ -5,9 +5,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
 {
     public interface IResourcePlanningRoleProcessor
     {
-        bool viewResourcePoolByRole(string projectName, string roleName);
-        bool getResourcePlanningDetail(ResourcePlanningRole resourcePlanningRole);
         bool insertResourcePlanning(ResourcePlanningRole resourcePlanningRole);
-        bool updateResourcePlanning(ResourcePlanningRole resourcePlanningRole);
+        bool updateResourcePlanning(int quantity, int plannedEffort, int bill, string start_date, string end_date);
     }
 }

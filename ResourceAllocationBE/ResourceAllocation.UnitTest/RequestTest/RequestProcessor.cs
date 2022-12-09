@@ -14,58 +14,33 @@ namespace ResourceAllocation.UnitTest.RequestTest
         {
             this.resourceAllocationProcessor = resourceAllocationProcessor;
         }
-        public bool approveRequestEmp(string rid, string eid)
+      
+        public bool requestDirectEmployeeToRolePlanning(string start_date, string end_date, int effort, int bill)
         {
-            if (rid == "" || eid == "")
+            if (start_date == "" || end_date == "")
             {
-                throw new ArgumentNullException("Data not found");
+                throw new ArgumentNullException("Input not null");
             }
-            return true;
+            if(effort > 100 || bill > 100)
+            {
+                throw new ArgumentOutOfRangeException("%bill or %effort not more than 100%");
+            }
+            return resourceAllocationProcessor.InsertRequestEmployeeToRole(start_date, end_date,effort,bill);
         }
 
-        public bool rejectRequestEmp(string rid, string eid)
+        public bool requestEmployeeToRolePlanning(string start_date, string end_date, int effort, int bill)
         {
-            if (rid == "" || eid == "")
+            if (start_date == "" || end_date == "")
             {
-                throw new ArgumentNullException("Data not found");
+                throw new ArgumentNullException("Input not null");
             }
-            return true;
+            if (effort > 100 || bill > 100)
+            {
+                throw new ArgumentOutOfRangeException("%bill or %effort not more than 100%");
+            }
+            return resourceAllocationProcessor.InsertRequestEmployeeToRole(start_date, end_date, effort, bill);
         }
 
-        public bool requestDirectEmployeeToRolePlanning(string rid, string eid)
-        {
-            if (rid == "" || eid == "")
-            {
-                throw new ArgumentNullException("Data not found");
-            }
-            return resourceAllocationProcessor.InsertRequestEmployeeToRole(rid, eid);
-        }
-
-        public bool requestEmployeeToRolePlanning(string rid, string eid)
-        {
-            if (rid == "" || eid =="")
-            {
-                throw new ArgumentNullException("Data not found");
-            }
-            return resourceAllocationProcessor.InsertRequestEmployeeToRole(rid,eid);
-        }
-
-        public bool requestToRolePlanning(string rid)
-        {
-            if (rid == "")
-            {
-                throw new ArgumentNullException("Data not found");
-            }
-            return resourceAllocationProcessor.InsertRequestRole(rid);
-        }
-
-        public bool responseRequestRoleToProject(string rid)
-        {
-            if (rid == "")
-            {
-                throw new ArgumentNullException("Data not found");
-            }
-            return true;
-        }
+     
     }
 }

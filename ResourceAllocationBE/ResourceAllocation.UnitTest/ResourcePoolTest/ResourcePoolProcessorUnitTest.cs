@@ -8,60 +8,6 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
     public class ResourcePoolProcessorUnitTest
     {
 
-        [Fact]
-        public void TestInValidTypeToGetListResourcePool()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => resourcePoolProcessor.getListResourcePool("employee"));
-        }
-        [Fact]
-        public void TestInValidTypeToGetResourcePool()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => resourcePoolProcessor.getListResourcePool("leader"));
-        }
-        [Fact]
-        public void TestValidTypeToGetListResourcePool()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.True(resourcePoolProcessor.getListResourcePool("admin"));
-        }
-
-        // GET LIST BY NAME
-        [Fact]
-        public void TestValidNameToGetListResourceEmployee()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.True(resourcePoolProcessor.getListResourcePoolByName("quang"));
-        }
-        // GET LIST EMPLOYEE BY ROLE, LEVEL, SKILL
-        [Fact]
-        public void TestInValidNullToGetListResourceEmployee2()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => resourcePoolProcessor.getListResourcePoolByRLS("","",""));
-        }
-        [Fact]
-        public void TestInValidNullToGetListResourceEmployee()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => resourcePoolProcessor.getListResourcePoolByRLS("", "fresher", ".NET"));
-        }
-        [Fact]
-        public void TestValidRLSToGetListResourceEmployee()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.True(resourcePoolProcessor.getListResourcePoolByRLS("ba", "fresher", ".NET"));
-        }
-
-
         // test update
         // check lại
         // null
@@ -70,24 +16,67 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => resourcePoolProcessor.updateResourcePool(new ResourcePlanningEmployee
-            {
-             
-                
-            }));
+            Assert.Throws<ArgumentNullException>(() => resourcePoolProcessor.updateResourcePool(
+             start_date:"",
+             end_date: "06/06/2022",
+             effort:50,
+             bill:50
+
+            ));
+        }
+        [Fact]
+        public void TestInvalidUpdateResourceEmployeeInputNull2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => resourcePoolProcessor.updateResourcePool(
+             start_date: "05/05/2022",
+             end_date: "",
+             effort: 50,
+             bill: 50
+
+            ));
+        }
+        [Fact]
+        public void TestInvalidUpdateResourceEmployeeInputNull3()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => resourcePoolProcessor.updateResourcePool(
+             start_date: "05/05/2022",
+             end_date: "06/06/2022",
+             effort: 250,
+             bill: 50
+
+            ));
+        }
+        [Fact]
+        public void TestInvalidUpdateResourceEmployeeInputNull4()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => resourcePoolProcessor.updateResourcePool(
+             start_date: "05/05/2022",
+             end_date: "06/06/2022",
+             effort: 50,
+             bill: 250
+
+            ));
         }
         // true
         [Fact]
         public void TestValidUpdateResourceEmployee()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            resourceAllocationProcessor.Setup(p => p.UpdateResourcePool(It.IsAny<ResourcePlanningEmployee>())).Returns(true);
-
+            resourceAllocationProcessor.Setup(p => p.UpdateResourcePool(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(true);
             var projectProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
-            Assert.True(projectProcessor.updateResourcePool(new ResourcePlanningEmployee
-            {
-                
-            }));
+            Assert.True(projectProcessor.updateResourcePool(
+            
+                start_date : "05/05/2022",
+                end_date : "06/06/2022",
+                effort:50,
+                bill:50
+            ));
         }
 
 
@@ -117,8 +106,8 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
             Assert.Throws<ArgumentOutOfRangeException>(() => resourcePoolProcessor.insertResourcePool(new ResourcePlanningEmployee
             {
                 Employee_id = 1,
-                Role_id = 1,
-                Level_id = 1,
+                Role_id = 0,
+                Level_id = 0,
                 Skill_id = 1,
             }));
         }

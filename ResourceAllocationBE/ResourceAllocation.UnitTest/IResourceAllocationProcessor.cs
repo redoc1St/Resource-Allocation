@@ -6,7 +6,7 @@ namespace ResourceAllocation.UnitTest
     public interface IResourceAllocationProcessor
     {
         // User
-        bool InsertUser(User user);
+        bool InsertUser(string username, string fullname, string email, string address, string typeOfUser, string department, string bithDate, string startDate);
         bool UpdateUser(string fullname, string address);
 
         // Project
@@ -15,15 +15,15 @@ namespace ResourceAllocation.UnitTest
 
         // ResourcePlanningRole
         bool InsertResourcePlanningRole(ResourcePlanningRole resourcePlanningRole);
-        bool UpdateResourcePlanningRole(ResourcePlanningRole resourcePlanningRole);
+        bool UpdateResourcePlanningRole(int quantity, int plannedEffort, int bill, string start_date, string end_date);
 
         // ResourcePool
         bool InsertResourcePool(ResourcePlanningEmployee resourcePlanningEmployee);
-        bool UpdateResourcePool(ResourcePlanningEmployee resourcePlanningEmployee);
+        bool UpdateResourcePool(string start_date, string end_date, int effort, int bill);
 
         // Request
         bool InsertRequestRole(string rid);
-        bool InsertRequestEmployeeToRole(string rid, string eid);
-
+        bool InsertRequestEmployeeToRole(string start_date, string end_date, int effort, int bill);
+        bool UpdateResourcePool(RequestModel request);
     }
 }

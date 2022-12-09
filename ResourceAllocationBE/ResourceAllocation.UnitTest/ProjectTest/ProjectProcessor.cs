@@ -45,11 +45,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             return resourceAllocationProcessor.InsertProject(project);
         }
 
-        public bool searchProjectByName(Project project)
-        {
-           
-            return true;
-        }
+   
 
         public bool updateProject(Project project)
         {

@@ -7,50 +7,15 @@ namespace ResourceAllocation.UnitTest.RequestTest
 {
     public class RequestProcessorUnitTest 
     {
-        //REQUEST TO ROLE PLANNING
-        [Fact]
-        public void TestValidResourceRoleIdToRequests()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            resourceAllocationProcessor.Setup(p => p.InsertRequestRole(It.IsAny<string>())).Returns(true);
-            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.True(requestProcessor.requestToRolePlanning("1"));
-        }
-
-        [Fact]
-        public void TestEmptyResourceRoleIdToRequests()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => requestProcessor.requestToRolePlanning(""));
-        }
-
-
-        // RESPONSE ROLE TO PROJECT
-        [Fact]
-        public void TestValidResponseResourceRoleIdToRequests()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.True(requestProcessor.responseRequestRoleToProject("1"));
-        }
-
-        [Fact]
-        public void TestEmptyResponseResourceRoleIdToRequests()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => requestProcessor.responseRequestRoleToProject(""));
-        }
-
+       
         //REQUEST INDIRECT EMPLOYEE TO ROLE PLANNING
         [Fact]
         public void TestValidResourceIndirectEmployeeToRoleRequests()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            resourceAllocationProcessor.Setup(p => p.InsertRequestEmployeeToRole(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            resourceAllocationProcessor.Setup(p => p.InsertRequestEmployeeToRole(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(true);
             var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.True(requestProcessor.requestEmployeeToRolePlanning("2","2"));
+            Assert.True(requestProcessor.requestEmployeeToRolePlanning("05/05/2022", "05/06/2022",50,50));
         }
 
         [Fact]
@@ -58,59 +23,71 @@ namespace ResourceAllocation.UnitTest.RequestTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => requestProcessor.requestEmployeeToRolePlanning("",""));
+            Assert.Throws<ArgumentNullException>(() => requestProcessor.requestEmployeeToRolePlanning("", "05/06/2022", 50, 50));
         }
+        [Fact]
+        public void TestEmptyResourceIndirectEmployeeToROleRequest2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => requestProcessor.requestEmployeeToRolePlanning("05/05/2022", "", 50, 50));
+        }
+        [Fact]
+        public void TestEmptyResourceIndirectEmployeeToROleRequest3()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => requestProcessor.requestEmployeeToRolePlanning("05/05/2022", "05/06/2022", 150, 50));
+        }
+        [Fact]
+        public void TestEmptyResourceIndirectEmployeeToROleRequest4()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => requestProcessor.requestEmployeeToRolePlanning("05/05/2022", "05/06/2022", 50, 250));
+        }
+
+
 
         //REQUEST DIRECT EMPLOYEE TO ROLE PLANNING
         [Fact]
         public void TestValidResourceDirectEmployeeToRoleRequests()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            resourceAllocationProcessor.Setup(p => p.InsertRequestEmployeeToRole(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            resourceAllocationProcessor.Setup(p => p.InsertRequestEmployeeToRole(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(true);
             var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.True(requestProcessor.requestDirectEmployeeToRolePlanning("2", "2"));
+            Assert.True(requestProcessor.requestDirectEmployeeToRolePlanning("05/05/2022", "05/06/2022", 50, 50));
         }
 
+        [Fact]
+        public void TestEmptyResourceDirectEmployeeToROleRequest2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => requestProcessor.requestDirectEmployeeToRolePlanning("", "05/06/2022", 50, 50));
+        }
+        [Fact]
+        public void TestEmptyResourceDirectEmployeeToROleRequest3()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => requestProcessor.requestDirectEmployeeToRolePlanning("05/05/2022", "", 50, 50));
+        }
+        [Fact]
+        public void TestEmptyResourceDirectEmployeeToROleRequest4()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => requestProcessor.requestDirectEmployeeToRolePlanning("05/05/2022", "05/06/2022", 50, 250));
+        }
         [Fact]
         public void TestEmptyResourceDirectEmployeeToROleRequest()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => requestProcessor.requestDirectEmployeeToRolePlanning("", ""));
+            Assert.Throws<ArgumentOutOfRangeException>(() => requestProcessor.requestDirectEmployeeToRolePlanning("05/05/2022", "05/06/2022", 250, 50));
         }
 
-        //Response Approved EMPLOYEE TO ROLE PLANNING
-        [Fact]
-        public void TestValidApprovedEmployeeToRoleRequests()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.True(requestProcessor.approveRequestEmp("2", "2"));
-        }
-
-        [Fact]
-        public void TestEmptyApprovedEmployeeToROleRequest()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => requestProcessor.approveRequestEmp("", ""));
-        }
-
-        //Response Rejected EMPLOYEE TO ROLE PLANNING
-        [Fact]
-        public void TestValidRejectedEmployeeToRoleRequests()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.True(requestProcessor.rejectRequestEmp("2", "2"));
-        }
-
-        [Fact]
-        public void TestEmptyRejectedEmployeeToROleRequest()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => requestProcessor.rejectRequestEmp("", ""));
-        }
+        
     }
 }
