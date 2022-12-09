@@ -191,22 +191,22 @@ Skill_id ,
 ,100,'',100,5,2,'Waiting')
 
 insert into ResourcePlanning_Role values(1,4,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,3,'Waiting')
+,100,'',100,5,3,'Approved')
 insert into ResourcePlanning_Role values(1,5,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,2,'Waiting')
+,100,'',100,5,2,'Approved')
 insert into ResourcePlanning_Role values(1,6,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,1,'Waiting')
+,100,'',100,5,1,'Approved')
 
 insert into ResourcePlanning_Role values(2,3,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,4,'Waiting')
+,100,'',100,5,4,'Approved')
 insert into ResourcePlanning_Role values(2,4,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,5,'Waiting')
+,100,'',100,5,5,'Approved')
 insert into ResourcePlanning_Role values(2,5,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,4,'Waiting')
+,100,'',100,5,4,'Approved')
 insert into ResourcePlanning_Role values(2,6,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,3,'Waiting')
+,100,'',100,5,3,'Approved')
 insert into ResourcePlanning_Role values(1,3,1,GETDATE(), GETDATE()
-,100,'',100,5,3,'Waiting')
+,100,'',100,5,3,'Approved')
 
 
 --ResourcePlanning_Employee
@@ -217,46 +217,51 @@ Role_id int foreign key references Roles(Role_id),
 Level_id int foreign key references Levels(Level_id),
 Skill_id int foreign key references Skill(Skill_id)
 )
+--1
+insert into ResourcePlanning_Employee values(3,3,2,1)
+insert into ResourcePlanning_Employee values(3,4,1,2)
+insert into ResourcePlanning_Employee values(4,3,3,3)
+insert into ResourcePlanning_Employee values(4,4,4,4)
+insert into ResourcePlanning_Employee values(5,5,4,5)
+insert into ResourcePlanning_Employee values(5,1,4,4)
+insert into ResourcePlanning_Employee values(6,6,3,3)
+--2
+insert into ResourcePlanning_Employee values(8,4,5,3)
+insert into ResourcePlanning_Employee values(8,5,4,3)
+insert into ResourcePlanning_Employee values(9,6,4,4)
+insert into ResourcePlanning_Employee values(10,4,3,2)
+insert into ResourcePlanning_Employee values(11,5,5,4)
+insert into ResourcePlanning_Employee values(11,6,5,3)
+--3
+insert into ResourcePlanning_Employee values(14,5,3,5)					
+insert into ResourcePlanning_Employee values(14,3,2,2)					
+insert into ResourcePlanning_Employee values(15,2,4,4)					
+insert into ResourcePlanning_Employee values(15,1,4,2)					
+insert into ResourcePlanning_Employee values(16,4,2,1)					
+insert into ResourcePlanning_Employee values(16,5,1,5)					
+insert into ResourcePlanning_Employee values(17,4,1,2)					
+insert into ResourcePlanning_Employee values(17,6,4,3)					
+--4
+insert into ResourcePlanning_Employee values(20,5,3,5)					
+insert into ResourcePlanning_Employee values(20,4,3,1)					
+insert into ResourcePlanning_Employee values(21,1,4,4)					
+insert into ResourcePlanning_Employee values(21,3,3,3)					
+insert into ResourcePlanning_Employee values(22,3,2,1)					
+insert into ResourcePlanning_Employee values(22,5,2,5)					
+insert into ResourcePlanning_Employee values(23,4,3,2)					
+insert into ResourcePlanning_Employee values(23,6,4,3)					
+insert into ResourcePlanning_Employee values(24,2,4,5)		
+--5
+insert into ResourcePlanning_Employee values(25,3,1,2)					
+insert into ResourcePlanning_Employee values(25,4,3,1)					
+insert into ResourcePlanning_Employee values(27,5,4,5)					
+insert into ResourcePlanning_Employee values(27,3,3,3)					
+insert into ResourcePlanning_Employee values(28,4,3,3)					
+insert into ResourcePlanning_Employee values(28,4,2,1)					
+insert into ResourcePlanning_Employee values(29,3,3,3)					
+insert into ResourcePlanning_Employee values(29,6,5,5)					
 
-insert into ResourcePlanning_Employee values(
-3,3,2,1
-)
-insert into ResourcePlanning_Employee values(
-3,4,1,2
-)
-insert into ResourcePlanning_Employee values(
-4,3,3,3
-)
-insert into ResourcePlanning_Employee values(
-4,4,4,4
-)
-insert into ResourcePlanning_Employee values(
-5,5,5,5
-)
-insert into ResourcePlanning_Employee values(
-6,1,3,3
-)
-insert into ResourcePlanning_Employee values(
-7,3,4,2
-)
-insert into ResourcePlanning_Employee values(
-8,4,5,3
-)
-insert into ResourcePlanning_Employee values(
-8,5,4,3
-)
-insert into ResourcePlanning_Employee values(
-9,6,4,4
-)
-insert into ResourcePlanning_Employee values(
-10,4,3,2
-)
-insert into ResourcePlanning_Employee values(
-11,5,5,4
-)
-insert into ResourcePlanning_Employee values(
-11,6,5,3
-)
+
 
 
 -- mix EMP_PLANNING_ROLE
@@ -269,13 +274,13 @@ Date_end date,
 Effort int, 
 Bill_rate int
 )
-insert into Emp_RolePlanning values(1,1,'2022/06/01','2022/06/11',50,50)
-insert into Emp_RolePlanning values(2,1,'2022/06/03','2022/06/12',30,30)
-insert into Emp_RolePlanning values(1,2,'2022/06/04','2022/06/13',20,40)
-insert into Emp_RolePlanning values(5,2,'2022/06/05','2022/06/14',20,50)
-insert into Emp_RolePlanning values(2,2,'2022/06/06','2022/06/15',10,30)
-insert into Emp_RolePlanning values(3,1,'2022/06/07','2022/06/16',20,10)
-insert into Emp_RolePlanning values(4,1,'2022/06/08','2022/06/17',30,20)
+--insert into Emp_RolePlanning values(1,1,'2022/06/01','2022/06/11',50,50)
+--insert into Emp_RolePlanning values(2,1,'2022/06/03','2022/06/12',30,30)
+--insert into Emp_RolePlanning values(1,2,'2022/06/04','2022/06/13',20,40)
+--insert into Emp_RolePlanning values(5,2,'2022/06/05','2022/06/14',20,50)
+--insert into Emp_RolePlanning values(2,2,'2022/06/06','2022/06/15',10,30)
+--insert into Emp_RolePlanning values(3,1,'2022/06/07','2022/06/16',20,10)
+--insert into Emp_RolePlanning values(4,1,'2022/06/08','2022/06/17',30,20)
 
 --ResourceRequestRole
 create table ResourceRequestRole(
