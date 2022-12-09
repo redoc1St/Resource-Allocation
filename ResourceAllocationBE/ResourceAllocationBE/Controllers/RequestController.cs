@@ -30,6 +30,7 @@ namespace ResourceAllocationBE.Controllers
             insert into ResourceRequestRole values(@rid,2,'',GETDATE())
             update ResourcePlanning_Role set [Status] = 'In Progress' where id = @rid
             insert into Notifications values (@id, 'LEADER You get notification about request in '+@pname+'', GETDATE())
+            insert into Notifications values (1, 'ADMIN You get notification about request in '+@pname+'', GETDATE())
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -179,8 +180,8 @@ namespace ResourceAllocationBE.Controllers
 			begin	
             insert into Emp_RolePlanning values(@rid,@eid, @date_start,@date_end, @effort, @bill)
             update ResourceRequestEmployee set [status] = 'Approved' where ResourcePlannig_RoleId =@rid and Employee_id = @eid
-            insert into Notifications values (1, 'ADMIN De nghi REQUEST Employee cua ban da duoc Approved', GETDATE())
-insert into Notifications values (@user_id, 'EMPLOYEE Ban da duoc approved vao ...', GETDATE())
+            insert into Notifications values (1, 'ADMIN De nghi REQUEST ten to project cua ban da duoc Approved', GETDATE())
+insert into Notifications values (@user_id, 'EMPLOYEE Ban da duoc approved vao PROJECT ', GETDATE())
 end
 else select * from [user]";
 
@@ -254,6 +255,7 @@ else select * from [user]";
 			begin 
 			insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE(), @date_start,@date_end, @effort, @bill)
                 insert into Notifications values (@leader_id, 'LEADER You get notification about request ten to project', GETDATE())
+insert into Notifications values (1, 'ADMIN You get notification about request ten to project', GETDATE())
 			end
 			else 
 			select * from [user]
@@ -302,6 +304,7 @@ else select * from [user]";
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
                AND ResourcePlanning_Role.id = @rid and ResourcePlanning_Employee.id = @eid)
             begin  insert into Emp_RolePlanning values(@rid,@eid,@date_start,@date_end, @effort, @bill)
+            insert into Notifications values (1, 'ADMIN You get notification about request ten to project....', GETDATE())
             insert into Notifications values (@leader_id, 'LEADER You get notification about request ten to project....', GETDATE())
             insert into Notifications values (@user_id, 'EMPLOYEE You are request to project.', GETDATE())
             end
