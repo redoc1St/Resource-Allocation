@@ -76,6 +76,8 @@ export default function Profile() {
       setError("Confirm password does not match ");
     } else {
       if (user?.Password != values.curPass) {
+        setTypeMessage("error");
+
         setError("Current password incorrect ");
       } else {
         try {
@@ -122,11 +124,12 @@ export default function Profile() {
                   {passwordVisible ?
 
                       <input
+                      required
                         {...register("curPass")}
                         className="form-control"
                         type="password"
                         placeholder="••••••"
-                      /> : <input
+                      /> : <input required
                         {...register("curPass")}
                         className="form-control"
                         type="text"
@@ -153,6 +156,7 @@ export default function Profile() {
                   <div style={{ display: "flex" }}>
                      
                       <input
+                       required
                         {...register("newPass", {
                           required: true,
                           minLength: 6,

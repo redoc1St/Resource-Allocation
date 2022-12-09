@@ -33,7 +33,7 @@ export default function Request(record) {
     dispatch(getLeaderByBU(record.record.record.Depeartment_id));
   }, [pName]);
   // console.log(leader.Username);  //23-11
-  // console.log(record.record.record.Depeartment_id);
+  // console.log(record.record.record.ProjectName);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -69,7 +69,7 @@ export default function Request(record) {
       const res = await request({
         url:
           process.env.REACT_APP_BASE_URL +
-          `/api/Request/RolePlanning/Noti/${leader.User_id}`,
+          `/api/Request/RolePlanning/Noti/${leader.User_id}/${record.record.record.ProjectName}`,
         method: "POST",
         data: {
           resourceRole_id: record.record.record.id,

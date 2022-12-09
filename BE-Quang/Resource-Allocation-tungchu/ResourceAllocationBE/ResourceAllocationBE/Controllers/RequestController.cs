@@ -23,13 +23,14 @@ namespace ResourceAllocationBE.Controllers
         }
 
         // Request to ResourceRole Planning (Existed in Project)
-        [HttpPost("RolePlanning/Noti/{user_id}")]
-        public JsonResult requestToRolePlanning(RequestModel request, int user_id)
+        [HttpPost("RolePlanning/Noti/{user_id}/{pname}")]
+        public JsonResult requestToRolePlanning(RequestModel request, int user_id, string pname)
         {
             string query = @"
             insert into ResourceRequestRole values(@rid,2,'',GETDATE())
             update ResourcePlanning_Role set [Status] = 'In Progress' where id = @rid
-            insert into Notifications values (@id, 'You get notification abour  request....', GETDATE())
+            insert into Notifications values (@id, 'LEADER You get notification about request in '+@pname+'', GETDATE())
+            insert into Notifications values (1, 'ADMIN You get notification about request in '+@pname+'', GETDATE())
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
@@ -41,6 +42,7 @@ namespace ResourceAllocationBE.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
                     myCommand.Parameters.AddWithValue("@id", user_id);
+                    myCommand.Parameters.AddWithValue("@pname", pname);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -129,12 +131,12 @@ namespace ResourceAllocationBE.Controllers
 
 
         // APPROVED AND REJECT  ROLE TO PROJECT 
-        [HttpPost("RolePlanning/{status}")]
-        public JsonResult responseRequestRoleToProject(RequestModel request, string status)
+        [HttpPost("RolePlanning/{status}/{pname}")]
+        public JsonResult responseRequestRoleToProject(RequestModel request, string status, string pname)
         {
             string query = @"
             update ResourcePlanning_Role set [status] = @status where id =@rid
-            insert into Notifications values (1, 'De nghi Role cua ban da duoc @status', GETDATE())
+            insert into Notifications values (1, 'ADMIN The request role in '+@pname+' is '+@status+'', GETDATE())
             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
@@ -146,6 +148,7 @@ namespace ResourceAllocationBE.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
                     myCommand.Parameters.AddWithValue("@status", status);
+                    myCommand.Parameters.AddWithValue("@pname", pname);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -214,18 +217,18 @@ namespace ResourceAllocationBE.Controllers
         //}
 
         //APPROVED REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
-        [HttpPost("EmpToRole/Approved/Noti/{user_id}")]
-        public JsonResult approveRequestEmp(RequestModel request, int user_id)
+       [HttpPost("EmpToRole/Approved/Noti/{user_id}/{name}/{pname}")]
+        public JsonResult approveRequestEmp(RequestModel request, int user_id,string name, string pname)
         {
             string query = @"
- if not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =@rid and Employee_id = @eid)
+             if not exists (select * from Emp_RolePlanning where ResourcePlannig_RoleId =@rid and Employee_id = @eid)
 			begin	
             insert into Emp_RolePlanning values(@rid,@eid, @date_start,@date_end, @effort, @bill)
             update ResourceRequestEmployee set [status] = 'Approved' where ResourcePlannig_RoleId =@rid and Employee_id = @eid
-            insert into Notifications values (1, 'De nghi REQUEST Employee cua ban da duoc Approved', GETDATE())
-insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETDATE())
-end
-else select * from [user]";
+            insert into Notifications values (1, 'ADMIN The REQUEST '+@name+' to '+@pname+' has been Approved', GETDATE())
+            insert into Notifications values (@user_id, 'EMPLOYEE  You are approved to '+@pname+' ', GETDATE())
+            end
+            else select * from [user]";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
@@ -242,6 +245,8 @@ else select * from [user]";
                     myCommand.Parameters.AddWithValue("@effort", request.Effort);
                     myCommand.Parameters.AddWithValue("@bill", request.Bill_rate);
                     myCommand.Parameters.AddWithValue("@user_id", user_id);
+                    myCommand.Parameters.AddWithValue("@name", name);
+                    myCommand.Parameters.AddWithValue("@pname", pname);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -255,15 +260,12 @@ else select * from [user]";
             return new JsonResult(" Successfully");
         }
         //REJECT REQUEST EMPLOYEE -> insert vao emprole, update status o bang requestEmp
-        [HttpPost("EmpToRole/Reject/Noti/{user_id}")]
-        public JsonResult rejectRequestEmp(RequestModel request, int user_id)
+        [HttpPost("EmpToRole/Reject/Noti/{user_id}/{name}/{pname}")]
+        public JsonResult rejectRequestEmp(RequestModel request, int user_id, string name, string pname)
         {
             string query = @"
             update ResourceRequestEmployee set [status] = 'Reject' where ResourcePlannig_RoleId =@rid and Employee_id = @eid
-            insert into Notifications values (1, 'De nghi Employee cua ban da duoc Reject', GETDATE())
-insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...', GETDATE())";
-
-            
+            insert into Notifications values (1, 'ADMIN The request '+@name+' in '+@pname+' has been Rejected', GETDATE())";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
@@ -275,12 +277,17 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
                     myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
                     myCommand.Parameters.AddWithValue("@eid", request.employee_id);
                     myCommand.Parameters.AddWithValue("@user_id", user_id);
-
+                    myCommand.Parameters.AddWithValue("@name", name);
+                    myCommand.Parameters.AddWithValue("@pname", pname);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
                     myCon.Close();
                 }
+            }
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult("FAILS");
             }
             return new JsonResult(" Successfully");
         }
@@ -288,8 +295,8 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
         // REQUEST EMPLOYEE TO ROLE PLANNING (KHAC BU)(Existed and Approved in Project)
         // insert into Notifications values (@id, 'You get notification about request employee....', GETDATE())
 
-        [HttpPost("EmpToRole/noti/{leader_id}")]
-        public JsonResult requestEmployeeToRolePlanning(RequestModel request,int leader_id)
+        [HttpPost("EmpToRole/noti/{leader_id}/{name}/{pname}")]
+        public JsonResult requestEmployeeToRolePlanning(RequestModel request, int leader_id, string name, string pname)
         {
             string query = @"
             	  if not exists(SELECT * FROM [ResourceRequestEmployee]
@@ -297,7 +304,8 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
 				(status='In Progress' or status='Approved'))
 			begin 
 			insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE(), @date_start,@date_end, @effort, @bill)
-                insert into Notifications values (@leader_id, 'LEADER You get notification about request employee....', GETDATE())
+                insert into Notifications values (@leader_id, 'LEADER You get notification about request '+@name+' in '+@pname+'', GETDATE())
+insert into Notifications values (1, 'ADMIN You get notification about request '+@name+' in '+@pname+'', GETDATE())
 			end
 			else 
 			select * from [user]
@@ -318,6 +326,8 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
                     myCommand.Parameters.AddWithValue("@effort", request.Effort);
                     myCommand.Parameters.AddWithValue("@bill", request.Bill_rate);
                     myCommand.Parameters.AddWithValue("@leader_id", leader_id);
+                    myCommand.Parameters.AddWithValue("@name", name);
+                    myCommand.Parameters.AddWithValue("@pname", pname);
 
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -332,8 +342,8 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
             return new JsonResult("Added Successfully");
         }
         // REQUEST truc tiep  EMPLOYEE TO ROLE PLANNING (cung BU)
-        [HttpPost("EmpToRoleDirect/Noti/{leader_id}/{user_id}")]
-        public JsonResult requestDirectEmployeeToRolePlanning(RequestModel request, int user_id, int leader_id)
+        [HttpPost("EmpToRoleDirect/Noti/{leader_id}/{user_id}/{name}/{pname}")]
+        public JsonResult requestDirectEmployeeToRolePlanning(RequestModel request, int user_id, int leader_id, string name, string pname)
         {
             string query = @"
                 if not exists(SELECT * FROM Project, ResourcePlanning_Role, [USER], Roles, Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
@@ -346,8 +356,9 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
                AND ResourcePlanning_Role.id = @rid and ResourcePlanning_Employee.id = @eid)
             begin  insert into Emp_RolePlanning values(@rid,@eid,@date_start,@date_end, @effort, @bill)
-            insert into Notifications values (@leader_id, 'LEADER You get notification about request employee....', GETDATE())
-            insert into Notifications values (@user_id, 'EMPLOYEE You get notification about request employee....', GETDATE())
+            insert into Notifications values (1, 'ADMIN You get notification about request '+@name+' in '+@pname+'', GETDATE())
+            insert into Notifications values (@leader_id, 'LEADER You get notification about request '+@name+' in '+@pname+'', GETDATE())
+            insert into Notifications values (@user_id, 'EMPLOYEE You are request to '+@pname+'.', GETDATE())
             end
                 else
 				select * from [user]
@@ -369,6 +380,8 @@ insert into Notifications values (@user_id, 'Ban khong duoc chap nhan vao  ...',
                     myCommand.Parameters.AddWithValue("@bill", request.Bill_rate);
                     myCommand.Parameters.AddWithValue("@leader_id", leader_id);
                     myCommand.Parameters.AddWithValue("@user_id", user_id);
+                    myCommand.Parameters.AddWithValue("@name", name);
+                    myCommand.Parameters.AddWithValue("@pname", pname);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

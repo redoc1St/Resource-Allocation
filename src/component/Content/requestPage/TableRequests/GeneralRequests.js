@@ -116,24 +116,25 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
   ];
   let countReqs = 0;
 
-  const handleAcpt = (id) => {
+  const handleAcpt = (id,pName) => {
     return (
       <>
-        {console.log(id)}
+        {console.log(id,pName)}
         <div style={{ textAlign: "center" }}>
           <HowToRegRoundedIcon
-            onClick={() => handleAccept({ status: "Approved", id: id })}
+            onClick={() => handleAccept({ status: "Approved", id: id,pName:pName })}
             style={{ color: "green", cursor: "pointer" }}
           />
 
           <CancelRoundedIcon
-            onClick={() => handleAccept({ status: "Reject", id: id })}
+            onClick={() => handleAccept({ status: "Reject", id: id,pName:pName })}
             style={{ marginLeft: "10px", color: "red", cursor: "pointer" }}
           />
         </div>
       </>
     );
   };
+
   const handleAccept = async (value) => {
     console.log(value);
     // if (value === "accepted") {
@@ -146,7 +147,7 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
       const res = await request({
         url:
           process.env.REACT_APP_BASE_URL +
-          `/api/Request/RolePlanning/${value.status}`,
+          `/api/Request/RolePlanning/${value.status}/${value.pName}`,
         method: "POST",
         data: { resourceRole_id: value.id },
       });
@@ -179,7 +180,7 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
           // item.Status
         // : item.Status === "In Progress"
         ?
-         handleAcpt(item.id)
+         handleAcpt(item.id,item.ProjectName)
         : item.Status,
     
         // Status:

@@ -132,7 +132,7 @@ export default function TableResourcePlanning(data) {
             item?.Status?.props?.children === "Approved" ? (
               <Link
                 to={{ pathname: `/resourcePool/${pName}/${item.Role_id}/${item.Level_id}/${ item.Skill_id}` }}
-                state={[item.Role_id, item.Level_id, item.Skill_id,pName,data.bu, item.id]}
+                state={[item.Role_id, item.Level_id, item.Skill_id,pName,data.bu, item.id,item.ProjectName]}
               >
                 <PersonAddIcon />
               </Link>

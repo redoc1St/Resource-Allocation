@@ -33,7 +33,7 @@ namespace ResourceAllocationBE.Controllers
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
 
-                SqlDataAdapter da = new SqlDataAdapter("select * from [User] where email = '" + user.Email + "' and Password = '" + user.Password + "'", myCon);
+                SqlDataAdapter da = new SqlDataAdapter("select * from [User] where email = '" + user.Email + "' and Password = '" + user.Password + "' and isActive=1", myCon);
                 myCon.Open();
                 da.Fill(table);
                 if (table.Rows.Count > 0)

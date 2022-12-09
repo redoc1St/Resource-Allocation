@@ -23,7 +23,7 @@ export default function DotAction(record) {
   const { user } = useAuth();
 // console.log(record);
   // const PNames = useSelector((state) => state.ExtraObject.pName);
-  console.log(record.record.ProjectName);
+  console.log(record.record);
   // useEffect(() => {
   //   dispatch(getPNameByRLS(record?.record?.Role_id, record?.record?.level_id, record?.record?.skill_id));
   // }, []);

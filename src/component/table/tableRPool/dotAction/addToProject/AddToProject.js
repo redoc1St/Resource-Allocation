@@ -29,22 +29,24 @@ export default function AddToProject(type) {
   const IdPLanningRole = useSelector((state) => state.ExtraObject.id);
   const leader = useSelector((state) => state.ExtraObject.leader);
   const [codeProject, setCodeProject] = useState("");
+  const [pNamePrj, setPNamePrj] = useState("");
+
   const [buId, setbuId] = useState("");
   const { user } = useAuth();
-
-  // console.log(type?.record);
+  
+  console.log(type?.record);
   // useEffect(()={
 
   // },[codeProject])
 
   useEffect(() => {
-    console.log(type?.record.Role_id);
-    console.log(type?.record.level_id);
-    console.log(type?.record.skill_id);
+    // console.log(type?.record.Role_id);
+    // console.log(type?.record.level_id);
+    // console.log(type?.record.skill_id);
     if (type?.record.Role_id) {
-      console.log(type?.record.Role_id);
-      console.log(type?.record.level_id);
-      console.log(type?.record.skill_id);
+      // console.log(type?.record.Role_id);
+      // console.log(type?.record.level_id);
+      // console.log(type?.record.skill_id);
       if ((r, l, s)) {
         if (user?.UserType == ROLES.LEADER) {
           dispatch(
@@ -79,7 +81,7 @@ export default function AddToProject(type) {
 
         // console.log(PNames)
       }
-      console.log(type);
+      console.log(type?.hintNamePrj);
       dispatch(getLeaderByBU(type?.record?.Department_id));
     }
   }, [isModalOpen2]);
@@ -163,6 +165,7 @@ export default function AddToProject(type) {
   const handleChangeName = (e) => {
     console.log(e.target.value);
     setCodeProject(e.target.value.split(",")[1]); //setcodeProject
+    setPNamePrj(e.target.value.split(",")[2])
   };
 
   const onSubmit = async (values) => {
@@ -181,7 +184,7 @@ export default function AddToProject(type) {
           const res = await axios({
             url:
               process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}`,
+              `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}/${type?.record.Username}/${pNamePrj}`,
             method: "POST",
             data: {
               resourceRole_id: type?.resourceRole_id,
@@ -221,7 +224,7 @@ export default function AddToProject(type) {
           const res = await axios({
             url:
               process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRole/noti/${leader?.User_id}`,
+              `/api/Request/EmpToRole/noti/${leader?.User_id}/${type?.record.Username}/${pNamePrj}`,
             method: "POST",
             data: {
               resourceRole_id: type?.resourceRole_id,
@@ -260,7 +263,7 @@ export default function AddToProject(type) {
           const res = await axios({
             url:
               process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}`,
+              `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}/${type?.record.Username}/${pNamePrj}`,
             method: "POST",
             data: {
               resourceRole_id: IdPLanningRole?.id,
@@ -298,7 +301,7 @@ export default function AddToProject(type) {
           const res = await axios({
             url:
               process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRole/noti/${leader?.User_id}`,
+              `/api/Request/EmpToRole/noti/${leader?.User_id}/${type?.record.Username}/${pNamePrj}`,
             method: "POST",
             data: {
               resourceRole_id: IdPLanningRole?.id,
@@ -368,6 +371,7 @@ export default function AddToProject(type) {
         >
           <form onSubmit={handleSubmit(onSubmit2)}>
             <h5>Project name</h5>
+            {type?.hintNamePrj ? <p>Recently project: {type?.hintNamePrj} </p> : ""}
             <select
               {...register("pName")}
               onClick={(e) => handleChangeName(e)}
@@ -382,7 +386,7 @@ export default function AddToProject(type) {
                   <option
                     required
                     key={index}
-                    value={[item.Depeartment_id, item.Code]}
+                    value={[item.Depeartment_id, item.Code,item.ProjectName]}
                     // onChange={setCodeProject(item.Code)}
                   >
                     {item.ProjectName}

@@ -123,6 +123,7 @@ export default function TableRPool(data) {
                 record={record}
                 buProject={data[4]}
                 resourceRole_id={data[5]}
+                hintNamePrj= {data[6]}
               />
             );
           },

@@ -57,7 +57,8 @@ namespace ResourceAllocationBE.Services
 
             string query = @"update dbo.[User]
                 set [Password]= @Password
-                WHERE email = @email";
+                WHERE email = @email 
+";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
             SqlDataReader myReader;
@@ -74,6 +75,11 @@ namespace ResourceAllocationBE.Services
                     myCon.Close();
                 }
             }
+            //if (table.Rows.Count > 0)
+            //{
+            //    //return new JsonResult("FAILS");
+            //    return new Task<string>("FAILS");
+            //}
 
             using var smtp = new SmtpClient();
             smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);

@@ -132,13 +132,13 @@ export default function SpecificRequests() {
   };
 
   const handleAccept = async (value) => {
-    // console.log(value.item.request_start);
+    console.log(value.item.Username);
     // console.log(new Date(value.item.request_start).toLocaleDateString("en-US"));
     try {
       const res = await request({
         url:
           process.env.REACT_APP_BASE_URL +
-          `/api/Request/EmpToRole/${value.status}/noti/${value.item.Employee_id1}`,
+          `/api/Request/EmpToRole/${value.status}/noti/${value.item.Employee_id1}/${value.item.Username}/${value.item.ProjectName}`,
         method: "POST",
         data: {
           resourceRole_id: value?.item?.ResourcePlannig_RoleId,
