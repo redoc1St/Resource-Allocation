@@ -23,13 +23,13 @@ namespace ResourceAllocationBE.Controllers
         }
 
         // Request to ResourceRole Planning (Existed in Project)
-        [HttpPost("RolePlanning/Noti/{user_id}")]
-        public JsonResult requestToRolePlanning(RequestModel request, int user_id)
+        [HttpPost("RolePlanning/Noti/{user_id}/{pname}")]
+        public JsonResult requestToRolePlanning(RequestModel request, int user_id, string pname)
         {
             string query = @"
             insert into ResourceRequestRole values(@rid,2,'',GETDATE())
             update ResourcePlanning_Role set [Status] = 'In Progress' where id = @rid
-            insert into Notifications values (@id, 'You get notification abour request....', GETDATE())
+            insert into Notifications values (@id, 'LEADER You get notification about request in '+@pname+'', GETDATE())
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -41,6 +41,7 @@ namespace ResourceAllocationBE.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
                     myCommand.Parameters.AddWithValue("@id", user_id);
+                    myCommand.Parameters.AddWithValue("@pname", pname);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -83,12 +84,12 @@ namespace ResourceAllocationBE.Controllers
 
 
         // APPROVED AND REJECT  ROLE TO PROJECT 
-        [HttpPost("RolePlanning/{status}")]
-        public JsonResult responseRequestRoleToProject(RequestModel request, string status)
+        [HttpPost("RolePlanning/{status}/{pname}")]
+        public JsonResult responseRequestRoleToProject(RequestModel request, string status,string pname)
         {
             string query = @"
             update ResourcePlanning_Role set [status] = @status where id =@rid
-            insert into Notifications values (1, 'De nghi Role cua ban da duoc @status', GETDATE())
+            insert into Notifications values (1, 'ADMIN The request role in '+@pname+' is '+@status+'', GETDATE())
             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -100,6 +101,7 @@ namespace ResourceAllocationBE.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
                     myCommand.Parameters.AddWithValue("@status", status);
+                    myCommand.Parameters.AddWithValue("@pname", pname);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -177,8 +179,8 @@ namespace ResourceAllocationBE.Controllers
 			begin	
             insert into Emp_RolePlanning values(@rid,@eid, @date_start,@date_end, @effort, @bill)
             update ResourceRequestEmployee set [status] = 'Approved' where ResourcePlannig_RoleId =@rid and Employee_id = @eid
-            insert into Notifications values (1, 'De nghi REQUEST Employee cua ban da duoc Approved', GETDATE())
-insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETDATE())
+            insert into Notifications values (1, 'ADMIN De nghi REQUEST Employee cua ban da duoc Approved', GETDATE())
+insert into Notifications values (@user_id, 'EMPLOYEE Ban da duoc approved vao ...', GETDATE())
 end
 else select * from [user]";
 
@@ -216,8 +218,7 @@ else select * from [user]";
         {
             string query = @"
             update ResourceRequestEmployee set [status] = 'Reject' where ResourcePlannig_RoleId =@rid and Employee_id = @eid
-            insert into Notifications values (1, 'De nghi REQUEST Employee cua ban da bi Reject', GETDATE())
-insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETDATE())";
+            insert into Notifications values (1, 'ADMIN The request ten in project has been Rejected', GETDATE())";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -252,7 +253,7 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
 				(status='In Progress' or status='Approved'))
 			begin 
 			insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE(), @date_start,@date_end, @effort, @bill)
-                insert into Notifications values (@leader_id, 'LEADER You get notification about request employee....', GETDATE())
+                insert into Notifications values (@leader_id, 'LEADER You get notification about request ten to project', GETDATE())
 			end
 			else 
 			select * from [user]
@@ -301,8 +302,8 @@ insert into Notifications values (@user_id, 'Ban da duoc approved vao ...', GETD
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
                AND ResourcePlanning_Role.id = @rid and ResourcePlanning_Employee.id = @eid)
             begin  insert into Emp_RolePlanning values(@rid,@eid,@date_start,@date_end, @effort, @bill)
-            insert into Notifications values (@leader_id, 'LEADER You get notification about request employee....', GETDATE())
-            insert into Notifications values (@user_id, 'EMPLOYEE You get notification about request employee....', GETDATE())
+            insert into Notifications values (@leader_id, 'LEADER You get notification about request ten to project....', GETDATE())
+            insert into Notifications values (@user_id, 'EMPLOYEE You are request to project.', GETDATE())
             end
                 else
 				select * from [user]
