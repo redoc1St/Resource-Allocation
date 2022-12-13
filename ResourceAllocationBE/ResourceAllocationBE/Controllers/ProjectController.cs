@@ -104,7 +104,7 @@ namespace ResourceAllocationBE.Controllers
        
         //SEARCH BY NAME AND BU
         [HttpGet("search/bu/{name}/{bu}")]
-        public JsonResult SearchInBuByName(string name, int bu)
+        public JsonResult searchProjectByBuName(string name, int bu)
         {
             string query = @"
                                select * from

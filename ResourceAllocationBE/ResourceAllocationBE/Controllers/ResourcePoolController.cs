@@ -28,10 +28,11 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListResourcePool(string pid)
         {
             string query = @"
- select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
+                    select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
                     Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
 					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
+					,effortColumn.totalEffort, effortColumn.totalBill
                     from ResourcePlanning_Employee
 		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
 		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
@@ -40,7 +41,9 @@ namespace ResourceAllocationBE.Controllers
 		            join Department on Department.Department_id = [user].Department_id
 					left join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
 					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
-left join Project on Project.Project_id = ResourcePlanning_Role.project_id";
+					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
+					left join	(select Employee_id,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by Employee_id) as effortColumn 
+					on ResourcePlanning_Employee.id = effortColumn.Employee_id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -63,10 +66,11 @@ left join Project on Project.Project_id = ResourcePlanning_Role.project_id";
         public JsonResult GetListResourcePoolByBU(int bu)
         {
             string query = @"
-                     select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
+                      select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
                     Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
 					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
+					,effortColumn.totalEffort, effortColumn.totalBill
                     from ResourcePlanning_Employee
 		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
 		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
@@ -75,7 +79,10 @@ left join Project on Project.Project_id = ResourcePlanning_Role.project_id";
 		            join Department on Department.Department_id = [user].Department_id
 					left join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
 					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
-                    left join Project on Project.Project_id = ResourcePlanning_Role.project_id where Department.Department_id=@bu";
+					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
+					left join	(select Employee_id,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by Employee_id) as effortColumn 
+					on ResourcePlanning_Employee.id = effortColumn.Employee_id
+                    where Department.Department_id=@bu";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -140,6 +147,7 @@ left join Project on Project.Project_id = ResourcePlanning_Role.project_id";
                     Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
                     Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
 					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
+					,effortColumn.totalEffort
                     from ResourcePlanning_Employee
 		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
 		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
@@ -149,6 +157,8 @@ left join Project on Project.Project_id = ResourcePlanning_Role.project_id";
 					left join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
 					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
                     left join Project on Project.Project_id = ResourcePlanning_Role.project_id
+                    left join	(select Employee_id,sum(Effort) as totalEffort from Emp_RolePlanning group by Employee_id) as effortColumn 
+					on ResourcePlanning_Employee.id = effortColumn.Employee_id
                     where Roles.Role_id = @role and Levels.Level_id =@level and Skill.Skill_id =@skill  ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -249,7 +259,50 @@ left join Project on Project.Project_id = ResourcePlanning_Role.project_id";
             return new JsonResult("Update Successfully");
         }
 
+        //--select RESOURCEPOOL by projectname 
+        [HttpGet("view/{name}/{role}")]
+        public JsonResult viewResourcePoolInProject(string name, string role)
+        {
+            string query = @"
+             SELECT [User].Fullname, 
+                Roles.RoleName, 
+                ResourcePlanning_Role.Date_start, 
+                ResourcePlanning_Role.Date_end, 
+                ResourcePlanning_Role.Effort_planned, 
+                ResourcePlanning_Role.Bill_rate, 
+                Levels.LevelName, 
+                Skill.SkillName
+               
+             FROM Project, ResourcePlanning_Role, [USER], Roles, 
+                Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
+                
+             WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
+                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
+				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
+				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
+                Roles.Role_id = ResourcePlanning_Role.Role_id AND
+                Levels.Level_id = ResourcePlanning_Role.Level_id AND
+                Skill.Skill_id = ResourcePlanning_Role.Skill_id
+                and ProjectName =@name AND Roles.RoleName = @role";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@name", name);
+                    myCommand.Parameters.AddWithValue("@role", role);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
 
+                }
+            }
+            return new JsonResult(table);
+        }
 
 
     }

@@ -101,7 +101,7 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
-
+       
         //Get Detail ResourcePlanning_Role (ko caanf)
         //[HttpGet("one/{id}")]
         //public JsonResult getResourcePlanningDetail(string id)
@@ -232,7 +232,11 @@ select * from [user]";
         {
             string query = @"
                     delete from dbo.Emp_RolePlanning
-                                    where [ResourcePlannig_RoleId] = @rid and Employee_id=@eid";
+                    where [ResourcePlannig_RoleId] = @rid and Employee_id=@eid
+                    if exists (select * from ResourceRequestEmployee where ResourcePlannig_RoleId=@rid and Employee_id=@eid)
+                    begin
+                    delete from ResourceRequestEmployee where ResourcePlannig_RoleId=@rid and Employee_id=@eid
+                    end";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
