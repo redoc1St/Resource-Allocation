@@ -259,50 +259,6 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult("Update Successfully");
         }
 
-        //--select RESOURCEPOOL by projectname 
-        [HttpGet("view/{name}/{role}")]
-        public JsonResult viewResourcePoolInProject(string name, string role)
-        {
-            string query = @"
-             SELECT [User].Fullname, 
-                Roles.RoleName, 
-                ResourcePlanning_Role.Date_start, 
-                ResourcePlanning_Role.Date_end, 
-                ResourcePlanning_Role.Effort_planned, 
-                ResourcePlanning_Role.Bill_rate, 
-                Levels.LevelName, 
-                Skill.SkillName
-               
-             FROM Project, ResourcePlanning_Role, [USER], Roles, 
-                Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
-                
-             WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
-                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
-				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
-				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
-                Roles.Role_id = ResourcePlanning_Role.Role_id AND
-                Levels.Level_id = ResourcePlanning_Role.Level_id AND
-                Skill.Skill_id = ResourcePlanning_Role.Skill_id
-                and ProjectName =@name AND Roles.RoleName = @role";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@name", name);
-                    myCommand.Parameters.AddWithValue("@role", role);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-
-                }
-            }
-            return new JsonResult(table);
-        }
 
 
     }

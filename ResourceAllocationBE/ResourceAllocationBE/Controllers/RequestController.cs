@@ -253,16 +253,23 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult requestEmployeeToRolePlanning(RequestModel request, int leader_id, string name, string pname)
         {
             string query = @"
+            begin 
+            if not exists(SELECT * FROM 
+                Emp_RolePlanning
+               where ResourcePlannig_RoleId = @rid and Employee_id = @eid)
+			   begin
             	  if not exists(SELECT * FROM [ResourceRequestEmployee]
-                where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and 
-				(status='In Progress' or status='Approved'))
-			begin 
-			insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE(), @date_start,@date_end, @effort, @bill)
+                    where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and 
+				    (status='In Progress' or status='Approved'))
+			    begin 
+			    insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE(), @date_start,@date_end, @effort, @bill)
                 insert into Notifications values (@leader_id, 'LEADER You get notification about request '+@name+' in '+@pname+'', GETDATE())
-insert into Notifications values (1, 'ADMIN You get notification about request '+@name+' in '+@pname+'', GETDATE())
-			end
+                insert into Notifications values (1, 'ADMIN You get notification about request '+@name+' in '+@pname+'', GETDATE())
+			    end
+               end
 			else 
-			select * from [user]
+			    select * from [user]
+            end 
                 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");

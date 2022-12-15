@@ -1,4 +1,3 @@
-create database ResourceAllocationDB
 use ResourceAllocationDB
 
 --DEPARTMENT
@@ -190,31 +189,32 @@ Bill_rate ,
 Level_id,
 Skill_id ,
 [Status]) values(1,3,2,'2022/06/01', '2022/06/10'
-,100,'',100,5,2,'Waiting')
+,100,'',100,2,1,'Approved')
 
 insert into ResourcePlanning_Role values(1,4,1,'2022/06/01', '2022/06/10'
 ,100,'',100,5,3,'Approved')
 insert into ResourcePlanning_Role values(1,5,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,2,'Approved')
+,100,'',100,4,5,'Approved')
 insert into ResourcePlanning_Role values(1,6,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,1,'Approved')
+,100,'',100,4,3,'Approved')
 
 insert into ResourcePlanning_Role values(2,3,1,'2022/06/01', '2022/06/10'
 ,100,'',100,5,4,'Approved')
 insert into ResourcePlanning_Role values(2,4,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,5,'Approved')
+,100,'',100,3,1,'Approved')
 insert into ResourcePlanning_Role values(2,5,1,'2022/06/01', '2022/06/10'
 ,100,'',100,5,4,'Approved')
 insert into ResourcePlanning_Role values(2,6,1,'2022/06/01', '2022/06/10'
-,100,'',100,5,3,'Approved')
+,100,'',100,5,5,'Approved')
 insert into ResourcePlanning_Role values(1,3,1,GETDATE(), GETDATE()
-,100,'',100,5,3,'Approved')
-insert into ResourcePlanning_Role values(3,4,2,'2022/06/01', '2022/06/10',100,100,100,3,2,'Approved')					
+,100,'',100,3,3,'Approved')
+insert into ResourcePlanning_Role values(3,4,2,'2022/06/01', '2022/06/10',100,100,100,3,1,'Approved')					
 insert into ResourcePlanning_Role values(3,3,2,'2022/06/01', '2022/06/10',100,100,100,2,1,'Approved')					
-insert into ResourcePlanning_Role values(4,6,2,'2022/06/01', '2022/06/10',100,100,100,2,2,'Approved')					
-insert into ResourcePlanning_Role values(4,2,2,'2022/06/01', '2022/06/10',100,100,100,4,4,'Approved')					
+insert into ResourcePlanning_Role values(4,6,2,'2022/06/01', '2022/06/10',100,100,100,4,3,'Approved')					
+insert into ResourcePlanning_Role values(4,2,2,'2022/06/01', '2022/06/10',100,100,100,4,5,'Approved')					
 insert into ResourcePlanning_Role values(5,6,1,'2022/06/01', '2022/06/10',100,100,100,2,1,'Approved')					
-insert into ResourcePlanning_Role values(5,3,1,'2022/06/01', '2022/06/10',100,100,100,3,2,'Approved')					
+insert into ResourcePlanning_Role values(5,3,1,'2022/06/01', '2022/06/10',100,100,100,3,3,'Approved')					
+insert into ResourcePlanning_Role values(3,4,2,'2022/06/01', '2022/06/10',100,100,100,2,1,'Approved')					
 
 
 --ResourcePlanning_Employee
@@ -282,13 +282,11 @@ Date_end date,
 Effort int, 
 Bill_rate int
 )
---insert into Emp_RolePlanning values(1,1,'2022/06/01','2022/06/11',50,50)
---insert into Emp_RolePlanning values(2,1,'2022/06/03','2022/06/12',30,30)
---insert into Emp_RolePlanning values(1,2,'2022/06/04','2022/06/13',20,40)
---insert into Emp_RolePlanning values(5,2,'2022/06/05','2022/06/14',20,50)
---insert into Emp_RolePlanning values(2,2,'2022/06/06','2022/06/15',10,30)
---insert into Emp_RolePlanning values(3,1,'2022/06/07','2022/06/16',20,10)
---insert into Emp_RolePlanning values(4,1,'2022/06/08','2022/06/17',30,20)
+insert into Emp_RolePlanning values(1,1,'2022/06/01','2022/06/11',50,50)
+insert into Emp_RolePlanning values(2,8,'2022/06/03','2022/06/12',30,30)
+insert into Emp_RolePlanning values(3,33,'2022/06/04','2022/06/13',20,20)
+insert into Emp_RolePlanning values(4,21,'2022/06/05','2022/06/14',20,20)
+insert into Emp_RolePlanning values(6,32,'2022/06/06','2022/06/15',10,10)
 
 --ResourceRequestRole
 create table ResourceRequestRole(
@@ -352,3 +350,41 @@ end
 else select * from [user]
 
 end
+
+  begin 
+  if not exists(SELECT * FROM 
+                Emp_RolePlanning
+               where ResourcePlannig_RoleId = 1 and Employee_id = 1)
+			   begin
+					if not exists(SELECT * FROM [ResourceRequestEmployee]
+					where  ResourcePlannig_RoleId =1 and Employee_id = 1 and 
+					(status='In Progress' or status='Approved'))
+					begin 
+					insert into ResourceRequestEmployee values(1,1,2,2,'In Progress',GETDATE(), '06/06/2022','08/08/2022', 50, 50)
+					end
+			   end
+	else
+	select * from [user]
+  end
+  
+  -- view list emplyee working
+  SELECT [User].Fullname, 
+                Roles.RoleName, 
+                Emp_RolePlanning.Date_start, 
+                Emp_RolePlanning.Date_end, 
+                Emp_RolePlanning.Effort, 
+                Emp_RolePlanning.Bill_rate, 
+                Levels.LevelName, 
+                Skill.SkillName
+               
+             FROM Project, ResourcePlanning_Role, [USER], Roles, 
+                Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
+                
+             WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
+                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
+				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
+				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
+                Roles.Role_id = ResourcePlanning_Role.Role_id AND
+                Levels.Level_id = ResourcePlanning_Role.Level_id AND
+                Skill.Skill_id = ResourcePlanning_Role.Skill_id
+                and ProjectName =@name AND Roles.RoleName = @role
