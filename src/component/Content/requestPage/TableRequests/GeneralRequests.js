@@ -2,7 +2,10 @@ import { message, Table } from "antd";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGeneralRequest, getGeneralRequestByBU } from "../../../../Store/Actions/GenRequestActions";
+import {
+  getGeneralRequest,
+  getGeneralRequestByBU,
+} from "../../../../Store/Actions/GenRequestActions";
 import useAuth from "../../../hooks/useAuth";
 import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import { Divider, Tag } from "antd";
@@ -15,18 +18,17 @@ export default function GeneralRequests() {
   const dispatch = useDispatch();
   const genRequests = useSelector((state) => state.GenRequest.genRequests);
   // const genRequestsByBU = useSelector((state) => state.GenRequest.genRequestsByBU);
-  
+
   // dispatch(getGeneralRequest())
   // console.log(genRequests);
   const { user } = useAuth();
 
   useEffect(() => {
-    if(user?.UserType=='leader'){
-dispatch(getGeneralRequestByBU(user?.Department_id))
-    }else{
+    if (user?.UserType == "leader") {
+      dispatch(getGeneralRequestByBU(user?.Department_id));
+    } else {
       dispatch(getGeneralRequest());
     }
-    
   }, [dispatch]);
   // console.log(genRequests);
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
@@ -116,18 +118,22 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
   ];
   let countReqs = 0;
 
-  const handleAcpt = (id,pName) => {
+  const handleAcpt = (id, pName) => {
     return (
       <>
-        {console.log(id,pName)}
+        {console.log(id, pName)}
         <div style={{ textAlign: "center" }}>
           <HowToRegRoundedIcon
-            onClick={() => handleAccept({ status: "Approved", id: id,pName:pName })}
+            onClick={() =>
+              handleAccept({ status: "Approved", id: id, pName: pName })
+            }
             style={{ color: "green", cursor: "pointer" }}
           />
 
           <CancelRoundedIcon
-            onClick={() => handleAccept({ status: "Reject", id: id,pName:pName })}
+            onClick={() =>
+              handleAccept({ status: "Reject", id: id, pName: pName })
+            }
             style={{ marginLeft: "10px", color: "red", cursor: "pointer" }}
           />
         </div>
@@ -156,11 +162,9 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
         content: value.status + " successfully",
         style: { marginTop: "50px" },
       });
-      if(user?.UserType==ROLES.LEADER){
-        dispatch(getGeneralRequestByBU(user?.Department_id))
-
-      }else 
-      dispatch(getGeneralRequest())
+      if (user?.UserType == ROLES.LEADER) {
+        dispatch(getGeneralRequestByBU(user?.Department_id));
+      } else dispatch(getGeneralRequest());
 
       // setIsModalOpen(false);
     } catch (err) {
@@ -174,25 +178,26 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
     ...item,
     Status:
       // user?.UserType != "leader" ?
-         item.Status === "In Progress"
-          // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
-          // : 
+      item.Status === "In Progress"
+        ? // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+          // :
           // item.Status
-        // : item.Status === "In Progress"
-        ?
-         handleAcpt(item.id,item.ProjectName)
+          // : item.Status === "In Progress"
+          handleAcpt(item.id, item.ProjectName)
         : item.Status,
-    
-        // Status:
-        // user?.UserType != "leader" ?
-        //    item.Status === "In Progress"
-        //     ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
-        //     : 
-        //     item.Status
-        //   : item.Status === "In Progress"
-        //   ?
-        //    handleAcpt(item.id)
-        //   : item.Status,
+    Date_start: new Date(item.Date_start).toLocaleDateString("es-CL"),
+    Date_end: new Date(item.Date_end).toLocaleDateString("es-CL"),
+
+    // Status:
+    // user?.UserType != "leader" ?
+    //    item.Status === "In Progress"
+    //     ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+    //     :
+    //     item.Status
+    //   : item.Status === "In Progress"
+    //   ?
+    //    handleAcpt(item.id)
+    //   : item.Status,
   }));
   return (
     <div>
@@ -216,7 +221,6 @@ dispatch(getGeneralRequestByBU(user?.Department_id))
         //   dataSource={data}
         size="small"
       ></Table>
-
     </div>
   );
 }

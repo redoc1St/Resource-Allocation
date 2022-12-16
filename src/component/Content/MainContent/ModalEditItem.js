@@ -14,12 +14,13 @@ import {
 } from "../../../Store/Actions/ProjectActions";
 
 export default function ModalEditItem(data) {
+  var newdate = data?.data?.sdp.split("-").reverse().join("-");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
   const {  valueInput } = useAuth();
   const [error, setError] = useState();
-
+console.log(newdate);
   useEffect(() => {}, []);
 
   const showModal = () => {
@@ -43,15 +44,15 @@ export default function ModalEditItem(data) {
   } = useForm({
     defaultValues: {
       pId: data?.data?.pId,
-      sdp: data?.data?.sdp,
+      sdp:  data?.data?.sdp.split("-").reverse().join("-"),
       pName: data?.data?.name,
       unit: data?.data?.Department_id,
       actualE: data?.data?.actual,
       planE: data?.data?.plan,
       billE: data?.data?.billable,
-      edp: data?.data?.edp,
-      sda: data?.data?.sda,
-      eda: data?.data?.eda,
+      edp: data?.data?.edp.split("-").reverse().join("-"),
+      sda: data?.data?.sda.split("-").reverse().join("-"),
+      eda: data?.data?.eda.split("-").reverse().join("-"),
     },
     // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
@@ -91,7 +92,9 @@ export default function ModalEditItem(data) {
           content: "Edit project successfully",
           style: { marginTop: "50px" },
         });
-        if (valueInput) {
+          // dispatch(getProjects());
+
+        if (valueInput?.prjSearch) {
           dispatch(getProjectsByName(valueInput));
         } else {
           dispatch(getProjects());
@@ -164,6 +167,7 @@ export default function ModalEditItem(data) {
                         {...register("sdp")}
                         // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
+                       
                       />
                       {/* {errors.sdp && (
                         <span style={{ color: "red" }} role="alert">

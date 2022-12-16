@@ -93,7 +93,7 @@ export default function ResourcePool(record) {
       ) : (
         <ViewByChart />
       )}
-      {user?.UserType != ROLES.EMPLOYEE ? <ModalAddPool /> : ""}
+      {user?.UserType != ROLES.EMPLOYEE ? <ModalAddPool  {...location?.state}/> : ""}
     </div>
   );
 }

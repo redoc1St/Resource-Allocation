@@ -172,16 +172,16 @@ export default function Login() {
                   {/* Checkbox */}
 
                   <div className="form-check mb-0">
-                    <input
+                    {/* <input
                       className="form-check-input me-2"
                       type="checkbox"
                       defaultValue
                       id="form2Example3"
-                    />
+                    /> */}
 
-                    <label className="form-check-label" htmlFor="form2Example3">
+                    {/* <label className="form-check-label" htmlFor="form2Example3">
                       Remember me
-                    </label>
+                    </label> */}
                   </div>
                   <Link to="/forgot" className="text-body">
                     <span style={{ color: "blue" }}> forgot password</span>

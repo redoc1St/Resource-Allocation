@@ -40,13 +40,20 @@ export default function ModalAddItem() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
   const { register, handleSubmit } = useForm({
     defaultValues: {
       // pId:'5'
     },
     // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
+
+  function getCodePrj(name) {
+    const prjCode =
+      name.replace(/ /g, "").replace(/[a-z]/g, "") +
+      "_" +
+      Math.floor(Math.random() * 1000);
+    return prjCode;
+  }
 
   const onSubmit = async (values) => {
     const {
@@ -64,6 +71,7 @@ export default function ModalAddItem() {
       quantity_actual,
     } = values;
     console.log(values);
+    const prjCode = getCodePrj(projectName);
     if (Date.parse(start_plan) >= Date.parse(end_plan)) {
       setError("End date (plan) must greater than start date (plan)");
       return;
@@ -72,11 +80,12 @@ export default function ModalAddItem() {
       return;
     } else
       try {
+        console.log(prjCode);
         const res = await request({
           url: process.env.REACT_APP_BASE_URL + "/api/project",
           method: "POST",
           data: {
-            code: JSON.parse(JSON.stringify(code)).trim(),
+            code: prjCode,
             projectName: JSON.parse(JSON.stringify(projectName)),
             department_id: JSON.parse(JSON.stringify(department_id)),
             effort_planned: JSON.parse(JSON.stringify(effort_planned)),
@@ -125,19 +134,32 @@ export default function ModalAddItem() {
         onCancel={handleCancel}
         footer={null}
         closable={true}
+        
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Row>
             <Col span={12}>
               <table>
-                <tbody>
+              <tbody>
+                  <tr>
+                    <td>Project Name *</td>
+                    <td>
+                      <input
+                        {...register("projectName")}
+                        maxLength="50"
+                        required
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+                {/* <tbody>
                   <tr>
                     <td>Project ID</td>
                     <td>
                       <input required {...register("code")} />
                     </td>
                   </tr>
-                </tbody>
+                </tbody> */}
                 <tbody>
                   <tr>
                     <td>Unit *</td>
@@ -200,20 +222,10 @@ export default function ModalAddItem() {
                 </tbody>
               </table>
             </Col>
+            
             <Col span={12}>
               <table>
-                <tbody>
-                  <tr>
-                    <td>Project Name *</td>
-                    <td>
-                      <input
-                        {...register("projectName")}
-                        maxLength="50"
-                        required
-                      />
-                    </td>
-                  </tr>
-                </tbody>
+                
                 <tbody>
                   <tr>
                     <td>Planned effort *</td>

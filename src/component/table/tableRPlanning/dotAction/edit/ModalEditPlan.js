@@ -15,7 +15,7 @@ export default function ModalEditPlan(record) {
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
   const [error, setError] = useState();
-
+  console.log(record);
   const { pName } = useParams();
   const dispatch = useDispatch();
 
@@ -48,6 +48,8 @@ export default function ModalEditPlan(record) {
       LevelName: record?.record?.Level_id,
       SkillName: record?.record?.Skill_id,
       Bill_rate: record?.record?.Bill_rate,
+      RoleName: record?.record?.Role_id,
+
       // sdp: record?.data?.sdp,
       // unit: record?.data?.unit,
     },
@@ -62,6 +64,11 @@ export default function ModalEditPlan(record) {
     if (Date.parse(values.Date_start) >= Date.parse(values.Date_end)) {
       setError("End date must greater than start date");
       return;
+    } else if (
+      Date.parse(record?.sDate) > Date.parse(values.Date_start) ||
+      Date.parse(values.Date_end) > Date.parse(record?.eDate)
+    ) {
+      setError("Role date must be in range");
     } else
       try {
         const res = await axios({
@@ -93,7 +100,7 @@ export default function ModalEditPlan(record) {
 
   return (
     <div>
-      <span onClick={showModal}>Edit</span>,
+      <span onClick={showModal}>Edit</span>
       <Modal
         // style={{color:'#424a80'}}
         width={700}
@@ -104,6 +111,17 @@ export default function ModalEditPlan(record) {
         onCancel={handleCancel}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
+          <h6 style={{ textAlign: "center" }}>
+            {record.name} (From{" "}
+            {new Date(record?.sDate?.substring(0, 10)).toLocaleDateString(
+              "es-CL"
+            )}{" "}
+            To{" "}
+            {new Date(record?.eDate?.substring(0, 10)).toLocaleDateString(
+              "es-CL"
+            )}
+            )
+          </h6>
           <Row>
             <Col span={12}>
               <table>
@@ -111,20 +129,17 @@ export default function ModalEditPlan(record) {
                   <tr>
                     <td>Role</td>
                     <td>
-                      <select
-                        // placeholder="Choose Unit"
-                        // value={record.data.unit}
-                        disabled
-                      >
+                      <select {...register("RoleName")} disabled>
                         <Select.Option required></Select.Option>
                         {roles.map((item, index) => {
                           return (
-                            <option value={item.RoleName} key={index}>
+                            <option value={item.Role_id} key={index}>
                               {item.RoleName}
                             </option>
                           );
                         })}
                       </select>
+                      <td></td>
                     </td>
                   </tr>
                   <tr>
@@ -144,7 +159,8 @@ export default function ModalEditPlan(record) {
                     <td>
                       <input
                         type="number"
-                        min={0} max={100}
+                        min={0}
+                        max={100}
                         {...register("Effort_planned")}
                         required
                       />
@@ -206,13 +222,14 @@ export default function ModalEditPlan(record) {
                       <input
                         type="number"
                         {...register("Bill_rate")}
-                        min={0} max={100}
+                        min={0}
+                        max={100}
                         // placeholder="0"
                         required
                       />
                     </td>
                   </tr>
-
+                  {console.log(levels)}
                   <tr>
                     <td>Skill</td>
                     <td>

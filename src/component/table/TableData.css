@@ -60,3 +60,10 @@ ant-table-content{}
   background-color: #abe6a8;
 }
 /* #abe6a8 */
+
+ant-table ant-table-small ant-table-bordered ant-table-fixed-header ant-table-has-fix-right ant-table-container table,th,td {
+  border: 1px solid black;
+}
+/* ant-modal-body   table, td, th {
+  border: #f9ebea
+} */

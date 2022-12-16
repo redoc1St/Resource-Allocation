@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import "./index.css";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { useDispatch, useSelector } from "react-redux";
+import { Alert } from "antd";
+
 import {
   getIdRoleByCodeRLS,
   getLeaderByBU,
@@ -21,6 +23,7 @@ import useAuth from "../../../../hooks/useAuth";
 export default function AddToProject(type) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [error, setError] = useState();
 
   const dispatch = useDispatch();
   const { r, l, s } = useParams();
@@ -30,10 +33,10 @@ export default function AddToProject(type) {
   const leader = useSelector((state) => state.ExtraObject.leader);
   const [codeProject, setCodeProject] = useState("");
   const [pNamePrj, setPNamePrj] = useState("");
-
+  const [dateProject, setDateProject] = useState({});
   const [buId, setbuId] = useState("");
   const { user } = useAuth();
-  
+
   console.log(type?.record);
   // useEffect(()={
 
@@ -88,6 +91,7 @@ export default function AddToProject(type) {
 
   useEffect(() => {
     console.log("code project" + codeProject);
+    
     if (codeProject) {
       // dispatch(getLeaderByCode(codeProject));
 
@@ -127,6 +131,9 @@ export default function AddToProject(type) {
     // handleSubmit2
   } = useForm({
     defaultValues: {
+      sDate: dateProject?.sDate?.split("T")[0],
+      eDate: dateProject?.eDate?.split("T")[0],
+      // pEffort: 50,
       // pName:
       //   pId: data?.data?.pId,
       //   sdp: data?.data?.sdp,
@@ -138,12 +145,15 @@ export default function AddToProject(type) {
   // const {handleSubmit2}=useForm({defaultValues:{}})
 
   const onSubmit2 = async (values) => {
-    // console.log(values);
+    console.log(values);
+    setError("");
+
     // setCodeProject(values.pName.split(",")[1]); //setcodeProject
     // console.log('day nay '+codeProject,
     //   type?.record?.Role_id,
     //   type?.record?.level_id,
     //   type?.record?.skill_id);
+
     dispatch(
       getIdRoleByCodeRLS(
         codeProject,
@@ -165,7 +175,11 @@ export default function AddToProject(type) {
   const handleChangeName = (e) => {
     console.log(e.target.value);
     setCodeProject(e.target.value.split(",")[1]); //setcodeProject
-    setPNamePrj(e.target.value.split(",")[2])
+    setPNamePrj(e.target.value.split(",")[2]);
+    setDateProject({
+      sDate: e.target.value.split(",")[3],
+      eDate: e.target.value.split(",")[4],
+    });
   };
 
   const onSubmit = async (values) => {
@@ -177,152 +191,177 @@ export default function AddToProject(type) {
     // console.log(dataProject);
     // setDataProject([...dataProject, values])
     //check nếu mà cùng bu thì add trực tiếp k cần thêm vào request, còn k cùng bu thì add vào request
-
-    if (type.buProject) {
-      if (type?.buProject === type?.record?.Department_id) {
-        try {
-          const res = await axios({
-            url:
-              process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}/${type?.record.Username}/${pNamePrj}`,
-            method: "POST",
-            data: {
-              resourceRole_id: type?.resourceRole_id,
-              employee_id: type?.record?.id,
-              Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
-              Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
-              // Date_start:values.sDate,
-              Date_end: values.eDate,
-              Effort: values.pEffort,
-              Bill_rate: values.pBill,
-            },
-          });
-
-          // if(res.data)
-          if (res.data == "Added Successfully") {
-            message.success({
-              content: "Add employee successfully",
-              style: { marginTop: "50px" },
-            });
-          } else if (res.data == "FAILS") {
-            message.error({
-              content: "Employee has existed in this project",
-              style: { marginTop: "50px" },
-            });
-          }
-          dispatch(getResourcePoolEmp());
-          // dispatch(getRoleByCode());
-          setIsModalOpen(false);
-          setIsModalOpen2(false);
-          // dispatch(getRoleByCode());
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        //k cos truoc khác bu
-        try {
-          const res = await axios({
-            url:
-              process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRole/noti/${leader?.User_id}/${type?.record.Username}/${pNamePrj}`,
-            method: "POST",
-            data: {
-              resourceRole_id: type?.resourceRole_id,
-              employee_id: type?.record?.id,
-              Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
-              Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
-              Effort: values.pEffort,
-              Bill_rate: values.pBill,
-            },
-          });
-          // if(res.data)
-          message.success({
-            content: "Request employee indirect successfull",
-            style: { marginTop: "50px" },
-          });
-          dispatch(getResourcePoolEmp());
-          // dispatch(getRoleByCode());
-          setIsModalOpen(false);
-          setIsModalOpen2(false);
-        } catch (err) {
-          console.log(err);
-        }
-      }
+    if (Date.parse(values.sDate) >= Date.parse(values.eDate)) {
+      setError("End date must greater than start date");
+      return;
+    } else if (
+      Date.parse(values.sDate) < Date.parse(dateProject.sDate) ||
+      Date.parse(values.eDate) > Date.parse(dateProject.eDate)
+    ) {
+      setError("Date must be in range of project");
     } else {
-      console.log(
-        values.pName.split(",")[1],
-        type?.record?.Role_id,
-        type?.record?.level_id,
-        type?.record?.skill_id
-      );
-      //cùng bu khi không theo luồng project
-      // console.log(IdPLanningRole);
-      if (buId == type?.record?.Department_id) {
-        //[0] laf buId, lấy từ value truyền từ pName dưới
-        try {
-          const res = await axios({
-            url:
-              process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}/${type?.record.Username}/${pNamePrj}`,
-            method: "POST",
-            data: {
-              resourceRole_id: IdPLanningRole?.id,
-              employee_id: type?.record?.id,
-              Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
-              Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
-              Effort: values.pEffort,
-              Bill_rate: values.pBill,
-            },
-          });
-          if (res.data == "Added Successfully") {
-            message.success({
-              content: "Add employee successfully",
-              style: { marginTop: "50px" },
+      if (type.buProject) {
+        if (type?.buProject === type?.record?.Department_id) {
+          try {
+            const res = await axios({
+              url:
+                process.env.REACT_APP_BASE_URL +
+                `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}/${type?.record.Username}/${pNamePrj}`,
+              method: "POST",
+              data: {
+                resourceRole_id: type?.resourceRole_id,
+                employee_id: type?.record?.id,
+                Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
+                Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
+                // Date_start:values.sDate,
+                Date_end: values.eDate,
+                Effort: values.pEffort,
+                Bill_rate: values.pBill,
+              },
             });
-          } else if (res.data == "FAILS") {
-            message.error({
-              content: "Employee has existed in this project",
-              style: { marginTop: "50px" },
-            });
+
+            // if(res.data)
+            if (res.data == "Added Successfully") {
+              message.success({
+                content: "Add employee successfully",
+                style: { marginTop: "50px" },
+              });
+            } else if (res.data == "FAILS") {
+              message.error({
+                content: "Employee has existed in this project",
+                style: { marginTop: "50px" },
+              });
+            }
+            dispatch(getResourcePoolEmp());
+            // dispatch(getRoleByCode());
+            setIsModalOpen(false);
+            setIsModalOpen2(false);
+            // dispatch(getRoleByCode());
+          } catch (err) {
+            console.log(err);
           }
-          dispatch(getResourcePoolEmp());
-          // dispatch(getRoleByCode());
-          setIsModalOpen(false);
-          setIsModalOpen2(false);
-        } catch (err) {
-          console.log(err);
+        } else {
+          //k cos truoc khác bu
+          try {
+            const res = await axios({
+              url:
+                process.env.REACT_APP_BASE_URL +
+                `/api/Request/EmpToRole/noti/${leader?.User_id}/${type?.record.Username}/${pNamePrj}`,
+              method: "POST",
+              data: {
+                resourceRole_id: type?.resourceRole_id,
+                employee_id: type?.record?.id,
+                Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
+                Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
+                Effort: values.pEffort,
+                Bill_rate: values.pBill,
+              },
+            });
+            // if(res.data)
+            if (res.data == "Added Successfully") {
+              message.success({
+                content: "Request employee indirect successfull",
+                style: { marginTop: "50px" },
+              });
+            } else if (res.data == "FAILS") {
+              message.error({
+                content: "Request has been exist ",
+                style: { marginTop: "50px" },
+              });
+            }
+
+            dispatch(getResourcePoolEmp());
+            // dispatch(getRoleByCode());
+            setIsModalOpen(false);
+            setIsModalOpen2(false);
+          } catch (err) {
+            console.log(err);
+          }
         }
       } else {
-        try {
-          // console.log(
-          //   "loi o day" + IdPLanningRole?.id + "," + type?.record?.id
-          // );
-          //khác bu khi không theo luồng project
-          const res = await axios({
-            url:
-              process.env.REACT_APP_BASE_URL +
-              `/api/Request/EmpToRole/noti/${leader?.User_id}/${type?.record.Username}/${pNamePrj}`,
-            method: "POST",
-            data: {
-              resourceRole_id: IdPLanningRole?.id,
-              employee_id: type?.record?.id,
-              Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
-              Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
-              Effort: values.pEffort,
-              Bill_rate: values.pBill,
-            },
-          });
-          // if(res.data)
-          message.success({
-            content: "Request employee indirect successfull",
-            style: { marginTop: "50px" },
-          });
-          dispatch(getResourcePoolEmp());
-          // dispatch(getRoleByCode());
-          setIsModalOpen(false);
-          setIsModalOpen2(false);
-        } catch (err) {
-          console.log(err);
+        console.log(
+          values.pName.split(",")[1],
+          type?.record?.Role_id,
+          type?.record?.level_id,
+          type?.record?.skill_id
+        );
+        //cùng bu khi không theo luồng project
+        // console.log(IdPLanningRole);
+        if (buId == type?.record?.Department_id) {
+          //[0] laf buId, lấy từ value truyền từ pName dưới
+          try {
+            const res = await axios({
+              url:
+                process.env.REACT_APP_BASE_URL +
+                `/api/Request/EmpToRoleDirect/noti/${leader?.User_id}/${type?.record?.User_id}/${type?.record.Username}/${pNamePrj}`,
+              method: "POST",
+              data: {
+                resourceRole_id: IdPLanningRole?.id,
+                employee_id: type?.record?.id,
+                Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
+                Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
+                Effort: values.pEffort,
+                Bill_rate: values.pBill,
+              },
+            });
+            if (res.data == "Added Successfully") {
+              message.success({
+                content: "Add employee successfully",
+                style: { marginTop: "50px" },
+              });
+            } else if (res.data == "FAILS") {
+              message.error({
+                content: "Employee has existed in this project",
+                style: { marginTop: "50px" },
+              });
+            }
+            dispatch(getResourcePoolEmp());
+            // dispatch(getRoleByCode());
+            setIsModalOpen(false);
+            setIsModalOpen2(false);
+          } catch (err) {
+            console.log(err);
+          }
+        } else {
+          try {
+            // console.log(
+            //   "loi o day" + IdPLanningRole?.id + "," + type?.record?.id
+            // );
+            //khác bu khi không theo luồng project
+            const res = await axios({
+              url:
+                process.env.REACT_APP_BASE_URL +
+                `/api/Request/EmpToRole/noti/${leader?.User_id}/${type?.record.Username}/${pNamePrj}`,
+              method: "POST",
+              data: {
+                resourceRole_id: IdPLanningRole?.id,
+                employee_id: type?.record?.id,
+                Date_start: new Date(values.sDate).toLocaleDateString("en-US"),
+                Date_end: new Date(values.eDate).toLocaleDateString("en-US"),
+                Effort: values.pEffort,
+                Bill_rate: values.pBill,
+              },
+            });
+            // if(res.data)
+            if (res.data == "Added Successfully") {
+              message.success({
+                content: "Request employee indirect successfull",
+                style: { marginTop: "50px" },
+              });
+            } else if (res.data == "FAILS") {
+              message.error({
+                content: "Request has been exist ",
+                style: { marginTop: "50px" },
+              });
+            }
+
+            dispatch(getResourcePoolEmp());
+            // dispatch(getRoleByCode());
+            setIsModalOpen(false);
+            setIsModalOpen2(false);
+          } catch (err) {
+            console.log(err);
+          }
         }
       }
     }
@@ -371,7 +410,11 @@ export default function AddToProject(type) {
         >
           <form onSubmit={handleSubmit(onSubmit2)}>
             <h5>Project name</h5>
-            {type?.hintNamePrj ? <p>Recently project: {type?.hintNamePrj} </p> : ""}
+            {type?.hintNamePrj ? (
+              <p>Recently project: {type?.hintNamePrj} </p>
+            ) : (
+              ""
+            )}
             <select
               {...register("pName")}
               onClick={(e) => handleChangeName(e)}
@@ -386,7 +429,13 @@ export default function AddToProject(type) {
                   <option
                     required
                     key={index}
-                    value={[item.Depeartment_id, item.Code,item.ProjectName]}
+                    value={[
+                      item.Depeartment_id,
+                      item.Code,
+                      item.ProjectName,
+                      item.Start_actual,
+                      item.End_actual,
+                    ]}
                     // onChange={setCodeProject(item.Code)}
                   >
                     {item.ProjectName}
@@ -421,6 +470,12 @@ export default function AddToProject(type) {
           onCancel={handleCancel}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
+            <h6 style={{ textAlign: "center" }}>
+              {pNamePrj} <br></br>
+              (From {new Date(dateProject.sDate).toLocaleDateString(
+                "es-CL"
+              )} To {new Date(dateProject.eDate).toLocaleDateString("es-CL")})
+            </h6>
             <table>
               <tbody>
                 {/* <tr>
@@ -443,13 +498,25 @@ export default function AddToProject(type) {
                 <tr>
                   <th>Start date </th>
                   <td>
-                    <input type="date" required {...register("sDate")} />
+                    <input
+                      type="date"
+                      // defaultValue={dateProject?.sDate?.split("T")[0]}
+                      format={"DD/MM/YYYY"}
+                      // required
+                      {...register("sDate")}
+                    />
                   </td>
                 </tr>
                 <tr>
                   <th>End date </th>
                   <td>
-                    <input type="date" required {...register("eDate")} />
+                    <input
+                      type="date"
+                      format={"DD/MM/YYYY"}
+                      required
+                      // defaultValue={dateProject?.eDate?.split("T")[0]}
+                      {...register("eDate")}
+                    />
                   </td>
                 </tr>
                 {/* {console.log(leader.User_id)} */}
@@ -553,6 +620,17 @@ export default function AddToProject(type) {
             </div>
             {/* {console.log(PNames)} */}
           </form>
+          {error ? (
+            <Alert
+              style={{ marginTop: "10px" }}
+              message={error}
+              type={"error"}
+              showIcon
+            />
+          ) : null}
+          {console.log(
+            dateProject?.sDate?.split("T")[0]
+          )}
         </Modal>
       </div>
     </div>

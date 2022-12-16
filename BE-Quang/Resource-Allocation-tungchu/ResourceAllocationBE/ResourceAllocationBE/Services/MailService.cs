@@ -60,7 +60,7 @@ namespace ResourceAllocationBE.Services
                 WHERE email = @email 
 ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

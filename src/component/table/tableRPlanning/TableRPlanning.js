@@ -45,35 +45,36 @@ export default function TableResourcePlanning(data) {
     {
       title: "Level",
       dataIndex: "LevelName",
-      width: 130,
+      width: 100,
     },
     {
       title: "Skills",
       dataIndex: "SkillName",
-      width: 130,
+      width: 100,
     },
-    user?.UserType !=ROLES.EMPLOYEE ?
-    {
-      title: "Employee",
-      dataIndex: "employee",
-      width: 85,
-      editTable: true,
-    } : {},
+    user?.UserType != ROLES.EMPLOYEE
+      ? {
+          title: "Employee",
+          dataIndex: "employee",
+          width: 85,
+          editTable: true,
+        }
+      : {},
     {
       title: "Start date ",
       dataIndex: "Date_start",
-      width: 150,
+      width: 120,
     },
 
     {
       title: "End date ",
       dataIndex: "Date_end",
-      width: 150,
+      width: 120,
     },
     {
-      title: "%Planned effort",
+      title: "% Planned effort",
       dataIndex: "Effort_planned",
-      width: 85,
+      width: 90,
     },
     {
       title: "% Actual effort",
@@ -89,7 +90,7 @@ export default function TableResourcePlanning(data) {
     {
       title: "% Bill",
       dataIndex: "Bill_rate",
-      width: 130,
+      width: 60,
     },
     {
       title: "Status",
@@ -126,13 +127,24 @@ export default function TableResourcePlanning(data) {
           ...item,
           ActualQuantity: ar[0]++,
           status: item.Status,
-
-          action: <DotAction record={item} leader={leader} />,
+          Date_start: new Date(item.Date_start).toLocaleDateString("es-CL"),
+          Date_end: new Date(item.Date_end).toLocaleDateString("es-CL"),
+          action: <DotAction {...data} record={item} leader={leader} />,
           employee:
             item?.Status?.props?.children === "Approved" ? (
               <Link
-                to={{ pathname: `/resourcePool/${pName}/${item.Role_id}/${item.Level_id}/${ item.Skill_id}` }}
-                state={[item.Role_id, item.Level_id, item.Skill_id,pName,data.bu, item.id,item.ProjectName]}
+                to={{
+                  pathname: `/resourcePool/${pName}/${item.Role_id}/${item.Level_id}/${item.Skill_id}`,
+                }}
+                state={[
+                  item.Role_id,
+                  item.Level_id,
+                  item.Skill_id,
+                  pName,
+                  data.bu,
+                  item.id,
+                  item.ProjectName,
+                ]}
               >
                 <PersonAddIcon />
               </Link>

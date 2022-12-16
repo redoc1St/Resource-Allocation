@@ -39,7 +39,7 @@ namespace ResourceAllocationBE.Controllers
 left join Project on Project.Project_id = ResourcePlanning_Role.project_id "
 ;
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

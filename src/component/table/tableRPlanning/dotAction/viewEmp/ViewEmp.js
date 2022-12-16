@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import { Button, Modal, Table } from "antd";
+import { Button, message, Modal, Table, Popconfirm } from "antd";
 import { getRolesByNameNRole } from "../../../../../Store/Actions/PlanningRoleAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useAuth from "../../../../hooks/useAuth";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import axios from "axios";
 export default function ViewEmp(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { pName: code } = useParams();
@@ -24,15 +26,40 @@ export default function ViewEmp(data) {
     dispatch(
       getRolesByNameNRole(data?.record?.ProjectName, data?.record?.RoleName)
     );
-  }, [data?.record?.ProjectName,isModalOpen]);
+  }, [data?.record?.ProjectName, isModalOpen]);
 
   let countEmp = 0;
-  const mergedData = rolesEmp.map((item,id) => ({
-    key:id,
+  const mergedData = rolesEmp.map((item, id) => ({
+    key: id,
     countEmp: (countEmp += 1),
     ...item,
     Role: data?.record?.RoleName,
   }));
+
+  const onClickDel = async (values) => {
+    console.log(values);
+    try {
+      const res = await axios({
+        url: process.env.REACT_APP_BASE_URL + "/api/ResourcePlanning/delete",
+        method: "DELETE",
+        data: {
+          resourceRole_id: values.id,
+          employee_id: values.employee_id,
+        },
+      });
+      if (res.data == "Delete Successfully") {
+        message.success({
+          content: "Delete employee successfully",
+          style: { marginTop: "50px" },
+        });
+        getRolesByNameNRole(data?.record?.ProjectName, data?.record?.RoleName);
+      }
+
+      setIsModalOpen(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const columns = [
     {
@@ -57,7 +84,7 @@ export default function ViewEmp(data) {
     },
     {
       title: "% Effort",
-      dataIndex: "Effort_planned",
+      dataIndex: "Effort",
       width: 100,
     },
     {
@@ -80,6 +107,28 @@ export default function ViewEmp(data) {
       key: "operation",
       fixed: "right",
       width: 100,
+      render: (_, record) => {
+        return (
+          <>
+            <Popconfirm
+              title="Are you sure to delete this record?"
+              onConfirm={() => onClickDel(record)}
+              // onCancel={cancel}
+              okText="Yes"
+              cancelText="No"
+            >
+              <span
+                // onClick={() => onClickDel(record)}
+                style={{ textAlign: "center" }}
+              >
+                <DeleteForeverIcon
+                  style={{ fontSize: "30px", cursor: "pointer" }}
+                />
+              </span>
+            </Popconfirm>
+          </>
+        );
+      },
     },
   ];
 

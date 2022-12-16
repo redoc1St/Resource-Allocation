@@ -22,37 +22,7 @@ import {
 import ModalNote from "../Content/MainContent/ModalNote";
 import { ROLES } from "../../App";
 
-const onChange1 = (value) => {
-  console.log("changed", value);
-};
-const formatUrl = (str) => {
-  // Chuyển hết sang chữ thường
-  str = str.toLowerCase();
 
-  // xóa dấu
-  str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, "a");
-  str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, "e");
-  str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, "i");
-  str = str.replace(/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/g, "o");
-  str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, "u");
-  str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, "y");
-  str = str.replace(/(đ)/g, "d");
-
-  // Xóa ký tự đặc biệt
-  str = str.replace(/([^0-9a-z-\s])/g, "");
-
-  // Xóa khoảng trắng thay bằng ký tự -
-  str = str.replace(/(\s+)/g, "_");
-
-  // xóa phần dự - ở đầu
-  str = str.replace(/^-+/g, "");
-
-  // xóa phần dư - ở cuối
-  str = str.replace(/-+$/g, "");
-
-  // return
-  return str;
-};
 
 export default function TableData(sText) {
   const [editRowkey, SetEditRowKey] = useState("");
@@ -109,38 +79,15 @@ export default function TableData(sText) {
 
     ...item,
     id: countP++,
+    sdp:new Date(item.sdp).toLocaleDateString('es-CL'),
+    sda:new Date(item.sda).toLocaleDateString('es-CL'),
+    edp:new Date(item.edp).toLocaleDateString('es-CL'),
+    eda:new Date(item.eda).toLocaleDateString('es-CL')
   }));
 
   const isEditting = (record) => {
     return record.key === editRowkey;
   };
-
-  // const cancel = () => {
-  //   SetEditRowKey("");
-  // };
-  // const save = async (key) => {
-  //   try {
-  //     const row = await form.validateFields();
-  //     const newData = [...data];
-  //     const index = newData.findIndex((item) => key === item.key);
-  //     if (index > -1) {
-  //       const item = newData[index];
-  //       newData.splice(index, 1, { ...item, ...row });
-  //       SetEditRowKey("");
-  //     }
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
-  // const edit = (record) => {
-  //   form.setFieldsValue({
-  //     id: "",
-  //     pId: "",
-  //     pName: "",
-  //     ...record,
-  //   });
-  //   SetEditRowKey(record.key);
-  // };
 
   const columns = [
     {
@@ -324,6 +271,7 @@ export default function TableData(sText) {
           className="table-striped-rows"
           bordered
           columns={mergedColumns}
+          
           components={{
             body: {
               cell: editableCell,
@@ -335,16 +283,18 @@ export default function TableData(sText) {
           style={
             onclickShowLeft
               ? {
-                  width: "170vh",
+                  width: "170vh",borderCollapse: 'collapse 1px solid black',
                 }
               : { width: "200vh" }
           }
           onChange={onChange}
+           
           scroll={{
             // x: 600,
-            y: 300,
+            y: 480,
           }}
           size="small"
+          
         />
       </Form>
     </div>

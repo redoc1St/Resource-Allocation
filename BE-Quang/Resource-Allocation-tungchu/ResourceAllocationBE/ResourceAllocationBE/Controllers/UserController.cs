@@ -29,7 +29,7 @@ namespace ResourceAllocationBE.Controllers
         public IActionResult LoginA(User user)
         {
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
 
@@ -53,7 +53,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[User] where UserType != 'admin' ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -77,7 +77,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[User] where UserType != 'admin' and  UserType != 'leader'  and department_id=@bu and isActive =1";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -103,7 +103,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[User] where UserType != 'admin' and UserType != 'leader'  and isActive =1 ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -128,7 +128,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[User] where UserType != 'admin' and [isActive] = @isActive";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -154,7 +154,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[User] where UserType != 'admin' and  [Fullname] like @name ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -179,7 +179,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[User] where [Fullname] like @UName and [isActive] = @isactive and UserType != 'admin'";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -207,7 +207,7 @@ namespace ResourceAllocationBE.Controllers
                                        select * from
                                         dbo.[User] order by [User_id] OFFSET @from Rows fetch next 4 rows only";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -235,7 +235,7 @@ namespace ResourceAllocationBE.Controllers
 @isActive,@BirthDay,
 @Start_Day,@Department_id)";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -276,7 +276,7 @@ namespace ResourceAllocationBE.Controllers
 [Start_Day]=@Start_Day, [Department_id]=@Department_id
 WHERE [User_id] = @id";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -313,7 +313,7 @@ WHERE [User_id] = @id";
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             string query = @"select *  from [User] where [email] =@Uid";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -338,7 +338,7 @@ WHERE [User_id] = @id";
         set [Password]= @Password
         WHERE [User_id] = @id";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -371,7 +371,7 @@ WHERE [User_id] = @id";
         else
         select * from [user]";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

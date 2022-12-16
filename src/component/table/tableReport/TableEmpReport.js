@@ -12,6 +12,7 @@ import { Button, DatePicker, Space, version, Form, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../hooks/useAuth";
 import { getByEmp } from "../../../Store/Actions/ReportActions";
+import { getLevels, getRoles, getSkills } from "../../../Store/Actions/ExtraObjectActions";
 export default function TableEmpReport() {
   const [editRowkey, SetEditRowKey] = useState("");
   const [form] = Form.useForm();
@@ -32,7 +33,9 @@ export default function TableEmpReport() {
   // const projects = useSelector((state) => state.Projects.projects);
   const employees = useSelector((state) => state.Report.emps);
   const projects = useSelector((state) => state.Projects.projects);
-
+  const roles = useSelector((state) => state.ExtraObject.roles);
+  const levels = useSelector((state) => state.ExtraObject.levels);
+  const skills = useSelector((state) => state.ExtraObject.skills);
   let countP = 1;
   // let totalRow= projects.length
   const [listProjectName, setListProjectName] = useState([]);
@@ -40,6 +43,9 @@ export default function TableEmpReport() {
   useEffect(() => {
     dispatch(getByEmp());
     dispatch(getProjects());
+    dispatch(getRoles());
+    dispatch(getLevels());
+    dispatch(getSkills());
     listPName()
   }, []);
   
@@ -132,16 +138,34 @@ export default function TableEmpReport() {
       title: "Role",
       dataIndex: "RoleName",
       key: "role",
+      filters: roles.map((item, index) => ({
+        text: item.RoleName,
+        value: item.RoleName,
+      })),
+      onFilter: (value, record) => record.RoleName.indexOf(value) === 0,
+   
     },
     {
       title: "Level",
       dataIndex: "LevelName",
       key: "level",
+      filters: levels.map((item, index) => ({
+        text: item.LevelName,
+        value: item.LevelName,
+      })),
+      onFilter: (value, record) => record.LevelName.indexOf(value) === 0,
+ 
     },
     {
       title: "Skill",
       dataIndex: "SkillName",
       key: "skill",
+      filters: skills.map((item, index) => ({
+        text: item.SkillName,
+        value: item.SkillName,
+      })),
+      onFilter: (value, record) => record.SkillName.indexOf(value) === 0,
+ 
     },
     {
       title: "Start Date",

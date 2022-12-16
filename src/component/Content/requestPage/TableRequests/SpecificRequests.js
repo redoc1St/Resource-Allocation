@@ -166,9 +166,9 @@ export default function SpecificRequests() {
         });
       }
       // dispatch(getSpecRequest());
-      if(user.UserType==ROLES.LEADER){
+      if (user.UserType == ROLES.LEADER) {
         dispatch(getSpecRequestByBU(user?.Department_id));
-      }else{
+      } else {
         dispatch(getSpecRequest());
       }
 
@@ -185,8 +185,12 @@ export default function SpecificRequests() {
     no: (countReqs += 1),
     ...item,
     Department_name: "BU " + item.Depeartment_id,
-    request_start : item.request_start.substring(0,10),
-    request_end : item.request_end.substring(0,10),
+    request_start: new Date(
+      item.request_start.substring(0, 10)
+    ).toLocaleDateString("es-CL"),
+    request_end: new Date(item.request_end.substring(0, 10)).toLocaleDateString(
+      "es-CL"
+    ),
 
     // Status:
     //   user?.UserType != "leader" ? (
@@ -204,17 +208,16 @@ export default function SpecificRequests() {
     //   ),
 
     ///cmt
-    
+
     Status:
-    // user?.UserType != "leader" ?
-       item.Status === "In Progress"
-        // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
-        // :
-        // item.Status
-      // : item.Status === "In Progress"
-      ?
-       handleAcpt(item)
-      : item.Status,
+      // user?.UserType != "leader" ?
+      item.Status === "In Progress"
+        ? // ? <Tag style={{width:'85px',textAlign:'center'}} color="#DEDA23">In Progress</Tag>
+          // :
+          // item.Status
+          // : item.Status === "In Progress"
+          handleAcpt(item)
+        : item.Status,
   }));
 
   return (

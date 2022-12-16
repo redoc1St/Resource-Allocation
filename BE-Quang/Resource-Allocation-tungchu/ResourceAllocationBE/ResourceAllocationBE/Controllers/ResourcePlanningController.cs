@@ -38,7 +38,7 @@ namespace ResourceAllocationBE.Controllers
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id
                     and Project.code = @pid";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -61,14 +61,18 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult ViewResourcePoolByRole(string name, string role)
         {
             string query = @"
-             SELECT [User].Fullname, 
+              SELECT [User].Fullname, 
                 Roles.RoleName, 
-                ResourcePlanning_Role.Date_start, 
-                ResourcePlanning_Role.Date_end, 
-                ResourcePlanning_Role.Effort_planned, 
-                ResourcePlanning_Role.Bill_rate, 
+
+
+
+Emp_RolePlanning.Date_start, 
+                Emp_RolePlanning.Date_end, 
+                Emp_RolePlanning.Effort, 
+                Emp_RolePlanning.Bill_rate,
+
                 Levels.LevelName, 
-                Skill.SkillName
+                Skill.SkillName,ResourcePlanning_Role.id,ResourcePlanning_Employee.id as 'employee_id'
                
              FROM Project, ResourcePlanning_Role, [USER], Roles, 
                 Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
@@ -82,7 +86,7 @@ namespace ResourceAllocationBE.Controllers
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
                 and ProjectName =@name AND Roles.RoleName = @role";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -107,7 +111,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"select *  from ResourcePlanning_Role where [id] =@id";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -149,7 +153,7 @@ namespace ResourceAllocationBE.Controllers
                 else
 				select * from [user]";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -198,7 +202,7 @@ namespace ResourceAllocationBE.Controllers
                 Skill_id=@Skill_id 
                 WHERE id = @id";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -233,7 +237,7 @@ namespace ResourceAllocationBE.Controllers
         //            delete from dbo.ResourcePlanning_Role
         //                            where [id] = @id";
         //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
         //    SqlDataReader myReader;
         //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
         //    {
@@ -261,7 +265,7 @@ namespace ResourceAllocationBE.Controllers
                 [Status]=@status
                 WHERE id = @id";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -288,7 +292,7 @@ namespace ResourceAllocationBE.Controllers
                                        select * from
                                         dbo.ResourcePlanning_Role order by [id] OFFSET @from Rows fetch next 4 rows only";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -307,7 +311,39 @@ namespace ResourceAllocationBE.Controllers
         }
 
 
-       // REQUEST
+        // REQUEST
+        //Delete IN DB
+        [HttpDelete("delete")]
+        public JsonResult deleteProject(RequestModel request)
+        {
+            string query = @"
+                    delete from dbo.Emp_RolePlanning
+                    where [ResourcePlannig_RoleId] = @rid and Employee_id=@eid
+                    if exists (select * from ResourceRequestEmployee where ResourcePlannig_RoleId=@rid and Employee_id=@eid)
+                    begin
+                    delete from ResourceRequestEmployee where ResourcePlannig_RoleId=@rid and Employee_id=@eid
+                    end";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@eid", request.employee_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult("Delete Successfully");
+        }
+
 
     }
 }

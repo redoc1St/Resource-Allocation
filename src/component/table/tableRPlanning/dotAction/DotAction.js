@@ -20,19 +20,19 @@ import { ROLES } from "../../../../App";
 export default function DotAction(record) {
   const { user } = useAuth();
 
-  // console.log(record.record.Status);
+  // console.log(record);
   const menu = (
     <Menu
       items={[
         {
           key: "4",
-          label: <ViewEmp {...record} />,
+          label:record.record.Status?.props.children === "Approved" ? <ViewEmp {...record} /> :'',
         },
         user?.UserType != ROLES.EMPLOYEE
           ? {
               key: "1",
               // label: <ModalEditPlan record={record} />,
-              label: <ModalEditPlan {...record} />,
+              label: record.record.Status?.props.children === "Approved" ? "" : <ModalEditPlan {...record} />,
             }
           : {},
         // user?.UserType != ROLES.ADMIN

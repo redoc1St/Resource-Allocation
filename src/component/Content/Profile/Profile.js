@@ -318,7 +318,7 @@ export default function Profile() {
                                 {user?.UserType}
                               </span>
                               <div className="text-muted">
-                                <small>{user?.Start_Day?.split("T")[0]}</small>
+                                <small>{new Date(user?.Start_Day?.split("T")[0]).toLocaleDateString("es-CL")}</small>
                               </div>
                             </div>
                           </div>
@@ -380,7 +380,7 @@ export default function Profile() {
                                       <div className="form-group">
                                         <label>BirthDay</label>
                                         <input
-                                          value={user?.BirthDay?.split("T")[0]}
+                                          value={new Date(user?.BirthDay?.split("T")[0]).toLocaleDateString("es-CL")}
                                           type="text"
                                           className="form-control"
                                           disabled

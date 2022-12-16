@@ -39,7 +39,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[Roles]";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -64,7 +64,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[Levels]";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -90,7 +90,7 @@ namespace ResourceAllocationBE.Controllers
                                select * from
                                 dbo.[Skill]";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -115,7 +115,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"insert into User_Role values(@role_id, @user_id)";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -145,7 +145,7 @@ namespace ResourceAllocationBE.Controllers
             and Emp_RolePlanning.Employee_id = @emp_id and Role_id=@role and Level_id =@level and Skill_id=@skill and Project_id=@projectid)
             insert into Emp_RolePlanning values (@resourcePid,@emp_id)";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -177,9 +177,9 @@ namespace ResourceAllocationBE.Controllers
 
         public JsonResult GetPidByCode(string code)
         {
-            string query = @"SELECT [Project_id],[ProjectName],Depeartment_id  FROM Project WHERE [Code]=@code";
+            string query = @"SELECT *  FROM Project WHERE [Code]=@code";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -215,10 +215,10 @@ namespace ResourceAllocationBE.Controllers
       ,[Start_Day]
       ,[Department_id],
 	  code
-  FROM [ResourceAllocationDB_2].[dbo].[User], Project
+  FROM [ResourceAllocationDB].[dbo].[User], Project
   where Project.Depeartment_id = [user].Department_id and code = @code and UserType ='leader'";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -256,7 +256,7 @@ namespace ResourceAllocationBE.Controllers
 ";
 
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -294,7 +294,7 @@ namespace ResourceAllocationBE.Controllers
 ";
 
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -334,7 +334,7 @@ namespace ResourceAllocationBE.Controllers
         where Code=@code and roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id";
 
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -359,10 +359,10 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getLeaderInforByBu(int bu)
         {
             string query = @"SELECT *
-        FROM [ResourceAllocationDB_2].[dbo].[User]
+        FROM [ResourceAllocationDB].[dbo].[User]
         where Department_id = @bu and UserType ='leader'";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

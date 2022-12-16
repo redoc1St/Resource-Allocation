@@ -146,6 +146,8 @@ export default function Navbar() {
               title={"Notifications"}
               content={items}
               trigger="click"
+              style={{width:'100px'}}
+              
             >
               {/* {onBlueNoti ?  */}
               {/* <Badge

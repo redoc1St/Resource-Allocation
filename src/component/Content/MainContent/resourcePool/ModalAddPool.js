@@ -25,12 +25,15 @@ import {
   getRoles,
   getSkills,
 } from "../../../../Store/Actions/ExtraObjectActions";
-import { getResourcePoolEmp } from "../../../../Store/Actions/ResourcePoolAction";
+import {
+  getResourcePoolEmp,
+  getResourcePoolEmpByRLK,
+} from "../../../../Store/Actions/ResourcePoolAction";
 import { ROLES } from "../../../../App";
 
-export default function ModalAddPool() {
+export default function ModalAddPool(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  console.log(data[0], data[1], data[2]);
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
   const { user } = useAuth();
@@ -57,10 +60,10 @@ export default function ModalAddPool() {
     dispatch(getRoles());
     dispatch(getLevels());
     dispatch(getSkills());
-    if (user?.UserType ==ROLES.LEADER) {
+    if (user?.UserType == ROLES.LEADER) {
       dispatch(getAllEmpsByBU(user?.Department_id));
     } else {
-      dispatch(getAllEmps())
+      dispatch(getAllEmps());
     }
   }, []);
 
@@ -93,7 +96,12 @@ export default function ModalAddPool() {
             style: { marginTop: "50px" },
           });
         }
-        dispatch(getResourcePoolEmp());
+        if (Object.keys(data).length !== 0) {
+          getResourcePoolEmpByRLK(data[0], data[1], data[2]);
+        } else {
+          dispatch(getResourcePoolEmp());
+        }
+
         setIsModalOpen(false);
       } catch (err) {
         console.log(err);

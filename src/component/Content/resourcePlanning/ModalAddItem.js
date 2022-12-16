@@ -11,7 +11,7 @@ import { Alert } from "antd";
 export default function ModalAddRole(record) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState();
-
+  console.log(record);
   useEffect(() => {}, []);
 
   const showModal = () => {
@@ -43,6 +43,10 @@ export default function ModalAddRole(record) {
     if (Date.parse(values.Date_start) >= Date.parse(values.Date_end)) {
       setError("End date must greater than start date");
       return;
+    } else if (Date.parse(record?.sDate) > Date.parse(values.Date_start)) {
+      setError("Role date must be in range");
+    } else if (Date.parse(record?.eDate) <= Date.parse(values.Date_end)) {
+      setError("Role date must be in range");
     } else
       try {
         const res = await request({
@@ -87,6 +91,18 @@ export default function ModalAddRole(record) {
         onCancel={handleCancel}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
+          <h6 style={{ textAlign: "center" }}>
+            {record.name} (From{" "}
+            {new Date(record?.sDate?.substring(0, 10)).toLocaleDateString(
+              "es-CL"
+            )}{" "}
+            To{" "}
+            {new Date(record?.eDate?.substring(0, 10)).toLocaleDateString(
+              "es-CL"
+            )}
+            )
+          </h6>
+
           <Row>
             <Col span={12}>
               <table>

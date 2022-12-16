@@ -61,8 +61,8 @@ export default function ModalEditPoolEmp(record) {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      Date_start: record?.record?.Date_start,
-      Date_end: record?.record?.Date_end,
+      Date_start: record?.record?.Date_start.split("-").reverse().join("-"),
+      Date_end: record?.record?.Date_end.split("-").reverse().join("-"),
       Effort: record?.record?.Effort,
       RoleName: record?.record?.Role_id,
       LevelName: record?.record?.level_id,

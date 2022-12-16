@@ -152,6 +152,7 @@ export default function TableCandidate() {
 
     ...item,
     Department_id: "BU " + item.Department_id,
+    BirthDay:new Date(item.BirthDay).toLocaleDateString('es-CL'), 
     isActive:
       item.isActive === true ? (
         <Tag color="#87d068" style={{ width: "60px", textAlign: "center" }}>

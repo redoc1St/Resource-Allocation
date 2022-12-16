@@ -10,19 +10,29 @@ import {
   getSearchResourcePoolEmpByName,
 } from "../../../Store/Actions/ResourcePoolAction";
 import { ROLES } from "../../../App";
+import {
+  getLevels,
+  getRoles,
+  getSkills,
+} from "../../../Store/Actions/ExtraObjectActions";
 
 export default function TableRPool(data) {
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
   const { valueInput, user } = useAuth();
-
+  const roles = useSelector((state) => state.ExtraObject.roles);
+  const levels = useSelector((state) => state.ExtraObject.levels);
+  const skills = useSelector((state) => state.ExtraObject.skills);
   // console.log(data?.Role_id, data?.Level_id, data?.Skill_id);
   //  console.log(data);   // BU NAME
   //  console.log(data[5]);   // resourcePlanning_id
 
   // console.log(emps[14].ProjectName ==null);
   useEffect(() => {
+    dispatch(getRoles());
+    dispatch(getLevels());
+    dispatch(getSkills());
     if (user)
       if (valueInput?.emp_planning) {
         dispatch(getSearchResourcePoolEmpByName(valueInput.emp_planning));
@@ -57,17 +67,32 @@ export default function TableRPool(data) {
       title: "Role",
       dataIndex: "RoleName",
       width: 80,
+      filters: roles.map((item, index) => ({
+        text: item.RoleName,
+        value: item.RoleName,
+      })),
+      onFilter: (value, record) => record.RoleName.indexOf(value) === 0,
     },
 
     {
       title: "Level ",
       dataIndex: "LevelName",
       width: 100,
+      filters: levels.map((item, index) => ({
+        text: item.LevelName,
+        value: item.LevelName,
+      })),
+      onFilter: (value, record) => record.LevelName.indexOf(value) === 0,
     },
     {
       title: "Skills",
       dataIndex: "SkillName",
       width: 110,
+      filters: skills.map((item, index) => ({
+        text: item.SkillName,
+        value: item.SkillName,
+      })),
+      onFilter: (value, record) => record.SkillName.indexOf(value) === 0,
     },
 
     {
@@ -123,7 +148,7 @@ export default function TableRPool(data) {
                 record={record}
                 buProject={data[4]}
                 resourceRole_id={data[5]}
-                hintNamePrj= {data[6]}
+                hintNamePrj={data[6]}
               />
             );
           },
@@ -134,8 +159,10 @@ export default function TableRPool(data) {
   const modifiedData = emps.map((item, index) => ({
     no: (countEmp += 1),
     key: index,
-
     ...item,
+    Date_start: item.Date_start=='' ? '' : new Date(item.Date_start).toLocaleDateString("es-CL"),
+    Date_end: item.Date_start=='' ? '' : new Date(item.Date_end).toLocaleDateString("es-CL"),
+
   }));
 
   return (

@@ -32,6 +32,7 @@ export default function PieChart(dataBU) {
   const data = dataBU.data.map((item) => ({
     type: "BU " + Buid++,
     value: item,
+    
   }));
   console.log(dataBU.data);
   const config = {

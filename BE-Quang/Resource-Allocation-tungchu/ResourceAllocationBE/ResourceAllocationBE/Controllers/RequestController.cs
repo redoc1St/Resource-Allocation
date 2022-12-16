@@ -33,7 +33,7 @@ namespace ResourceAllocationBE.Controllers
             insert into Notifications values (1, 'ADMIN You get notification about request in '+@pname+'', GETDATE())
                 ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -57,15 +57,16 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListRequestResourcePlanning()
         {
             string query = @"
-                    select *
+                     select *
                     from ResourcePlanning_Role, Roles,Project, Levels,Skill, ResourceRequestRole
                     where ResourcePlanning_Role.Project_id = Project.Project_id and
                     Roles.Role_id = ResourcePlanning_Role.Role_id and
                     ResourcePlanning_Role.Level_id = Levels.Level_id and
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
-                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id";
+                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+					order by ResourceRequestRole.lastestTime  desc, ResourcePlanning_Role.[status] desc  ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -88,7 +89,7 @@ namespace ResourceAllocationBE.Controllers
         //    string query = @"
         //    update ResourcePlanning_Role set [status] = 'Approved' where id =@rid";
         //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
         //    SqlDataReader myReader;
         //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
         //    {
@@ -112,7 +113,7 @@ namespace ResourceAllocationBE.Controllers
         //    string query = @"
         //    update ResourcePlanning_Role set [status] = 'Reject' where id =@rid";
         //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
         //    SqlDataReader myReader;
         //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
         //    {
@@ -139,7 +140,7 @@ namespace ResourceAllocationBE.Controllers
             insert into Notifications values (1, 'ADMIN The request role in '+@pname+' is '+@status+'', GETDATE())
             ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -169,9 +170,10 @@ namespace ResourceAllocationBE.Controllers
                     Roles.Role_id = ResourcePlanning_Role.Role_id and
                     ResourcePlanning_Role.Level_id = Levels.Level_id and
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
-                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id and depeartment_id =@bu";
+                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id and depeartment_id =@bu 
+	order by ResourcePlanning_Role.[status] desc , ResourceRequestRole.lastestTime  desc";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -198,7 +200,7 @@ namespace ResourceAllocationBE.Controllers
         //    insert into Emp_RolePlanning values(@rid,@eid)
         //    update ResourceRequestEmployee set [status] = 'Approved' where ResourcePlannig_RoleId =@rid and Employee_id = @eid";
         //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
         //    SqlDataReader myReader;
         //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
         //    {
@@ -231,7 +233,7 @@ namespace ResourceAllocationBE.Controllers
             else select * from [user]";
 
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -267,7 +269,7 @@ namespace ResourceAllocationBE.Controllers
             update ResourceRequestEmployee set [status] = 'Reject' where ResourcePlannig_RoleId =@rid and Employee_id = @eid
             insert into Notifications values (1, 'ADMIN The request '+@name+' in '+@pname+' has been Rejected', GETDATE())";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -299,19 +301,26 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult requestEmployeeToRolePlanning(RequestModel request, int leader_id, string name, string pname)
         {
             string query = @"
+            	  begin 
+            if not exists(SELECT * FROM 
+                Emp_RolePlanning
+               where ResourcePlannig_RoleId = @rid and Employee_id = @eid)
+			   begin
             	  if not exists(SELECT * FROM [ResourceRequestEmployee]
-                where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and 
-				(status='In Progress' or status='Approved'))
-			begin 
-			insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE(), @date_start,@date_end, @effort, @bill)
+                    where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and 
+				    (status='In Progress' or status='Approved'))
+			    begin 
+			    insert into ResourceRequestEmployee values(@rid,@eid,2,@leader_id,'In Progress',GETDATE(), @date_start,@date_end, @effort, @bill)
                 insert into Notifications values (@leader_id, 'LEADER You get notification about request '+@name+' in '+@pname+'', GETDATE())
-insert into Notifications values (1, 'ADMIN You get notification about request '+@name+' in '+@pname+'', GETDATE())
-			end
+                insert into Notifications values (1, 'ADMIN You get notification about request '+@name+' in '+@pname+'', GETDATE())
+			    end
+               end
 			else 
-			select * from [user]
+			    select * from [user]
+            end 
                 ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -364,7 +373,7 @@ insert into Notifications values (1, 'ADMIN You get notification about request '
 				select * from [user]
                 ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -410,9 +419,10 @@ insert into Notifications values (1, 'ADMIN You get notification about request '
 					join ResourcePlanning_Role on ResourcePlanning_Role.id = ResourceRequestEmployee.ResourcePlannig_RoleId
                     join Project on Project.project_id = ResourcePlanning_Role.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
+					order by ResourcePlanning_Role.[status] desc , ResourceRequestEmployee.lastestTime  desc
   ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -441,12 +451,12 @@ insert into Notifications values (1, 'ADMIN You get notification about request '
 					join ResourcePlanning_Role on ResourcePlanning_Role.id = ResourceRequestEmployee.ResourcePlannig_RoleId
                     join Project on Project.project_id = ResourcePlanning_Role.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
-	                 where Department.Department_id =@bu
+	                 where Department.Department_id =@bu order by ResourcePlanning_Role.[status] desc , ResourceRequestEmployee.lastestTime  desc
 
                 ";
             //project.depeartment_id=@bu
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB_2");
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

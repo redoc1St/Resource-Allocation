@@ -34,7 +34,7 @@ export default function CandidateManage() {
   const calEmp = () => {
     users.map((item) => {
       totalUsers++
-      for (let index = 1; index < arr.length; index++) {
+      for (let index = 0; index < arr.length; index++) {
         // const element = array[index];
         if (item.Department_id === index) {
           arr[index-1]++;

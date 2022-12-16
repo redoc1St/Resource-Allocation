@@ -20,7 +20,10 @@ import axios from "axios";
 import { useState } from "react";
 import { ROLES } from "../../../App";
 import useAuth from "../../hooks/useAuth";
-import { getProjects, getProjectsByBuId } from "../../../Store/Actions/ProjectActions";
+import {
+  getProjects,
+  getProjectsByBuId,
+} from "../../../Store/Actions/ProjectActions";
 export default function ResourcePlanning() {
   const { pName } = useParams();
   const navigate = useNavigate();
@@ -30,6 +33,7 @@ export default function ResourcePlanning() {
   const [getPId, setPID] = useState();
   const [getPName, setPName] = useState();
   const [getBU, setBU] = useState();
+  const [dateProject, setDateProject] = useState({});
   const { user } = useAuth();
 
   const roles = useSelector((state) => state.ExtraObject.roles);
@@ -56,6 +60,10 @@ export default function ResourcePlanning() {
         setPID(response.data[0].Project_id);
         setPName(response.data[0].ProjectName);
         setBU(response.data[0].Depeartment_id);
+        setDateProject({
+          sDate: response.data[0].Start_actual,
+          eDate: response.data[0].End_actual,
+        });
       })
       .catch(function (error) {
         // handle error
@@ -157,15 +165,22 @@ export default function ResourcePlanning() {
           (MM)<p style={{ fontSize: "30px" }}>5</p>
         </Card>
       </div>
-
+      {console.log(projects)}
       <div style={{ marginTop: "5px" }}>
-        <TableResourcePlanning planningRoles={planningRoles} bu={getBU} />
+        <TableResourcePlanning
+          name={getPName}
+          {...dateProject}
+          planningRoles={planningRoles}
+          bu={getBU}
+        />
         {user?.UserType != ROLES.EMPLOYEE ? (
           <ModalAddRole
+            name={getPName}
             roles={roles}
             skills={skills}
             levels={levels}
             pId={getPId}
+            {...dateProject}
           />
         ) : (
           ""
