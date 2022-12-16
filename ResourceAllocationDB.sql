@@ -138,34 +138,34 @@ End_actual date,
 note nvarchar(200)
 )
 insert into Project values('HM_01','Hotel Management',1,5,3,3,2,2,
-'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+'2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
 insert into Project values('OLS_02','Online Learning System',2,4,2,3,3,3,
-'2022/09/01','2022/09/01','2022/10/10','2022/12/10',''
+'2022/09/01','2022/09/01','2023/02/10','2023/02/10',''
 )
 insert into Project values('PHL_03','Pet Hola Kingdom',3,3,1,2,2,2,
-'2022/09/01','2022/09/01','2022/12/10','2022/12/10',''
+'2022/09/01','2022/09/01','2023/02/10','2023/02/10',''
 )
 insert into Project values('VPE_04','Vietnam Products Exchange',4,3,2,2,3,3,
-'2022/11/01','2022/11/01','2022/12/10','2022/12/10',''
+'2022/11/01','2022/11/01','2023/02/10','2023/02/10',''
 )
 insert into Project values('ECM_05','English Center Management',5,3,3,2,2,2,
-'2022/11/01','2022/11/01','2022/12/10','2022/12/10',''
+'2022/11/01','2022/11/01','2023/02/10','2023/02/10',''
 )
 insert into Project values('SSPS_06','Spa service providing system',1,2,2,1,2,2,
-'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+'2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
 insert into Project values('RRS_07','Room rental system ',2,4,1,3,2,2,
-'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+'2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
 insert into Project values('FBM_08','Furniture Business Management',3,3,1,3,2,2,
-'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+'2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
 insert into Project values('FFS_09','Freelance Finding System',4,4,1,3,2,2,
-'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+'2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
 insert into Project values('TPS_10','Trip Planner System',5,3,3,2,2,2,
-'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+'2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
 
 
@@ -198,36 +198,43 @@ Effort_actual ,
 Bill_rate ,
 Level_id,
 Skill_id ,
-[Status]) values(1,3,2,'2022/10/01', '2022/12/10'
-,100,'',100,2,1,'Approved')
+[Status]) values(1,3,2,'2022/11/01', '2023/01/10'
+,100,100,100,2,1,'Waiting')
 
-insert into ResourcePlanning_Role values(1,4,1,'2022/10/01', '2022/11/10'
-,100,'',100,5,3,'Approved')
-insert into ResourcePlanning_Role values(1,5,1,'2022/10/01', '2022/12/10'
-,100,'',100,4,5,'Approved')
-insert into ResourcePlanning_Role values(1,6,1,'2022/11/01', '2022/11/10'
-,100,'',100,4,3,'Approved')
+insert into ResourcePlanning_Role values(1,4,1,'2022/10/01', '2023/01/10'
+,100,100,100,5,3,'Waiting')
+insert into ResourcePlanning_Role values(1,5,1,'2022/10/01', '2023/01/10'
+,100,100,100,4,5,'Waiting')
+insert into ResourcePlanning_Role values(1,6,1,'2022/11/01', '2023/01/10'
+,100,100,100,4,3,'Waiting')
 
-insert into ResourcePlanning_Role values(2,3,1,'2022/11/01', '2022/12/10'
-,100,'',100,5,4,'Approved')
-insert into ResourcePlanning_Role values(2,4,1,'2022/11/01', '2022/12/10'
-,100,'',100,3,1,'Approved')
-insert into ResourcePlanning_Role values(2,5,1,'2022/11/01', '2022/12/10'
-,100,'',100,5,4,'Approved')
-insert into ResourcePlanning_Role values(2,6,1,'2022/12/01', '2022/12/10'
-,100,'',100,5,5,'Approved')
-insert into ResourcePlanning_Role values(1,3,1,GETDATE(), GETDATE()
-,100,'',100,3,3,'Approved')
-insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2022/12/10',100,100,100,3,1,'Approved')					
-insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2022/12/10',100,100,100,2,1,'Approved')					
-insert into ResourcePlanning_Role values(4,6,2,'2022/12/01', '2022/12/10',100,100,100,4,3,'Approved')					
-insert into ResourcePlanning_Role values(4,2,2,'2022/12/01', '2022/12/10',100,100,100,4,5,'Approved')					
-insert into ResourcePlanning_Role values(5,6,1,'2022/12/01', '2022/12/10',100,100,100,2,1,'Approved')					
-insert into ResourcePlanning_Role values(5,3,1,'2022/12/01', '2022/12/10',100,100,100,3,3,'Approved')					
-insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2022/12/10',100,100,100,2,1,'Approved')					
-insert into ResourcePlanning_Role values(4,4,2,'2022/12/01', '2022/12/10',100,100,100,3,2,'Approved')					
-insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2022/12/10',100,100,100,3,3,'Approved')		
-
+insert into ResourcePlanning_Role values(2,3,1,'2022/11/01', '2023/01/10'
+,100,100,100,5,4,'Waiting')
+insert into ResourcePlanning_Role values(2,4,1,'2022/11/01', '2023/01/10'
+,100,100,100,3,1,'Waiting')
+insert into ResourcePlanning_Role values(2,5,1,'2022/11/01', '2023/01/10'
+,100,100,100,5,4,'Waiting')
+insert into ResourcePlanning_Role values(2,6,1,'2022/12/01', '2023/01/10'
+,100,100,100,5,5,'Waiting')
+insert into ResourcePlanning_Role values(1,3,1,'2022/12/01', '2023/01/10'
+,100,100,100,3,3,'Waiting')
+insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2023/01/10',100,100,100,3,1,'Waiting')					
+insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2023/01/10',100,100,100,2,1,'Waiting')					
+insert into ResourcePlanning_Role values(4,6,2,'2022/12/01', '2023/01/10',100,100,100,4,3,'Waiting')					
+insert into ResourcePlanning_Role values(4,2,2,'2022/12/01', '2023/01/10',100,100,100,4,5,'Waiting')					
+insert into ResourcePlanning_Role values(5,6,1,'2022/12/01', '2023/01/10',100,100,100,2,1,'Waiting')					
+insert into ResourcePlanning_Role values(5,3,1,'2022/12/01', '2023/01/10',100,100,100,3,3,'Waiting')					
+insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2023/01/10',100,100,100,2,1,'Waiting')					
+insert into ResourcePlanning_Role values(4,4,2,'2022/12/01', '2023/01/10',100,100,100,3,2,'Waiting')					
+insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2023/01/10',100,100,100,3,3,'Waiting')
+insert into ResourcePlanning_Role values(6,6,2,'2022/11/29', '2023/01/03',88,0,88,2,3,'Waiting')
+insert into ResourcePlanning_Role values(10,4,2,'2022-11-10', '2023-01-13',80,0,80,1,2,'Waiting')
+insert into ResourcePlanning_Role values(9,4,2,'2022-10-21', '2023-02-01',80,0,80,1,1,'Waiting')
+insert into ResourcePlanning_Role values(10,3,2,'2022-11-14', '2023-01-18',80,0,80,2,3,'Waiting')
+insert into ResourcePlanning_Role values(9,5,2,'2022-11-18', '2023-01-06',80,0,80,2,5,'Waiting')
+insert into ResourcePlanning_Role values(8,6,2,'2022-11-23', '2023-01-21',80,0,80,2,3,'Waiting')
+insert into ResourcePlanning_Role values(10,6,2,'2022-11-27', '2023-01-14',80,0,80,3,3,'Waiting')
+insert into ResourcePlanning_Role values(8,4,2,'2022-11-23', '2023-01-07',80,0,80,3,2,'Waiting')
 --ResourcePlanning_Employee
 create table ResourcePlanning_Employee(
 id int primary key identity(1,1),
@@ -293,12 +300,15 @@ Date_end date,
 Effort int, 
 Bill_rate int
 )
-insert into Emp_RolePlanning values(1,1,'2022/10/01','2022/11/01',50,50)
-insert into` Emp_RolePlanning values(2,8,'2022/10/03','2022/12/02',30,30)
-insert into Emp_RolePlanning values(3,33,'2022/10/04','2022/12/03',20,20)
-insert into Emp_RolePlanning values(4,21,'2022/10/05','2022/12/05',20,20)
-insert into Emp_RolePlanning values(6,32,'2022/10/06','2022/12/05',10,10)
-
+insert into Emp_RolePlanning values(1,1,'12-05-2022','12-21-2022',20,20)
+insert into Emp_RolePlanning values(19,7,'2022-12-12','2023-01-02',20,20)
+insert into Emp_RolePlanning values(5,5,'2022-11-28','2023-01-04',20,20)
+insert into Emp_RolePlanning values(18,3,'2022-12-18','2023-01-07',25,25)
+insert into Emp_RolePlanning values(7,12,'2022-12-19','2023-01-09',30,30)
+insert into Emp_RolePlanning values(12,13,'2022-12-01','2023-01-06',30,30)
+insert into Emp_RolePlanning values(16,18,'2022-12-03','2023-01-04',30,30)
+insert into Emp_RolePlanning values(2,8,'2022-11-24','2022-12-31',15,15)
+insert into Emp_RolePlanning values(11,26,'2022-12-06','2023-01-06',15,15)
 --ResourceRequestRole
 create table ResourceRequestRole(
 id int primary key identity(1,1),
@@ -307,7 +317,27 @@ Requested_to int foreign key references [User]([User_id]),
 Approved_by nvarchar(50),
 lastestTime datetime
 )
-
+insert into ResourceRequestRole values(1,2,'',GETDATE())
+insert into ResourceRequestRole values(2,2,'',GETDATE())
+insert into ResourceRequestRole values(3,2,'',GETDATE())
+insert into ResourceRequestRole values(4,2,'',GETDATE())
+insert into ResourceRequestRole values(5,7,'',GETDATE())
+insert into ResourceRequestRole values(6,7,'',GETDATE())
+insert into ResourceRequestRole values(7,7,'',GETDATE())
+insert into ResourceRequestRole values(8,7,'',GETDATE())
+insert into ResourceRequestRole values(9,2,'',GETDATE())
+insert into ResourceRequestRole values(10,13,'',GETDATE())
+insert into ResourceRequestRole values(11,13,'',GETDATE())
+insert into ResourceRequestRole values(12,19,'',GETDATE())
+insert into ResourceRequestRole values(13,19,'',GETDATE())
+insert into ResourceRequestRole values(14,26,'',GETDATE())
+insert into ResourceRequestRole values(15,26,'',GETDATE())
+insert into ResourceRequestRole values(16,13,'',GETDATE())
+insert into ResourceRequestRole values(17,19,'',GETDATE())
+insert into ResourceRequestRole values(18,13,'',GETDATE())
+--new
+insert into ResourceRequestRole values(19,19,2,GETDATE())
+update ResourcePlanning_Role set [status] = 'Approved' where id between 1 and 19
 
 --ResourceRequestEmployee
 create table ResourceRequestEmployee(
@@ -323,6 +353,9 @@ request_end date,
 request_effort int, 
 request_bill int
 )
+insert into ResourceRequestEmployee values(19,21,2,13,'Approved',GETDATE(),'2022-12-05','2022-12-28',25,25)
+insert into ResourceRequestEmployee values(18,3,2,2,'Approved',GETDATE(),'2022-12-18','2023-01-07',25,25)
+insert into ResourceRequestEmployee values(12,13,2,7,'Approved',GETDATE(),'2022-12-01','2023-01-06',30,30)
 
 
 create table Notifications (
@@ -336,3 +369,27 @@ noti_time datetime
 
 go
 
+
+
+-- CHECK DATE TIME 
+-- project and role
+
+begin 
+declare @start_date_role date
+declare	@end_date_role date
+declare @start_date_pro date
+declare	@end_date_pro date
+select @start_date_pro = Project.Start_actual, @end_date_pro = Project.End_actual
+from Project where Code='AIS_0001'
+
+select @start_date_role = Date_start, @end_date_role = Date_end
+from Project
+join ResourcePlanning_Role on ResourcePlanning_Role.Project_id = Project.Project_id
+where Project.Code='AIS_0001' and Role_id=3 and Level_id=2 and Skill_id=1
+
+if(@start_date_role>@start_date_pro or @end_date_role>@end_date_pro)
+begin 
+select * from project
+end
+else select * from [user]
+end

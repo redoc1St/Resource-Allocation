@@ -288,9 +288,10 @@ and ResourcePlanning_Role.[status]='Approved'";
             }
             return new JsonResult(table);
         }
+        
         // SHOW  LEADER  INFOR  DEPARTMENT ID
         [HttpGet]
-        [Route("api/leaderInfor/{bu}")]
+        [Route("api/leaderByBU/{bu}")]
         public JsonResult getLeaderInforByBu(int bu)
         {
             string query = @"SELECT *

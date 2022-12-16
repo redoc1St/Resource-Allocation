@@ -36,8 +36,11 @@ namespace ResourceAllocation.UnitTest.UserTest
             }
             if (user.Password != "123456")
             {
+                Console.WriteLine("OK");
                 throw new ArgumentException("Password is not true");
+                
             }
+            
             return true;
         }
 

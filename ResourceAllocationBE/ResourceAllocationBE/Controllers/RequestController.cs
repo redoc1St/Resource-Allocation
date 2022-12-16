@@ -28,7 +28,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult requestToRolePlanning(RequestModel request, int user_id, string pname)
         {
             string query = @"
-            insert into ResourceRequestRole values(@rid,2,'',GETDATE())
+            insert into ResourceRequestRole values(@rid,@id,'',GETDATE())
             update ResourcePlanning_Role set [Status] = 'In Progress' where id = @rid
             insert into Notifications values (@id, 'LEADER You get notification about request in '+@pname+'', GETDATE())
             insert into Notifications values (1, 'ADMIN You get notification about request in '+@pname+'', GETDATE())

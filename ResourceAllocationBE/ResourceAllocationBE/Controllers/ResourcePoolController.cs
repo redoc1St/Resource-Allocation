@@ -46,6 +46,7 @@ namespace ResourceAllocationBE.Controllers
 					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
 					left join	(select Employee_id,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by Employee_id) as effortColumn 
 					on ResourcePlanning_Employee.id = effortColumn.Employee_id
+                    where [user].isActive = 1
                     order by Department_name asc, fullname asc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -85,7 +86,7 @@ namespace ResourceAllocationBE.Controllers
 					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
 					left join	(select Employee_id,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by Employee_id) as effortColumn 
 					on ResourcePlanning_Employee.id = effortColumn.Employee_id
-                    where Department.Department_id=@bu
+                    where Department.Department_id=@bu and [user].isActive = 1
 order by Department_name asc, fullname asc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -128,7 +129,7 @@ order by Department_name asc, fullname asc";
 					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
 					left join	(select Employee_id,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by Employee_id) as effortColumn 
 					on ResourcePlanning_Employee.id = effortColumn.Employee_id
-                where [User].Fullname like @name
+                where [User].Fullname like @name and [user].isActive = 1
 order by Department_name asc, fullname asc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -171,6 +172,7 @@ order by Department_name asc, fullname asc";
                     left join	(select Employee_id,sum(Effort) as totalEffort from Emp_RolePlanning group by Employee_id) as effortColumn 
 					on ResourcePlanning_Employee.id = effortColumn.Employee_id
                     where Roles.Role_id = @role and Levels.Level_id between @level and 5 and Skill.Skill_id =@skill  
+                    and [user].isActive = 1
 order by Department_name asc, fullname asc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
