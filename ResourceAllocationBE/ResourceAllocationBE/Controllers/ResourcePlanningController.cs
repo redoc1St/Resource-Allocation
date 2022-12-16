@@ -69,7 +69,7 @@ namespace ResourceAllocationBE.Controllers
                 Emp_RolePlanning.Effort, 
                 Emp_RolePlanning.Bill_rate, 
                 Levels.LevelName, 
-                Skill.SkillName
+                Skill.SkillName,ResourcePlanning_Role.id, ResourcePlanning_Employee.id as 'employee_id'
                
              FROM Project, ResourcePlanning_Role, [USER], Roles, 
                 Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
@@ -79,7 +79,7 @@ namespace ResourceAllocationBE.Controllers
 				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
 				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
                 Roles.Role_id = ResourcePlanning_Role.Role_id AND
-                Levels.Level_id = ResourcePlanning_Role.Level_id AND
+                Levels.Level_id = ResourcePlanning_Employee.Level_id AND
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
                 and ProjectName =@name AND Roles.RoleName = @role";
             DataTable table = new DataTable();

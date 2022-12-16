@@ -294,7 +294,7 @@ Effort int,
 Bill_rate int
 )
 insert into Emp_RolePlanning values(1,1,'2022/10/01','2022/11/01',50,50)
-insert into Emp_RolePlanning values(2,8,'2022/10/03','2022/12/02',30,30)
+insert into` Emp_RolePlanning values(2,8,'2022/10/03','2022/12/02',30,30)
 insert into Emp_RolePlanning values(3,33,'2022/10/04','2022/12/03',20,20)
 insert into Emp_RolePlanning values(4,21,'2022/10/05','2022/12/05',20,20)
 insert into Emp_RolePlanning values(6,32,'2022/10/06','2022/12/05',10,10)
@@ -335,30 +335,4 @@ noti_time datetime
 
 
 go
-
-
-
--- CHECK DATE TIME 
--- project and role
-
-begin 
-declare @start_date_role date
-declare	@end_date_role date
-declare @start_date_pro date
-declare	@end_date_pro date
-select @start_date_pro = Project.Start_actual, @end_date_pro = Project.End_actual
-from Project where Code='AIS_0001'
-
-select @start_date_role = Date_start, @end_date_role = Date_end
-from Project
-join ResourcePlanning_Role on ResourcePlanning_Role.Project_id = Project.Project_id
-where Project.Code='AIS_0001' and Role_id=3 and Level_id=2 and Skill_id=1
-
-if(@start_date_role>@start_date_pro or @end_date_role>@end_date_pro)
-begin 
-select * from project
-end
-else select * from [user]
-
-end
 
