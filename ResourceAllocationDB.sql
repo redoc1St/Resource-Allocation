@@ -138,26 +138,37 @@ End_plan date,
 End_actual date,
 note nvarchar(200)
 )
-if not exists ( select * from Project where Code = 'AIS_0001')
-insert into Project values('AIS_0001','ProjectName1',1,2,5,1,2,2,
-'2022/06/01','2022/06/01','2022/12/10','2022/12/10',''
+insert into Project values('HM_01','Hotel Management',1,80,100,100,2,2,
+'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
 )
-if not exists ( select * from Project where Code = 'AIS_0002')
-insert into Project values('AIS_0002','ProjectName2',2,5,4,3,3,3,
-'2022/05/01','2022/05/01','2022/10/10','2022/12/10',''
+insert into Project values('OLS_02','Online Learning System',2,80,100,100,3,3,
+'2022/09/01','2022/09/01','2022/10/10','2022/12/10',''
 )
-insert into Project values('AIS_0003','ProjectName3',3,2,1,0,2,2,
-'2022/06/01','2022/06/01','2022/12/10','2022/12/10',''
+insert into Project values('PHL_03','Pet Hola Kingdom',3,80,100,100,2,2,
+'2022/09/01','2022/09/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('AIS_0004','ProjectName4',4,4,3,3,3,3,
-'2022/06/01','2022/06/01','2022/12/10','2022/12/10',''
+insert into Project values('VPE_04','Vietnam Products Exchange',4,80,100,100,3,3,
+'2022/11/01','2022/11/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('AIS_0005','ProjectName5',5,2,5,1,2,2,
-'2022/07/01','2022/07/01','2022/12/10','2022/12/10',''
+insert into Project values('ECM_05','English Center Management',5,80,100,100,2,2,
+'2022/11/01','2022/11/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('AIS_0006','ProjectName6',1,2,5,1,2,2,
-'2022/07/01','2022/07/01','2022/12/10','2022/12/10',''
+insert into Project values('SSPS_06','Spa service providing system',1,80,100,100,2,2,
+'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
 )
+insert into Project values('RRS_07','Room rental system ',2,80,100,100,2,2,
+'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+)
+insert into Project values('FBM_08','Furniture Business Management',3,80,100,100,2,2,
+'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+)
+insert into Project values('FFS_09','Freelance Finding System',4,80,100,100,2,2,
+'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+)
+insert into Project values('TPS_10','Trip Planner System',5,80,100,100,2,2,
+'2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
+)
+
 
 
 
@@ -191,30 +202,30 @@ Skill_id ,
 [Status]) values(1,3,2,'2022/06/01', '2022/06/10'
 ,100,'',100,2,1,'Approved')
 
-insert into ResourcePlanning_Role values(1,4,1,'2022/06/01', '2022/06/10'
+insert into ResourcePlanning_Role values(1,4,1,'2022/10/01', '2022/11/10'
 ,100,'',100,5,3,'Approved')
-insert into ResourcePlanning_Role values(1,5,1,'2022/06/01', '2022/06/10'
+insert into ResourcePlanning_Role values(1,5,1,'2022/10/01', '2022/12/10'
 ,100,'',100,4,5,'Approved')
-insert into ResourcePlanning_Role values(1,6,1,'2022/06/01', '2022/06/10'
+insert into ResourcePlanning_Role values(1,6,1,'2022/11/01', '2022/11/10'
 ,100,'',100,4,3,'Approved')
 
-insert into ResourcePlanning_Role values(2,3,1,'2022/06/01', '2022/06/10'
+insert into ResourcePlanning_Role values(2,3,1,'2022/11/01', '2022/12/10'
 ,100,'',100,5,4,'Approved')
-insert into ResourcePlanning_Role values(2,4,1,'2022/06/01', '2022/06/10'
+insert into ResourcePlanning_Role values(2,4,1,'2022/11/01', '2022/12/10'
 ,100,'',100,3,1,'Approved')
-insert into ResourcePlanning_Role values(2,5,1,'2022/06/01', '2022/06/10'
+insert into ResourcePlanning_Role values(2,5,1,'2022/11/01', '2022/12/10'
 ,100,'',100,5,4,'Approved')
-insert into ResourcePlanning_Role values(2,6,1,'2022/06/01', '2022/06/10'
+insert into ResourcePlanning_Role values(2,6,1,'2022/12/01', '2022/12/10'
 ,100,'',100,5,5,'Approved')
 insert into ResourcePlanning_Role values(1,3,1,GETDATE(), GETDATE()
 ,100,'',100,3,3,'Approved')
-insert into ResourcePlanning_Role values(3,4,2,'2022/06/01', '2022/06/10',100,100,100,3,1,'Approved')					
-insert into ResourcePlanning_Role values(3,3,2,'2022/06/01', '2022/06/10',100,100,100,2,1,'Approved')					
-insert into ResourcePlanning_Role values(4,6,2,'2022/06/01', '2022/06/10',100,100,100,4,3,'Approved')					
-insert into ResourcePlanning_Role values(4,2,2,'2022/06/01', '2022/06/10',100,100,100,4,5,'Approved')					
-insert into ResourcePlanning_Role values(5,6,1,'2022/06/01', '2022/06/10',100,100,100,2,1,'Approved')					
-insert into ResourcePlanning_Role values(5,3,1,'2022/06/01', '2022/06/10',100,100,100,3,3,'Approved')					
-insert into ResourcePlanning_Role values(3,4,2,'2022/06/01', '2022/06/10',100,100,100,2,1,'Approved')					
+insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2022/12/10',100,100,100,3,1,'Approved')					
+insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2022/12/10',100,100,100,2,1,'Approved')					
+insert into ResourcePlanning_Role values(4,6,2,'2022/12/01', '2022/12/10',100,100,100,4,3,'Approved')					
+insert into ResourcePlanning_Role values(4,2,2,'2022/12/01', '2022/12/10',100,100,100,4,5,'Approved')					
+insert into ResourcePlanning_Role values(5,6,1,'2022/12/01', '2022/12/10',100,100,100,2,1,'Approved')					
+insert into ResourcePlanning_Role values(5,3,1,'2022/12/01', '2022/12/10',100,100,100,3,3,'Approved')					
+insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2022/12/10',100,100,100,2,1,'Approved')					
 
 
 --ResourcePlanning_Employee
@@ -351,40 +362,20 @@ else select * from [user]
 
 end
 
-  begin 
-  if not exists(SELECT * FROM 
-                Emp_RolePlanning
-               where ResourcePlannig_RoleId = 1 and Employee_id = 1)
-			   begin
-					if not exists(SELECT * FROM [ResourceRequestEmployee]
-					where  ResourcePlannig_RoleId =1 and Employee_id = 1 and 
-					(status='In Progress' or status='Approved'))
-					begin 
-					insert into ResourceRequestEmployee values(1,1,2,2,'In Progress',GETDATE(), '06/06/2022','08/08/2022', 50, 50)
-					end
-			   end
-	else
-	select * from [user]
-  end
-  
-  -- view list emplyee working
-  SELECT [User].Fullname, 
-                Roles.RoleName, 
-                Emp_RolePlanning.Date_start, 
-                Emp_RolePlanning.Date_end, 
-                Emp_RolePlanning.Effort, 
-                Emp_RolePlanning.Bill_rate, 
-                Levels.LevelName, 
-                Skill.SkillName
-               
-             FROM Project, ResourcePlanning_Role, [USER], Roles, 
-                Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
-                
-             WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
-                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
-				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
-				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
-                Roles.Role_id = ResourcePlanning_Role.Role_id AND
-                Levels.Level_id = ResourcePlanning_Role.Level_id AND
-                Skill.Skill_id = ResourcePlanning_Role.Skill_id
-                and ProjectName =@name AND Roles.RoleName = @role
+
+  select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
+                    Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
+                    Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
+					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
+					,effortColumn.totalEffort, effortColumn.totalBill
+                    from ResourcePlanning_Employee
+		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
+		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
+		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
+		            join Department on Department.Department_id = [user].Department_id
+					left join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
+					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
+					left join	(select ResourcePlannig_RoleId,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by ResourcePlannig_RoleId) as effortColumn 
+					on ResourcePlanning_Role.id = effortColumn.ResourcePlannig_RoleId

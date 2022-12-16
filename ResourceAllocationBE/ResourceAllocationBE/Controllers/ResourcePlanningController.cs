@@ -64,10 +64,10 @@ namespace ResourceAllocationBE.Controllers
             string query = @"
              SELECT [User].Fullname, 
                 Roles.RoleName, 
-                ResourcePlanning_Role.Date_start, 
-                ResourcePlanning_Role.Date_end, 
-                ResourcePlanning_Role.Effort_planned, 
-                ResourcePlanning_Role.Bill_rate, 
+                Emp_RolePlanning.Date_start, 
+                Emp_RolePlanning.Date_end, 
+                Emp_RolePlanning.Effort, 
+                Emp_RolePlanning.Bill_rate, 
                 Levels.LevelName, 
                 Skill.SkillName
                
