@@ -26,9 +26,14 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
             {
                 throw new ArgumentNullException("Input not null");
             }
-            if (resourcePlanningRole.Quantity <= 0)
+            if (resourcePlanningRole.Quantity <= 0 || resourcePlanningRole.Bill_rate==0|| resourcePlanningRole.Effort_planned==0)
             {
                 throw new ArgumentOutOfRangeException("Quantity not equal 0");
+            }
+            if (resourcePlanningRole.Bill_rate > 100 || resourcePlanningRole.Effort_planned>100)
+            {
+                throw new ArgumentOutOfRangeException("No more than 100%");
+
             }
             
             return resourceAllocationProcessor.InsertResourcePlanningRole(resourcePlanningRole);

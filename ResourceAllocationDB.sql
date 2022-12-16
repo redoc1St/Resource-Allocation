@@ -1,5 +1,4 @@
 use ResourceAllocationDB
-
 --DEPARTMENT
 CREATE table Department(
 Department_id int primary key identity(1,1),
@@ -138,34 +137,34 @@ End_plan date,
 End_actual date,
 note nvarchar(200)
 )
-insert into Project values('HM_01','Hotel Management',1,80,100,100,2,2,
+insert into Project values('HM_01','Hotel Management',1,5,3,3,2,2,
 '2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('OLS_02','Online Learning System',2,80,100,100,3,3,
+insert into Project values('OLS_02','Online Learning System',2,4,2,3,3,3,
 '2022/09/01','2022/09/01','2022/10/10','2022/12/10',''
 )
-insert into Project values('PHL_03','Pet Hola Kingdom',3,80,100,100,2,2,
+insert into Project values('PHL_03','Pet Hola Kingdom',3,3,1,2,2,2,
 '2022/09/01','2022/09/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('VPE_04','Vietnam Products Exchange',4,80,100,100,3,3,
+insert into Project values('VPE_04','Vietnam Products Exchange',4,3,2,2,3,3,
 '2022/11/01','2022/11/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('ECM_05','English Center Management',5,80,100,100,2,2,
+insert into Project values('ECM_05','English Center Management',5,3,3,2,2,2,
 '2022/11/01','2022/11/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('SSPS_06','Spa service providing system',1,80,100,100,2,2,
+insert into Project values('SSPS_06','Spa service providing system',1,2,2,1,2,2,
 '2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('RRS_07','Room rental system ',2,80,100,100,2,2,
+insert into Project values('RRS_07','Room rental system ',2,4,1,3,2,2,
 '2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('FBM_08','Furniture Business Management',3,80,100,100,2,2,
+insert into Project values('FBM_08','Furniture Business Management',3,3,1,3,2,2,
 '2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('FFS_09','Freelance Finding System',4,80,100,100,2,2,
+insert into Project values('FFS_09','Freelance Finding System',4,4,1,3,2,2,
 '2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
 )
-insert into Project values('TPS_10','Trip Planner System',5,80,100,100,2,2,
+insert into Project values('TPS_10','Trip Planner System',5,3,3,2,2,2,
 '2022/10/01','2022/10/01','2022/12/10','2022/12/10',''
 )
 
@@ -199,7 +198,7 @@ Effort_actual ,
 Bill_rate ,
 Level_id,
 Skill_id ,
-[Status]) values(1,3,2,'2022/06/01', '2022/06/10'
+[Status]) values(1,3,2,'2022/10/01', '2022/12/10'
 ,100,'',100,2,1,'Approved')
 
 insert into ResourcePlanning_Role values(1,4,1,'2022/10/01', '2022/11/10'
@@ -226,7 +225,8 @@ insert into ResourcePlanning_Role values(4,2,2,'2022/12/01', '2022/12/10',100,10
 insert into ResourcePlanning_Role values(5,6,1,'2022/12/01', '2022/12/10',100,100,100,2,1,'Approved')					
 insert into ResourcePlanning_Role values(5,3,1,'2022/12/01', '2022/12/10',100,100,100,3,3,'Approved')					
 insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2022/12/10',100,100,100,2,1,'Approved')					
-
+insert into ResourcePlanning_Role values(4,4,2,'2022/12/01', '2022/12/10',100,100,100,3,2,'Approved')					
+insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2022/12/10',100,100,100,3,3,'Approved')		
 
 --ResourcePlanning_Employee
 create table ResourcePlanning_Employee(
@@ -293,11 +293,11 @@ Date_end date,
 Effort int, 
 Bill_rate int
 )
-insert into Emp_RolePlanning values(1,1,'2022/06/01','2022/06/11',50,50)
-insert into Emp_RolePlanning values(2,8,'2022/06/03','2022/06/12',30,30)
-insert into Emp_RolePlanning values(3,33,'2022/06/04','2022/06/13',20,20)
-insert into Emp_RolePlanning values(4,21,'2022/06/05','2022/06/14',20,20)
-insert into Emp_RolePlanning values(6,32,'2022/06/06','2022/06/15',10,10)
+insert into Emp_RolePlanning values(1,1,'2022/10/01','2022/11/01',50,50)
+insert into Emp_RolePlanning values(2,8,'2022/10/03','2022/12/02',30,30)
+insert into Emp_RolePlanning values(3,33,'2022/10/04','2022/12/03',20,20)
+insert into Emp_RolePlanning values(4,21,'2022/10/05','2022/12/05',20,20)
+insert into Emp_RolePlanning values(6,32,'2022/10/06','2022/12/05',10,10)
 
 --ResourceRequestRole
 create table ResourceRequestRole(
@@ -362,20 +362,3 @@ else select * from [user]
 
 end
 
-
-  select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
-                    Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
-                    Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
-					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
-					,effortColumn.totalEffort, effortColumn.totalBill
-                    from ResourcePlanning_Employee
-		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
-		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
-		            join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
-		            join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
-		            join Department on Department.Department_id = [user].Department_id
-					left join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
-					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
-					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
-					left join	(select ResourcePlannig_RoleId,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by ResourcePlannig_RoleId) as effortColumn 
-					on ResourcePlanning_Role.id = effortColumn.ResourcePlannig_RoleId

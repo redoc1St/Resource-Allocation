@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ResourceAllocationBE.Model;
@@ -14,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace ResourceAllocationBE.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -175,7 +175,31 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
+        //SEARCH USER BY NAME
+        [HttpGet("search/{name}")]
+        public JsonResult SearchByNameOnly(string name, string isactive)
+        {
+            string query = @"
+                               select * from
+                                dbo.[User] where UserType != 'admin' and  [Fullname] like @name ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@name", '%' + name + '%');
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
 
+                }
+            }
+            return new JsonResult(table);
+        }
 
         //PAGING  LIST USER
         //[HttpGet("page/{number}")]
@@ -255,16 +279,13 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult updateUser(User user, int id)
         {
             string query = @"
-        if not exists(select * from [User] where email = @Email)
         update dbo.[User]
         set [Username] = @Username, [Password]= @Password, 
         [Fullname] = @Fullname, [Email] = @Email,
         [Address]=@Address, [UserType]=@UserType, 
         [isActive]=@isActive, [BirthDay]=@BirthDay, 
         [Start_Day]=@Start_Day, [Department_id]=@Department_id
-        WHERE [User_id] = @id
-        else
-        select * from [user]";
+        WHERE [User_id] = @id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

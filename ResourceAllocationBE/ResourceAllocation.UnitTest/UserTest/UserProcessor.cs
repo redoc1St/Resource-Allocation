@@ -115,10 +115,7 @@ namespace ResourceAllocation.UnitTest.UserTest
 
         public bool updateUser(string fullName, string address)
         {
-            if (fullName.Any(char.IsDigit))
-            {
-                throw new ArgumentException("Name does not contain number");
-            }
+            
             if(fullName==""||address=="")
             {
                 throw new ArgumentException("Input not null");

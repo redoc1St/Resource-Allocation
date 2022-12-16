@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ResourceAllocationBE.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class MailController : ControllerBase

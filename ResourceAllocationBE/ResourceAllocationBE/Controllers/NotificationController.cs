@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ResourceAllocationBE.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class NotificationController : ControllerBase
@@ -26,7 +27,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
                                select * from
-                                dbo.[Notifications] where [user_id] = @id";
+                                dbo.[Notifications] where [user_id] = @id  order by noti_time DESC";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

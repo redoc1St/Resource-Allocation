@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ResourceAllocationBE.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
@@ -30,7 +31,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
                                select * from
-                                dbo.[Project]";
+                                dbo.[Project] order by Project_id desc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -55,7 +56,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
                                select * from
-                                dbo.[Project] where depeartment_id=@bu";
+                                dbo.[Project] where depeartment_id=@bu order by Project_id desc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -81,7 +82,7 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
                                select * from
-                                dbo.[Project] where [ProjectName] like @PName";
+                                dbo.[Project] where [ProjectName] like @PName order by Project_id desc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

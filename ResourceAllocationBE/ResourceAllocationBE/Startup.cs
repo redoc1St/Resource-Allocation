@@ -70,7 +70,7 @@ namespace ResourceAllocationBE
                 });
                 options.AddPolicy("SpecificOrigin", builder =>
                 {
-                    builder.WithOrigins("http://localhost:5001").WithHeaders("Authorization").WithMethods("GET", "POST", "DELETE");
+                    builder.WithOrigins("http://localhost:44389").WithHeaders("Authorization").WithMethods("GET", "POST", "DELETE");
 
                 });
 

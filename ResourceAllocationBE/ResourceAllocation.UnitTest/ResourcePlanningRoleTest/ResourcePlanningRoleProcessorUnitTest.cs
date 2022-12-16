@@ -19,10 +19,59 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
             var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
             Assert.Throws<ArgumentNullException>(() => projectProcessor.insertResourcePlanning(new ResourcePlanningRole
             {
-                Date_start="", Date_end=""
+                Quantity = 0,
+                Effort_planned = 50,
+                Bill_rate = 50,
+                Date_start = "",
+                Date_end = "10/05/2022"
             }));
         }
 
+        // null
+        [Fact]
+        public void TestInvalidInsertResourcePlanningRoleInputNull2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.insertResourcePlanning(new ResourcePlanningRole
+            {
+                Quantity = 2,
+                Effort_planned = 50,
+                Bill_rate = 50,
+                Date_start = "05/05/2022",
+                Date_end = ""
+            }));
+        }
+        // null
+        [Fact]
+        public void TestInvalidInsertResourcePlanningRoleInputNull3()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.insertResourcePlanning(new ResourcePlanningRole
+            {
+                Quantity = 2,
+                Effort_planned = 50,
+                Bill_rate = 0,
+                Date_start = "05/05/2022",
+                Date_end = "05/05/2022"
+            }));
+        }
+        // null
+        [Fact]
+        public void TestInvalidInsertResourcePlanningRoleInputNull4()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.insertResourcePlanning(new ResourcePlanningRole
+            {
+                Quantity = 2,
+                Effort_planned = 0,
+                Bill_rate = 50,
+                Date_start = "05/05/2022",
+                Date_end = "05/05/2022"
+            }));
+        }
         // quantity not <=0 
         [Fact]
         public void TestInvalidInsertResourcePlanningRoleQuantityMoreThan0()
@@ -34,6 +83,36 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Quantity=0,
                 Effort_planned=50,
                 Bill_rate=50,
+                Date_start = "05/05/2022",
+                Date_end = "10/05/2022"
+            }));
+        }
+        // >100
+        [Fact]
+        public void TestInvalidInsertResourcePlanningRoleMoreThan100Percent()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.insertResourcePlanning(new ResourcePlanningRole
+            {
+                Quantity = 2,
+                Effort_planned = 250,
+                Bill_rate = 50,
+                Date_start = "05/05/2022",
+                Date_end = "10/05/2022"
+            }));
+        }
+        // >100
+        [Fact]
+        public void TestInvalidInsertResourcePlanningRoleMoreThan100Percent2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.insertResourcePlanning(new ResourcePlanningRole
+            {
+                Quantity = 2,
+                Effort_planned = 50,
+                Bill_rate = 250,
                 Date_start = "05/05/2022",
                 Date_end = "10/05/2022"
             }));
@@ -55,6 +134,15 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Date_end = "10/05/2022"
             }));
         }
+
+
+
+
+
+
+
+
+
 
         // TEST UPDATE ROLE PLANNING
         // quantity not <=0 

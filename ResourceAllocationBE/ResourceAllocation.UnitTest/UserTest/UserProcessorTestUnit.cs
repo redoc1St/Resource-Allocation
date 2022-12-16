@@ -161,7 +161,21 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.changePass(new User { Password = "" },"",""));
+            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.changePass(new User { Password = "" }, "123@123b", "123@123b"));
+        }
+        [Fact]
+        public void TestUserInputInChangePasswordNull2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.changePass(new User { Password = "123@123a" }, "", "123@123b"));
+        }
+        [Fact]
+        public void TestUserInputInChangePasswordNull3()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => userProcessor.changePass(new User { Password = "123@123a" }, "123@123b", ""));
         }
         // o f, true, c true
         [Fact]
@@ -321,7 +335,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => userProcessor.updateUser("do duc quang232 ", "Ha Noi"
+            Assert.Throws<ArgumentException>(() => userProcessor.updateUser("", "Ha Noi"
                 ));
         }
         [Fact]
@@ -329,7 +343,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => userProcessor.updateUser("", "Ha Noi"
+            Assert.Throws<ArgumentException>(() => userProcessor.updateUser("do duc quang", ""
                 ));
         }
     }
