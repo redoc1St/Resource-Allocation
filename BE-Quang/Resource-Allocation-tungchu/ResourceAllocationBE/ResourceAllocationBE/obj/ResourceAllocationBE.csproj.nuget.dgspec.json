@@ -47,14 +47,6 @@
               "target": "Package",
               "version": "[5.0.10, )"
             },
-            "Microsoft.AspNetCore.Cors": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.AspNetCore.Mvc.Cors": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[5.0.10, )"

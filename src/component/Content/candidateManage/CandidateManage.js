@@ -29,15 +29,15 @@ export default function CandidateManage() {
   };
 
 
-  var arr = new Array(0, 0, 0, 0, 0);
+  var arr = new Array( 0, 0, 0, 0,0,0);
   let totalUsers= 0
   const calEmp = () => {
     users.map((item) => {
       totalUsers++
-      for (let index = 0; index < arr.length; index++) {
+      for (let index = 1; index < arr.length; index++) {
         // const element = array[index];
         if (item.Department_id === index) {
-          arr[index-1]++;
+          arr[index]++;
         } 
       }
     });

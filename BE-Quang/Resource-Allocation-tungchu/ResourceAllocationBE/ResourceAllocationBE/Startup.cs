@@ -32,36 +32,13 @@ namespace ResourceAllocationBE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             //MAIL 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, Services.MailService>();
             // Enable Cors
-            services.AddCors(options =>
+            services.AddCors(c =>
             {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>()).WithHeaders("Authorization").WithMethods("POST", "DELETE");
-                });
-                options.AddPolicy("SpecificOrigin", builder =>
-                {
-                    builder.WithOrigins("http://localhost:5001").WithHeaders("Authorization").WithMethods("GET", "POST", "DELETE");
-
-                });
-
-                services.AddCors();
-
-                //services.AddCors(options =>
-                //{
-                //    options.AddPolicy("AllowAllHeaders",
-                //        builder =>
-                //        {
-                //            builder.AllowAnyOrigin()
-                //                   .AllowAnyHeader()
-                //                   .AllowAnyMethod();
-                //        });
-                //});
-
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
             //Authen TOKEN
@@ -84,7 +61,21 @@ namespace ResourceAllocationBE
                 };
             });
             services.AddSingleton(typeof(IJwtTokenManager), typeof(JwtTokenManager));
+            // Enable Cors
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>()).WithHeaders("Authorization").WithMethods("POST", "DELETE");
+                });
+                options.AddPolicy("SpecificOrigin", builder =>
+                {
+                    builder.WithOrigins("http://localhost:44389").WithHeaders("Authorization").WithMethods("GET", "POST", "DELETE");
 
+                });
+
+                services.AddCors();
+            });
             // JSON Serializer
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)

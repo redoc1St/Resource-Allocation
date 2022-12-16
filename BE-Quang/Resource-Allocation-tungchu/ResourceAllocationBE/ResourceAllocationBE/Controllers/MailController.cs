@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ResourceAllocationBE.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class MailController : ControllerBase
@@ -19,7 +20,7 @@ namespace ResourceAllocationBE.Controllers
             this.mailService = mailService;
         }
         [HttpPost("sendMail")]
-        public async Task<IActionResult> receiveMailPassword([FromForm] MailRequest request)
+        public async Task<IActionResult> receiveMailNewPassword([FromForm] MailRequest request)
         {
             try
             {

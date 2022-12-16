@@ -164,6 +164,7 @@ export default function TableResourcePlanning(data) {
     <div>
       <Table
         bordered
+        className="table-striped-rows"
         columns={columns}
         scroll={{
           // x: 600,
@@ -176,7 +177,6 @@ export default function TableResourcePlanning(data) {
               }
             : { width: "200vh" }
         }
-        className="-striped -highlight"
         dataSource={mergedData2}
         size="small"
       ></Table>

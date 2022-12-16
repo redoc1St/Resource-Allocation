@@ -9,7 +9,7 @@ import { Col, message, Row, Select } from "antd";
 export default function ModalNote(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-// console.log(data.data.id);
+console.log(data.data);
   const showModal = () => {
     setIsModalOpen(true);
 
@@ -27,7 +27,7 @@ export default function ModalNote(data) {
     console.log(e.target.elements.note.value);
     try {
       const res = await axios({
-        url: process.env.REACT_APP_BASE_URL + `/api/project/Note/${data.data.id}`,
+        url: process.env.REACT_APP_BASE_URL + `/api/project/Note/${data.data.key}`,
         method: "PUT",
         data: {
           note: e.target.elements.note.value,

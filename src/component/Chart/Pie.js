@@ -29,11 +29,14 @@ export default function PieChart(dataBU) {
   //   },
   // ];
   let Buid = 1;
-  const data = dataBU.data.map((item) => ({
-    type: "BU " + Buid++,
-    value: item,
-    
-  }));
+  const data = dataBU.data.map(
+    (item) =>
+      item >
+      0 ? ({
+        type: "BU " + Buid++,
+        value: item,
+      }) :''
+  );
   console.log(dataBU.data);
   const config = {
     appendPadding: 5,

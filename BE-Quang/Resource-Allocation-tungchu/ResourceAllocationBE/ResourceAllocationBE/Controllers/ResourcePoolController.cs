@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ResourceAllocationBE.Model;
@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ResourceAllocationBE.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class ResourcePoolController : ControllerBase
@@ -22,12 +23,14 @@ namespace ResourceAllocationBE.Controllers
             _configuration = configuration;
         }
 
+        //ADMIN
         //LOAD LIST RESOURCE POOL
         [HttpGet]
-        public JsonResult GetListResourcePool(string pid)
+        public JsonResult getListResourcePool(string pid)
         {
+           
             string query = @"
-                     select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
+                    select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
                     Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
 					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
@@ -60,13 +63,12 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
-
         //LOAD LIST RESOURCE POOL By BU
         [HttpGet("bu/{bu}")]
         public JsonResult GetListResourcePoolByBU(int bu)
         {
             string query = @"
-                       select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
+                      select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
                     Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
 					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
@@ -81,7 +83,8 @@ namespace ResourceAllocationBE.Controllers
 					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
 					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
 					left join	(select Employee_id,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by Employee_id) as effortColumn 
-					on ResourcePlanning_Employee.id = effortColumn.Employee_id where Department.Department_id=@bu";
+					on ResourcePlanning_Employee.id = effortColumn.Employee_id
+                    where Department.Department_id=@bu";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -102,13 +105,12 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
-
         //LOAD LIST RESOURCE POOL
         [HttpGet("search/{name}")]
-        public JsonResult GetListResourcePoolByName(string name)
+        public JsonResult getListResourcePoolByName(string name)
         {
             string query = @"
-                    select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
+                select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
                     Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
 					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
@@ -124,7 +126,7 @@ namespace ResourceAllocationBE.Controllers
 					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
 					left join	(select Employee_id,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by Employee_id) as effortColumn 
 					on ResourcePlanning_Employee.id = effortColumn.Employee_id
-                where [User].Fullname like @name";
+                and [User].Fullname like @name";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -146,14 +148,14 @@ namespace ResourceAllocationBE.Controllers
 
         //List by role, level, skill
         [HttpGet("{role}/{level}/{skill}")]
-        public JsonResult GetListResourcePoolByMany(int role, int level, int skill)
+        public JsonResult getListResourcePoolByRLS( int role, int level, int skill)
         {
             string query = @"
-                     select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
+                    select number = ROW_NUMBER() OVER (ORDER BY ResourcePlanning_Employee.id),[User].[User_id], ResourcePlanning_Employee.id, [User].Fullname,  Roles.RoleName,skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id, Levels.LevelName, Skill.SkillName,
                     Project.ProjectName, Emp_RolePlanning.Date_start, [user].Username,
                     Emp_RolePlanning.Date_end, Effort,Emp_RolePlanning.Bill_rate, Department.Department_name
 					,emp_RolePlanning.Employee_id,emp_RolePlanning.ResourcePlannig_RoleId
-					,effortColumn.totalEffort, effortColumn.totalBill
+					,effortColumn.totalEffort
                     from ResourcePlanning_Employee
 		            join [User]  on [User].[User_id]  = ResourcePlanning_Employee.Employee_id
 		            join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id 
@@ -162,10 +164,10 @@ namespace ResourceAllocationBE.Controllers
 		            join Department on Department.Department_id = [user].Department_id
 					left join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
 					left join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
-					left join Project on Project.Project_id = ResourcePlanning_Role.project_id
-					left join	(select Employee_id,sum(Effort) as totalEffort , sum(Bill_rate) as totalBill  from Emp_RolePlanning group by Employee_id) as effortColumn 
+                    left join Project on Project.Project_id = ResourcePlanning_Role.project_id
+                    left join	(select Employee_id,sum(Effort) as totalEffort from Emp_RolePlanning group by Employee_id) as effortColumn 
 					on ResourcePlanning_Employee.id = effortColumn.Employee_id
-                    where Roles.Role_id = @role and Levels.Level_id =@level and Skill.Skill_id =@skill ";
+                    where Roles.Role_id = @role and Levels.Level_id between @level and 5 and Skill.Skill_id =@skill  ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -186,6 +188,10 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult(table);
         }
+
+
+        // LEADER
+
 
         //INSERT IN TO DB
         [HttpPost]
@@ -260,7 +266,6 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("Update Successfully");
         }
-
 
 
 

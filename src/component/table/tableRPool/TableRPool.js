@@ -169,6 +169,7 @@ export default function TableRPool(data) {
     <div>
       {console.log(modifiedData)}
       <Table
+       
         bordered
         columns={columns}
         scroll={{
@@ -183,7 +184,8 @@ export default function TableRPool(data) {
               }
             : { width: "200vh" }
         }
-        className="-striped -highlight"
+        className="table-striped-rows"
+
         dataSource={modifiedData}
         size="small"
       ></Table>

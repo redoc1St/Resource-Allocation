@@ -45,13 +45,11 @@ export default function Navbar() {
   const listContent = notiList.map((item) => {
     arr.push(item.content);
   });
-  // const knowNewNoti=()=>{
-  notiList.map((item) => {
-    if (moment(new Date(item.noti_time)).fromNow() == "a few seconds ago") {
-      setOnBlueNoti(true);
-    }
-  });
-  // }
+  // notiList.map((item) => {
+  //   if (moment(new Date(item.noti_time)).fromNow() == "a few seconds ago") {
+  //     setOnBlueNoti(true);
+  //   }
+  // });
   const items = notiList.map((item,index) => (
     <div style={{ display: "flex" }} key={index}>
       <img
@@ -157,7 +155,7 @@ export default function Navbar() {
                 color="primary"
               > */}
                 <NotificationsNoneTwoToneIcon
-                  onClick={clickIc}
+                  onClick={()=>clickIc()}
                   color="action"
                   style={{ fontSize: "25px",marginTop:'7px' }}
                 ></NotificationsNoneTwoToneIcon>
@@ -239,7 +237,7 @@ export default function Navbar() {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <Link className="dropdown-item" onClick={onClickLogOut}>
+                  <Link className="dropdown-item" onClick={()=>onClickLogOut()}>
                     Logout
                   </Link>
                 </li>

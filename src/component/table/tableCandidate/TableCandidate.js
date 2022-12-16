@@ -131,7 +131,7 @@ export default function TableCandidate() {
       dataIndex: "isActive",
       width: 80,
     },
-    user?.UserType===ROLES.ADMIN
+    user?.UserType === ROLES.ADMIN
       ? {
           title: "Action",
           dataIndex: "action",
@@ -152,7 +152,7 @@ export default function TableCandidate() {
 
     ...item,
     Department_id: "BU " + item.Department_id,
-    BirthDay:new Date(item.BirthDay).toLocaleDateString('es-CL'), 
+    BirthDay: new Date(item.BirthDay).toLocaleDateString("es-CL"),
     isActive:
       item.isActive === true ? (
         <Tag color="#87d068" style={{ width: "60px", textAlign: "center" }}>
@@ -168,6 +168,7 @@ export default function TableCandidate() {
   return (
     <div>
       <Table
+        bordered
         columns={columns}
         scroll={{
           // x: 600,
@@ -181,7 +182,7 @@ export default function TableCandidate() {
               }
             : { width: "200vh" }
         }
-        className="-striped -highlight"
+        className="table-striped-rows"
         dataSource={data}
         size="small"
       ></Table>

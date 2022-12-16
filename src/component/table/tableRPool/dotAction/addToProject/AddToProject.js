@@ -195,8 +195,8 @@ export default function AddToProject(type) {
       setError("End date must greater than start date");
       return;
     } else if (
-      Date.parse(values.sDate) < Date.parse(dateProject.sDate) ||
-      Date.parse(values.eDate) > Date.parse(dateProject.eDate)
+      Date.parse(values.sDate) < Date.parse(IdPLanningRole?.Date_start) ||
+      Date.parse(values.eDate) > Date.parse(IdPLanningRole?.Date_end)
     ) {
       setError("Date must be in range of project");
     } else {
@@ -472,9 +472,11 @@ export default function AddToProject(type) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <h6 style={{ textAlign: "center" }}>
               {pNamePrj} <br></br>
-              (From {new Date(dateProject.sDate).toLocaleDateString(
+              {IdPLanningRole?.RoleName}-{IdPLanningRole?.LevelName}-{IdPLanningRole?.SkillName}
+              <br/>
+              (From {new Date(IdPLanningRole?.Date_start).toLocaleDateString(
                 "es-CL"
-              )} To {new Date(dateProject.eDate).toLocaleDateString("es-CL")})
+              )} To {new Date(IdPLanningRole?.Date_end).toLocaleDateString("es-CL")})
             </h6>
             <table>
               <tbody>
@@ -628,9 +630,9 @@ export default function AddToProject(type) {
               showIcon
             />
           ) : null}
-          {console.log(
+          {/* {console.log(
             dateProject?.sDate?.split("T")[0]
-          )}
+          )} */}
         </Modal>
       </div>
     </div>

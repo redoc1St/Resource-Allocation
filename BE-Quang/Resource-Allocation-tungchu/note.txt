@@ -38,3 +38,318 @@ ResourcePoolController: - them UpdateResourcePool + check
 - Resource Planning Role: Add Role to project 
 - Request: - // Request ResourceRole Planning to Project
 		- //ShOW All request ResourcePlanning 
+
+2/11/2022 
+requestController thay doi
+
+4/11
+REQUESTCONTROLLER: ghep approved vs reject (ca role va employee)
+
+6/11
+request resource employee : hien thi role, level skill theo projectName => layh dc id resource_Role 
+RESOURCE EMPLOYEE HIEN THI PROJECT NAME theo   role, level skill
+
+// Lay projectName theo RLS => lay rid 
+[HttpGet]
+        [Route("api/getPnameByRLS/{role_id}/{level_id}/{skill_id}")]
+        public JsonResult GetListPnameByRLS(string role_id, string level_id, string skill_id)
+        {
+            string query = @"
+        select * from ResourcePlanning_Role
+        
+        join Project on Project.Project_id = ResourcePlanning_Role.project_id
+
+        join Skill on Skill.Skill_id = ResourcePlanning_Role.Skill_id
+
+        join Levels on Levels.Level_id = ResourcePlanning_Role.Level_id
+
+        join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
+
+        where roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@role_id", role_id);
+                    myCommand.Parameters.AddWithValue("@level_id", level_id);
+                    myCommand.Parameters.AddWithValue("@skill_id", skill_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+
+// REQUEST truc tiep  EMPLOYEE TO ROLE PLANNING (cung BU)
+        [HttpPost("EmpToRoleDirect")]
+        public JsonResult requestDirectEmployeeToRolePlanning(RequestModel request)
+        {
+            //if not exists(select * from[ResourceRequestEmployee] where ResourcePlannig_RoleId = @rid and Employee_id = @eid)
+            //and not exists(select * from Emp_RolePlanning where ResourcePlannig_RoleId = 5 and Employee_id = 2)
+            string query = @"
+             insert into Emp_RolePlanning values(@rid,@eid)
+                ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@rid", request.resourceRole_id);
+                    myCommand.Parameters.AddWithValue("@eid", request.employee_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Added Successfully");
+        }
+---------------------------------------
+11-7-2022
+select thêm tên bu vào GetPidByCode ExtraObject 
+SELECT [Project_id],[ProjectName],Depeartment_id  FROM Project WHERE [Code]=@code
+
++++
+đã select  thêm 4 phần tử: skill.skill_id, Roles.Role_id, levels.level_id,Department.Department_id trong GetListResourcePool,GetListResourcePoolByMany      trong ResourcePoolController
+
+
+-----------------------------------------------
+11-8-2022  10:38
+Thêm vào extraController
+
+// Lay id theo RLSCode => lay rid 
+        [HttpGet]
+        [Route("api/getPnameByRLS/{code}/{role_id}/{level_id}/{skill_id}")]
+        public JsonResult GetIdByRLSCode(string role_id, string level_id, string skill_id, string code)
+        {
+            string query = @"
+        select * from ResourcePlanning_Role
+        
+        join Project on Project.Project_id = ResourcePlanning_Role.project_id
+
+        join Skill on Skill.Skill_id = ResourcePlanning_Role.Skill_id
+
+        join Levels on Levels.Level_id = ResourcePlanning_Role.Level_id
+
+        join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
+
+        where Code=@code and roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@code", code);
+                    myCommand.Parameters.AddWithValue("@role_id", role_id);
+                    myCommand.Parameters.AddWithValue("@level_id", level_id);
+                    myCommand.Parameters.AddWithValue("@skill_id", skill_id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+
+--------------------------------------------
+10-11   10:08
+sửa query trong getListRequestEmp trong requestController
+SELECT *
+                    FROM [ResourceRequestEmployee] 
+                    join ResourcePlanning_Employee on ResourceRequestEmployee.Employee_id = ResourcePlanning_Employee.id
+                    join [User] on [user].[User_id] = ResourcePlanning_Employee.Employee_id
+                    join Roles on ResourcePlanning_Employee.Role_id = Roles.Role_id
+                    join Department on Department.Department_id = [user].Department_id
+                    join Project on Project.project_id = ResourcePlanning_Employee.[project_id]
+                    join skill on skill.skill_id=resourceplanning_employee.skill_id
+
+// 19/11  7:28
+database them table Notifications 
+- thay doi password Usercontroller 
+- Thêm notificationController
+- notification sau khi approve hoặc reject trong statusRequestRoleToProject vaf statusRequestEmp  gửi thông báo tới admin
+-  phần này insert into Notifications values (12, 'De nghi Role cua ban da duoc @status', GETDATE()) được thêm ở trên. THAY SỐ 12 = id của user có tên admin (thường là 1 khi mới đầu chạy insert user)
+- phần notification mới chỉ đẩy thông báo cho admin biết approved hay reject 
+- còn  khi admin request thì chưa biết đưa thông báo cho leader của bu đấy ntn (chưa làm)
+
+- comment dong 80 - 127 REQUESTCONTROLLER
+- UserController theem is Active = 1 tại hàm LoginA
+
+// 20/112022
+- Check xem employee này đang ở project này, sang project khác có đổi chưa
+- Check email của user khi UPDATE hay INSERT đều không trùng
+if not exists(select * from [User] where email = @Email)
+
+- GetListUser lấy tên BU cho vào profile
+select * from
+join Department on Department.Department_id = [User].Department_id
+dbo.[User] where UserType != 'admin' ";
+
+// 21/11/2022
+- insert, update bên ResourcePlanningControl thêm GETDATE() khi để ngày trống
+myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start == null ? "GETDATE()" : resource.Date_start);
+myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end == null ? "GETDATE()" : resource.Date_end);
+-  SHOW EMPLOYEE REQEUST (CUNG BU)
+
+// 22/11/2022 By Quang
+Thay hộ dòng này vào trong hàm getDetail ở userController
+ myCommand.Parameters.AddWithValue("@Uid", userId!=null ? userId : "");
+
+// 23/11/2022
+- tach Approved vs reject ben resourceEmptoRole
+- theem ham getLeaderInforByBu
+        // SHOW  LEADER  INFOR  DEPARTMENT ID
+        [HttpGet]
+        [Route("api/leader/{bu}")]
+        public JsonResult getLeaderInforByBu(string bu)
+        {
+            string query = @"SELECT *
+        FROM [ResourceAllocationDB].[dbo].[User]
+        where Department_id = @bu and UserType ='leader'";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@bu", bu);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+- sua? update ben resourcePoolController
+- Admin gui thon gbao cho leader sau khi requests
+
+-- check emp_role neu trung..
+- forgotpassword gui mail 
+Install-Package MailKit
+Install-Package MimeKit
+
+//24/11/2022
+report Emp
+SELECT *
+  FROM [ResourceAllocationDB].[dbo].[ResourcePlanning_Employee]
+ left join project on project.[Project_id] = [ResourcePlanning_Employee].[Project_id]
+ join emp_roleplanning on emp_roleplanning.[Employee_id] = [ResourcePlanning_Employee].id
+
+- check emp_roleplanning
+- them else -> Fails
+- note trong project
+// 25/11/2022
+- NotificationController sửa  select * from
+                                dbo.[Notifications] where [user_id] = @id
+
+// 26/11/2022
+- theem hamf updateNoteProject
+//UPDATE NOTE IN TO DB
+        [HttpPut("{id}")]
+        public JsonResult updateNoteProject(Project project, int id)
+        {
+            string query = @"
+            update dbo.Project set note = @note
+            WHERE [Project_id] = @id";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@id", id);
+                    myCommand.Parameters.AddWithValue("@note", project.Note);
+                   
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult("Update Successfully");
+        }
+- trong model project them public string Note { get; set; }
+
+
+
+
+// 30/11/2022  - LEADER 
+- THÊM 2 HÀM TRONG PROJECT CONTROLLER
+//LOAD LIST PROJECTS BY BU FOR LEADER 
+        //[Authorize]
+        [HttpGet("{bu}")]
+        public JsonResult getListProjectByBu(string bu)
+        {
+            string query = @"
+                               select * from
+                                dbo.[Project] where depeartment_id=@bu";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@bu", bu);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
+
+//SEARCH PROJECT BY NAME AND BU
+        [HttpGet("search/{name}/{bu}")]
+        public JsonResult searchProjectByNameAndBU(string name, string bu)
+        {
+            string query = @"
+                               select * from
+                                dbo.[Project] where [ProjectName] like @PName and depeartment_id=@bu";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@PName", '%' + name + '%');
+                    myCommand.Parameters.AddWithValue("@bu", bu);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
+	
+	sửa điều kiện trong requestEmployeeToRolePlanning
+	if not exists(SELECT * FROM [ResourceRequestEmployee]
+                where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and (status='In Progress' or status='Approved') )

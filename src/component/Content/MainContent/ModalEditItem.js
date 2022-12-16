@@ -144,6 +144,8 @@ console.log(newdate);
                         <option value="2">Bu 2</option>
                         <option value="3">Bu 3</option>
                         <option value="4">Bu 4</option>
+                        <option value="5">Bu 5</option>
+
                       </select>
                     </td>
                   </tr>

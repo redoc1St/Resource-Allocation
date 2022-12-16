@@ -267,6 +267,7 @@ export default function TableData(sText) {
       <Form form={form} component={false}>
         <Table
           {...tableProps}
+          
           // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
           className="table-striped-rows"
           bordered
@@ -283,7 +284,7 @@ export default function TableData(sText) {
           style={
             onclickShowLeft
               ? {
-                  width: "170vh",borderCollapse: 'collapse 1px solid black',
+                  width: "170vh",borderCollapse: 'collapse'
                 }
               : { width: "200vh" }
           }
