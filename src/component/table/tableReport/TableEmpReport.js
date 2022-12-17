@@ -71,6 +71,9 @@ export default function TableEmpReport() {
 
     ...item,
     id: countP++,
+    Date_start: new Date(item.Date_start).toLocaleDateString('ES-cl'),
+    Date_end: new Date(item.Date_end).toLocaleDateString('ES-cl'),
+
   }));
 
   const isEditting = (record) => {

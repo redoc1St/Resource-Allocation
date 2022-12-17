@@ -33,7 +33,7 @@ import { ROLES } from "../../../../App";
 
 export default function ModalAddPool(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(data[0], data[1], data[2]);
+  // console.log(data[0], data[1], data[2]);
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
   const { user } = useAuth();
@@ -97,7 +97,7 @@ export default function ModalAddPool(data) {
           });
         }
         if (Object.keys(data).length !== 0) {
-          getResourcePoolEmpByRLK(data[0], data[1], data[2]);
+          dispatch(getResourcePoolEmpByRLK(data[0], data[1], data[2]));
         } else {
           dispatch(getResourcePoolEmp());
         }

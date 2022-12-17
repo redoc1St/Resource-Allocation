@@ -190,7 +190,7 @@ function App() {
                   />
                   <Route
                     exact
-                    path="/resourcePool/:code/:r/:l/:s"
+                    path="/resourcePool/:code/:r/:l/:s/:bu/:roleId"
                     element={<ResourcePool />}
                   />
                   <Route

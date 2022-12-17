@@ -29,7 +29,7 @@ namespace ResourceAllocationBE
                 Subject = new ClaimsIdentity(new Claim[] {
                 new Claim(ClaimTypes.NameIdentifier, email)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(30),
+                Expires = DateTime.UtcNow.AddMinutes(100),
                 SigningCredentials = new SigningCredentials
                 (new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
             };

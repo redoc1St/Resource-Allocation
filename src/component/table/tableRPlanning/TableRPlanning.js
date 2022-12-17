@@ -76,11 +76,11 @@ export default function TableResourcePlanning(data) {
       dataIndex: "Effort_planned",
       width: 90,
     },
-    {
-      title: "% Actual effort",
-      dataIndex: "Effort_actual",
-      width: 80,
-    },
+    // {
+    //   title: "% Actual effort",
+    //   dataIndex: "Effort_actual",
+    //   width: 80,
+    // },
     {
       title: "Bill/Unbill",
       dataIndex: "bill",
@@ -134,7 +134,7 @@ export default function TableResourcePlanning(data) {
             item?.Status?.props?.children === "Approved" ? (
               <Link
                 to={{
-                  pathname: `/resourcePool/${pName}/${item.Role_id}/${item.Level_id}/${item.Skill_id}`,
+                  pathname: `/resourcePool/${pName}/${item.Role_id}/${item.Level_id}/${item.Skill_id}/${data?.bu}/${item.id}`,
                 }}
                 state={[
                   item.Role_id,

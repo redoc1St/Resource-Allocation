@@ -38,11 +38,10 @@ export default function AddToProject(type) {
   const { user } = useAuth();
 
   console.log(type?.record);
-  // useEffect(()={
 
-  // },[codeProject])
 
   useEffect(() => {
+
     // console.log(type?.record.Role_id);
     // console.log(type?.record.level_id);
     // console.log(type?.record.skill_id);
@@ -105,18 +104,11 @@ export default function AddToProject(type) {
       );
     }
   }, [isModalOpen, codeProject, isModalOpen2]);
-  // console.log(PNames[0]?.ProjectName);
-  // console.log("id"+type);
-
   const showModal = () => {
-    // console.log(record.record.record.role)
-
     setIsModalOpen(true);
   };
 
   const showModal2 = () => {
-    // console.log(record.record.record.role)
-
     setIsModalOpen2(true);
   };
   const handleCancel = () => {
@@ -184,8 +176,9 @@ export default function AddToProject(type) {
 
   const onSubmit = async (values) => {
     // console.log(new Date(values.sDate).toLocaleDateString("en-US"));
-    console.log(type?.record);
+    console.log(type?.record?.User_id);
     // console.log(type?.record?User_id);
+    console.log(type);
 
     // const{pId,unit, pName}= values;
     // console.log(dataProject);
@@ -200,6 +193,9 @@ export default function AddToProject(type) {
     ) {
       setError("Date must be in range of project");
     } else {
+
+      //THEO LUỒNG PROJECT
+
       if (type.buProject) {
         if (type?.buProject === type?.record?.Department_id) {
           try {
@@ -279,6 +275,7 @@ export default function AddToProject(type) {
           }
         }
       } else {
+        console.log(type?.record)
         console.log(
           values.pName.split(",")[1],
           type?.record?.Role_id,
@@ -418,10 +415,10 @@ export default function AddToProject(type) {
             <select
               {...register("pName")}
               onClick={(e) => handleChangeName(e)}
-              defaultValue="DEFAULT"
+              defaultValue=""
               required
             >
-              <option value="DEFAULT" disabled key={20}>
+              <option value="" disabled key={20}>
                 Select project
               </option>
               {PNames.map((item, index) => {

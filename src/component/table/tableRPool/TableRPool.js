@@ -20,7 +20,7 @@ export default function TableRPool(data) {
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
-  const { valueInput, user } = useAuth();
+  const { valueInput, user,setValueInput } = useAuth();
   const roles = useSelector((state) => state.ExtraObject.roles);
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
@@ -30,6 +30,7 @@ export default function TableRPool(data) {
 
   // console.log(emps[14].ProjectName ==null);
   useEffect(() => {
+
     dispatch(getRoles());
     dispatch(getLevels());
     dispatch(getSkills());
@@ -167,7 +168,9 @@ export default function TableRPool(data) {
 
   return (
     <div>
-      {console.log(modifiedData)}
+    
+      {/* {console.log(modifiedData)} */}
+      
       <Table
        
         bordered

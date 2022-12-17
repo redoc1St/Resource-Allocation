@@ -8,7 +8,6 @@ insert into Department values('BU2')
 insert into Department values('BU3')
 insert into Department values('BU4')
 insert into Department values('BU5')
-
 --SKILL
 create table Skill(
 Skill_id int primary key identity(1,1),
@@ -362,3 +361,23 @@ else select * from [user]
 
 end
 
+ SELECT [User].Fullname, 
+                Roles.RoleName, 
+                Emp_RolePlanning.Date_start, 
+                Emp_RolePlanning.Date_end, 
+                Emp_RolePlanning.Effort, 
+                Emp_RolePlanning.Bill_rate, 
+                levels.LevelName,
+                Skill.SkillName
+               
+             FROM Project, ResourcePlanning_Employee Levels,, ResourcePlanning_Role, [USER], Roles, 
+                 Skill,  Emp_RolePlanning
+                
+             WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
+                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
+				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
+				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
+                Roles.Role_id = ResourcePlanning_Role.Role_id AND
+                Levels.Level_id = ResourcePlanning_Role.Level_id AND
+                Skill.Skill_id = ResourcePlanning_Role.Skill_id
+                and ProjectName ='Room rental system' AND Roles.RoleName = 'pqa'

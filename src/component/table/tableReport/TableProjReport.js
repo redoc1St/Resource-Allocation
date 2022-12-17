@@ -38,36 +38,28 @@ export default function TableProjReport() {
   };
 
   const getColumnSearchProps = (dataIndex) => ({
-  
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-
-    }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
       <div
         style={{
           padding: 8,
         }}
         onKeyDown={(e) => e.stopPropagation()}
       >
-      
         <Input
           ref={searchInput}
           placeholder={`Search`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          onChange={
+            (e) => setSelectedKeys(e.target.value ? [e.target.value] : [])
             // console.log("dataindex"+e.target.value)
           }
-          
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{
             marginBottom: 8,
             display: "block",
           }}
         />
-        
+
         <Space>
           <Button
             type="primary"
@@ -103,7 +95,6 @@ export default function TableProjReport() {
     //   }
     // },
     render: (text) =>
-
       searchedColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{
@@ -112,11 +103,11 @@ export default function TableProjReport() {
           }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text?.props?.children : ""}       //chỗ này tìm mãi
+          textToHighlight={text ? text?.props?.children : ""} //chỗ này tìm mãi
         />
+      ) : (
         // {/* <Link to={"/resourcePlaning/" }>{text?.props?.children}</Link>  */}
 
-      ) : (
         text
       ),
   });
@@ -143,7 +134,7 @@ export default function TableProjReport() {
     billable: item.be,
     allocation: (
       <Progress
- width={30}
+        width={30}
         // style={{width:'200px'}}
         percent={Math.floor((Number(item.ae) / Number(item.pe)) * 100)}
         steps={5}
@@ -153,6 +144,11 @@ export default function TableProjReport() {
 
     ...item,
     id: countP++,
+    sdp: new Date(item.sdp).toLocaleDateString('ES-cl'),
+    sda: new Date(item.sda).toLocaleDateString('ES-cl'),
+    edp: new Date(item.edp).toLocaleDateString('ES-cl'),
+    eda: new Date(item.eda).toLocaleDateString('ES-cl'),
+
   }));
 
   const isEditting = (record) => {
@@ -254,7 +250,7 @@ export default function TableProjReport() {
     {
       title: "% Allocation",
       dataIndex: "allocation",
-      width: 250,
+      width: 150,
       fontSize: "400px",
       fixed: "right",
 
@@ -291,7 +287,6 @@ export default function TableProjReport() {
     children,
     ...restProps
   }) => {
-
     return (
       <td {...restProps}>
         {editing ? (
@@ -324,7 +319,6 @@ export default function TableProjReport() {
         <Table
           {...tableProps}
           pagination={{ pageSize: 20 }}
-
           // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
           className="table-striped-rows"
           bordered

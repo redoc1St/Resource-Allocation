@@ -13,14 +13,13 @@ export default function Report() {
     console.log(type);
     // setSize(e.target.value);
   };
-  const TypePicker=()=>{
-    if(type=='project'){
-        return <TableProjReport/>
-    }else if(type=='employee'){
-        return <TableEmpReport/>
-
+  const TypePicker = () => {
+    if (type == "project") {
+      return <TableProjReport />;
+    } else if (type == "employee") {
+      return <TableEmpReport />;
     }
-  }
+  };
   return (
     <div>
       <div>
@@ -45,25 +44,23 @@ export default function Report() {
               <BasicBreadcrumbs />
               <div style={{ display: "flex" }}>
                 <div className="form-group" style={{ marginLeft: "900px" }}>
-                <div style={{display:'flex'}}>
-                <h5 >view by</h5>
-                  <Radio.Group
-                  size="70px"
-                    defaultValue={type}
-                    onChange={onChange}
-                    style={{ marginBottom: 10,marginLeft:'10px' }}
-                  >
-                    <Radio.Button value="project">Project</Radio.Button>
-                    <Radio.Button value="employee">Employee</Radio.Button>
-                    <Radio.Button value="time">Time</Radio.Button>
-                  </Radio.Group>
+                  <div style={{ display: "flex" }}>
+                    <h5>view by</h5>
+                    <Radio.Group
+                      size="70px"
+                      defaultValue={type}
+                      onChange={onChange}
+                      style={{ marginBottom: 10, marginLeft: "10px" }}
+                    >
+                      <Radio.Button value="project">Project</Radio.Button>
+                      <Radio.Button value="employee">Employee</Radio.Button>
+                      {/* <Radio.Button value="time">Time</Radio.Button> */}
+                    </Radio.Group>
                   </div>
                 </div>
               </div>
             </div>
-            <div>
-                {TypePicker()}
-            </div>
+            <div>{TypePicker()}</div>
           </div>
         </ScrollBar>
       </div>

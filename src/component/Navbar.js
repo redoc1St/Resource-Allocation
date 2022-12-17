@@ -91,7 +91,7 @@ export default function Navbar() {
           Project
         </span>
         {/* Sidebar Toggle*/}
-        {console.log(notiList)}
+        {/* {console.log(notiList)} */}
         <button
           style={{ color: "black" }}
           className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
@@ -129,7 +129,7 @@ export default function Navbar() {
         {/* Navbar*/}
         {/* <ImageAvatars /> */}
         {listContent}
-        {console.log(arr)}
+        {/* {console.log(arr)} */}
         <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 ">
           <div
             style={{
