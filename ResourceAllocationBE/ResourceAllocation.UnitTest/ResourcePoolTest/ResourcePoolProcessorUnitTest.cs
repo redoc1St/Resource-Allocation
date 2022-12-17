@@ -2,12 +2,18 @@
 using System;
 using ResourceAllocationBE.Model;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace ResourceAllocation.UnitTest.ResourcePoolTest
 {
     public class ResourcePoolProcessorUnitTest
     {
+        private readonly ITestOutputHelper output;
 
+        public ResourcePoolProcessorUnitTest(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
         // test update
         // check lại
         // null
@@ -23,6 +29,7 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
              bill:50
 
             ));
+            output.WriteLine("Input not null");
         }
         [Fact]
         public void TestInvalidUpdateResourceEmployeeInputNull2()
@@ -36,9 +43,10 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
              bill: 50
 
             ));
+            output.WriteLine("Input not null");
         }
         [Fact]
-        public void TestInvalidUpdateResourceEmployeeInputNull3()
+        public void TestInvalidUpdateResourceEmployeeInputMoreThan100Percent3()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
@@ -49,9 +57,10 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
              bill: 50
 
             ));
+            output.WriteLine("%bill or %effort not more than 100%");
         }
         [Fact]
-        public void TestInvalidUpdateResourceEmployeeInputNull4()
+        public void TestInvalidUpdateResourceEmployeeInputMoreThan100Percent4()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var resourcePoolProcessor = new ResourcePoolProcessor(resourceAllocationProcessor.Object);
@@ -62,6 +71,7 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
              bill: 250
 
             ));
+            output.WriteLine("%bill or %effort not more than 100%");
         }
         // true
         [Fact]
@@ -77,6 +87,7 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
                 effort:50,
                 bill:50
             ));
+            output.WriteLine("success");
         }
 
 
@@ -96,6 +107,7 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
                 Level_id=1,
                 Skill_id=1,
             }));
+            output.WriteLine("success");
         }
         // null
         [Fact]
@@ -106,10 +118,11 @@ namespace ResourceAllocation.UnitTest.ResourcePoolTest
             Assert.Throws<ArgumentOutOfRangeException>(() => resourcePoolProcessor.insertResourcePool(new ResourcePlanningEmployee
             {
                 Employee_id = 1,
-                Role_id = 0,
+                Role_id = -1,
                 Level_id = 0,
                 Skill_id = 1,
             }));
+            output.WriteLine("not positive number");
         }
 
     }

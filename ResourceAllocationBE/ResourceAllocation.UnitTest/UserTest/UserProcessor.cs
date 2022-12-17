@@ -95,7 +95,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             if(username == "" || fullname == "" || startDate == "" || email == "" || address == "" || typeOfUser == "" || department == "" || bithDate == "")
             {
-                throw new ArgumentNullException("Usernameor Email not null");
+                throw new ArgumentNullException("Input not null");
             }
             if(username.Length<6)
             {

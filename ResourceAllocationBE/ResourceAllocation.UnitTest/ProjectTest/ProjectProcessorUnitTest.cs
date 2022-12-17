@@ -2,12 +2,19 @@
 using ResourceAllocationBE.Model;
 using System;
 using Xunit;
+using Xunit.Abstractions;
+
 namespace ResourceAllocation.UnitTest.ProjectTest
 {
     public class ProjectProcessorUnitTest
     {
-        
 
+        private readonly ITestOutputHelper output;
+
+        public ProjectProcessorUnitTest(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
 
         // TEST GET PROJECT DETAIL
         [Fact]
@@ -16,6 +23,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
             Assert.Throws<ArgumentNullException>(() => projectProcessor.getDetailProject(new Project { Code = "" }));
+            output.WriteLine("Can't found project");
         }
         [Fact]
         public void TestProjectCodeIsNoteTrue()
@@ -23,6 +31,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
             Assert.Throws<ArgumentNullException>(() => projectProcessor.getDetailProject(new Project { Code = "AISSC001" }));
+            output.WriteLine("Can't found project");
         }
         [Fact]
         public void TestProjectCodeIsTrue()
@@ -30,6 +39,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
             Assert.True(projectProcessor.getDetailProject(new Project { Code = "ais_0001" }));
+            output.WriteLine("success");
         }
 
         //TEST INSERT PROJECT
@@ -42,6 +52,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project { Code = "",
                 ProjectName = ""
             }));
+            output.WriteLine("Input not null");
         }
         // code trống
         [Fact]
@@ -54,6 +65,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                 Code = "",
                 ProjectName = ""
             }));
+            output.WriteLine("Input not null");
         }
         // code trùng
         [Fact]
@@ -73,6 +85,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                 End_plan = "10/05/2022",
                 End_actual = "10/05/2022"
             }));
+            output.WriteLine("Project code had existed");
         }
         // project name trống
         [Fact]
@@ -92,6 +105,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                 End_plan = "10/05/2022",
                 End_actual = "10/05/2022"
             }));
+            output.WriteLine("Input not null");
         }
         // planned effort = 0
         [Fact]
@@ -111,6 +125,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                 End_plan = "10/05/2022",
                 End_actual = "10/05/2022"
             }));
+            output.WriteLine("Effort plan not equal 0");
         }
         // true
         [Fact]
@@ -125,21 +140,10 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Effort_planned=50,Effort_actual=50,Effort_billable=50,Start_plan= "05/05/2022",
                 Start_actual= "05/05/2022", End_plan= "10/05/2022", End_actual= "10/05/2022"
             }));
+            output.WriteLine("success");
         }
 
         // TEST UPDATE PROJECT
-        // null
-        [Fact]
-        public void TestInvalidUpdateProjectInputNull()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-
-            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
-            {
-                ProjectName = ""
-            }));
-        }
         // project name null
         [Fact]
         public void TestInvalidUpdateProjectInputNameNull()
@@ -157,6 +161,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                 End_plan = "10/05/2022",
                 End_actual = "10/05/2022"
             }));
+            output.WriteLine("Input not null");
         }
         // planned effort = 0
         [Fact]
@@ -175,6 +180,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                 End_plan = "10/05/2022",
                 End_actual = "10/05/2022"
             }));
+            output.WriteLine("Effort plan not equal 0");
         }
         // true
         [Fact]
@@ -195,6 +201,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                 End_plan = "10/05/2022",
                 End_actual = "10/05/2022"
             }));
+            output.WriteLine("success");
         }
     }
 }
