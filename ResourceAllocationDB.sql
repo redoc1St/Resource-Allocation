@@ -371,25 +371,3 @@ go
 
 
 
--- CHECK DATE TIME 
--- project and role
-
-begin 
-declare @start_date_role date
-declare	@end_date_role date
-declare @start_date_pro date
-declare	@end_date_pro date
-select @start_date_pro = Project.Start_actual, @end_date_pro = Project.End_actual
-from Project where Code='AIS_0001'
-
-select @start_date_role = Date_start, @end_date_role = Date_end
-from Project
-join ResourcePlanning_Role on ResourcePlanning_Role.Project_id = Project.Project_id
-where Project.Code='AIS_0001' and Role_id=3 and Level_id=2 and Skill_id=1
-
-if(@start_date_role>@start_date_pro or @end_date_role>@end_date_pro)
-begin 
-select * from project
-end
-else select * from [user]
-end
