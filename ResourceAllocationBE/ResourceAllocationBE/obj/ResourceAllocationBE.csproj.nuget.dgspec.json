@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\git\\DO_AN_2022\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj": {}
+    "C:\\Users\\HP\\OneDrive\\Desktop\\HR_Allocation_BE\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj": {}
   },
   "projects": {
-    "D:\\git\\DO_AN_2022\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj": {
+    "C:\\Users\\HP\\OneDrive\\Desktop\\HR_Allocation_BE\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\DO_AN_2022\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\OneDrive\\Desktop\\HR_Allocation_BE\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
         "projectName": "ResourceAllocationBE",
-        "projectPath": "D:\\git\\DO_AN_2022\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
+        "projectPath": "C:\\Users\\HP\\OneDrive\\Desktop\\HR_Allocation_BE\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\DO_AN_2022\\ResourceAllocationBE\\ResourceAllocationBE\\obj\\",
+        "outputPath": "C:\\Users\\HP\\OneDrive\\Desktop\\HR_Allocation_BE\\ResourceAllocationBE\\ResourceAllocationBE\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",

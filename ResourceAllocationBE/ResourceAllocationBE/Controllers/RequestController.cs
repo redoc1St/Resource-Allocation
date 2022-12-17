@@ -28,7 +28,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult requestToRolePlanning(RequestModel request, int user_id, string pname)
         {
             string query = @"
-            insert into ResourceRequestRole values(@rid,@id,'',GETDATE())
+            insert into ResourceRequestRole values(@rid,2,'',GETDATE())
             update ResourcePlanning_Role set [Status] = 'In Progress' where id = @rid
             insert into Notifications values (@id, 'LEADER You get notification about request in '+@pname+'', GETDATE())
             insert into Notifications values (1, 'ADMIN You get notification about request in '+@pname+'', GETDATE())
@@ -65,7 +65,8 @@ namespace ResourceAllocationBE.Controllers
                     ResourcePlanning_Role.Level_id = Levels.Level_id and
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
                     ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
-                    order by ResourceRequestRole.lastestTime  desc, ResourcePlanning_Role.[status] desc";
+                    order by  ResourcePlanning_Role.[status] desc,ResourceRequestRole.lastestTime  desc";
+
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -119,14 +120,14 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListRequestResourcePlanningByBU(int bu)
         {
             string query = @"
-                    select *
+                       select *
                     from ResourcePlanning_Role, Roles,Project, Levels,Skill, ResourceRequestRole
                     where ResourcePlanning_Role.Project_id = Project.Project_id and
                     Roles.Role_id = ResourcePlanning_Role.Role_id and
                     ResourcePlanning_Role.Level_id = Levels.Level_id and
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
-                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id and depeartment_id =@bu
-                order by ResourceRequestRole.lastestTime  desc, ResourcePlanning_Role.[status] desc";
+                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+                    order by  ResourcePlanning_Role.[status] desc,ResourceRequestRole.lastestTime  desc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -374,7 +375,7 @@ namespace ResourceAllocationBE.Controllers
 					join ResourcePlanning_Role on ResourcePlanning_Role.id = ResourceRequestEmployee.ResourcePlannig_RoleId
                     join Project on Project.project_id = ResourcePlanning_Role.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
-                    order by ResourcePlanning_Role.[status] desc , ResourceRequestEmployee.lastestTime  desc
+                    order by ResourceRequestEmployee.[status] desc , ResourceRequestEmployee.lastestTime  desc
 
   ";
             DataTable table = new DataTable();
@@ -408,7 +409,7 @@ namespace ResourceAllocationBE.Controllers
                     join Project on Project.project_id = ResourcePlanning_Role.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
 	                 where Department.Department_id =@bu 
-                    order by ResourcePlanning_Role.[status] desc , ResourceRequestEmployee.lastestTime  desc
+                     order by ResourceRequestEmployee.[status] desc , ResourceRequestEmployee.lastestTime  desc
                 ";
             //project.depeartment_id=@bu
             DataTable table = new DataTable();

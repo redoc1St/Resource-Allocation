@@ -192,7 +192,7 @@ namespace ResourceAllocationBE.Controllers
 
         join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
 
-        where Code=@code and roles.Role_id= @role_id and Levels.Level_id  between 1 and @level_id and Skill.Skill_id= @skill_id  and ResourcePlanning_Role.[status]='Approved'";
+        where Code=@code and roles.Role_id= @role_id and Levels.Level_id between 1 and @level_id and Skill.Skill_id= @skill_id  and ResourcePlanning_Role.[status]='Approved'";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -227,7 +227,7 @@ namespace ResourceAllocationBE.Controllers
         join Skill on Skill.Skill_id = ResourcePlanning_Role.Skill_id
         join Levels on Levels.Level_id = ResourcePlanning_Role.Level_id
         join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
-        where roles.Role_id= @role_id and Levels.Level_id  between 1 and @level_id and Skill.Skill_id= @skill_id and Depeartment_id=@bu_id  
+        where roles.Role_id= @role_id and Levels.Level_id between 1 and @level_id and Skill.Skill_id= @skill_id and Depeartment_id=@bu_id  
 and ResourcePlanning_Role.[status]='Approved'";
 
             DataTable table = new DataTable();
@@ -288,7 +288,7 @@ and ResourcePlanning_Role.[status]='Approved'";
             }
             return new JsonResult(table);
         }
-        
+
         // SHOW  LEADER  INFOR  DEPARTMENT ID
         [HttpGet]
         [Route("api/leaderByBU/{bu}")]
@@ -314,43 +314,46 @@ and ResourcePlanning_Role.[status]='Approved'";
             }
             return new JsonResult(table);
         }
-        // Lay id theo RLSCode => lay rid 
-        //[HttpGet]
-        //[Route("api/getPnameByRLS/{code}/{role_id}/{level_id}/{skill_id}")]
-        //public JsonResult GetIdByRLSCode(string role_id, string level_id, string skill_id, string code)
-        //{
-        //    string query = @"
-        //select * from ResourcePlanning_Role
-        
-        //join Project on Project.Project_id = ResourcePlanning_Role.project_id
+    
 
-        //join Skill on Skill.Skill_id = ResourcePlanning_Role.Skill_id
 
-        //join Levels on Levels.Level_id = ResourcePlanning_Role.Level_id
+    // Lay id theo RLSCode => lay rid 
+    //[HttpGet]
+    //[Route("api/getPnameByRLS/{code}/{role_id}/{level_id}/{skill_id}")]
+    //public JsonResult GetIdByRLSCode(string role_id, string level_id, string skill_id, string code)
+    //{
+    //    string query = @"
+    //select * from ResourcePlanning_Role
 
-        //join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
+    //join Project on Project.Project_id = ResourcePlanning_Role.project_id
 
-        //where Code=@code and roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id";
+    //join Skill on Skill.Skill_id = ResourcePlanning_Role.Skill_id
 
-        //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
-        //    SqlDataReader myReader;
-        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-        //    {
-        //        myCon.Open();
-        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
-        //        {
-        //            myCommand.Parameters.AddWithValue("@code", code);
-        //            myCommand.Parameters.AddWithValue("@role_id", role_id);
-        //            myCommand.Parameters.AddWithValue("@level_id", level_id);
-        //            myCommand.Parameters.AddWithValue("@skill_id", skill_id);
-        //            myReader = myCommand.ExecuteReader();
-        //            table.Load(myReader);
-        //            myReader.Close();
-        //            myCon.Close();
-        //        }
-        //    }
-        //    return new JsonResult(table);
-        //}
-    }
+    //join Levels on Levels.Level_id = ResourcePlanning_Role.Level_id
+
+    //join Roles on roles.Role_id = ResourcePlanning_Role.Role_id
+
+    //where Code=@code and roles.Role_id= @role_id and Levels.Level_id= @level_id and Skill.Skill_id= @skill_id";
+
+    //    DataTable table = new DataTable();
+    //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+    //    SqlDataReader myReader;
+    //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+    //    {
+    //        myCon.Open();
+    //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+    //        {
+    //            myCommand.Parameters.AddWithValue("@code", code);
+    //            myCommand.Parameters.AddWithValue("@role_id", role_id);
+    //            myCommand.Parameters.AddWithValue("@level_id", level_id);
+    //            myCommand.Parameters.AddWithValue("@skill_id", skill_id);
+    //            myReader = myCommand.ExecuteReader();
+    //            table.Load(myReader);
+    //            myReader.Close();
+    //            myCon.Close();
+    //        }
+    //    }
+    //    return new JsonResult(table);
+    //}
+}
 }

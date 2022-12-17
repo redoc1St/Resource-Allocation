@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bTPAfFiaGpPmXqH5qZ5dd2sblBiRg4amcLKTbFJsGy3HBfI/zQHG2rkjooEDqBC6OhgetF6QTUVGehUMlUcTpg==",
+  "dgSpecHash": "ad/gtbAeH13HqBIVaGdVamSDd+F0s+14TomWRJ/I3HmSe/XsAGuunlltjGDdepmKdfqaEKJCvdUrXqO5lcwBng==",
   "success": true,
-  "projectFilePath": "D:\\git\\DO_AN_2022\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
+  "projectFilePath": "C:\\Users\\HP\\OneDrive\\Desktop\\HR_Allocation_BE\\ResourceAllocationBE\\ResourceAllocationBE\\ResourceAllocationBE.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HP\\.nuget\\packages\\mailkit\\3.4.2\\mailkit.3.4.2.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.10\\microsoft.aspnetcore.authentication.jwtbearer.5.0.10.nupkg.sha512",

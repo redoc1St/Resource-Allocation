@@ -7,4 +7,4 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
 build_property.RootNamespace = ResourceAllocation.UnitTest
-build_property.ProjectDir = D:\git\DO_AN_2022\ResourceAllocationBE\ResourceAllocation.UnitTest\
+build_property.ProjectDir = C:\Users\HP\OneDrive\Desktop\HR_Allocation_BE\ResourceAllocationBE\ResourceAllocation.UnitTest\
