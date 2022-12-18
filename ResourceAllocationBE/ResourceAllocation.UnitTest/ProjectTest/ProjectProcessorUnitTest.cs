@@ -16,77 +16,8 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             this.output = output;
         }
 
-        // TEST GET PROJECT DETAIL
-        [Fact]
-        public void TestEmptyProjectCode()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => projectProcessor.getDetailProject(new Project { Code = "" }));
-            output.WriteLine("Can't found project");
-        }
-        [Fact]
-        public void TestProjectCodeIsNoteTrue()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => projectProcessor.getDetailProject(new Project { Code = "AISSC001" }));
-            output.WriteLine("Can't found project");
-        }
-        [Fact]
-        public void TestProjectCodeIsTrue()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.True(projectProcessor.getDetailProject(new Project { Code = "ais_0001" }));
-            output.WriteLine("success");
-        }
-
         //TEST INSERT PROJECT
-        // null het
-        [Fact]
-        public void TestInvalidInsertProjectInputNull()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project { Code = "",
-                ProjectName = ""
-            }));
-            output.WriteLine("Input not null");
-        }
-        // code trống
-        [Fact]
-        public void TestInvalidInsertProjectInputNull2()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
-            {
-                Code = "",
-                ProjectName = ""
-            }));
-            output.WriteLine("Input not null");
-        }
-        // code trùng
-        [Fact]
-        public void TestInvalidInsertProjectInputExistedCode()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => projectProcessor.insertProject(new Project
-            {
-                Code = "ais_0001",
-                ProjectName = "project name 1",
-                Effort_planned = 50,
-                Effort_actual = 50,
-                Effort_billable = 50,
-                Start_plan = "05/05/2022",
-                Start_actual = "05/05/2022",
-                End_plan = "10/05/2022",
-                End_actual = "10/05/2022"
-            }));
-            output.WriteLine("Project code had existed");
-        }
+        
         // project name trống
         [Fact]
         public void TestInvalidInsertProjectInputNameNull()
@@ -95,7 +26,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
             Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
             {
-                Code = "ais_0001",
                 ProjectName = "",
                 Effort_planned = 50,
                 Effort_actual = 50,
@@ -115,7 +45,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
             Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.insertProject(new Project
             {
-                Code = "ais_0001",
                 ProjectName = "project name 1",
                 Effort_planned = 0,
                 Effort_actual = 50,
@@ -126,6 +55,102 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                 End_actual = "10/05/2022"
             }));
             output.WriteLine("Effort plan not equal 0");
+        }
+        // billable > 100%
+        // planned effort = 0
+        [Fact]
+        public void TestInvalidInsertProjectBillableMoreThan1000()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.insertProject(new Project
+            {
+                ProjectName = "project name 1",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 250,
+                Start_plan = "05/05/2022",
+                Start_actual = "05/05/2022",
+                End_plan = "10/05/2022",
+                End_actual = "10/05/2022"
+            }));
+            output.WriteLine("Have to less than 100%");
+        }
+        // null date
+        [Fact]
+        public void TestInvalidInsertProjectNullDate1()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
+            {
+                ProjectName = "project name 1",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 50,
+                Start_plan = "",
+                Start_actual = "05/05/2022",
+                End_plan = "10/05/2022",
+                End_actual = "10/05/2022"
+            }));
+            output.WriteLine("Input not null");
+        }
+        // null date
+        [Fact]
+        public void TestInvalidInsertProjectNullDate2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
+            {
+                ProjectName = "project name 1",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 50,
+                Start_plan = "05/05/2022",
+                Start_actual = "",
+                End_plan = "10/05/2022",
+                End_actual = "10/05/2022"
+            }));
+            output.WriteLine("Input not null");
+        }
+        // null date
+        [Fact]
+        public void TestInvalidInsertProjectNullDate3()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
+            {
+                ProjectName = "project name 1",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 50,
+                Start_plan = "05/05/2022",
+                Start_actual = "05/05/2022",
+                End_plan = "",
+                End_actual = "10/05/2022"
+            }));
+            output.WriteLine("Input not null");
+        }
+        // null date
+        [Fact]
+        public void TestInvalidInsertProjectNullDate4()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
+            {
+                ProjectName = "project name 1",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 50,
+                Start_plan = "05/05/2022",
+                Start_actual = "05/05/2022",
+                End_plan = "10/05/2022",
+                End_actual = ""
+            }));
+            output.WriteLine("Input not null");
         }
         // true
         [Fact]
@@ -142,6 +167,11 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             }));
             output.WriteLine("success");
         }
+
+
+
+
+
 
         // TEST UPDATE PROJECT
         // project name null
@@ -181,6 +211,101 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                 End_actual = "10/05/2022"
             }));
             output.WriteLine("Effort plan not equal 0");
+        }
+        // bill > 100% 
+        [Fact]
+        public void TestInvalidUpdateProjectBillableMoreThan100()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.updateProject(new Project
+            {
+                ProjectName = "projectname2",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 250,
+                Start_plan = "05/05/2022",
+                Start_actual = "05/05/2022",
+                End_plan = "10/05/2022",
+                End_actual = "10/05/2022"
+            }));
+            output.WriteLine("Have to less than 100%");
+        }
+        // Date null
+        [Fact]
+        public void TestInvalidUpdateProjectDateNull1()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
+            {
+                ProjectName = "projectname2",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 50,
+                Start_plan = "",
+                Start_actual = "05/05/2022",
+                End_plan = "10/05/2022",
+                End_actual = "10/05/2022"
+            }));
+            output.WriteLine("Input not null");
+        }
+        // Date null
+        [Fact]
+        public void TestInvalidUpdateProjectDateNull2()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
+            {
+                ProjectName = "projectname2",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 50,
+                Start_plan = "05/05/2022",
+                Start_actual = "",
+                End_plan = "10/05/2022",
+                End_actual = "10/05/2022"
+            }));
+            output.WriteLine("Input not null");
+        }
+        // Date null
+        [Fact]
+        public void TestInvalidUpdateProjectDateNull3()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
+            {
+                ProjectName = "projectname2",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 50,
+                Start_plan = "05/05/2022",
+                Start_actual = "05/05/2022",
+                End_plan = "",
+                End_actual = "10/05/2022"
+            }));
+            output.WriteLine("Input not null");
+        }
+        // Date null
+        [Fact]
+        public void TestInvalidUpdateProjectDateNull4()
+        {
+            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
+            var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
+            Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
+            {
+                ProjectName = "projectname2",
+                Effort_planned = 50,
+                Effort_actual = 50,
+                Effort_billable = 50,
+                Start_plan = "05/05/2022",
+                Start_actual = "05/05/2022",
+                End_plan = "10/05/2022",
+                End_actual = ""
+            }));
+            output.WriteLine("Input not null");
         }
         // true
         [Fact]

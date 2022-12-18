@@ -55,19 +55,6 @@ namespace ResourceAllocation.UnitTest.UserTest
 
         
 
-        public bool getUserDetail(User user)
-        {
-            if(user.Email == "")
-            {
-                throw new ArgumentNullException("Can't found user");
-            }
-            if (user.Email != "quangdd1412@gmail.com")
-            {
-                throw new ArgumentException("Can't found user");
-            }
-            return true;
-        }
-
         public bool changePass(User user, string newPass, string confirmPass)
         {
 

@@ -15,22 +15,11 @@ namespace ResourceAllocation.UnitTest.ProjectTest
         {
             this.resourceAllocationProcessor = resourceAllocationProcessor;
         }
-        public bool getDetailProject(Project project)
-        {
-            if(project.Code == "")
-            {
-                throw new ArgumentNullException("Can't found project");
-            }
-            if (project.Code != "ais_0001")
-            {
-                throw new ArgumentNullException("Can't found project");
-            }
-            return true;
-        }
+       
 
         public bool insertProject(Project project)
         {
-            if (project.Code == "" || project.ProjectName=="")
+            if (project.ProjectName=="" || project.Start_actual=="" || project.Start_plan == "" || project.End_actual == "" || project.End_plan == "")
             {
                 throw new ArgumentNullException("Input not null");
             }
@@ -38,9 +27,10 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             {
                 throw new ArgumentOutOfRangeException("Effort plan not equal 0");
             }
-            if (project.Code == "ais_0001")
+            if (project.Effort_billable > 100)
             {
-                throw new ArgumentException("Project code had existed");
+                throw new ArgumentOutOfRangeException("Have to less than 100%");
+
             }
             return resourceAllocationProcessor.InsertProject(project);
         }
@@ -49,13 +39,18 @@ namespace ResourceAllocation.UnitTest.ProjectTest
 
         public bool updateProject(Project project)
         {
-            if ( project.ProjectName == "")
+            if (project.ProjectName == "" || project.Start_actual == "" || project.Start_plan == "" || project.End_actual == "" || project.End_plan == "")
             {
                 throw new ArgumentNullException("Input not null");
             }
             if (project.Effort_planned == 0)
             {
                 throw new ArgumentOutOfRangeException("Effort plan not equal 0");
+            }
+            if (project.Effort_billable > 100)
+            {
+                throw new ArgumentOutOfRangeException("Have to less than 100%");
+
             }
             return resourceAllocationProcessor.UpdateProject(project);
         }

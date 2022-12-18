@@ -151,31 +151,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         }
 
 
-        //TEST GET USER DETAIL
-        [Fact]
-        public void TestEmptyUserEmail()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentNullException>(() => userProcessor.getUserDetail(new User { Email = "" }));
-            output.WriteLine("Can't found user");
-        }
-        [Fact]
-        public void TestUserEmailIsNotTrue()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.Throws<ArgumentException>(() => userProcessor.getUserDetail(new User { Email = "quang123@gmail.com" }));
-            output.WriteLine("Can't found user");
-        }
-        [Fact]
-        public void TestRightEmailUser()
-        {
-            var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
-            var userProcessor = new UserProcessor(resourceAllocationProcessor.Object);
-            Assert.True(userProcessor.getUserDetail(new User { Email = "quangdd1412@gmail.com" }));
-            output.WriteLine("success");
-        }
+        
 
 
         // TEST CHANGE PASSWORD
