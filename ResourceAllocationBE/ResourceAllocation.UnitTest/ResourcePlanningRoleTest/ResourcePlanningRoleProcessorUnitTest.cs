@@ -116,7 +116,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
         }
         // >100
         [Fact]
-        public void TestInvalidInsertResourcePlanningRoleMoreThan100Percent2()
+        public void TestInvalidInsertMorethan100ResourcePlanningRoleMoreThan100Percent2()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
@@ -175,7 +175,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
             output.WriteLine("Quantity not equal 0");
         }
         [Fact]
-        public void TestInvalidUpdateResourcePlanningRole()
+        public void TestInvalidUpdateMorethan100ResourcePlanningRole()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
@@ -189,7 +189,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
             output.WriteLine("%bill or %effort not more than 100%");
         }
         [Fact]
-        public void TestInvalidUpdateResourcePlanningRole2()
+        public void TestInvalidUpdateMorethan100ResourcePlanningRole2()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);

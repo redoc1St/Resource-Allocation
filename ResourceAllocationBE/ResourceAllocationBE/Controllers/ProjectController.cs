@@ -144,7 +144,6 @@ namespace ResourceAllocationBE.Controllers
         @Code, @ProjectName,
         @Depeartment_id,@Effort_planned,
         @Effort_actual,@Effort_billable,
-        @Quantity_plan,@Quantity_actual,
         @Start_plan,@Start_actual,
         @End_plan,@End_actual,
 @note)
@@ -165,8 +164,6 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Effort_planned", project.Effort_planned);
                     myCommand.Parameters.AddWithValue("@Effort_actual", project.Effort_actual);
                     myCommand.Parameters.AddWithValue("@Effort_billable", project.Effort_billable);
-                    myCommand.Parameters.AddWithValue("@Quantity_plan", project.Quantity_plan);
-                    myCommand.Parameters.AddWithValue("@Quantity_actual", project.Quantity_actual);
                     myCommand.Parameters.AddWithValue("@Start_plan", project.Start_plan == null ? "GETDATE()" : project.Start_plan);
                     myCommand.Parameters.AddWithValue("@Start_actual", project.Start_actual == null ? "GETDATE()" : project.Start_actual);
                     myCommand.Parameters.AddWithValue("@End_plan", project.End_plan == null ? "GETDATE()" : project.End_plan);
@@ -198,8 +195,7 @@ namespace ResourceAllocationBE.Controllers
             string query = @"
             update dbo.Project set Code = @Code, ProjectName= @ProjectName, Depeartment_id = @Depeartment_id,
             Effort_planned = @Effort_planned,Effort_actual=@Effort_actual,
-            Effort_billable=@Effort_billable, Quantity_plan=@Quantity_plan, 
-            Quantity_actual=@Quantity_actual, Start_plan=@Start_plan,
+            Effort_billable=@Effort_billable,  Start_plan=@Start_plan,
             Start_actual=@Start_actual, End_plan=@End_plan, End_actual=@End_actual
             WHERE [Project_id] = @id";
             DataTable table = new DataTable();
@@ -217,8 +213,6 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Effort_planned", project.Effort_planned);
                     myCommand.Parameters.AddWithValue("@Effort_actual", project.Effort_actual);
                     myCommand.Parameters.AddWithValue("@Effort_billable", project.Effort_billable);
-                    myCommand.Parameters.AddWithValue("@Quantity_plan", project.Quantity_plan);
-                    myCommand.Parameters.AddWithValue("@Quantity_actual", project.Quantity_actual);
                     myCommand.Parameters.AddWithValue("@Start_plan", project.Start_plan == null ? "GETDATE()" : project.Start_plan);
                     myCommand.Parameters.AddWithValue("@Start_actual", project.Start_actual == null ? "GETDATE()" : project.Start_actual);
                     myCommand.Parameters.AddWithValue("@End_plan", project.End_plan == null ? "GETDATE()" : project.End_plan);

@@ -129,42 +129,40 @@ Depeartment_id int foreign key references Department(Department_id),
 Effort_planned int,
 Effort_actual int,
 Effort_billable int,
-Quantity_plan int, 
-Quantity_actual int,
 Start_plan date,
 Start_actual date,
 End_plan date,
 End_actual date,
 note nvarchar(200)
 )
-insert into Project values('HM_01','Hotel Management',1,5,3,3,2,2,
+insert into Project values('HM_01','Hotel Management',1,5,3,3,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('OLS_02','Online Learning System',2,4,2,3,3,3,
+insert into Project values('OLS_02','Online Learning System',2,4,2,3,
 '2022/09/01','2022/09/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('PHL_03','Pet Hola Kingdom',3,3,1,2,2,2,
+insert into Project values('PHL_03','Pet Hola Kingdom',3,3,1,2,
 '2022/09/01','2022/09/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('VPE_04','Vietnam Products Exchange',4,3,2,2,3,3,
+insert into Project values('VPE_04','Vietnam Products Exchange',4,3,2,2,
 '2022/11/01','2022/11/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('ECM_05','English Center Management',5,3,3,2,2,2,
+insert into Project values('ECM_05','English Center Management',5,3,3,2,
 '2022/11/01','2022/11/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('SSPS_06','Spa service providing system',1,2,2,1,2,2,
+insert into Project values('SSPS_06','Spa service providing system',1,2,2,1,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('RRS_07','Room rental system ',2,4,1,3,2,2,
+insert into Project values('RRS_07','Room rental system ',2,4,1,3,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('FBM_08','Furniture Business Management',3,3,1,3,2,2,
+insert into Project values('FBM_08','Furniture Business Management',3,3,1,3,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('FFS_09','Freelance Finding System',4,4,1,3,2,2,
+insert into Project values('FFS_09','Freelance Finding System',4,4,1,3,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('TPS_10','Trip Planner System',5,3,3,2,2,2,
+insert into Project values('TPS_10','Trip Planner System',5,3,3,2,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
 
@@ -368,6 +366,4 @@ noti_time datetime
 
 
 go
-
-
 

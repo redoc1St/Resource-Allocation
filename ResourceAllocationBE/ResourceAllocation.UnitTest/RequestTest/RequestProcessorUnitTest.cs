@@ -44,7 +44,7 @@ namespace ResourceAllocation.UnitTest.RequestTest
             output.WriteLine("Input not null");
         }
         [Fact]
-        public void TestEmptyResourceIndirectEmployeeToROleRequest3()
+        public void TestMorethan100ResourceIndirectEmployeeToROleRequest3()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
@@ -53,7 +53,7 @@ namespace ResourceAllocation.UnitTest.RequestTest
             output.WriteLine("%bill or %effort not more than 100%");
         }
         [Fact]
-        public void TestEmptyResourceIndirectEmployeeToROleRequest4()
+        public void TestMorethan100ResourceIndirectEmployeeToROleRequest4()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
@@ -94,7 +94,7 @@ namespace ResourceAllocation.UnitTest.RequestTest
             output.WriteLine("Input not null");
         }
         [Fact]
-        public void TestEmptyResourceDirectEmployeeToROleRequest4()
+        public void TestMorethan100ResourceDirectEmployeeToROleRequest4()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
@@ -103,7 +103,7 @@ namespace ResourceAllocation.UnitTest.RequestTest
             output.WriteLine("%bill or %effort not more than 100%");
         }
         [Fact]
-        public void TestEmptyResourceDirectEmployeeToROleRequest()
+        public void TestMorethan100ResourceDirectEmployeeToROleRequest()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var requestProcessor = new RequestProcessor(resourceAllocationProcessor.Object);
