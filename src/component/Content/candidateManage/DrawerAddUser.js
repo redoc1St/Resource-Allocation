@@ -14,7 +14,6 @@ import {
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { getUsers } from "../../../Store/Actions/UserActions";
-import { parseDate } from "@mobiscroll/react";
 const { Option } = Select;
 const dateFormat = "DD/MM/YYYY";
 const { RangePicker } = DatePicker;
@@ -31,8 +30,7 @@ export default function DrawerAddUser() {
     setOpen(false);
   };
   const submitForm = async (e) => {
-    //e.Start_Day._d.toLocaleDateString('en-US')
-    console.log(e.Start_Day._d.toLocaleDateString("en-US"));
+    // console.log(e.Start_Day._d.toLocaleDateString("en-US"));
 
     try {
       const res = await axios({

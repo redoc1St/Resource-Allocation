@@ -1,5 +1,5 @@
 import { message, Table } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,7 +8,6 @@ import {
 } from "../../../../Store/Actions/GenRequestActions";
 import useAuth from "../../../hooks/useAuth";
 import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
-import { Divider, Tag } from "antd";
 import request from "../../../../../src/api/request";
 
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -206,7 +205,7 @@ export default function GeneralRequests() {
         columns={columns}
         scroll={{
           // x: 600,
-          y: 300,
+          y: 500,
         }}
         dataSource={modifiedData}
         style={
@@ -217,7 +216,7 @@ export default function GeneralRequests() {
               }
             : { width: "200vh" }
         }
-        className="-striped -highlight"
+        className="table-striped-rows"
         //   dataSource={data}
         size="small"
       ></Table>

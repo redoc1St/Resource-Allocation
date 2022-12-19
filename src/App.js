@@ -57,7 +57,7 @@ function App() {
     data: null,
   });
 
-  console.log(userInfo);
+  // console.log(userInfo);
   const verifyUserInfo = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -68,7 +68,6 @@ function App() {
         const res = await axios.get("/api/user/getuser");
         // if (res.data.success) {
         setUserInfo({ status: "success", data: res.data[0] });
-        console.log(res.data);
         //   } else {
         //     setUserInfo({ status: "success", data: 456 });
         //   }
@@ -80,10 +79,8 @@ function App() {
 
   const login = ({ token }) => {
     localStorage.setItem("token", token);
-    // navigate('/candidateManage')      //không dùng đc cái này vì k render lại => k gọi được verifyUserInfo trong useEffect
     console.log(userInfo.data);
-    // Navigate('/candidateManage')
-    window.location.href = "/resourceAllocation"; // ?? gần giống ||, kiểu nếu không có returnUrl thì trả về trang home
+    window.location.href = "/resourceAllocation"; 
   };
 
   const logout = () => {
@@ -91,7 +88,6 @@ function App() {
     setUserInfo({ status: "success", data: null });
   };
 
-  // console.log(process.env.REACT_APP_BASE_URL)
   const [onclickShowLeft, setOnclickShowLeft] = useState(true);
   const dispatch = useDispatch();
 
@@ -104,7 +100,6 @@ function App() {
   const [quantity, setQuantity] = useState([]);
 
   useEffect(() => {
-    // dispatch(getProjects());
     verifyUserInfo();
   }, [dispatch]);
 
@@ -214,7 +209,6 @@ function App() {
 
                   <Route exact path="/profile" element={<Profile />} />
                 </Route>
-                {/* {console.log(onclickShowLeft)} */}
               </Routes>
             </div>
           </ContentContainer>

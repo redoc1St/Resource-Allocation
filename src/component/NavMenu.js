@@ -160,7 +160,7 @@ export default function NavMenu() {
                         <i className="fas fa-angle-down" />
                       </div>
                     </Link>
-                    <div
+                    {/* <div
                       className="collapse"
                       id="pagesCollapseError"
                       aria-labelledby="headingOne"
@@ -177,22 +177,22 @@ export default function NavMenu() {
                           500 Page
                         </a>
                       </nav>
-                    </div>
+                    </div> */}
                   </nav>
                 </div>
-                <div className="sb-sidenav-menu-heading">Addons</div>
-                <a className="nav-link" href="charts.html">
-                  <div className="sb-nav-link-icon">
-                    <i className="fas fa-chart-area" />
-                  </div>
-                  Charts
-                </a>
-                <a className="nav-link" href="tables.html">
-                  <div className="sb-nav-link-icon">
-                    <i className="fas fa-table" />
-                  </div>
-                  Tables
-                </a>
+                  {/* <div className="sb-sidenav-menu-heading">Addons</div>
+                  <a className="nav-link" href="charts.html">
+                    <div className="sb-nav-link-icon">
+                      <i className="fas fa-chart-area" />
+                    </div>
+                    Charts
+                  </a>
+                  <a className="nav-link" href="tables.html">
+                    <div className="sb-nav-link-icon">
+                      <i className="fas fa-table" />
+                    </div>
+                    Tables
+                  </a> */}
               </div>
             </div>
           </nav>

@@ -11,7 +11,7 @@ import { Alert } from "antd";
 export default function ModalAddRole(record) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState();
-  console.log(record);
+  // console.log(record);
   useEffect(() => {}, []);
 
   const showModal = () => {
@@ -146,6 +146,7 @@ export default function ModalAddRole(record) {
                       <input
                         type="number"
                         min={0}
+                        max={100}
                         {...register("Effort_planned")}
                         required
                       />
@@ -203,6 +204,7 @@ export default function ModalAddRole(record) {
                         type="number"
                         {...register("Bill_rate")}
                         min={0}
+                        max={100}
                         // placeholder="0"
                         required
                       />

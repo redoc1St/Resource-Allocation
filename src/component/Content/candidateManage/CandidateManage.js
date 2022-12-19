@@ -24,7 +24,7 @@ export default function CandidateManage() {
   const users = useSelector((state) => state?.Users?.users);
 
   const isChangeStatus = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setStatusCand(e.target.value);
   };
 
@@ -35,7 +35,6 @@ export default function CandidateManage() {
     users.map((item) => {
       totalUsers++
       for (let index = 1; index < arr.length; index++) {
-        // const element = array[index];
         if (item.Department_id === index) {
           arr[index]++;
         } 
@@ -43,7 +42,6 @@ export default function CandidateManage() {
     });
   };
 
-console.log(valueInput);
   useEffect(() => {
     if (statusCand == "all") {
       valueInput ? dispatch(getUsersByName(valueInput.empSearch)) : dispatch(getUsers());
@@ -71,7 +69,6 @@ console.log(valueInput);
             }}
           >
             {calEmp()}
-            {console.log(totalUsers)}
             Staff Management
           </h3>
           <div>

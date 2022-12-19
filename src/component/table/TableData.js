@@ -1,15 +1,10 @@
-// import "antd/dist/antd.css";
 
-import { Table, Progress, Popconfirm } from "antd";
+import { Table, Progress } from "antd";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import ScrollBar from "react-perfect-scrollbar";
-import { InputNumber } from "antd";
 import { red, green } from "@ant-design/colors";
 import "./TableData.css";
-import { Button, DatePicker, Space, version, Form, Input } from "antd";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
+import { Form, Input } from "antd";
 import useAuth from "../hooks/useAuth";
 import ModalEditItem from "../Content/MainContent/ModalEditItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,8 +16,6 @@ import {
 } from "../../Store/Actions/ProjectActions";
 import ModalNote from "../Content/MainContent/ModalNote";
 import { ROLES } from "../../App";
-
-
 
 export default function TableData(sText) {
   const [editRowkey, SetEditRowKey] = useState("");
@@ -36,24 +29,25 @@ export default function TableData(sText) {
 
   // const [gridData, setGridData] = useState([]);
 
-  const { onclickShowLeft, setOnclickShowLeft } = useAuth();
-  const [isUpdated, setIsUpdated] = useState(false);
+  const { onclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
 
   let countP = 1;
-  // let totalRow= projects.length
 
   useEffect(() => {
     if (user)
       if (valueInput?.prjSearch) {
-        user?.UserType != ROLES.ADMIN
+        user?.UserType !== ROLES.ADMIN
           ? dispatch(
-              getProjectsInBUByBuNameNId(valueInput?.prjSearch, user?.Department_id)
+              getProjectsInBUByBuNameNId(
+                valueInput?.prjSearch,
+                user?.Department_id
+              )
             )
           : dispatch(getProjectsByName(valueInput.prjSearch));
       } else {
-        user?.UserType != ROLES.ADMIN
+        user?.UserType !== ROLES.ADMIN
           ? dispatch(getProjectsByBuId(user?.Department_id))
           : dispatch(getProjects());
       }
@@ -61,7 +55,6 @@ export default function TableData(sText) {
 
   const modifiedData = projects.map((item) => ({
     key: item.id,
-    // pName: item,
     pName: <Link to={"/resourcePlaning/" + item.code}>{item.name}</Link>,
     pId: item.code,
     unit: "BU " + item.Department_id,
@@ -70,7 +63,6 @@ export default function TableData(sText) {
     billable: item.be,
     allocation: (
       <Progress
-        // width='100px'
         percent={Math.floor((Number(item.ae) / Number(item.pe)) * 100)}
         steps={5}
         strokeColor={[green[6], green[6], red[5]]}
@@ -79,10 +71,10 @@ export default function TableData(sText) {
 
     ...item,
     id: countP++,
-    sdp:new Date(item.sdp).toLocaleDateString('es-CL'),
-    sda:new Date(item.sda).toLocaleDateString('es-CL'),
-    edp:new Date(item.edp).toLocaleDateString('es-CL'),
-    eda:new Date(item.eda).toLocaleDateString('es-CL')
+    sdp: new Date(item.sdp).toLocaleDateString("es-CL"),
+    sda: new Date(item.sda).toLocaleDateString("es-CL"),
+    edp: new Date(item.edp).toLocaleDateString("es-CL"),
+    eda: new Date(item.eda).toLocaleDateString("es-CL"),
   }));
 
   const isEditting = (record) => {
@@ -101,23 +93,19 @@ export default function TableData(sText) {
     {
       title: "Project ID",
       dataIndex: "pId",
-      // defaultSortOrder: "descend",
-      // sorter: (a, b) => a.age - b.age,
+
       width: 100,
       sorter: (a, b) => a.pId.localeCompare(b.pId),
-      // editTable: true,
     },
     {
       title: "Project Name",
       dataIndex: "pName",
       width: 200,
-      // editTable:true,
     },
     {
       title: "Unit",
       dataIndex: "unit",
-      // defaultSortOrder: "descend",
-      // sorter: (a, b) => a.unit - b.unit,
+
       width: 70,
       filters: [
         {
@@ -187,7 +175,7 @@ export default function TableData(sText) {
       dataIndex: "eda",
       width: 130,
     },
-    user?.UserType != ROLES.EMPLOYEE
+    user?.UserType !== ROLES.EMPLOYEE
       ? {
           title: "Action",
           key: "operation",
@@ -267,12 +255,10 @@ export default function TableData(sText) {
       <Form form={form} component={false}>
         <Table
           {...tableProps}
-          
           // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
           className="table-striped-rows"
           bordered
           columns={mergedColumns}
-          
           components={{
             body: {
               cell: editableCell,
@@ -284,18 +270,17 @@ export default function TableData(sText) {
           style={
             onclickShowLeft
               ? {
-                  width: "170vh",borderCollapse: 'collapse'
+                  width: "170vh",
+                  borderCollapse: "collapse",
                 }
               : { width: "200vh" }
           }
           onChange={onChange}
-           
           scroll={{
             // x: 600,
             y: 480,
           }}
           size="small"
-          
         />
       </Form>
     </div>

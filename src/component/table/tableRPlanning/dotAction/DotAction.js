@@ -26,20 +26,27 @@ export default function DotAction(record) {
       items={[
         {
           key: "4",
-          label:record.record.Status?.props.children === "Approved" ? <ViewEmp {...record} /> :'',
+          label:
+            record.record.Status?.props.children === "Approved" ? (
+              <ViewEmp {...record} />
+            ) : (
+              ""
+            ),
         },
         user?.UserType != ROLES.EMPLOYEE
           ? {
               key: "1",
-              // label: <ModalEditPlan record={record} />,
-              label: record.record.Status?.props.children === "Approved" ? "" : <ModalEditPlan {...record} />,
+              label:
+                record.record.Status?.props.children === "Approved" ? (
+                  ""
+                ) : (
+                  <ModalEditPlan {...record} />
+                ),
             }
           : {},
-        // user?.UserType != ROLES.ADMIN
-        //   ?
+
         {
           key: "2",
-          // label: <Link to={{pathname:'/resourcePool'}} state={record} >Request</Link>,
           label:
             record.record.Status?.props.children === "Approved" ||
             record.record.Status?.props.children === "Rejected" ||
@@ -51,15 +58,6 @@ export default function DotAction(record) {
               ""
             ),
         },
-        // : {},
-        // {
-        //   key: "3",
-        //   label: "Delete",
-        // },
-        // {
-        //   key: "4",
-        //   label: "Action 2"
-        // }
       ]}
     />
   );

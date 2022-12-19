@@ -1,23 +1,16 @@
 import styled from "styled-components";
 
 import React, { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
-import { Button, Popover } from "antd";
+import { Link } from "react-router-dom";
+
+import { Popover } from "antd";
 import { Divider } from "antd";
 
 import "./navBar.css";
 import Badge from "@mui/material/Badge";
 
 import NotificationsNoneTwoToneIcon from "@mui/icons-material/NotificationsNoneTwoTone";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
+
 import useAuth from "./hooks/useAuth";
 import { hover } from "@testing-library/user-event/dist/hover";
 import { Opacity } from "@mui/icons-material";
@@ -33,11 +26,6 @@ export default function Navbar() {
   const notiList = useSelector((state) => state.Notification.notiList);
   const dispatch = useDispatch();
   const [onBlueNoti, setOnBlueNoti] = useState(true);
-  // console.log(user);
-  // const items = [
-
-  // ];
-  // noti_time
   useEffect(() => {
     dispatch(getNotiByUserId(user?.User_id));
   }, []);
@@ -50,7 +38,7 @@ export default function Navbar() {
   //     setOnBlueNoti(true);
   //   }
   // });
-  const items = notiList.map((item,index) => (
+  const items = notiList.map((item, index) => (
     <div style={{ display: "flex" }} key={index}>
       <img
         width={70}
@@ -68,9 +56,7 @@ export default function Navbar() {
   ));
 
   const onClickLogOut = () => {
-    // setAccount(false);
     logout();
-    // Navigate("/login");
   };
   const onClickBaGach = () => {
     document.body.classList.toggle("sb-sidenav-toggled");
@@ -86,19 +72,14 @@ export default function Navbar() {
   return (
     <NavbarPane>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-white">
-        {/* Navbar Brand*/}
         <span className="navbar-brand ps-3" style={{ color: "black" }}>
           Project
         </span>
-        {/* Sidebar Toggle*/}
-        {/* {console.log(notiList)} */}
         <button
           style={{ color: "black" }}
           className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
           id="sidebarToggle"
           onClick={() => onClickBaGach()}
-
-          // href="#!"
         >
           <svg
             className="svg-inline--fa fa-bars"
@@ -116,20 +97,8 @@ export default function Navbar() {
               d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"
             />
           </svg>
-          {/* <i class="fas fa-bars"></i> Font Awesome fontawesome.com */}
         </button>
-        {/* Navbar Search*/}
-        {/* {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: "trigger",
-              onClick: () => setCollapsed(!collapsed),
-            }
-          )} */}
-        {/* Navbar*/}
-        {/* <ImageAvatars /> */}
         {listContent}
-        {/* {console.log(arr)} */}
         <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 ">
           <div
             style={{
@@ -144,61 +113,33 @@ export default function Navbar() {
               title={"Notifications"}
               content={items}
               trigger="click"
-              style={{width:'100px'}}
-              
+              style={{ width: "100px" }}
             >
-              {/* {onBlueNoti ?  */}
-              {/* <Badge
-                variant="dot"
-                badgeContent=""
-                style={{ margin: "8px 5px" }}
-                color="primary"
-              > */}
-                <NotificationsNoneTwoToneIcon
-                  onClick={()=>clickIc()}
-                  color="action"
-                  style={{ fontSize: "25px",marginTop:'7px' }}
-                ></NotificationsNoneTwoToneIcon>
-                {onBlueNoti ? (
-                  <Badge
-                    variant="dot"
-                    badgeContent=""
-                    style={{ margin: "8px 5px" }}
-                    color="primary"
-                  ></Badge>
-                ) : (
-                  ""
-                )}
-              {/* </Badge> */}
+              <NotificationsNoneTwoToneIcon
+                onClick={() => clickIc()}
+                color="action"
+                style={{ fontSize: "25px", marginTop: "7px" }}
+              ></NotificationsNoneTwoToneIcon>
+              {onBlueNoti ? (
+                <Badge
+                  variant="dot"
+                  badgeContent=""
+                  style={{ margin: "8px 5px" }}
+                  color="primary"
+                ></Badge>
+              ) : (
+                ""
+              )}
             </Popover>
 
-            {/* <div>
-              <React.Fragment>
-                <Dropdown
-                  menu={{
-                    items,
-                  }}
-                  trigger={["click"]}
-                >
-                  <a onClick={(e) => e.preventDefault()}>
-                    <Space>
-                      Click me
-                      <DownOutlined />
-                    </Space>
-                  </a>
-                </Dropdown>
-              </React.Fragment>
-            </div> */}
             <li className="nav-item dropdown ">
               <Link
                 className="nav-link dropdown-toggle "
                 id="navbarDropdown"
-                // href="#"
                 to="/"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                // style={{width:'300px'}}
               >
                 <span>{user?.Fullname}</span>
                 <svg
@@ -217,7 +158,6 @@ export default function Navbar() {
                     d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"
                   />
                 </svg>
-                {/* <i class="fas fa-user fa-fw"></i> Font Awesome fontawesome.com */}
               </Link>
               <ul
                 className="dropdown-menu dropdown-menu-end "
@@ -237,7 +177,10 @@ export default function Navbar() {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <Link className="dropdown-item" onClick={()=>onClickLogOut()}>
+                  <Link
+                    className="dropdown-item"
+                    onClick={() => onClickLogOut()}
+                  >
                     Logout
                   </Link>
                 </li>

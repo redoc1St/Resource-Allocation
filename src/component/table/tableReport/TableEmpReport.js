@@ -1,36 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { Table, Progress, Popconfirm } from "antd";
-import { red, green } from "@ant-design/colors";
-import { SearchOutlined } from "@ant-design/icons";
-import Highlighter from "react-highlight-words";
-import {
-  getProjects,
-  getProjectsByName,
-} from "../../../Store/Actions/ProjectActions";
-import { Button, DatePicker, Space, version, Form, Input } from "antd";
+import React, { useEffect, useState } from "react";
+import { Table } from "antd";
+
+import { getProjects } from "../../../Store/Actions/ProjectActions";
+import { Form } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../hooks/useAuth";
 import { getByEmp } from "../../../Store/Actions/ReportActions";
-import { getLevels, getRoles, getSkills } from "../../../Store/Actions/ExtraObjectActions";
+import {
+  getLevels,
+  getRoles,
+  getSkills,
+} from "../../../Store/Actions/ExtraObjectActions";
 export default function TableEmpReport() {
-  const [editRowkey, SetEditRowKey] = useState("");
   const [form] = Form.useForm();
-  const { valueInput, setValueInput } = useAuth();
-  const defaultExpandable = {
-    expandedRowRender: (record) => <p>Note: ...</p>,
-  };
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 10,
-    },
-  });
-  // useAuth();
-  const { onclickShowLeft, setOnclickShowLeft } = useAuth();
-  const [isUpdated, setIsUpdated] = useState(false);
+  // const { valueInput, setValueInput } = useAuth();
+
+  const { onclickShowLeft } = useAuth();
   const dispatch = useDispatch();
-  // const projects = useSelector((state) => state.Projects.projects);
   const employees = useSelector((state) => state.Report.emps);
   const projects = useSelector((state) => state.Projects.projects);
   const roles = useSelector((state) => state.ExtraObject.roles);
@@ -39,29 +25,25 @@ export default function TableEmpReport() {
   let countP = 1;
   // let totalRow= projects.length
   const [listProjectName, setListProjectName] = useState([]);
-// const listProjectName=[];
+  // const listProjectName=[];
   useEffect(() => {
     dispatch(getByEmp());
     dispatch(getProjects());
     dispatch(getRoles());
     dispatch(getLevels());
     dispatch(getSkills());
-    listPName()
-  }, []);
-  
-  const listPName = (e)=>{
-    e?.stopPropagation()
-    console.log('hello');
+    listPName();
+  });
 
+  const listPName = (e) => {
+    e?.stopPropagation();
     for (let i = 0; i < projects.length; i++) {
-      // setListProjectName(current=>[...current,{text:projects[i].name,value:projects[i].name}])
-      listProjectName.push({text:projects[i].name,value:projects[i].name})
+      listProjectName.push({ text: projects[i].name, value: projects[i].name });
     }
-  }
- 
+  };
+
   const modifiedData = employees.map((item, index) => ({
     key: index,
-    // pName: item,
     employee: item.Fullname,
     pId: item.code,
     unit: "BU " + item.Department_id,
@@ -71,15 +53,9 @@ export default function TableEmpReport() {
 
     ...item,
     id: countP++,
-    Date_start: new Date(item.Date_start).toLocaleDateString('ES-cl'),
-    Date_end: new Date(item.Date_end).toLocaleDateString('ES-cl'),
-
+    Date_start: new Date(item.Date_start).toLocaleDateString("ES-cl"),
+    Date_end: new Date(item.Date_end).toLocaleDateString("ES-cl"),
   }));
-
-  const isEditting = (record) => {
-    return record.key === editRowkey;
-  };
-
 
   const columns = [
     {
@@ -95,14 +71,10 @@ export default function TableEmpReport() {
       dataIndex: "employee",
       width: 150,
       sorter: (a, b) => a.employee.localeCompare(b.employee),
-
-      // editTable:true,
     },
     {
       title: "Unit",
       dataIndex: "unit",
-      // defaultSortOrder: "descend",
-      // sorter: (a, b) => a.unit - b.unit,
       width: 70,
 
       filters: [
@@ -134,7 +106,7 @@ export default function TableEmpReport() {
       dataIndex: "ProjectName",
       key: "name",
       width: "150px",
-      filters:listProjectName.map(item=>({...item})),
+      filters: listProjectName.map((item) => ({ ...item })),
       onFilter: (value, record) => record.ProjectName.indexOf(value) === 0,
     },
     {
@@ -146,7 +118,6 @@ export default function TableEmpReport() {
         value: item.RoleName,
       })),
       onFilter: (value, record) => record.RoleName.indexOf(value) === 0,
-   
     },
     {
       title: "Level",
@@ -157,7 +128,6 @@ export default function TableEmpReport() {
         value: item.LevelName,
       })),
       onFilter: (value, record) => record.LevelName.indexOf(value) === 0,
- 
     },
     {
       title: "Skill",
@@ -168,13 +138,11 @@ export default function TableEmpReport() {
         value: item.SkillName,
       })),
       onFilter: (value, record) => record.SkillName.indexOf(value) === 0,
- 
     },
     {
       title: "Start Date",
       dataIndex: "Date_start",
       key: "sDate",
-      // width:'100px'
     },
     {
       title: "End Date",
@@ -214,7 +182,6 @@ export default function TableEmpReport() {
         record,
         dataIndex: col.dataIndex,
         title: col.title,
-        editing: isEditting(record),
       }),
     };
   });
@@ -245,7 +212,6 @@ export default function TableEmpReport() {
           }}
           size="small"
         />
-        {console.log(listProjectName)}
       </Form>
     </div>
   );

@@ -1,19 +1,14 @@
 import React, { useEffect } from "react";
-import { Table, Dropdown, Progress, Popconfirm, Menu } from "antd";
+import { Table } from "antd";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getUsers,
-  getUsersByName,
-  getUsersByNameAStatus,
-} from "../../../Store/Actions/UserActions";
-import { Divider, Tag } from "antd";
-import { Link } from "react-router-dom";
+
+import { Tag } from "antd";
 import UpdatePass from "./UpdatePass";
 import { ROLES } from "../../../App";
 
 export default function TableCandidate() {
-  const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
+  const { onclickShowLeft } = useAuth();
   const { statusCand, user } = useAuth();
 
   const dispatch = useDispatch();
@@ -145,7 +140,6 @@ export default function TableCandidate() {
       : { fixed: "right", width: 20 },
   ];
 
-  console.log(users);
   const data = users.map((item) => ({
     no: countId++,
     key: item.User_id,

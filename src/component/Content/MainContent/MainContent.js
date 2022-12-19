@@ -34,7 +34,7 @@ export default function MainContent() {
         </div>
         <div>
           
-          {user?.UserType ==ROLES.ADMIN ? <ModalAddItem /> :''} 
+          {user?.UserType !==ROLES.EMPLOYEE ? <ModalAddItem /> :''} 
         </div>
       </div>
     </div>

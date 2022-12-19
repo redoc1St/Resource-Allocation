@@ -34,6 +34,9 @@ export default function ResourcePlanning() {
   const [getPName, setPName] = useState();
   const [getBU, setBU] = useState();
   const [dateProject, setDateProject] = useState({});
+  const [projectByCode, setProjectByCode] = useState({});
+  const [totalQuantity, setTotalQuantity] = useState(0);
+
   const { user } = useAuth();
 
   const roles = useSelector((state) => state.ExtraObject.roles);
@@ -64,6 +67,7 @@ export default function ResourcePlanning() {
           sDate: response.data[0].Start_actual,
           eDate: response.data[0].End_actual,
         });
+        setProjectByCode(response.data[0]);
       })
       .catch(function (error) {
         // handle error
@@ -71,6 +75,11 @@ export default function ResourcePlanning() {
       });
   }, [pName]);
 
+  const sendTotalToParent = (value) => {
+    // console.log(value);
+    setTotalQuantity(value);
+    // setDrive(index);
+  };
   const menu = (
     <Menu
       items={projects.map((item) => ({
@@ -105,6 +114,7 @@ export default function ResourcePlanning() {
       <h3 style={{ fontWeight: "bold", color: "#121843" }}>
         Resource Planning
       </h3>
+      {/* {console.log(totalQuantity)} */}
       <h5 style={{ color: "#162274" }}>
         <span onClick={() => navigate(-1)}>
           <ArrowBackIosIcon style={{ cursor: "pointer", color: "black" }} />
@@ -130,7 +140,14 @@ export default function ResourcePlanning() {
         >
           Planned effort
           <br />
-          (MM)<p style={{ fontSize: "30px" }}>5</p>
+          (MM)
+          <p style={{ fontSize: "30px" }}>
+            {((new Date(projectByCode.End_plan) -
+              new Date(projectByCode.Start_plan)) *
+              projectByCode.Effort_actual *
+              totalQuantity) /
+              (1000 * 3600 * 24 * 100)}
+          </p>
         </Card>
         <Card
           style={{
@@ -144,9 +161,16 @@ export default function ResourcePlanning() {
             margin: "0 30px ",
           }}
         >
-          Planned effort
+          Actual effort
           <br />
-          (MM)<p style={{ fontSize: "30px" }}>5</p>
+          (MM)
+          <p style={{ fontSize: "30px" }}>
+            {((new Date(projectByCode.End_actual) -
+              new Date(projectByCode.Start_actual)) *
+              projectByCode.Effort_planned *
+              totalQuantity) /
+              (1000 * 3600 * 24 * 100)}
+          </p>
         </Card>
         <Card
           style={{
@@ -160,18 +184,19 @@ export default function ResourcePlanning() {
             margin: "0 30px ",
           }}
         >
-          Planned effort
+          Billable effort
           <br />
           (MM)<p style={{ fontSize: "30px" }}>5</p>
         </Card>
       </div>
-      {console.log(projects)}
       <div style={{ marginTop: "5px" }}>
         <TableResourcePlanning
           name={getPName}
           {...dateProject}
           planningRoles={planningRoles}
           bu={getBU}
+          project={projectByCode}
+          sendTotalToParent={sendTotalToParent}
         />
         {user?.UserType != ROLES.EMPLOYEE ? (
           <ModalAddRole

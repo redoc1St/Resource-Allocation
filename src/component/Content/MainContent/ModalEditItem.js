@@ -10,17 +10,20 @@ import { Alert } from "antd";
 
 import {
   getProjects,
+  getProjectsByBuId,
   getProjectsByName,
 } from "../../../Store/Actions/ProjectActions";
+import { ROLES } from "../../../App";
 
 export default function ModalEditItem(data) {
   var newdate = data?.data?.sdp.split("-").reverse().join("-");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
-  const {  valueInput } = useAuth();
+  const {  user } = useAuth();
+
   const [error, setError] = useState();
-console.log(newdate);
+// console.log(newdate);
   useEffect(() => {}, []);
 
   const showModal = () => {
@@ -58,7 +61,7 @@ console.log(newdate);
   });
 
   const onSubmit = async (values) => {
-    console.log(values);
+    // console.log(values);
     const { pId, pName, unit, planE, actualE, billE, sdp, sda, edp, eda } =
       values;
     if (Date.parse(sdp) >= Date.parse(edp)) {
@@ -94,11 +97,15 @@ console.log(newdate);
         });
           // dispatch(getProjects());
 
-        if (valueInput?.prjSearch) {
-          dispatch(getProjectsByName(valueInput));
-        } else {
-          dispatch(getProjects());
-        }
+          user?.UserType !== ROLES.ADMIN
+          ? dispatch(getProjectsByBuId(user?.Department_id))
+          : dispatch(getProjects());
+
+        // if (valueInput?.prjSearch) {
+        //   dispatch(getProjectsByName(valueInput));
+        // } else {
+        //   dispatch(getProjects());
+        // }
       } catch (err) {
         console.log(err);
       }
@@ -155,6 +162,7 @@ console.log(newdate);
                       <input
                         type="number"
                         min={0}
+                        max={100}
                         {...register("actualE")}
                         required
                       />
@@ -222,6 +230,7 @@ console.log(newdate);
                         type="number"
                         {...register("billE")}
                         min={0}
+                        
                         placeholder="0"
                         required
                       />

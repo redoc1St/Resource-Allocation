@@ -132,11 +132,11 @@ export default function TableRPool(data) {
       dataIndex: "Department_name",
       width: 70,
     },
-    {
-      title: "Leader",
-      dataIndex: "leader",
-      width: 100,
-    },
+    // {
+    //   title: "Leader",
+    //   dataIndex: "leader",
+    //   width: 100,
+    // },
     user?.UserType != ROLES.EMPLOYEE
       ? {
           title: "Action",

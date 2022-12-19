@@ -9,7 +9,7 @@ import { Col, message, Row, Select } from "antd";
 export default function ModalNote(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-console.log(data.data);
+// console.log(data.data);
   const showModal = () => {
     setIsModalOpen(true);
 
@@ -24,7 +24,7 @@ console.log(data.data);
   };
   const handleSubmitNote = async (e) => {
     e.preventDefault();
-    console.log(e.target.elements.note.value);
+    // console.log(e.target.elements.note.value);
     try {
       const res = await axios({
         url: process.env.REACT_APP_BASE_URL + `/api/project/Note/${data.data.key}`,

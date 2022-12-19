@@ -1,20 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  message,
-  notification,
-  Row,
-  Select,
-} from "antd";
+import { Col, message, Row, Select } from "antd";
 import { Alert } from "antd";
 
 import { Modal } from "antd";
 import { useForm } from "react-hook-form";
-// import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../../hooks/useAuth";
 import axios from "axios";
@@ -33,24 +22,20 @@ import { ROLES } from "../../../../App";
 
 export default function ModalAddPool(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // console.log(data[0], data[1], data[2]);
   const dispatch = useDispatch();
-  const projects = useSelector((state) => state.Projects.projects);
+  // const projects = useSelector((state) => state.Projects.projects);
   const { user } = useAuth();
   const [error, setError] = useState();
   const roles = useSelector((state) => state.ExtraObject.roles);
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
   const allEmps = useSelector((state) => state.ExtraObject.allEmps);
-  const allEmpsByBU = useSelector((state) => state.ExtraObject.allEmpsByBU);
+  // const allEmpsByBU = useSelector((state) => state.ExtraObject.allEmpsByBU);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleCreate = () => {
-    setIsModalOpen(false);
-  };
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -68,10 +53,7 @@ export default function ModalAddPool(data) {
   }, []);
 
   const { register, handleSubmit } = useForm({
-    defaultValues: {
-      // pId:'5'
-    },
-    // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
+    defaultValues: {},
   });
   const onSubmit = async (values) => {
     console.log(values);
@@ -117,11 +99,9 @@ export default function ModalAddPool(data) {
         + Add Item
       </span>
       <Modal
-        // style={{color:'#424a80'}}
         title="Create new resource pool employee"
         open={isModalOpen}
         width={700}
-        // onOk={handleCreate}
         onCancel={handleCancel}
         footer={null}
         closable={true}
@@ -135,12 +115,7 @@ export default function ModalAddPool(data) {
                     <td>Employee name</td>
 
                     <td>
-                      <select
-                        // placeholder="Choose Unit"
-                        // value={record.data.unit}
-                        {...register("Employee_id")}
-                        required
-                      >
+                      <select {...register("Employee_id")} required>
                         <Select.Option required></Select.Option>
                         {allEmps?.map((item, index) => {
                           return (
@@ -156,12 +131,7 @@ export default function ModalAddPool(data) {
                     <td>Role</td>
 
                     <td>
-                      <select
-                        // placeholder="Choose Unit"
-                        // value={record.data.unit}
-                        {...register("Role_id")}
-                        required
-                      >
+                      <select {...register("Role_id")} required>
                         <Select.Option required></Select.Option>
                         {roles.map((item, index) => {
                           return (
@@ -206,12 +176,7 @@ export default function ModalAddPool(data) {
                   <tr>
                     <td>Level</td>
                     <td>
-                      <select
-                        // placeholder="Choose Unit"
-                        // value={record.data.unit}
-                        {...register("Level_id")}
-                        required
-                      >
+                      <select {...register("Level_id")} required>
                         <Select.Option required></Select.Option>
                         {levels?.map((item, index) => {
                           return (
@@ -238,33 +203,6 @@ export default function ModalAddPool(data) {
                       </select>
                     </td>
                   </tr>
-
-                  {/* <tr>
-                    <td>Bill_rate</td>
-                    <td>
-                      <input
-                        type="number"
-                        {...register("Bill_rate")}
-                        min={0}
-                        placeholder="0"
-                        required
-                      />
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>End date</td>
-                    <td>
-                      <input
-                        type="date"
-                        {...register("Date_end")}
-                        placeholder="dd/MM/YYYY"
-                        format={"YYYY/MM/DD"}
-                        required
-                      />
-                    </td>
-                  </tr>
-                  <tr></tr> */}
                 </tbody>
               </table>
               <button

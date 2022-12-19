@@ -1,33 +1,26 @@
 import { Eventcalendar } from "@mobiscroll/react"; /* or import any other component */
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 
-import { Switch, Table } from "antd";
+import { Switch } from "antd";
 import "./index.css";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import React, { useEffect, useState } from "react";
 import { getResourcePoolEmp } from "../../Store/Actions/ResourcePoolAction";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import AddToProject from "../table/tableRPool/dotAction/addToProject/AddToProject";
 import useAuth from "../hooks/useAuth";
-import Login from "../login/Login";
 import { ROLES } from "../../App";
 
 export default function Timeline() {
   //   const [myEvents, setEvents] = React.useState([]);
   const dispatch = useDispatch();
-  const { bu,l,roleId } = useParams();
-
+  const { bu, l, roleId } = useParams();
   const emps = useSelector((state) => state.ResourcePool.emps);
-  // const [idEmp, setIdEmp]= useState(0);
   const { user, valueInput } = useAuth();
-console.log(valueInput.emp_planning);
+  console.log(valueInput.emp_planning);
   useEffect(() => {
     dispatch(getResourcePoolEmp());
-    
   }, []);
-  let idEmp = 0;
-  let key =0
 
   const myEvents = React.useMemo(() => {
     return emps.map((item, index) => ({
@@ -61,8 +54,8 @@ console.log(valueInput.emp_planning);
   //   resource: item?.number,
   // }));
   const myResources = React.useMemo(() => {
-    return emps.map((item,index) => ({
-      key:item.number,
+    return emps.map((item, index) => ({
+      key: item.number,
       id: item.number,
       name: item?.Username,
       unit: item?.Department_name,
@@ -72,11 +65,9 @@ console.log(valueInput.emp_planning);
       roleId: item?.Role_id,
       levelId: item?.level_id,
       skillId: item?.skill_id,
-      User_id:item?.User_id,
-      emp_id:item?.id ,
-      // color: "#3fd890",
-      color: Math.floor(Math.random() * 16777215).toString(16),
-      // skill:item?.SkillName,
+      User_id: item?.User_id,
+      emp_id: item?.id,
+      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
     }));
   }, []);
 
@@ -98,82 +89,30 @@ console.log(valueInput.emp_planning);
   //   // skill:item?.SkillName,
   // }));
 
-  // [
-  //   {
-  //     id: 1,
-  //     name: "Flatiron Room",
-  //     seats: 155,
-  //     role:'DES',
-  //     color: "#fdf500",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "The Capital City",
-  //     seats: 250,
-  //     color: "#ff0101",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Heroes Square",
-  //     seats: 400,
-  //     color: "#01adff",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Thunderdome",
-  //     seats: 1200,
-  //     color: "#239a21",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "King’s Landing",
-  //     seats: 550,
-  //     color: "#ff4600",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Gathering Field",
-  //     seats: 900,
-  //     color: "#8f1ed6",
-  //   },{
-  //     id: 6,
-  //     name: "Gathering Field",
-  //     seats: 900,
-  //     color: "#8f1ed6",
-  //   },{
-  //     id: 6,
-  //     name: "Gathering Field",
-  //     seats: 900,
-  //     color: "#8f1ed6",
-  //   },{
-  //     id: 6,
-  //     name: "Gathering Field",
-  //     seats: 900,
-  //     color: "#8f1ed6",
-  //   },{
-  //     id: 6,
-  //     name: "Gathering Field",
-  //     seats: 900,
-  //     color: "#8f1ed6",
-  //   },
-  // ];
-  // }, []);
-
   const onClickIcon = (rowData) => {
-    console.log(rowData);
-    // <AddToProject type={"icon"} record={rowData} />;
-    setUserData({
-      Role_id: rowData.roleId,
-      level_id: parseInt(l),
-      skill_id: rowData.skillId,
-      id: rowData.emp_id,
-      Department_id: rowData.unit.substring(2, 4),
-      User_id: rowData.User_id,
-      Username:rowData.name,
-      // buProject:bu
-    });
-    // setUserData(rowData.role,rowData.level,rowData.SkillName)
-    // <Link to={<AddToProject record={rowData}/>} > e</Link>
+    // console.log(rowData);
+    if (l) {
+      setUserData({
+        Role_id: rowData.roleId,
+        level_id: parseInt(l),
+        skill_id: rowData.skillId,
+        id: rowData.emp_id,
+        Department_id: rowData.unit.substring(2, 4),
+        User_id: rowData.User_id,
+        Username: rowData.name,
+        // buProject:bu
+      });
+    } else {
+      setUserData({
+        Role_id: rowData.roleId,
+        level_id: rowData.levelId,
+        skill_id: rowData.skillId,
+        id: rowData.emp_id,
+        Department_id: rowData.unit.substring(2, 4),
+        User_id: rowData.User_id,
+        Username: rowData.name,
+      });
+    }
   };
   const [userData, setUserData] = useState({
     role: "",
@@ -188,10 +127,12 @@ console.log(valueInput.emp_planning);
         {user?.UserType != ROLES.EMPLOYEE ? (
           <div className="md-resource-header-template-icon">
             <span onClick={() => onClickIcon(resource)}>
-              <AddToProject type={"icon"} buProject={bu} resourceRole_id={roleId} record={userData} />
-              {/* <span onClick={() => onClickIcon(resource)}>
-            <PersonAddAlt1Icon />
-          </span> */}
+              <AddToProject
+                type={"icon"}
+                buProject={bu}
+                resourceRole_id={roleId}
+                record={userData}
+              />
             </span>
           </div>
         ) : (
@@ -234,7 +175,6 @@ console.log(valueInput.emp_planning);
   const [switchType, SetSwitchType] = useState(true);
   const onChangeSwitch = () => {
     SetSwitchType(!switchType);
-    // console.log(switchType);
   };
 
   return (

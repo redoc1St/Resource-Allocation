@@ -6,7 +6,7 @@ export default function PrivateRoute() {
   const { user } = useAuth();
   const token = localStorage.getItem("token");
 
-  console.log(user);
+  // console.log(user);
   if(!token) {
     return <Navigate to={"/login"}  />;
   }else  return <Outlet></Outlet>;

@@ -19,14 +19,15 @@ import useAuth from "../../hooks/useAuth";
 import axios from "../../../../src/api/request";
 import request from "../../../../src/api/request";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjects } from "../../../Store/Actions/ProjectActions";
+import { getProjects, getProjectsByBuId } from "../../../Store/Actions/ProjectActions";
+import { ROLES } from "../../../App";
 
 export default function ModalAddItem() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
-  const { moreRow, setMoreRow } = useAuth();
+  const { user } = useAuth();
   const [error, setError] = useState();
 
   const showModal = () => {
@@ -70,7 +71,7 @@ export default function ModalAddItem() {
       quantity_plan,
       quantity_actual,
     } = values;
-    console.log(values);
+    // console.log(values);
     const prjCode = getCodePrj(projectName);
     if (Date.parse(start_plan) >= Date.parse(end_plan)) {
       setError("End date (plan) must greater than start date (plan)");
@@ -80,7 +81,7 @@ export default function ModalAddItem() {
       return;
     } else
       try {
-        console.log(prjCode);
+        // console.log(prjCode);
         const res = await request({
           url: process.env.REACT_APP_BASE_URL + "/api/project",
           method: "POST",
@@ -103,7 +104,11 @@ export default function ModalAddItem() {
             content: "Add project successfully",
             style: { marginTop: "50px" },
           });
-          dispatch(getProjects());
+          // dispatch(getProjects());
+          user?.UserType !== ROLES.ADMIN
+          ? dispatch(getProjectsByBuId(user?.Department_id))
+          : dispatch(getProjects());
+
         } else if (res.data == "FAILS") {
           message.error({
             content: "Project ID already exist",
@@ -134,13 +139,12 @@ export default function ModalAddItem() {
         onCancel={handleCancel}
         footer={null}
         closable={true}
-        
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Row>
             <Col span={12}>
               <table>
-              <tbody>
+                <tbody>
                   <tr>
                     <td>Project Name *</td>
                     <td>
@@ -175,7 +179,6 @@ export default function ModalAddItem() {
                         <option value="3">Bu 3</option>
                         <option value="4">Bu 4</option>
                         <option value="5">Bu 5</option>
-
                       </select>
                     </td>
                   </tr>
@@ -209,12 +212,11 @@ export default function ModalAddItem() {
                 </tbody>
                 <tbody>
                   <tr>
-                    <td>Start date (actual)</td>
+                    <td>End date (plan) </td>
                     <td>
                       <input
-                        name="sda"
                         type="date"
-                        {...register("start_actual")}
+                        {...register("end_plan")}
                         placeholder="dd/MM/YYYY"
                         format={"YYYY/MM/DD"}
                         required
@@ -224,10 +226,9 @@ export default function ModalAddItem() {
                 </tbody>
               </table>
             </Col>
-            
+
             <Col span={12}>
               <table>
-                
                 <tbody>
                   <tr>
                     <td>Planned effort *</td>
@@ -258,11 +259,12 @@ export default function ModalAddItem() {
                 </tbody>
                 <tbody>
                   <tr>
-                    <td>End date (plan) </td>
+                    <td>Start date (actual)</td>
                     <td>
                       <input
+                        name="sda"
                         type="date"
-                        {...register("end_plan")}
+                        {...register("start_actual")}
                         placeholder="dd/MM/YYYY"
                         format={"YYYY/MM/DD"}
                         required
@@ -270,6 +272,7 @@ export default function ModalAddItem() {
                     </td>
                   </tr>
                 </tbody>
+
                 <tbody>
                   <tr>
                     <td>End date (actual)</td>

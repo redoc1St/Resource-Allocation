@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Button, DatePicker, Space, version, Form, Input } from "antd";
-import { Table, Dropdown, Progress, Popconfirm, Menu } from "antd";
+import React, { useEffect } from "react";
+import { Table } from "antd";
 import "./tableRPlanning.css";
 import DotAction from "./dotAction/DotAction";
-import { Divider, Tag } from "antd";
-
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
-// import { Badge, Dropdown, Menu, Space, Table } from "antd";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Link, useParams } from "react-router-dom";
 import { getLeaderByCode } from "../../../Store/Actions/ExtraObjectActions";
 import { ROLES } from "../../../App";
 export default function TableResourcePlanning(data) {
-  const { onclickShowLeft, setOnclickShowLeft } = useAuth();
+  const { onclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const { pName } = useParams();
   const { user } = useAuth();
-
-  const projects = useSelector((state) => state.Projects.projects);
-  const { quantity, setQuantity } = useAuth();
+  // const projects = useSelector((state) => state.Projects.projects);
+  // const { quantity, setQuantity } = useAuth();
   const leader = useSelector((state) => state.ExtraObject.leader);
   useEffect(() => {
     dispatch(getLeaderByCode(pName));
-  }, []);
+    // console.log('here'+data?.planningRoles[data.planningRoles.length - 1]?.totalPQuantity);
+  });
   const columns = [
     {
       title: "Role",
@@ -36,12 +32,12 @@ export default function TableResourcePlanning(data) {
       width: 75,
       editTable: true,
     },
-    {
-      title: "Actual quantity",
-      dataIndex: "ActualQuantity",
-      width: 75,
-      editTable: true,
-    },
+    // {
+    //   title: "Actual quantity",
+    //   dataIndex: "ActualQuantity",
+    //   width: 75,
+    //   editTable: true,
+    // },
     {
       title: "Level",
       dataIndex: "LevelName",
@@ -52,14 +48,14 @@ export default function TableResourcePlanning(data) {
       dataIndex: "SkillName",
       width: 100,
     },
-    user?.UserType != ROLES.EMPLOYEE
+    user?.UserType !== ROLES.EMPLOYEE
       ? {
           title: "Employee",
           dataIndex: "employee",
           width: 85,
           editTable: true,
         }
-      : {},
+      : { width: 0 },
     {
       title: "Start date ",
       dataIndex: "Date_start",
@@ -97,21 +93,14 @@ export default function TableResourcePlanning(data) {
       dataIndex: "status",
       fixed: "right",
       width: 100,
-      // render: (_, record) => {
-      //   return <DotAction record={record} />;
-      // },
     },
     {
       title: "Action",
       dataIndex: "action",
       fixed: "right",
       width: 70,
-      // render: (_, record) => {
-      //   return <DotAction record={record} />;
-      // },
     },
   ];
-  // let countQuantity =0;
 
   const mergedData = [
     {
@@ -129,7 +118,13 @@ export default function TableResourcePlanning(data) {
           status: item.Status,
           Date_start: new Date(item.Date_start).toLocaleDateString("es-CL"),
           Date_end: new Date(item.Date_end).toLocaleDateString("es-CL"),
-          action: <DotAction {...data} record={item} leader={leader} />,
+          action:
+            item?.Status?.props?.children === "Rejected" ||
+            item?.Status?.props?.children === "In Progress" ? (
+              ""
+            ) : (
+              <DotAction {...data} record={item} leader={leader} />
+            ),
           employee:
             item?.Status?.props?.children === "Approved" ? (
               <Link
@@ -159,7 +154,11 @@ export default function TableResourcePlanning(data) {
             data?.planningRoles[data.planningRoles.length - 1]?.totalPQuantity,
         }
   );
-  console.log(data.planningRoles);
+  // console.log(data);
+  data?.sendTotalToParent(
+    data?.planningRoles[data.planningRoles.length - 1]?.totalPQuantity
+  );
+
   return (
     <div>
       <Table

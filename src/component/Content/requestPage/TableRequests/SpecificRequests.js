@@ -227,7 +227,7 @@ export default function SpecificRequests() {
         columns={columns}
         scroll={{
           // x: 600,
-          y: 300,
+          y: 500,
         }}
         dataSource={modifiedData}
         style={
@@ -238,7 +238,7 @@ export default function SpecificRequests() {
               }
             : { width: "200vh" }
         }
-        className="-striped -highlight"
+        className="table-striped-rows"
         //   dataSource={data}
         size="small"
       ></Table>
