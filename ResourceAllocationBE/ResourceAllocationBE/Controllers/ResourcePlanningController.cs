@@ -131,7 +131,7 @@ Emp_RolePlanning.Date_start,
         public JsonResult insertResourcePlanning(ResourcePlanningRole resource)
         {
             string query = @"
-            if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id)
+            if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id and ([Status]='Approved' or [Status]='Waiting' or [Status]='In Progress'))
             insert into [ResourcePlanning_Role](Project_id,Role_id,Quantity,Date_start ,
             Date_end ,
             Effort_planned ,

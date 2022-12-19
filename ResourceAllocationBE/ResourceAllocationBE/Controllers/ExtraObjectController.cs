@@ -142,7 +142,7 @@ namespace ResourceAllocationBE.Controllers
 
         [HttpGet]
         [Route("api/getPnameByRLS/{role_id}/{level_id}/{skill_id}")]
-        public JsonResult getListPnameByRLS(string role_id, string level_id, string skill_id)
+        public JsonResult getListPnameByRLS(int role_id, int level_id, int skill_id)
         {
             string query = @"
         select * from ResourcePlanning_Role
@@ -179,7 +179,7 @@ namespace ResourceAllocationBE.Controllers
         // Lay id theo RLSCode => lay rid  ADMIN
         [HttpGet]
         [Route("api/getPnameByRLS/{code}/{role_id}/{level_id}/{skill_id}")]
-        public JsonResult getRoleIdByRLSCode(string role_id, string level_id, string skill_id, string code)
+        public JsonResult getRoleIdByRLSCode(int role_id, int level_id, int skill_id, string code)
         {
             string query = @"
         select * from ResourcePlanning_Role
