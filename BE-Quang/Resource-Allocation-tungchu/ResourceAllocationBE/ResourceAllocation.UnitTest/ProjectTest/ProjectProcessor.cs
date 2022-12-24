@@ -23,10 +23,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             {
                 throw new ArgumentNullException("Input not null");
             }
-            if(project.Effort_planned == 0)
-            {
-                throw new ArgumentOutOfRangeException("Effort plan not equal 0");
-            }
             if (project.Effort_billable > 100)
             {
                 throw new ArgumentOutOfRangeException("Have to less than 100%");
@@ -42,10 +38,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             if (project.ProjectName == "" || project.Start_actual == "" || project.Start_plan == "" || project.End_actual == "" || project.End_plan == "")
             {
                 throw new ArgumentNullException("Input not null");
-            }
-            if (project.Effort_planned == 0)
-            {
-                throw new ArgumentOutOfRangeException("Effort plan not equal 0");
             }
             if (project.Effort_billable > 100)
             {

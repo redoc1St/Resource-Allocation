@@ -29,7 +29,7 @@ namespace ResourceAllocationBE.Controllers
             string query = @"
                   select ResourcePlanning_Role.id,Roles.RoleName, ProjectName, Roles.Role_id, 
                     Quantity, actual, ResourcePlanning_Role.Date_start, ResourcePlanning_Role.Date_end, ResourcePlanning_Role.Effort_planned,
-                    ResourcePlanning_Role.Effort_actual, ResourcePlanning_Role.Bill_rate, [Status], 
+                     ResourcePlanning_Role.Bill_rate, [Status], 
                     LevelName, SkillName, Skill.Skill_id, Levels.Level_id, total_Effort
                     from ResourcePlanning_Role 
 					join Roles on  Roles.Role_id = ResourcePlanning_Role.Role_id 
@@ -136,14 +136,13 @@ Emp_RolePlanning.Date_start,
             insert into [ResourcePlanning_Role](Project_id,Role_id,Quantity,Date_start ,
             Date_end ,
             Effort_planned ,
-            Effort_actual ,
             Bill_rate ,
             Level_id,
             Skill_id,[Status]) values(
                 @Project_id, @Role_id,
                 @Quantity,
                 @Date_start,@Date_end,
-                @Effort_planned,@Effort_actual,
+                @Effort_planned,
                 @Bill_rate,@Level_id,
                 @Skill_id,
                 'Waiting'
@@ -164,7 +163,6 @@ select * from [user]";
                     myCommand.Parameters.AddWithValue("@Date_start", resource.Date_start == null ? "GETDATE()" : resource.Date_start);
                     myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end == null ? "GETDATE()" : resource.Date_end);
                     myCommand.Parameters.AddWithValue("@Effort_planned", resource.Effort_planned);
-                    myCommand.Parameters.AddWithValue("@Effort_actual", resource.Effort_actual);
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
                     myCommand.Parameters.AddWithValue("@Level_id", resource.Level_id);
                     myCommand.Parameters.AddWithValue("@Skill_id", resource.Skill_id);

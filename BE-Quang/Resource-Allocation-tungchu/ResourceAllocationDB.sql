@@ -126,8 +126,6 @@ Project_id int primary key identity(1,1),
 Code nvarchar(50),
 ProjectName nvarchar(50),
 Depeartment_id int foreign key references Department(Department_id),
-Effort_planned int,
-Effort_actual int,
 Effort_billable int,
 Start_plan date,
 Start_actual date,
@@ -135,34 +133,34 @@ End_plan date,
 End_actual date,
 note nvarchar(200)
 )
-insert into Project values('HM_01','Hotel Management',1,5,3,3,
+insert into Project values('HM_01','Hotel Management',1,3,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('OLS_02','Online Learning System',2,4,2,3,
+insert into Project values('OLS_02','Online Learning System',2,3,
 '2022/09/01','2022/09/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('PHL_03','Pet Hola Kingdom',3,3,1,2,
+insert into Project values('PHL_03','Pet Hola Kingdom',3,2,
 '2022/09/01','2022/09/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('VPE_04','Vietnam Products Exchange',4,3,2,2,
+insert into Project values('VPE_04','Vietnam Products Exchange',4,2,
 '2022/11/01','2022/11/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('ECM_05','English Center Management',5,3,3,2,
+insert into Project values('ECM_05','English Center Management',5,2,
 '2022/11/01','2022/11/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('SSPS_06','Spa service providing system',1,2,2,1,
+insert into Project values('SSPS_06','Spa service providing system',1,1,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('RRS_07','Room rental system ',2,4,1,3,
+insert into Project values('RRS_07','Room rental system ',2,3,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('FBM_08','Furniture Business Management',3,3,1,3,
+insert into Project values('FBM_08','Furniture Business Management',3,3,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('FFS_09','Freelance Finding System',4,4,1,3,
+insert into Project values('FFS_09','Freelance Finding System',4,3,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
-insert into Project values('TPS_10','Trip Planner System',5,3,3,2,
+insert into Project values('TPS_10','Trip Planner System',5,2,
 '2022/10/01','2022/10/01','2023/02/10','2023/02/10',''
 )
 
@@ -178,7 +176,6 @@ Quantity int,
 Date_start date,
 Date_end date,
 Effort_planned int,
-Effort_actual int,
 Bill_rate int,
 Level_id int foreign key references Levels(Level_id),
 Skill_id int foreign key references Skill(Skill_id),
@@ -197,42 +194,42 @@ Bill_rate ,
 Level_id,
 Skill_id ,
 [Status]) values(1,3,2,'2022/11/01', '2023/01/10'
-,100,100,100,2,1,'Waiting')
+,100,100,2,1,'Waiting')
 
 insert into ResourcePlanning_Role values(1,4,1,'2022/10/01', '2023/01/10'
-,100,100,100,5,3,'Waiting')
+,100,100,5,3,'Waiting')
 insert into ResourcePlanning_Role values(1,5,1,'2022/10/01', '2023/01/10'
-,100,100,100,4,5,'Waiting')
+,100,100,4,5,'Waiting')
 insert into ResourcePlanning_Role values(1,6,1,'2022/11/01', '2023/01/10'
-,100,100,100,4,3,'Waiting')
+,100,100,4,3,'Waiting')
 
 insert into ResourcePlanning_Role values(2,3,1,'2022/11/01', '2023/01/10'
-,100,100,100,5,4,'Waiting')
+,100,100,5,4,'Waiting')
 insert into ResourcePlanning_Role values(2,4,1,'2022/11/01', '2023/01/10'
-,100,100,100,3,1,'Waiting')
+,100,100,3,1,'Waiting')
 insert into ResourcePlanning_Role values(2,5,1,'2022/11/01', '2023/01/10'
-,100,100,100,5,4,'Waiting')
+,100,100,5,4,'Waiting')
 insert into ResourcePlanning_Role values(2,6,1,'2022/12/01', '2023/01/10'
-,100,100,100,5,5,'Waiting')
+,100,100,5,5,'Waiting')
 insert into ResourcePlanning_Role values(1,3,1,'2022/12/01', '2023/01/10'
-,100,100,100,3,3,'Waiting')
-insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2023/01/10',100,100,100,3,1,'Waiting')					
-insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2023/01/10',100,100,100,2,1,'Waiting')					
-insert into ResourcePlanning_Role values(4,6,2,'2022/12/01', '2023/01/10',100,100,100,4,3,'Waiting')					
-insert into ResourcePlanning_Role values(4,2,2,'2022/12/01', '2023/01/10',100,100,100,4,5,'Waiting')					
-insert into ResourcePlanning_Role values(5,6,1,'2022/12/01', '2023/01/10',100,100,100,2,1,'Waiting')					
-insert into ResourcePlanning_Role values(5,3,1,'2022/12/01', '2023/01/10',100,100,100,3,3,'Waiting')					
-insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2023/01/10',100,100,100,2,1,'Waiting')					
-insert into ResourcePlanning_Role values(4,4,2,'2022/12/01', '2023/01/10',100,100,100,3,2,'Waiting')					
-insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2023/01/10',100,100,100,3,3,'Waiting')
-insert into ResourcePlanning_Role values(6,6,2,'2022/11/29', '2023/01/03',88,0,88,2,3,'Waiting')
-insert into ResourcePlanning_Role values(10,4,2,'2022-11-10', '2023-01-13',80,0,80,1,2,'Waiting')
-insert into ResourcePlanning_Role values(9,4,2,'2022-10-21', '2023-02-01',80,0,80,1,1,'Waiting')
-insert into ResourcePlanning_Role values(10,3,2,'2022-11-14', '2023-01-18',80,0,80,2,3,'Waiting')
-insert into ResourcePlanning_Role values(9,5,2,'2022-11-18', '2023-01-06',80,0,80,2,5,'Waiting')
-insert into ResourcePlanning_Role values(8,6,2,'2022-11-23', '2023-01-21',80,0,80,2,3,'Waiting')
-insert into ResourcePlanning_Role values(10,6,2,'2022-11-27', '2023-01-14',80,0,80,3,3,'Waiting')
-insert into ResourcePlanning_Role values(8,4,2,'2022-11-23', '2023-01-07',80,0,80,3,2,'Waiting')
+,100,100,3,3,'Waiting')
+insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2023/01/10',100,100,3,1,'Waiting')					
+insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2023/01/10',100,100,2,1,'Waiting')					
+insert into ResourcePlanning_Role values(4,6,2,'2022/12/01', '2023/01/10',100,100,4,3,'Waiting')					
+insert into ResourcePlanning_Role values(4,2,2,'2022/12/01', '2023/01/10',100,100,4,5,'Waiting')					
+insert into ResourcePlanning_Role values(5,6,1,'2022/12/01', '2023/01/10',100,100,2,1,'Waiting')					
+insert into ResourcePlanning_Role values(5,3,1,'2022/12/01', '2023/01/10',100,100,3,3,'Waiting')					
+insert into ResourcePlanning_Role values(3,4,2,'2022/12/01', '2023/01/10',100,100,2,1,'Waiting')					
+insert into ResourcePlanning_Role values(4,4,2,'2022/12/01', '2023/01/10',100,100,3,2,'Waiting')					
+insert into ResourcePlanning_Role values(3,3,2,'2022/12/01', '2023/01/10',100,100,3,3,'Waiting')
+insert into ResourcePlanning_Role values(6,6,2,'2022/11/29', '2023/01/03',88,88,2,3,'Waiting')
+insert into ResourcePlanning_Role values(10,4,2,'2022-11-10', '2023-01-13',80,80,1,2,'Waiting')
+insert into ResourcePlanning_Role values(9,4,2,'2022-10-21', '2023-02-01',80,80,1,1,'Waiting')
+insert into ResourcePlanning_Role values(10,3,2,'2022-11-14', '2023-01-18',80,80,2,3,'Waiting')
+insert into ResourcePlanning_Role values(9,5,2,'2022-11-18', '2023-01-06',80,80,2,5,'Waiting')
+insert into ResourcePlanning_Role values(8,6,2,'2022-11-23', '2023-01-21',80,80,2,3,'Waiting')
+insert into ResourcePlanning_Role values(10,6,2,'2022-11-27', '2023-01-14',80,80,3,3,'Waiting')
+insert into ResourcePlanning_Role values(8,4,2,'2022-11-23', '2023-01-07',80,80,3,2,'Waiting')
 --ResourcePlanning_Employee
 create table ResourcePlanning_Employee(
 id int primary key identity(1,1),

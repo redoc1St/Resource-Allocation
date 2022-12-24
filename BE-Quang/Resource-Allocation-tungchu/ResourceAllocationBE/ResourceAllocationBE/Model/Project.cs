@@ -11,8 +11,6 @@ namespace ResourceAllocationBE.Model
         public string Code { get; set; }
         public string ProjectName { get; set; }
         public int Department_id { get; set; }
-        public int Effort_planned { get; set; }
-        public int Effort_actual { get; set; }
         public int Effort_billable { get; set; }
         public string Start_plan { get; set; }
         public string Start_actual { get; set; }

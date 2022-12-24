@@ -27,8 +27,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
             {
                 ProjectName = "",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -46,8 +44,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.insertProject(new Project
             {
                 ProjectName = "project name 1",
-                Effort_planned = 0,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -66,8 +62,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.insertProject(new Project
             {
                 ProjectName = "project name 1",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 250,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -85,8 +79,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
             {
                 ProjectName = "project name 1",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "",
                 Start_actual = "05/05/2022",
@@ -104,8 +96,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
             {
                 ProjectName = "project name 1",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "",
@@ -123,8 +113,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
             {
                 ProjectName = "project name 1",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -142,8 +130,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.insertProject(new Project
             {
                 ProjectName = "project name 1",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -162,7 +148,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             var projectProcessor = new ProjectProcessor(resourceAllocationProcessor.Object);
             Assert.True(projectProcessor.insertProject(new Project { Code = "ais_00012",
                 ProjectName= "project name 1",
-            Effort_planned=50,Effort_actual=50,Effort_billable=50,Start_plan= "05/05/2022",
+            Effort_billable=50,Start_plan= "05/05/2022",
                 Start_actual= "05/05/2022", End_plan= "10/05/2022", End_actual= "10/05/2022"
             }));
             output.WriteLine("success");
@@ -183,8 +169,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = "",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -202,8 +186,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = "projectname2",
-                Effort_planned = 0,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -221,8 +203,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentOutOfRangeException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = "projectname2",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 250,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -240,8 +220,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = "projectname2",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "",
                 Start_actual = "05/05/2022",
@@ -259,8 +237,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = "projectname2",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "",
@@ -278,8 +254,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = "projectname2",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -297,8 +271,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.Throws<ArgumentNullException>(() => projectProcessor.updateProject(new Project
             {
                 ProjectName = "projectname2",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",
@@ -318,8 +290,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             Assert.True(projectProcessor.updateProject(new Project
             {
                 ProjectName = "projectname2",
-                Effort_planned = 50,
-                Effort_actual = 50,
                 Effort_billable = 50,
                 Start_plan = "05/05/2022",
                 Start_actual = "05/05/2022",

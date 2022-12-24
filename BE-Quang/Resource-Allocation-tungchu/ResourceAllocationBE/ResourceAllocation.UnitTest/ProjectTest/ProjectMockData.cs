@@ -12,9 +12,7 @@ namespace ResourceAllocation.UnitTest.ProjectTest
              new Project{
                  Code="AIS_00012",
                  Department_id=1,
-                 Effort_actual=1,
                  Effort_billable=1,
-                 Effort_planned=1,
                  End_actual="05/05/2000",
                  End_plan="05/05/2000",
                  ProjectName="proj1",
