@@ -47,7 +47,6 @@ export default function ResourcePool(record) {
           </Radio.Group>
         </div>
       </div>
-      <Search type='emp_planning' placeholder="Enter employee name " />
 
       {value === "list" ? (
         <>

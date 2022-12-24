@@ -15,7 +15,7 @@ export default function ModalEditPlan(record) {
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
   const [error, setError] = useState();
-  console.log(record);
+  // console.log(record);
   const { pName } = useParams();
   const dispatch = useDispatch();
 
@@ -59,7 +59,10 @@ export default function ModalEditPlan(record) {
   const onSubmit = async (values) => {
     // const{pId,unit, pName}= values;
     // record?.record.id
+    console.log(record.project.Project_id);
+
     console.log(values);
+    console.log(record?.record.id);
 
     if (Date.parse(values.Date_start) >= Date.parse(values.Date_end)) {
       setError("End date must greater than start date");
@@ -77,6 +80,7 @@ export default function ModalEditPlan(record) {
             `/api/ResourcePlanning/${record?.record.id}`,
           method: "PUT",
           data: {
+            Role_id:values.RoleName,
             Quantity: values.Quantity,
             Date_start: values.Date_start,
             Date_end: values.Date_end,
@@ -84,15 +88,23 @@ export default function ModalEditPlan(record) {
             Bill_rate: values.Bill_rate,
             Level_id: values.LevelName,
             Skill_id: values.SkillName,
+            Project_id: record.project.Project_id,
           },
         });
         setIsModalOpen(false);
         dispatch(getRoleByCode(pName));
         // dispatch(getProjectsByName(valueInput ? valueInput : ""));
-        message.success({
-          content: "Edit role planning successfully",
-          style: { marginTop: "50px" },
-        });
+        if (res.data == "FAILS") {
+          message.error({
+            content: "Role planning has existed in project",
+            style: { marginTop: "50px" },
+          });
+        } else {
+          message.success({
+            content: "Edit role planning successfully",
+            style: { marginTop: "50px" },
+          });
+        }
       } catch (err) {
         console.log(err);
       }
@@ -229,7 +241,7 @@ export default function ModalEditPlan(record) {
                       />
                     </td>
                   </tr>
-                  {console.log(levels)}
+                  {/* {console.log(levels)} */}
                   <tr>
                     <td>Skill</td>
                     <td>

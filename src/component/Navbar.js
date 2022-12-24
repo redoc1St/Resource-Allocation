@@ -73,7 +73,7 @@ export default function Navbar() {
     <NavbarPane>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-white">
         <span className="navbar-brand ps-3" style={{ color: "black" }}>
-          Project
+          HR Allocation
         </span>
         <button
           style={{ color: "black" }}

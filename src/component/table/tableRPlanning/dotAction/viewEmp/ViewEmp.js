@@ -13,7 +13,7 @@ export default function ViewEmp(data) {
   const { quantity, setQuantity } = useAuth();
 
   const showModal = () => {
-    // console.log(record.record.record.role)
+    // console.log(data?.record?.id)
     setIsModalOpen(true);
   };
   const handleCancel = () => {
@@ -24,7 +24,7 @@ export default function ViewEmp(data) {
 
   useEffect(() => {
     dispatch(
-      getRolesByNameNRole(data?.record?.ProjectName, data?.record?.RoleName)
+      getRolesByNameNRole(data?.record?.ProjectName, data?.record?.id)
     );
   }, [data?.record?.ProjectName, isModalOpen]);
 

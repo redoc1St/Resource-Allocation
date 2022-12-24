@@ -19,8 +19,6 @@ namespace ResourceAllocation.UnitTest.ProjectTest
                  End_plan="05/05/2000",
                  ProjectName="proj1",
                  Project_id=100,
-                 Quantity_actual=1,
-                 Quantity_plan=1,
                  Start_actual="05/05/2000",
                 Start_plan="05/05/2000"
 

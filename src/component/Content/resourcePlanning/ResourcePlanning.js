@@ -24,6 +24,7 @@ import {
   getProjects,
   getProjectsByBuId,
 } from "../../../Store/Actions/ProjectActions";
+import { getEmpByCodePrj } from "../../../Store/Actions/ReportActions";
 export default function ResourcePlanning() {
   const { pName } = useParams();
   const navigate = useNavigate();
@@ -35,17 +36,24 @@ export default function ResourcePlanning() {
   const [getBU, setBU] = useState();
   const [dateProject, setDateProject] = useState({});
   const [projectByCode, setProjectByCode] = useState({});
+  // const [BillByCode, setProjectByCode] = useState({});
+
   const [totalQuantity, setTotalQuantity] = useState(0);
+  const [totalAQuantity, setTotalAQuantity] = useState(0);
+  const [totalPEffort, setTotalPEffort] = useState(0);
+  const [totalAEffort, setTotalAEffort] = useState(0);
 
   const { user } = useAuth();
 
   const roles = useSelector((state) => state.ExtraObject.roles);
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
+  const empsByPName = useSelector((state) => state.Report.allEmpsByPName);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getEmpByCodePrj(pName));
     dispatch(getRoleByCode(pName));
     user?.UserType != ROLES.ADMIN
       ? dispatch(getProjectsByBuId(user?.Department_id))
@@ -74,10 +82,26 @@ export default function ResourcePlanning() {
         console.log(error);
       });
   }, [pName]);
+  // console.log(projectByCode?.Effort_billable);
+  // console.log(
+  //   (new Date(projectByCode.End_plan) - new Date(projectByCode.Start_plan)) /
+  //     (1000 * 3600 * 24)
+  // );
+  var totalAllocate = 0;
+  const AverageAllocate = empsByPName.map((item) => {
+    return (totalAllocate += item.Effort);
+  });
+  // console.log();
+  // function calAverageAllocate(){
+  //   const
+  // }
 
-  const sendTotalToParent = (value) => {
+  const sendTotalToParent = (totalP, totalA, totalPEffort, totalAEffort) => {
     // console.log(value);
-    setTotalQuantity(value);
+    setTotalQuantity(totalP);
+    setTotalAQuantity(totalA);
+    setTotalPEffort(totalPEffort);
+    setTotalAEffort(totalAEffort);
     // setDrive(index);
   };
   const menu = (
@@ -142,11 +166,15 @@ export default function ResourcePlanning() {
           <br />
           (MM)
           <p style={{ fontSize: "30px" }}>
-            {((new Date(projectByCode.End_plan) -
-              new Date(projectByCode.Start_plan)) *
-              projectByCode.Effort_actual *
-              totalQuantity) /
-              (1000 * 3600 * 24 * 100)}
+            {totalQuantity
+              ? (
+                  ((new Date(projectByCode.End_plan) -
+                    new Date(projectByCode.Start_plan)) *
+                    totalPEffort *
+                    totalQuantity) /
+                  (1000 * 3600 * 24 * 22 * 100)
+                ).toFixed(2)
+              : ""}
           </p>
         </Card>
         <Card
@@ -165,11 +193,15 @@ export default function ResourcePlanning() {
           <br />
           (MM)
           <p style={{ fontSize: "30px" }}>
-            {((new Date(projectByCode.End_actual) -
-              new Date(projectByCode.Start_actual)) *
-              projectByCode.Effort_planned *
-              totalQuantity) /
-              (1000 * 3600 * 24 * 100)}
+            {totalAQuantity
+              ? (
+                  ((new Date(projectByCode.End_actual) -
+                    new Date(projectByCode.Start_actual)) *
+                    totalAEffort *
+                    totalAQuantity) /
+                  (1000 * 3600 * 24 * 22 * 100)
+                ).toFixed(2)
+              : ""}
           </p>
         </Card>
         <Card
@@ -186,7 +218,8 @@ export default function ResourcePlanning() {
         >
           Billable effort
           <br />
-          (MM)<p style={{ fontSize: "30px" }}>5</p>
+          (MM)
+          <p style={{ fontSize: "30px" }}>{projectByCode?.Effort_billable}</p>
         </Card>
       </div>
       <div style={{ marginTop: "5px" }}>

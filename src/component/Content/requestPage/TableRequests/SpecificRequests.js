@@ -83,11 +83,11 @@ export default function SpecificRequests() {
       dataIndex: "SkillName",
       width: 80,
     },
-    {
-      title: "Requester",
-      dataIndex: "requester",
-      width: 100,
-    },
+    // {
+    //   title: "Requester",
+    //   dataIndex: "requester",
+    //   width: 100,
+    // },
     {
       title: "Time",
       dataIndex: "lastestTime",
@@ -100,15 +100,15 @@ export default function SpecificRequests() {
       width: 100,
       fixed: "right",
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      fixed: "right",
-      width: 130,
-      render: (_, record) => {
-        // return <DotAction />;
-      },
-    },
+    // {
+    //   title: "Action",
+    //   dataIndex: "action",
+    //   fixed: "right",
+    //   width: 130,
+    //   render: (_, record) => {
+    //     // return <DotAction />;
+    //   },
+    // },
   ];
   console.log(specRequests);
 

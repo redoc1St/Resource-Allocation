@@ -129,14 +129,38 @@ export default function TableProjReport() {
     pName: <Link to={"resourcePlaning/" + item.code}>{item.name}</Link>,
     pId: item.code,
     unit: "BU " + item.Department_id,
-    plan: item.pe,
-    actual: item.ae,
+    plan: (
+      ((new Date(item.edp) - new Date(item.sdp)) *
+        item.total_Planned_Effort *
+        item.total_Planned_Quantity) /
+      (3600 * 1000 * 24 * 22 * 100)
+    ).toFixed(2),
+    actual: (
+      ((new Date(item.eda) - new Date(item.sda)) *
+        item.total_Actual_Effort *
+        item.total_Actual_Quantity) /
+      (3600 * 1000 * 24 * 22 * 100)
+    ).toFixed(2),
     billable: item.be,
     allocation: (
       <Progress
         width={30}
         // style={{width:'200px'}}
-        percent={Math.floor((Number(item.ae) / Number(item.pe)) * 100)}
+        percent={Math.floor(
+          (Number(
+            ((new Date(item.eda) - new Date(item.sda)) *
+              item.total_Actual_Effort *
+              item.total_Actual_Quantity) /
+              (3600 * 1000 * 24 * 22 * 100)
+          ) /
+            Number(
+              ((new Date(item.edp) - new Date(item.sdp)) *
+                item.total_Planned_Effort *
+                item.total_Planned_Quantity) /
+                (3600 * 1000 * 24 * 22 * 100)
+            )) *
+            100
+        )}
         steps={5}
         strokeColor={[green[6], green[6], red[5]]}
       />
@@ -144,11 +168,10 @@ export default function TableProjReport() {
 
     ...item,
     id: countP++,
-    sdp: new Date(item.sdp).toLocaleDateString('ES-cl'),
-    sda: new Date(item.sda).toLocaleDateString('ES-cl'),
-    edp: new Date(item.edp).toLocaleDateString('ES-cl'),
-    eda: new Date(item.eda).toLocaleDateString('ES-cl'),
-
+    sdp: new Date(item.sdp).toLocaleDateString("ES-cl"),
+    sda: new Date(item.sda).toLocaleDateString("ES-cl"),
+    edp: new Date(item.edp).toLocaleDateString("ES-cl"),
+    eda: new Date(item.eda).toLocaleDateString("ES-cl"),
   }));
 
   const isEditting = (record) => {

@@ -30,8 +30,28 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListProject()
         {
             string query = @"
-                               select * from
-                                dbo.[Project] order by Project_id desc";
+                               select Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
+					 note, total_Actual_Effort, total_Planned_Effort, total_Planned_Quantity, total_Actual_Quantity from
+					 dbo.[Project]
+					 left join ( select Project.Project_id,sum([Effort]) as total_Actual_Effort from  Emp_RolePlanning 
+							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_A_Effrort on  total_A_Effrort.Project_id = Project.Project_id
+
+					 left join ( select Project.Project_id,sum(ResourcePlanning_Role.Effort_planned) as total_Planned_Effort from  ResourcePlanning_Role 
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_P_Effrort on total_P_Effrort.Project_id = Project.Project_id
+
+					 left join (select Project.Project_id,sum(ResourcePlanning_Role.Quantity) as total_Planned_Quantity from  ResourcePlanning_Role 
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_P_Quantity on total_P_Quantity.Project_id = Project.Project_id
+					
+					left join (select Project.Project_id,count(Emp_RolePlanning.ResourcePlannig_RoleId) as total_Actual_Quantity from  Emp_RolePlanning 
+							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_A_Quantity on total_A_Quantity.Project_id = Project.Project_id
+					order by [Project].Project_id desc
+";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -55,8 +75,28 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListProjectByBu(int bu)
         {
             string query = @"
-                               select * from
-                                dbo.[Project] where depeartment_id=@bu order by Project_id desc";
+                                select Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
+					 note, total_Actual_Effort, total_Planned_Effort, total_Planned_Quantity, total_Actual_Quantity from
+					 dbo.[Project]
+					 left join ( select Project.Project_id,sum([Effort]) as total_Actual_Effort from  Emp_RolePlanning 
+							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_A_Effrort on  total_A_Effrort.Project_id = Project.Project_id
+
+					 left join ( select Project.Project_id,sum(ResourcePlanning_Role.Effort_planned) as total_Planned_Effort from  ResourcePlanning_Role 
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_P_Effrort on total_P_Effrort.Project_id = Project.Project_id
+
+					 left join (select Project.Project_id,sum(ResourcePlanning_Role.Quantity) as total_Planned_Quantity from  ResourcePlanning_Role 
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_P_Quantity on total_P_Quantity.Project_id = Project.Project_id
+					
+					left join (select Project.Project_id,count(Emp_RolePlanning.ResourcePlannig_RoleId) as total_Actual_Quantity from  Emp_RolePlanning 
+							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_A_Quantity on total_A_Quantity.Project_id = Project.Project_id
+where 
+depeartment_id=@bu order by Project_id desc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -81,8 +121,27 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult searchProjectByName(string name)
         {
             string query = @"
-                               select * from
-                                dbo.[Project] where [ProjectName] like @PName order by Project_id desc";
+                                select Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
+					 note, total_Actual_Effort, total_Planned_Effort, total_Planned_Quantity, total_Actual_Quantity from
+					 dbo.[Project]
+					 left join ( select Project.Project_id,sum([Effort]) as total_Actual_Effort from  Emp_RolePlanning 
+							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_A_Effrort on  total_A_Effrort.Project_id = Project.Project_id
+
+					 left join ( select Project.Project_id,sum(ResourcePlanning_Role.Effort_planned) as total_Planned_Effort from  ResourcePlanning_Role 
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_P_Effrort on total_P_Effrort.Project_id = Project.Project_id
+
+					 left join (select Project.Project_id,sum(ResourcePlanning_Role.Quantity) as total_Planned_Quantity from  ResourcePlanning_Role 
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_P_Quantity on total_P_Quantity.Project_id = Project.Project_id
+					
+					left join (select Project.Project_id,count(Emp_RolePlanning.ResourcePlannig_RoleId) as total_Actual_Quantity from  Emp_RolePlanning 
+							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_A_Quantity on total_A_Quantity.Project_id = Project.Project_id
+where [ProjectName] like @PName order by Project_id desc";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -108,8 +167,27 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult searchProjectByBuName(string name, int bu)
         {
             string query = @"
-                               select * from
-                                dbo.[Project] where [ProjectName] like @PName and depeartment_id=@bu";
+                                select Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
+					 note, total_Actual_Effort, total_Planned_Effort, total_Planned_Quantity, total_Actual_Quantity from
+					 dbo.[Project]
+					 left join ( select Project.Project_id,sum([Effort]) as total_Actual_Effort from  Emp_RolePlanning 
+							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_A_Effrort on  total_A_Effrort.Project_id = Project.Project_id
+
+					 left join ( select Project.Project_id,sum(ResourcePlanning_Role.Effort_planned) as total_Planned_Effort from  ResourcePlanning_Role 
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_P_Effrort on total_P_Effrort.Project_id = Project.Project_id
+
+					 left join (select Project.Project_id,sum(ResourcePlanning_Role.Quantity) as total_Planned_Quantity from  ResourcePlanning_Role 
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_P_Quantity on total_P_Quantity.Project_id = Project.Project_id
+					
+					left join (select Project.Project_id,count(Emp_RolePlanning.ResourcePlannig_RoleId) as total_Actual_Quantity from  Emp_RolePlanning 
+							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+							group by  Project.Project_id) as total_A_Quantity on total_A_Quantity.Project_id = Project.Project_id
+where [ProjectName] like @PName and depeartment_id=@bu";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -144,7 +222,6 @@ namespace ResourceAllocationBE.Controllers
         @Code, @ProjectName,
         @Depeartment_id,@Effort_planned,
         @Effort_actual,@Effort_billable,
-        @Quantity_plan,@Quantity_actual,
         @Start_plan,@Start_actual,
         @End_plan,@End_actual,
 @note)
@@ -165,8 +242,6 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Effort_planned", project.Effort_planned);
                     myCommand.Parameters.AddWithValue("@Effort_actual", project.Effort_actual);
                     myCommand.Parameters.AddWithValue("@Effort_billable", project.Effort_billable);
-                    myCommand.Parameters.AddWithValue("@Quantity_plan", project.Quantity_plan);
-                    myCommand.Parameters.AddWithValue("@Quantity_actual", project.Quantity_actual);
                     myCommand.Parameters.AddWithValue("@Start_plan", project.Start_plan == null ? "GETDATE()" : project.Start_plan);
                     myCommand.Parameters.AddWithValue("@Start_actual", project.Start_actual == null ? "GETDATE()" : project.Start_actual);
                     myCommand.Parameters.AddWithValue("@End_plan", project.End_plan == null ? "GETDATE()" : project.End_plan);
@@ -198,8 +273,7 @@ namespace ResourceAllocationBE.Controllers
             string query = @"
             update dbo.Project set Code = @Code, ProjectName= @ProjectName, Depeartment_id = @Depeartment_id,
             Effort_planned = @Effort_planned,Effort_actual=@Effort_actual,
-            Effort_billable=@Effort_billable, Quantity_plan=@Quantity_plan, 
-            Quantity_actual=@Quantity_actual, Start_plan=@Start_plan,
+            Effort_billable=@Effort_billable,  Start_plan=@Start_plan,
             Start_actual=@Start_actual, End_plan=@End_plan, End_actual=@End_actual
             WHERE [Project_id] = @id";
             DataTable table = new DataTable();
@@ -217,8 +291,6 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@Effort_planned", project.Effort_planned);
                     myCommand.Parameters.AddWithValue("@Effort_actual", project.Effort_actual);
                     myCommand.Parameters.AddWithValue("@Effort_billable", project.Effort_billable);
-                    myCommand.Parameters.AddWithValue("@Quantity_plan", project.Quantity_plan);
-                    myCommand.Parameters.AddWithValue("@Quantity_actual", project.Quantity_actual);
                     myCommand.Parameters.AddWithValue("@Start_plan", project.Start_plan == null ? "GETDATE()" : project.Start_plan);
                     myCommand.Parameters.AddWithValue("@Start_actual", project.Start_actual == null ? "GETDATE()" : project.Start_actual);
                     myCommand.Parameters.AddWithValue("@End_plan", project.End_plan == null ? "GETDATE()" : project.End_plan);

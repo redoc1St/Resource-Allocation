@@ -7,6 +7,7 @@ import useAuth from "../hooks/useAuth";
 export default function Search(data) {
   const { placeholder } = data;
   const { valueInput, setValueInput } = useAuth();
+
   const handleSearch = (e) => {
     // console.log(e);
     if (data.type == "employee") {

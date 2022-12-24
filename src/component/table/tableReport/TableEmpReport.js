@@ -33,7 +33,7 @@ export default function TableEmpReport() {
     dispatch(getLevels());
     dispatch(getSkills());
     listPName();
-  });
+  },[]);
 
   const listPName = (e) => {
     e?.stopPropagation();

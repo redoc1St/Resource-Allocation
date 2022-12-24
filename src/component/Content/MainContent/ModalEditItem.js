@@ -20,10 +20,18 @@ export default function ModalEditItem(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
-  const {  user } = useAuth();
+  const { user } = useAuth();
+
+  function delSpace(string) {
+    let str1Arr = string.split(" ");
+    str1Arr = str1Arr.filter((item) => {
+      if (item !== " ") return item;
+    });
+    return str1Arr.join(" ");
+  }
 
   const [error, setError] = useState();
-// console.log(newdate);
+  // console.log(newdate);
   useEffect(() => {}, []);
 
   const showModal = () => {
@@ -47,7 +55,7 @@ export default function ModalEditItem(data) {
   } = useForm({
     defaultValues: {
       pId: data?.data?.pId,
-      sdp:  data?.data?.sdp.split("-").reverse().join("-"),
+      sdp: data?.data?.sdp.split("-").reverse().join("-"),
       pName: data?.data?.name,
       unit: data?.data?.Department_id,
       actualE: data?.data?.actual,
@@ -77,10 +85,10 @@ export default function ModalEditItem(data) {
           method: "PUT",
           data: {
             code: JSON.parse(JSON.stringify(pId)),
-            projectName: JSON.parse(JSON.stringify(pName)),
+            projectName: JSON.parse(JSON.stringify(delSpace(pName))),
             department_id: JSON.parse(JSON.stringify(unit)),
-            effort_planned: JSON.parse(JSON.stringify(planE)),
-            effort_actual: JSON.parse(JSON.stringify(actualE)),
+            effort_planned: JSON.parse(JSON.stringify(0)),
+            effort_actual: JSON.parse(JSON.stringify(0)),
             effort_billable: JSON.parse(JSON.stringify(billE)),
             start_plan: JSON.parse(JSON.stringify(sdp)),
             start_actual: JSON.parse(JSON.stringify(sda)),
@@ -95,9 +103,9 @@ export default function ModalEditItem(data) {
           content: "Edit project successfully",
           style: { marginTop: "50px" },
         });
-          // dispatch(getProjects());
+        // dispatch(getProjects());
 
-          user?.UserType !== ROLES.ADMIN
+        user?.UserType !== ROLES.ADMIN
           ? dispatch(getProjectsByBuId(user?.Department_id))
           : dispatch(getProjects());
 
@@ -152,11 +160,10 @@ export default function ModalEditItem(data) {
                         <option value="3">Bu 3</option>
                         <option value="4">Bu 4</option>
                         <option value="5">Bu 5</option>
-
                       </select>
                     </td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <td>Actual effort *</td>
                     <td>
                       <input
@@ -164,10 +171,11 @@ export default function ModalEditItem(data) {
                         min={0}
                         max={100}
                         {...register("actualE")}
+                        step=".01"
                         required
                       />
                     </td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <td>Start date (plan) </td>
                     <td>
@@ -177,7 +185,6 @@ export default function ModalEditItem(data) {
                         {...register("sdp")}
                         // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
-                       
                       />
                       {/* {errors.sdp && (
                         <span style={{ color: "red" }} role="alert">
@@ -207,22 +214,28 @@ export default function ModalEditItem(data) {
                   <tr>
                     <td>Project Name *</td>
                     <td>
-                      <input name="pName" {...register("pName")} maxLength='50' required />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Planned effort *</td>
-                    <td>
                       <input
-                        type="number"
-                        {...register("planE")}
-                        name="planE"
-                        min={0}
-                        placeholder="0"
+                        name="pName"
+                        {...register("pName")}
+                        maxLength="50"
                         required
                       />
                     </td>
                   </tr>
+                  {/* <tr>
+                    <td>Planned effort *</td>
+                    <td>
+                      <input
+                        type=""
+                        {...register("planE")}
+                        name="planE"
+                        min={0}
+                        step=".01"
+                        placeholder="0"
+                        required
+                      />
+                    </td>
+                  </tr> */}
                   <tr>
                     <td>Billable effort *</td>
                     <td>
@@ -230,7 +243,6 @@ export default function ModalEditItem(data) {
                         type="number"
                         {...register("billE")}
                         min={0}
-                        
                         placeholder="0"
                         required
                       />

@@ -139,7 +139,7 @@ export default function TableCandidate() {
         }
       : { fixed: "right", width: 20 },
   ];
-
+console.log(users.Password);
   const data = users.map((item) => ({
     no: countId++,
     key: item.User_id,

@@ -23,6 +23,8 @@ const handleStyleStatus = (status) => {
 export const getRoleByCode = (code) => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })
   let totalPQuantity = 0;
+  let totalAQuantity = 0;
+
   await axios
     .get(`${projectsApi}/api/ResourcePlanning/${code}`)
     .then((res) => {
@@ -31,6 +33,7 @@ export const getRoleByCode = (code) => async (dispatch) => {
         Date_start: new Date(item.Date_start).toLocaleDateString("fr-CA"),
         Date_end: new Date(item.Date_end).toLocaleDateString("fr-CA"),
         totalPQuantity: (totalPQuantity += item.Quantity),
+        totalAQuantity: (totalAQuantity += item.actual),
         Status: handleStyleStatus(item.Status),
       }));
       // dispatch({ type: SET_LOADING, payload: false })

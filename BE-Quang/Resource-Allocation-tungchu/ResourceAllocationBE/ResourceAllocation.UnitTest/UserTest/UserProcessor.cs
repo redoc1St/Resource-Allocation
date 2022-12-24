@@ -36,8 +36,11 @@ namespace ResourceAllocation.UnitTest.UserTest
             }
             if (user.Password != "123456")
             {
+                Console.WriteLine("OK");
                 throw new ArgumentException("Password is not true");
+                
             }
+            
             return true;
         }
 
@@ -51,19 +54,6 @@ namespace ResourceAllocation.UnitTest.UserTest
         }
 
         
-
-        public bool getUserDetail(User user)
-        {
-            if(user.Email == "")
-            {
-                throw new ArgumentNullException("Can't found user");
-            }
-            if (user.Email != "quangdd1412@gmail.com")
-            {
-                throw new ArgumentException("Can't found user");
-            }
-            return true;
-        }
 
         public bool changePass(User user, string newPass, string confirmPass)
         {
@@ -92,7 +82,7 @@ namespace ResourceAllocation.UnitTest.UserTest
         {
             if(username == "" || fullname == "" || startDate == "" || email == "" || address == "" || typeOfUser == "" || department == "" || bithDate == "")
             {
-                throw new ArgumentNullException("Usernameor Email not null");
+                throw new ArgumentNullException("Input not null");
             }
             if(username.Length<6)
             {

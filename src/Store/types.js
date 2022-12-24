@@ -49,6 +49,8 @@ export const GET_SPEC_REQUEST_BY_BU='GET_SPEC_REQUEST_BY_BU'
 
 //report
 export const GET_BY_EMPLOYEE='GET_BY_EMPLOYEE'
+export const GET_EMPS_BY_PNAME='GET_EMPS_BY_PNAME'
+
 
 //Notification
 export const GET_NOTI_BY_USERID='GET_NOTI_BY_USERID'

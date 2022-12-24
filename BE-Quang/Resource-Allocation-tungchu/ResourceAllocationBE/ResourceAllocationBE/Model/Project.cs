@@ -14,8 +14,6 @@ namespace ResourceAllocationBE.Model
         public int Effort_planned { get; set; }
         public int Effort_actual { get; set; }
         public int Effort_billable { get; set; }
-        public int Quantity_plan { get; set; }
-        public int Quantity_actual { get; set; }
         public string Start_plan { get; set; }
         public string Start_actual { get; set; }
         public string End_plan { get; set; }

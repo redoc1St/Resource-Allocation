@@ -15,6 +15,7 @@ import {
   getRoles,
   getSkills,
 } from "../../../Store/Actions/ExtraObjectActions";
+import Search from "../../option/Search";
 
 export default function TableRPool(data) {
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
@@ -170,6 +171,7 @@ export default function TableRPool(data) {
     <div>
     
       {/* {console.log(modifiedData)} */}
+      <Search type='emp_planning' placeholder="Enter employee name " />
       
       <Table
        

@@ -1,8 +1,12 @@
 import axios from "axios";
 import React from "react";
 import { message, Popconfirm } from "antd";
+import { useDispatch } from "react-redux";
+import { getUsers } from "../../../Store/Actions/UserActions";
 
 export default function UpdatePass(data) {
+  const dispatch = useDispatch();
+
   const confirm = async (e) => {
     var bodyFormData = new FormData();
     bodyFormData.append("ToEmail", data.Email);
@@ -13,6 +17,8 @@ export default function UpdatePass(data) {
         method: "post",
         data: bodyFormData,
       });
+      dispatch(getUsers());
+
       message.success({
         content: "Reset password successfully",
         style: { marginTop: "50px" },
@@ -22,11 +28,9 @@ export default function UpdatePass(data) {
     }
   };
   const cancel = (e) => {
-//     console.log(e);
-//     message.error("Click on No");
+    //     console.log(e);
+    //     message.error("Click on No");
   };
-
-
 
   return (
     <div>
@@ -37,9 +41,8 @@ export default function UpdatePass(data) {
         okText="Yes"
         cancelText="No"
       >
-        <a style={{ color: "#62a3ff" }}>
-          Reset pass
-        </a>
+        <a style={{ color: "#62a3ff" }}>Reset pass</a>
+        <p style={{ color: "red" }}>{data?.Password ? "" : "(No password)"} </p>
       </Popconfirm>
     </div>
   );

@@ -32,21 +32,21 @@ export default function TableResourcePlanning(data) {
       width: 75,
       editTable: true,
     },
-    // {
-    //   title: "Actual quantity",
-    //   dataIndex: "ActualQuantity",
-    //   width: 75,
-    //   editTable: true,
-    // },
+    {
+      title: "Actual quantity",
+      dataIndex: "actual",
+      width: 75,
+      editTable: true,
+    },
     {
       title: "Level",
       dataIndex: "LevelName",
-      width: 100,
+      width: 140,
     },
     {
       title: "Skills",
       dataIndex: "SkillName",
-      width: 100,
+      width: 140,
     },
     user?.UserType !== ROLES.EMPLOYEE
       ? {
@@ -72,16 +72,16 @@ export default function TableResourcePlanning(data) {
       dataIndex: "Effort_planned",
       width: 90,
     },
-    // {
-    //   title: "% Actual effort",
-    //   dataIndex: "Effort_actual",
-    //   width: 80,
-    // },
     {
-      title: "Bill/Unbill",
-      dataIndex: "bill",
-      width: 100,
+      title: "% Actual effort",
+      dataIndex: "total_Effort",
+      width: 80,
     },
+    // {
+    //   title: "Bill/Unbill",
+    //   dataIndex: "bill",
+    //   width: 100,
+    // },
 
     {
       title: "% Bill",
@@ -94,12 +94,14 @@ export default function TableResourcePlanning(data) {
       fixed: "right",
       width: 100,
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      fixed: "right",
-      width: 70,
-    },
+    user?.UserType !== ROLES.EMPLOYEE
+      ? {
+          title: "Action",
+          dataIndex: "action",
+          fixed: "right",
+          width: 70,
+        }
+      : { fixed: "right", width: 10 },
   ];
 
   const mergedData = [
@@ -108,6 +110,21 @@ export default function TableResourcePlanning(data) {
     },
     ...data.planningRoles,
   ];
+
+  var totalPlanAllocate = 0;
+  var totalActualAllocate = 0;
+
+  const AverageAllocate = mergedData?.map((item) => {
+    return (
+      item.Effort_planned
+        ? (totalPlanAllocate += item.Effort_planned)
+        : item.Effort_planned,
+      item.total_Effort
+        ? (totalActualAllocate += item.total_Effort)
+        : item.total_Effort
+    );
+  });
+  // console.log(mergedData)
   const ar = [1, 2, 3, 4];
   const mergedData2 = mergedData.map((item, index) =>
     index > 0
@@ -118,6 +135,8 @@ export default function TableResourcePlanning(data) {
           status: item.Status,
           Date_start: new Date(item.Date_start).toLocaleDateString("es-CL"),
           Date_end: new Date(item.Date_end).toLocaleDateString("es-CL"),
+          actual: item.actual ? item.actual : "0",
+          total_Effort: item.total_Effort ? item.total_Effort : "0",
           action:
             item?.Status?.props?.children === "Rejected" ||
             item?.Status?.props?.children === "In Progress" ? (
@@ -152,11 +171,20 @@ export default function TableResourcePlanning(data) {
           RoleName: "Total",
           Quantity:
             data?.planningRoles[data.planningRoles.length - 1]?.totalPQuantity,
+          actual:
+            data?.planningRoles[data.planningRoles.length - 1]?.totalAQuantity,
+          Effort_planned: totalPlanAllocate,
+          total_Effort: totalActualAllocate,
         }
   );
+
+  // console.log(totalActualAllocate);
   // console.log(data);
   data?.sendTotalToParent(
-    data?.planningRoles[data.planningRoles.length - 1]?.totalPQuantity
+    data?.planningRoles[data.planningRoles.length - 1]?.totalPQuantity,
+    data?.planningRoles[data.planningRoles.length - 1]?.totalAQuantity,
+    totalPlanAllocate,
+    totalActualAllocate
   );
 
   return (

@@ -1,10 +1,19 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { ROLES } from "../../../App";
+import useAuth from "../../hooks/useAuth";
 
 export default function Unauthorized() {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const { state } = useLocation();
+  const { user } = useAuth();
+  // useEffect = () => {
+    if (user?.UserType === ROLES.ADMIN) {
+      navigate(-1)
+    }
+  // };
+
   return (
     <div>
       <section>

@@ -3,12 +3,18 @@ using Xunit;
 using ResourceAllocationBE.Controllers;
 using Moq;
 using ResourceAllocationBE.Model;
+using Xunit.Abstractions;
 
 namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
 {
     public class ResourcePlanningRoleProcessorUnitTest
     {
-       
+        private readonly ITestOutputHelper output;
+
+        public ResourcePlanningRoleProcessorUnitTest(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
 
         // TEST INSERT ROLE PLANNING
         // null
@@ -25,6 +31,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Date_start = "",
                 Date_end = "10/05/2022"
             }));
+            output.WriteLine("Input not null");
         }
 
         // null
@@ -41,6 +48,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Date_start = "05/05/2022",
                 Date_end = ""
             }));
+            output.WriteLine("Input not null");
         }
         // null
         [Fact]
@@ -56,6 +64,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Date_start = "05/05/2022",
                 Date_end = "05/05/2022"
             }));
+            output.WriteLine("Quantity not equal 0");
         }
         // null
         [Fact]
@@ -71,6 +80,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Date_start = "05/05/2022",
                 Date_end = "05/05/2022"
             }));
+            output.WriteLine("Quantity not equal 0");
         }
         // quantity not <=0 
         [Fact]
@@ -86,6 +96,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Date_start = "05/05/2022",
                 Date_end = "10/05/2022"
             }));
+            output.WriteLine("Quantity not equal 0");
         }
         // >100
         [Fact]
@@ -101,10 +112,11 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Date_start = "05/05/2022",
                 Date_end = "10/05/2022"
             }));
+            output.WriteLine("No more than 100%");
         }
         // >100
         [Fact]
-        public void TestInvalidInsertResourcePlanningRoleMoreThan100Percent2()
+        public void TestInvalidInsertMorethan100ResourcePlanningRoleMoreThan100Percent2()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
@@ -116,6 +128,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Date_start = "05/05/2022",
                 Date_end = "10/05/2022"
             }));
+            output.WriteLine("No more than 100%");
         }
         // true
         [Fact]
@@ -133,6 +146,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 Date_start = "05/05/2022",
                 Date_end = "10/05/2022"
             }));
+            output.WriteLine("success");
         }
 
 
@@ -158,9 +172,10 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 start_date :"05/05/2022",
                 end_date :"10/05/2022"
             ));
+            output.WriteLine("Quantity not equal 0");
         }
         [Fact]
-        public void TestInvalidUpdateResourcePlanningRole()
+        public void TestInvalidUpdateMorethan100ResourcePlanningRole()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
@@ -171,9 +186,10 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 start_date: "05/05/2022",
                 end_date: "10/05/2022"
             ));
+            output.WriteLine("%bill or %effort not more than 100%");
         }
         [Fact]
-        public void TestInvalidUpdateResourcePlanningRole2()
+        public void TestInvalidUpdateMorethan100ResourcePlanningRole2()
         {
             var resourceAllocationProcessor = new Mock<IResourceAllocationProcessor>();
             var projectProcessor = new ResourcePlanningRoleProcessor(resourceAllocationProcessor.Object);
@@ -184,6 +200,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 start_date: "05/05/2022",
                 end_date: "10/05/2022"
             ));
+            output.WriteLine("%bill or %effort not more than 100%");
         }
         [Fact]
         public void TestInvalidUpdateResourcePlanningRole3()
@@ -197,6 +214,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 start_date: "05/05/2022",
                 end_date: ""
             ));
+            output.WriteLine("Input not null");
         }
         [Fact]
         public void TestInvalidUpdateResourcePlanningRole4()
@@ -210,6 +228,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 start_date: "",
                 end_date: "10/05/2022"
             ));
+            output.WriteLine("Input not null");
         }
         // true
         [Fact]
@@ -225,6 +244,7 @@ namespace ResourceAllocation.UnitTest.ResourcePlanningRoleTest
                 bill: 50,
                 start_date: "05/05/2022",
                 end_date: "10/05/2022"));
+             output.WriteLine("success");
         }
     }
 }

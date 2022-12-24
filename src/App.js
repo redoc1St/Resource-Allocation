@@ -79,8 +79,8 @@ function App() {
 
   const login = ({ token }) => {
     localStorage.setItem("token", token);
-    console.log(userInfo.data);
-    window.location.href = "/resourceAllocation"; 
+    // console.log(userInfo.data);
+    window.location.href = "/resourceAllocation";
   };
 
   const logout = () => {
@@ -93,7 +93,7 @@ function App() {
 
   const [moreRow, setMoreRow] = useState(0);
 
-  const [valueInput, setValueInput] = useState({empSearch:''});
+  const [valueInput, setValueInput] = useState({ empSearch: "" });
 
   const [statusCand, setStatusCand] = useState("");
 
@@ -146,7 +146,9 @@ function App() {
             >
               <Routes>
                 <Route element={<GuestRouter />}>
-                  <Route exact path="/login"  element={<Login />} />
+                  <Route exact path="/" element={<Login />} />
+
+                  <Route exact path="/login" element={<Login />} />
                   <Route exact path="/forgot" element={<Forgot />} />
                 </Route>
                 <Route element={<PrivateRoute />}>
@@ -195,7 +197,13 @@ function App() {
                   >
                     <Route exact path="/requests" element={<RequestPage />} />
                   </Route>
-                  <Route exact path="/report" element={<Report />} />
+                  <Route
+                    element={
+                      <RequireAuth allowedRoles={[ROLES.LEADER, ROLES.ADMIN]} />
+                    }
+                  >
+                    <Route exact path="/report" element={<Report />} />
+                  </Route>
                   <Route
                     exact
                     path="/report/resourcePlaning/:pName"

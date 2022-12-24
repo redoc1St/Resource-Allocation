@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ScrollBar from "react-perfect-scrollbar";
@@ -7,7 +6,6 @@ import {
   getUsers,
   getUsersByName,
   getUsersByNameAStatus,
-  
 } from "../../../Store/Actions/UserActions";
 import BasicBreadcrumbs from "../../breadcrumbs/BasicBreadcrumbs";
 import PieChart from "../../Chart/Pie";
@@ -28,29 +26,43 @@ export default function CandidateManage() {
     setStatusCand(e.target.value);
   };
 
-
-  var arr = new Array( 0, 0, 0, 0,0,0);
-  let totalUsers= 0
+  var arr = new Array(0, 0, 0, 0, 0, 0);
+  let totalUsers = 0;
   const calEmp = () => {
     users.map((item) => {
-      totalUsers++
+      totalUsers++;
       for (let index = 1; index < arr.length; index++) {
         if (item.Department_id === index) {
           arr[index]++;
-        } 
+        }
       }
     });
   };
 
+  // useEffect(() => {
+  //   if (statusCand == "all") {
+  //     valueInput ? dispatch(getUsersByName(valueInput.empSearch)) : dispatch(getUsers());
+  //   } else {
+  //     dispatch(
+  //       getUsersByNameAStatus(valueInput.empSearch ? valueInput.empSearch : " ", statusCand)
+  //     );
+  //   }
+  // }, [statusCand, valueInput.empSearch, dispatch]);
+
   useEffect(() => {
     if (statusCand == "all") {
-      valueInput ? dispatch(getUsersByName(valueInput.empSearch)) : dispatch(getUsers());
+      valueInput.empSearch
+        ? dispatch(getUsersByName(valueInput.empSearch))
+        : dispatch(getUsers());
     } else {
       dispatch(
-        getUsersByNameAStatus(valueInput.empSearch ? valueInput.empSearch : " ", statusCand)
+        getUsersByNameAStatus(
+          valueInput.empSearch ? valueInput.empSearch : " ",
+          statusCand
+        )
       );
     }
-  }, [statusCand, valueInput, dispatch]);
+  }, [statusCand, valueInput.empSearch, dispatch]);
   return (
     <div>
       <ScrollBar
@@ -74,7 +86,7 @@ export default function CandidateManage() {
           <div>
             <BasicBreadcrumbs />
             <div style={{ display: "flex" }}>
-              <Search type='employee' placeholder="Enter candidate name" />
+              <Search type="employee" placeholder="Enter candidate name" />
               <div className="form-group" style={{ marginLeft: "650px" }}>
                 <h5>Status </h5>
                 <select
@@ -92,10 +104,10 @@ export default function CandidateManage() {
             </div>
             <Card style={{ width: 300, height: "250px", marginLeft: "10px" }}>
               <p style={{ fontWeight: "bold" }}>Total Staff: {totalUsers}</p>
-              <PieChart data={arr}/>
+              <PieChart data={arr} />
             </Card>
             <TableCandidate />
-            {user?.UserType ==ROLES.ADMIN ? <DrawerAddUser/> :''} 
+            {user?.UserType == ROLES.ADMIN ? <DrawerAddUser /> : ""}
           </div>
         </Pane>
       </ScrollBar>

@@ -1,4 +1,3 @@
-
 import { Table, Progress } from "antd";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -52,18 +51,48 @@ export default function TableData(sText) {
           : dispatch(getProjects());
       }
   }, [valueInput?.prjSearch, dispatch, user?.UserType]);
+  console.log(projects);
+
+  // var totalAllocate = 0;
+  // const AverageAllocate = projects.map((item) => {
+  //   return (totalAllocate += item.Effort);
+  // });
 
   const modifiedData = projects.map((item) => ({
     key: item.id,
     pName: <Link to={"/resourcePlaning/" + item.code}>{item.name}</Link>,
     pId: item.code,
     unit: "BU " + item.Department_id,
-    plan: item.pe,
-    actual: item.ae,
+    plan: (
+      ((new Date(item.edp) - new Date(item.sdp)) *
+        item.total_Planned_Effort *
+        item.total_Planned_Quantity) /
+      (3600 * 1000 * 24 * 22 * 100)
+    ).toFixed(2),
+    actual: (
+      ((new Date(item.eda) - new Date(item.sda)) *
+        item.total_Actual_Effort *
+        item.total_Actual_Quantity) /
+      (3600 * 1000 * 24 * 22 * 100)
+    ).toFixed(2),
     billable: item.be,
     allocation: (
       <Progress
-        percent={Math.floor((Number(item.ae) / Number(item.pe)) * 100)}
+        percent={Math.floor(
+          (Number(
+            ((new Date(item.eda) - new Date(item.sda)) *
+              item.total_Actual_Effort *
+              item.total_Actual_Quantity) /
+              (3600 * 1000 * 24 * 22 * 100)
+          ) /
+            Number(
+              ((new Date(item.edp) - new Date(item.sdp)) *
+                item.total_Planned_Effort *
+                item.total_Planned_Quantity) /
+                (3600 * 1000 * 24 * 22 * 100)
+            )) *
+            100
+        )}
         steps={5}
         strokeColor={[green[6], green[6], red[5]]}
       />

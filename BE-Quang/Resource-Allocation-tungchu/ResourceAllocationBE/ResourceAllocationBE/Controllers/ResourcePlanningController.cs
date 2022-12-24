@@ -27,16 +27,18 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListResourcePlanning(string pid)
         {
             string query = @"
-                    select id,Roles.RoleName, ProjectName, Roles.Role_id, 
-                    Quantity, Date_start, Date_end, ResourcePlanning_Role.Effort_planned,
-                    ResourcePlanning_Role.Effort_actual, Bill_rate, [Status], 
-                    LevelName, SkillName, Skill.Skill_id, Levels.Level_id
-                    from ResourcePlanning_Role, Roles,Project, Levels,Skill
-                    where ResourcePlanning_Role.Project_id = Project.Project_id and
-                    Roles.Role_id = ResourcePlanning_Role.Role_id and
-                    ResourcePlanning_Role.Level_id = Levels.Level_id and
-                    ResourcePlanning_Role.Skill_id =  Skill.Skill_id
-                    and Project.code = @pid";
+                  select ResourcePlanning_Role.id,Roles.RoleName, ProjectName, Roles.Role_id, 
+                    Quantity, actual, ResourcePlanning_Role.Date_start, ResourcePlanning_Role.Date_end, ResourcePlanning_Role.Effort_planned,
+                    ResourcePlanning_Role.Effort_actual, ResourcePlanning_Role.Bill_rate, [Status], 
+                    LevelName, SkillName, Skill.Skill_id, Levels.Level_id, total_Effort
+                    from ResourcePlanning_Role 
+					join Roles on  Roles.Role_id = ResourcePlanning_Role.Role_id 
+					join Project on ResourcePlanning_Role.Project_id = Project.Project_id 
+					join Levels on  ResourcePlanning_Role.Level_id = Levels.Level_id
+					join Skill on   ResourcePlanning_Role.Skill_id =  Skill.Skill_id
+					left join (select Emp_RolePlanning.ResourcePlannig_RoleId,count(Emp_RolePlanning.ResourcePlannig_RoleId) as actual, sum([Effort]) as total_Effort from  Emp_RolePlanning 
+					group by Emp_RolePlanning.ResourcePlannig_RoleId) as total on  total.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+             where Project.code = @pid";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -59,7 +61,7 @@ namespace ResourceAllocationBE.Controllers
 
         //--select RESOURCEPOOL by projectname and role
         [HttpGet("view/{name}/{role}")]
-        public JsonResult viewResourcePoolByRole(string name, string role)
+        public JsonResult viewResourcePoolByRole(string name, int role)
         {
             string query = @"
 
@@ -81,7 +83,7 @@ Emp_RolePlanning.Date_start,
                 Roles.Role_id = ResourcePlanning_Role.Role_id AND
                 Levels.Level_id = ResourcePlanning_Employee.Level_id AND
                 Skill.Skill_id = ResourcePlanning_Role.Skill_id
-                and ProjectName =@name AND Roles.RoleName = @role ";
+                and ProjectName =@name AND  ResourcePlanning_Role.id = @role";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -101,7 +103,6 @@ Emp_RolePlanning.Date_start,
             }
             return new JsonResult(table);
         }
-       
         //Get Detail ResourcePlanning_Role (ko caanf)
         //[HttpGet("one/{id}")]
         //public JsonResult getResourcePlanningDetail(string id)
@@ -131,7 +132,7 @@ Emp_RolePlanning.Date_start,
         public JsonResult insertResourcePlanning(ResourcePlanningRole resource)
         {
             string query = @"
-            if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id)
+            if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id and ([Status]='Approved' or [Status]='Waiting' or [Status]='In Progress'))
             insert into [ResourcePlanning_Role](Project_id,Role_id,Quantity,Date_start ,
             Date_end ,
             Effort_planned ,
@@ -188,7 +189,7 @@ select * from [user]";
         {
             string query = @"
                 if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id)
-                update dbo.ResourcePlanning_Role
+                begin update dbo.ResourcePlanning_Role
                 set  
                 Quantity=@Quantity,
                 Date_start=@Date_start,
@@ -197,7 +198,9 @@ select * from [user]";
                 Bill_rate=@Bill_rate,
                 Level_id=@Level_id, 
                 Skill_id=@Skill_id 
-                WHERE id = @id";
+                WHERE id = @id end
+                  else
+                select * from [user]";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -222,6 +225,10 @@ select * from [user]";
                     myCon.Close();
 
                 }
+            }
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult("FAILS");
             }
             return new JsonResult("Update Successfully");
         }

@@ -22,6 +22,14 @@ export default function DrawerAddUser() {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
+  function delSpace(string) {
+    let str1Arr = string.split(" ");
+    str1Arr = str1Arr.filter((item) => {
+      if (item !== " ") return item;
+    });
+    return str1Arr.join(" ");
+  }
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -38,6 +46,9 @@ export default function DrawerAddUser() {
         method: "POST",
         data: {
           ...e,
+          username: delSpace(e.username),
+          fullname: delSpace(e.fullname),
+          address: delSpace(e.address),
           isactive: 1,
           password: "",
           birthday: e.birthday._d.toLocaleDateString("en-US"),

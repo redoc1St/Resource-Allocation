@@ -19,12 +19,21 @@ import useAuth from "../../hooks/useAuth";
 import axios from "../../../../src/api/request";
 import request from "../../../../src/api/request";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjects, getProjectsByBuId } from "../../../Store/Actions/ProjectActions";
+import {
+  getProjects,
+  getProjectsByBuId,
+} from "../../../Store/Actions/ProjectActions";
 import { ROLES } from "../../../App";
 
 export default function ModalAddItem() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  function delSpace(string) {
+    let str1Arr = string.split(" ");
+    str1Arr = str1Arr.filter((item) => {
+      if (item !== " ") return item;
+    });
+    return str1Arr.join(" ");
+  }
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.Projects.projects);
   const { user } = useAuth();
@@ -87,10 +96,10 @@ export default function ModalAddItem() {
           method: "POST",
           data: {
             code: prjCode,
-            projectName: JSON.parse(JSON.stringify(projectName)),
+            projectName: JSON.parse(JSON.stringify(delSpace(projectName))),
             department_id: JSON.parse(JSON.stringify(department_id)),
-            effort_planned: JSON.parse(JSON.stringify(effort_planned)),
-            effort_actual: JSON.parse(JSON.stringify(effort_actual)),
+            effort_planned: JSON.parse(JSON.stringify(0)),
+            effort_actual: JSON.parse(JSON.stringify(0)),
             effort_billable: JSON.parse(JSON.stringify(effort_billable)),
             start_plan: JSON.parse(JSON.stringify(start_plan)),
             start_actual: JSON.parse(JSON.stringify(start_actual)),
@@ -106,9 +115,8 @@ export default function ModalAddItem() {
           });
           // dispatch(getProjects());
           user?.UserType !== ROLES.ADMIN
-          ? dispatch(getProjectsByBuId(user?.Department_id))
-          : dispatch(getProjects());
-
+            ? dispatch(getProjectsByBuId(user?.Department_id))
+            : dispatch(getProjects());
         } else if (res.data == "FAILS") {
           message.error({
             content: "Project ID already exist",
@@ -183,7 +191,7 @@ export default function ModalAddItem() {
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                {/* <tbody>
                   <tr>
                     <td>Actual effort *</td>
                     <td>
@@ -195,7 +203,7 @@ export default function ModalAddItem() {
                       />
                     </td>
                   </tr>
-                </tbody>
+                </tbody> */}
                 <tbody>
                   <tr>
                     <td>Start date (plan) </td>
@@ -229,7 +237,7 @@ export default function ModalAddItem() {
 
             <Col span={12}>
               <table>
-                <tbody>
+                {/* <tbody>
                   <tr>
                     <td>Planned effort *</td>
                     <td>
@@ -242,7 +250,7 @@ export default function ModalAddItem() {
                       />
                     </td>
                   </tr>
-                </tbody>
+                </tbody> */}
                 <tbody>
                   <tr>
                     <td>Billable effort *</td>

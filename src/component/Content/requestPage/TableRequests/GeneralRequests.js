@@ -23,7 +23,7 @@ export default function GeneralRequests() {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user?.UserType == "leader") {
+    if (user?.UserType === ROLES.LEADER) {
       dispatch(getGeneralRequestByBU(user?.Department_id));
     } else {
       dispatch(getGeneralRequest());
@@ -88,11 +88,7 @@ export default function GeneralRequests() {
       dataIndex: "SkillName",
       width: 80,
     },
-    {
-      title: "Requester",
-      dataIndex: "requester",
-      width: 100,
-    },
+   
     {
       title: "Time",
       dataIndex: "lastestTime",
@@ -105,15 +101,15 @@ export default function GeneralRequests() {
       width: 100,
       fixed: "right",
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      fixed: "right",
-      width: 130,
-      render: (_, record) => {
-        // return <DotAction />;
-      },
-    },
+    // {
+    //   title: "Action",
+    //   dataIndex: "action",
+    //   fixed: "right",
+    //   width: 130,
+    //   render: (_, record) => {
+    //     // return <DotAction />;
+    //   },
+    // },
   ];
   let countReqs = 0;
 

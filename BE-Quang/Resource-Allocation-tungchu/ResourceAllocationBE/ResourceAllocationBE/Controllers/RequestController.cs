@@ -65,7 +65,7 @@ namespace ResourceAllocationBE.Controllers
                     ResourcePlanning_Role.Level_id = Levels.Level_id and
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
                     ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
-                    order by  ResourcePlanning_Role.[status] desc,ResourceRequestRole.lastestTime  desc";
+                    order by ResourcePlanning_Role.[status] desc,  ResourceRequestRole.lastestTime  desc";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -126,8 +126,9 @@ namespace ResourceAllocationBE.Controllers
                     Roles.Role_id = ResourcePlanning_Role.Role_id and
                     ResourcePlanning_Role.Level_id = Levels.Level_id and
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
-                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
-                    order by  ResourcePlanning_Role.[status] desc,ResourceRequestRole.lastestTime  desc";
+                    ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id and depeartment_id =@bu
+                    order by ResourceRequestRole.lastestTime  desc,  ResourcePlanning_Role.[status] desc";
+
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -258,6 +259,12 @@ namespace ResourceAllocationBE.Controllers
         {
             string query = @"
             begin 
+if exists (SELECT * FROM [ResourceRequestEmployee]
+                    where  ResourcePlannig_RoleId =@rid and Employee_id = @eid and 
+				    status='Reject' )
+            begin
+                delete from ResourceRequestEmployee where ResourcePlannig_RoleId =@rid and Employee_id = @eid 
+            end
             if not exists(SELECT * FROM 
                 Emp_RolePlanning
                where ResourcePlannig_RoleId = @rid and Employee_id = @eid)
@@ -270,6 +277,8 @@ namespace ResourceAllocationBE.Controllers
                 insert into Notifications values (@leader_id, 'LEADER You get notification about request '+@name+' in '+@pname+'', GETDATE())
                 insert into Notifications values (1, 'ADMIN You get notification about request '+@name+' in '+@pname+'', GETDATE())
 			    end
+	else 
+			    select * from [user]
                end
 			else 
 			    select * from [user]
@@ -375,7 +384,7 @@ namespace ResourceAllocationBE.Controllers
 					join ResourcePlanning_Role on ResourcePlanning_Role.id = ResourceRequestEmployee.ResourcePlannig_RoleId
                     join Project on Project.project_id = ResourcePlanning_Role.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
-                    order by ResourceRequestEmployee.[status] desc , ResourceRequestEmployee.lastestTime  desc
+                    order by ResourceRequestEmployee.lastestTime  desc ,ResourceRequestEmployee.[status] desc 
 
   ";
             DataTable table = new DataTable();
@@ -409,7 +418,7 @@ namespace ResourceAllocationBE.Controllers
                     join Project on Project.project_id = ResourcePlanning_Role.[project_id]
                     join skill on skill.skill_id=resourceplanning_employee.skill_id
 	                 where Department.Department_id =@bu 
-                     order by ResourceRequestEmployee.[status] desc , ResourceRequestEmployee.lastestTime  desc
+                     order by ResourceRequestEmployee.lastestTime  desc ,ResourceRequestEmployee.[status] desc 
                 ";
             //project.depeartment_id=@bu
             DataTable table = new DataTable();

@@ -46,7 +46,7 @@ export default function ReportRSPLanning() {
         className="site-card-border-less-wrapper"
         style={{ display: "flex", marginTop: "20px", marginBottom: "20px" }}
       >
-        <Card
+        {/* <Card
           style={{
             color: "white",
             // border: "10px solid",
@@ -93,7 +93,7 @@ export default function ReportRSPLanning() {
           Planned effort
           <br />
           (MM)<p style={{ fontSize: "30px" }}>5</p>
-        </Card>
+        </Card> */}
         {/* <Card
           style={{
             color: "#646464",

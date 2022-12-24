@@ -9,6 +9,7 @@ import {
   GET_ALL_EMPS,
   GET_ALL_EMPS_BY_BU,
   GET_PNAME_FOR_LEADER_BY_RLS,
+  
 } from "../types";
 
 const initialState = {
@@ -19,8 +20,7 @@ const initialState = {
   pName: [],
   id: null,
   allEmps: [],
-  allEmpsByBU: [],
-  //   project: null,
+  allEmpsByBU: []  //   project: null,
 };
 
 const ExtraReducer = (state = initialState, { type, payload }) => {
@@ -43,9 +43,10 @@ const ExtraReducer = (state = initialState, { type, payload }) => {
       return { ...state, allEmps: payload };
     case GET_ALL_EMPS_BY_BU:
       return { ...state, allEmps: payload };
-      
-      case GET_PNAME_FOR_LEADER_BY_RLS:
-        return { ...state, pName: payload };
+
+    case GET_PNAME_FOR_LEADER_BY_RLS:
+      return { ...state, pName: payload };
+
     default:
       return state;
   }

@@ -11,6 +11,7 @@ export default function TableReportRSP() {
   const { onclickShowLeft, setOnclickShowLeft } = useAuth();
   const planningRoles = useSelector((state) => state.PlanningRoles.roles);
   const dispatch = useDispatch();
+
   const columns = [
     {
       title: "Role",
@@ -32,7 +33,7 @@ export default function TableReportRSP() {
     },
     {
       title: "Actual quantity",
-      dataIndex: "ActualQuantity",
+      dataIndex: "actual",
       width: 75,
       editTable: true,
     },
@@ -65,13 +66,8 @@ export default function TableReportRSP() {
     },
     {
       title: "% Actual effort",
-      dataIndex: "Effort_actual",
+      dataIndex: "total_Effort",
       width: 80,
-    },
-    {
-      title: "Bill/Unbill",
-      dataIndex: "bill",
-      width: 100,
     },
 
     {
@@ -87,7 +83,7 @@ export default function TableReportRSP() {
       // render: (_, record) => {
       //   return <DotAction record={record} />;
       // },
-    }
+    },
   ];
   useEffect(() => {
     dispatch(getRoleByCode(pName));
@@ -99,25 +95,43 @@ export default function TableReportRSP() {
     ...planningRoles,
   ];
 
-  const ar = [1, 2, 3, 4];
+  var totalPlanAllocate = 0;
+  var totalActualAllocate = 0;
+  var totalActualQuantity = 0;
+
+  const AverageAllocate = mergedData?.map((item) => {
+    return (
+      item.Effort_planned
+        ? (totalPlanAllocate += item.Effort_planned)
+        : item.Effort_planned,
+      item.total_Effort
+        ? (totalActualAllocate += item.total_Effort)
+        : item.total_Effort,
+      item.actual ? (totalActualQuantity += item.actual) : item.actual
+    );
+  });
+  // console.log();
   const mergedData2 = mergedData.map((item, index) =>
     index > 0
       ? {
           key: item.id,
           ...item,
-          ActualQuantity: ar[0]++,
           status: item.Status,
+          actual: item.actual ? item.actual : "0",
         }
       : {
           key: 0,
           RoleName: "Total",
+          actual: totalActualQuantity,
+          Effort_planned: totalPlanAllocate,
+          total_Effort: totalActualAllocate,
           Quantity: planningRoles[planningRoles.length - 1]?.totalPQuantity,
         }
   );
   return (
     <div>
       <Table
-        className="-striped -highlight"
+        className="table-striped-rows"
         style={
           onclickShowLeft
             ? {
@@ -132,26 +146,7 @@ export default function TableReportRSP() {
         dataSource={mergedData2}
         columns={columns}
         size="small"
-
-      >
-        {/* <Column width="100px" title="Role" dataIndex="RoleName" key="role" />
-
-        <ColumnGroup title="PLANNED">
-          <Column title="Quantity" dataIndex="Quantity" key="quantity" />
-          <Column title="Level" dataIndex="level" key="level" />
-          <Column title="Skill" dataIndex="skill" key="skill" />
-        </ColumnGroup>
-        <ColumnGroup title="ACTUAL">
-          <Column title="Quantity" dataIndex="quantity" key="quantity" />
-          <Column title="Level" dataIndex="level" key="level" />
-          <Column title="Skill" dataIndex="skill" key="skill" />
-        </ColumnGroup>
-        <Column title="Start date" dataIndex="sDate" key="age" />
-        <Column title="End date" dataIndex="address" key="address" />
-        <Column title="Status" dataIndex="address" key="address" /> */}
-
-        {console.log(planningRoles)}
-      </Table>
+      ></Table>
     </div>
   );
 }

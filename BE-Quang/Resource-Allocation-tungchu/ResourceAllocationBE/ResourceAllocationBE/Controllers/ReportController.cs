@@ -55,31 +55,34 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult(table);
         }
 
-        //--select RESOURCEPOOL by projectname 
-        [HttpGet("view/{name}")]
-        public JsonResult viewResourcePoolInProject(string name)
+       
+
+
+      //  --select RESOURCEPOOL by projectname
+            [HttpGet("view/{name}")]
+            public JsonResult viewResourcePoolInProject(string name)
         {
             string query = @"
-             SELECT [User].Fullname, 
-                Roles.RoleName, 
-                Emp_RolePlanning.Date_start, 
-                Emp_RolePlanning.Date_end, 
-                Emp_RolePlanning.Effort, 
-                Emp_RolePlanning.Bill_rate, 
-                Levels.LevelName, 
-                Skill.SkillName
-               
-             FROM Project, ResourcePlanning_Role, [USER], Roles, 
-                Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
-                
-             WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
-                ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
-				Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
-				ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
-                Roles.Role_id = ResourcePlanning_Role.Role_id AND
-                Levels.Level_id = ResourcePlanning_Role.Level_id AND
-                Skill.Skill_id = ResourcePlanning_Role.Skill_id
-                and ProjectName =@name";
+                 SELECT [User].Fullname, 
+                    Roles.RoleName, 
+                    Emp_RolePlanning.Date_start, 
+                    Emp_RolePlanning.Date_end, 
+                    Emp_RolePlanning.Effort, 
+                    Emp_RolePlanning.Bill_rate, 
+                    Levels.LevelName, 
+                    Skill.SkillName
+
+                 FROM Project, ResourcePlanning_Role, [USER], Roles, 
+                    Levels, Skill, ResourcePlanning_Employee, Emp_RolePlanning
+
+                 WHERE			Project.Project_id = ResourcePlanning_Role.Project_id AND
+                    ResourcePlanning_Role.id =  Emp_RolePlanning.ResourcePlannig_RoleId and
+        Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id and
+        ResourcePlanning_Employee.Employee_id=[USER].[User_id] AND 
+                    Roles.Role_id = ResourcePlanning_Role.Role_id AND
+                    Levels.Level_id = ResourcePlanning_Role.Level_id AND
+                    Skill.Skill_id = ResourcePlanning_Role.Skill_id
+                      and project.code =@name";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
