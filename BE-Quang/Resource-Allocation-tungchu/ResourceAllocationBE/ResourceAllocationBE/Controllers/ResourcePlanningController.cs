@@ -38,7 +38,7 @@ namespace ResourceAllocationBE.Controllers
 					join Skill on   ResourcePlanning_Role.Skill_id =  Skill.Skill_id
 					left join (select Emp_RolePlanning.ResourcePlannig_RoleId,count(Emp_RolePlanning.ResourcePlannig_RoleId) as actual, sum([Effort]) as total_Effort from  Emp_RolePlanning 
 					group by Emp_RolePlanning.ResourcePlannig_RoleId) as total on  total.ResourcePlannig_RoleId = ResourcePlanning_Role.id
-             where Project.code = @pid";
+             where Project.code = @pid ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;

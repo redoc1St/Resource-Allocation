@@ -371,6 +371,44 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("Update Successfully");
         }
+        //UPDATE sta USER INTO DB
+        [HttpPut("status/{id}")]
+        public JsonResult updateStatusUser(User user, int id)
+        {
+            string query = @"
+                if not exists (select * from Emp_RolePlanning 
+                join ResourcePlanning_Employee on ResourcePlanning_Employee.id=Emp_RolePlanning.Employee_id
+                where ResourcePlanning_Employee.Employee_id = @id)  
+                begin
+        update dbo.[User]
+        set [isActive]=@isActive
+        WHERE [User_id] = @id
+            end
+            else select *from [project]";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@id", id);
+                    myCommand.Parameters.AddWithValue("@isActive", user.isActive);
+
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult("FAILS");
+            }
+            return new JsonResult("Update Successfully");
+        }
 
 
     }

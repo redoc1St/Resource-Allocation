@@ -116,9 +116,11 @@ export default function TableResourcePlanning(data) {
 
   const AverageAllocate = mergedData?.map((item) => {
     return (
+      item.Status?.props.children=='Approved' ?
       item.Effort_planned
         ? (totalPlanAllocate += item.Effort_planned)
-        : item.Effort_planned,
+        : item.Effort_planned : '',
+
       item.total_Effort
         ? (totalActualAllocate += item.total_Effort)
         : item.total_Effort

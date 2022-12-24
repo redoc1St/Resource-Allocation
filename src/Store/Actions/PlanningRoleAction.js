@@ -32,8 +32,8 @@ export const getRoleByCode = (code) => async (dispatch) => {
         ...item,
         Date_start: new Date(item.Date_start).toLocaleDateString("fr-CA"),
         Date_end: new Date(item.Date_end).toLocaleDateString("fr-CA"),
-        totalPQuantity: (totalPQuantity += item.Quantity),
-        totalAQuantity: (totalAQuantity += item.actual),
+        totalPQuantity:item.Status=='Approved'? (totalPQuantity += item.Quantity) : totalPQuantity,
+        totalAQuantity: (totalAQuantity += item.actual) ,
         Status: handleStyleStatus(item.Status),
       }));
       // dispatch({ type: SET_LOADING, payload: false })

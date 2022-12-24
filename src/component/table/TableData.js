@@ -1,7 +1,7 @@
 import { Table, Progress } from "antd";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { red, green } from "@ant-design/colors";
+import { red, green,orange } from "@ant-design/colors";
 import "./TableData.css";
 import { Form, Input } from "antd";
 import useAuth from "../hooks/useAuth";
@@ -94,7 +94,7 @@ export default function TableData(sText) {
             100
         )}
         steps={5}
-        strokeColor={[green[6], green[6], red[5]]}
+        strokeColor={[ red[6],red[6], orange[6],green[6],green[6]]}
       />
     ),
 

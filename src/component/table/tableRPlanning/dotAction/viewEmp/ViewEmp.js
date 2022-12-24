@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { Button, message, Modal, Table, Popconfirm } from "antd";
-import { getRolesByNameNRole } from "../../../../../Store/Actions/PlanningRoleAction";
+import { getRoleByCode, getRolesByNameNRole } from "../../../../../Store/Actions/PlanningRoleAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useAuth from "../../../../hooks/useAuth";
@@ -9,8 +9,9 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import axios from "axios";
 export default function ViewEmp(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { pName: code } = useParams();
-  const { quantity, setQuantity } = useAuth();
+  // const { pName: code } = useParams();
+  // const { quantity, setQuantity } = useAuth();
+  const { pName } = useParams();
 
   const showModal = () => {
     // console.log(data?.record?.id)
@@ -52,7 +53,9 @@ export default function ViewEmp(data) {
           content: "Delete employee successfully",
           style: { marginTop: "50px" },
         });
-        getRolesByNameNRole(data?.record?.ProjectName, data?.record?.RoleName);
+    dispatch(getRoleByCode(pName));
+
+        // getRolesByNameNRole(data?.record?.ProjectName, data?.record?.RoleName);
       }
 
       setIsModalOpen(false);

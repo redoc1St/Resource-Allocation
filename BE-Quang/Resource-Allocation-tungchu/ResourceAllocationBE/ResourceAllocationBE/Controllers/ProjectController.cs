@@ -30,7 +30,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListProject()
         {
             string query = @"
-                               select Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
+                                 select Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
 					 note, total_Actual_Effort, total_Planned_Effort, total_Planned_Quantity, total_Actual_Quantity from
 					 dbo.[Project]
 					 left join ( select Project.Project_id,sum([Effort]) as total_Actual_Effort from  Emp_RolePlanning 
@@ -38,19 +38,21 @@ namespace ResourceAllocationBE.Controllers
 							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
 							group by  Project.Project_id) as total_A_Effrort on  total_A_Effrort.Project_id = Project.Project_id
 
-					 left join ( select Project.Project_id,sum(ResourcePlanning_Role.Effort_planned) as total_Planned_Effort from  ResourcePlanning_Role 
-							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
-							group by  Project.Project_id) as total_P_Effrort on total_P_Effrort.Project_id = Project.Project_id
+					 left join ( select Project.Project_id,sum(ResourcePlanning_Role.Effort_planned) as total_Planned_Effort, [status] from  ResourcePlanning_Role 
+								join Project on Project.Project_id = ResourcePlanning_Role.Project_id 
+								where [status] ='Approved'
+							group by  Project.Project_id,[status]) as total_P_Effrort on total_P_Effrort.Project_id = Project.Project_id
 
-					 left join (select Project.Project_id,sum(ResourcePlanning_Role.Quantity) as total_Planned_Quantity from  ResourcePlanning_Role 
+					 left join (select Project.Project_id,sum(ResourcePlanning_Role.Quantity) as total_Planned_Quantity,[status] from  ResourcePlanning_Role 
 							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
-							group by  Project.Project_id) as total_P_Quantity on total_P_Quantity.Project_id = Project.Project_id
+							where [status] = 'Approved'
+							group by  Project.Project_id,[status]) as total_P_Quantity on total_P_Quantity.Project_id = Project.Project_id
 					
 					left join (select Project.Project_id,count(Emp_RolePlanning.ResourcePlannig_RoleId) as total_Actual_Quantity from  Emp_RolePlanning 
 							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
 							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
 							group by  Project.Project_id) as total_A_Quantity on total_A_Quantity.Project_id = Project.Project_id
-					order by [Project].Project_id desc
+					order by [Project].Project_id desc 
 ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");

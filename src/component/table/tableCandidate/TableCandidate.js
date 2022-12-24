@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
-import { Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { message, Popconfirm, Table } from "antd";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
+import { getUsers } from "../../../Store/Actions/UserActions";
 
 import { Tag } from "antd";
 import UpdatePass from "./UpdatePass";
 import { ROLES } from "../../../App";
+import axios from "axios";
 
 export default function TableCandidate() {
   const { onclickShowLeft } = useAuth();
@@ -139,7 +141,38 @@ export default function TableCandidate() {
         }
       : { fixed: "right", width: 20 },
   ];
-console.log(users.Password);
+  // console.log(users.Password);
+
+  const confirm = async (e) => {
+    console.log(e.isActive);
+    try {
+      const res = await axios({
+        url: process.env.REACT_APP_BASE_URL + `/api/User/status/${e.User_id}`,
+        method: "PUT",
+        data: {
+          isActive: e.isActive ? 0 : 1,
+        },
+      });
+      // dispatch(getUsers());
+      if (res.data == "FAILS") {
+        message.error({
+          content:
+            "Cannot change status because this employee still in project ",
+          style: { marginTop: "50px" },
+        });
+      } else {
+        message.success({
+          content: "Update status successfully",
+          style: { marginTop: "50px" },
+        });
+      }
+
+      dispatch(getUsers());
+    } catch (error) {
+      console.log("fail");
+    }
+  };
+
   const data = users.map((item) => ({
     no: countId++,
     key: item.User_id,
@@ -147,16 +180,25 @@ console.log(users.Password);
     ...item,
     Department_id: "BU " + item.Department_id,
     BirthDay: new Date(item.BirthDay).toLocaleDateString("es-CL"),
-    isActive:
-      item.isActive === true ? (
-        <Tag color="#87d068" style={{ width: "60px", textAlign: "center" }}>
-          Active
-        </Tag>
-      ) : (
-        <Tag color="#f50" style={{ width: "60px", textAlign: "center" }}>
-          Inactive
-        </Tag>
-      ),
+    isActive: (
+      <Popconfirm
+        title="Are you sure to change status ?"
+        onConfirm={() => confirm(item)}
+        // onCancel={cancel}
+        okText="Yes"
+        cancelText="No"
+      >
+        {item.isActive === true ? (
+          <Tag color="#87d068" style={{ width: "60px", textAlign: "center" }}>
+            Active
+          </Tag>
+        ) : (
+          <Tag color="#f50" style={{ width: "60px", textAlign: "center" }}>
+            Inactive
+          </Tag>
+        )}
+      </Popconfirm>
+    ),
   }));
 
   return (
