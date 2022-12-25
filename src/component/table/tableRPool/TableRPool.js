@@ -7,6 +7,7 @@ import {
   getResourcePoolEmp,
   getResourcePoolEmpByBU,
   getResourcePoolEmpByRLK,
+  getResourcePoolEmpByRLKAndName,
   getSearchResourcePoolEmpByName,
 } from "../../../Store/Actions/ResourcePoolAction";
 import { ROLES } from "../../../App";
@@ -21,7 +22,7 @@ export default function TableRPool(data) {
   const { setAccount, onclickShowLeft, setOnclickShowLeft } = useAuth();
   const dispatch = useDispatch();
   const emps = useSelector((state) => state.ResourcePool.emps);
-  const { valueInput, user,setValueInput } = useAuth();
+  const { valueInput, user, setValueInput } = useAuth();
   const roles = useSelector((state) => state.ExtraObject.roles);
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
@@ -31,19 +32,32 @@ export default function TableRPool(data) {
 
   // console.log(emps[14].ProjectName ==null);
   useEffect(() => {
-
     dispatch(getRoles());
     dispatch(getLevels());
     dispatch(getSkills());
     if (user)
       if (valueInput?.emp_planning) {
-        dispatch(getSearchResourcePoolEmpByName(valueInput.emp_planning));
+        if (Object.keys(data).length === 0) {
+          // if (user?.UserType == ROLES.ADMIN) {
+            dispatch(getSearchResourcePoolEmpByName(valueInput.emp_planning));
+          // }
+        } else {
+          dispatch(
+            getResourcePoolEmpByRLKAndName(
+              data[0],
+              data[1],
+              data[2],
+              valueInput.emp_planning
+            )
+          );
+        }
       } else {
         if (Object.keys(data).length === 0) {
           //check data rỗng
-          user?.UserType == ROLES.EMPLOYEE
-            ? dispatch(getResourcePoolEmpByBU(user?.Department_id))
-            : dispatch(getResourcePoolEmp());
+          // user?.UserType == ROLES.EMPLOYEE
+          //   ? dispatch(getResourcePoolEmpByBU(user?.Department_id))
+          //   :
+          dispatch(getResourcePoolEmp());
         } else {
           dispatch(
             // 3 vị trí  0,1,2 tương đương với 3 vị trí role level skill lấy bên tableRPlanning lúc truyền vào state
@@ -162,19 +176,22 @@ export default function TableRPool(data) {
     no: (countEmp += 1),
     key: index,
     ...item,
-    Date_start: item.Date_start=='' ? '' : new Date(item.Date_start).toLocaleDateString("es-CL"),
-    Date_end: item.Date_start=='' ? '' : new Date(item.Date_end).toLocaleDateString("es-CL"),
-
+    Date_start:
+      item.Date_start == ""
+        ? ""
+        : new Date(item.Date_start).toLocaleDateString("es-CL"),
+    Date_end:
+      item.Date_start == ""
+        ? ""
+        : new Date(item.Date_end).toLocaleDateString("es-CL"),
   }));
 
   return (
     <div>
-    
       {/* {console.log(modifiedData)} */}
-      <Search type='emp_planning' placeholder="Enter employee name " />
-      
+      <Search type="emp_planning" placeholder="Enter employee name " />
+
       <Table
-       
         bordered
         columns={columns}
         scroll={{
@@ -190,7 +207,6 @@ export default function TableRPool(data) {
             : { width: "200vh" }
         }
         className="table-striped-rows"
-
         dataSource={modifiedData}
         size="small"
       ></Table>

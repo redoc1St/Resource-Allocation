@@ -51,8 +51,8 @@ export const getRolesByNameNRole = (name, role) => async (dispatch) => {
     .then((res) => {
       const roles = res.data.map((item) => ({
         ...item,
-        Date_start: new Date(item.Date_start).toLocaleDateString("fr-CA"),
-        Date_end: new Date(item.Date_end).toLocaleDateString("fr-CA"),
+        Date_start: new Date(item.Date_start).toLocaleDateString("es-CL"),
+        Date_end: new Date(item.Date_end).toLocaleDateString("es-CL"),
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_ROLES_BY_ROLE_CODE, payload: roles });

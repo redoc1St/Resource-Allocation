@@ -1,7 +1,7 @@
 import { Table, Progress } from "antd";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { red, green,orange } from "@ant-design/colors";
+import { red, green, orange } from "@ant-design/colors";
 import "./TableData.css";
 import { Form, Input } from "antd";
 import useAuth from "../hooks/useAuth";
@@ -10,7 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getProjects,
   getProjectsByBuId,
+  getProjectsByEmp,
   getProjectsByName,
+  getProjectsByNameForEmp,
   getProjectsInBUByBuNameNId,
 } from "../../Store/Actions/ProjectActions";
 import ModalNote from "../Content/MainContent/ModalNote";
@@ -37,18 +39,28 @@ export default function TableData(sText) {
   useEffect(() => {
     if (user)
       if (valueInput?.prjSearch) {
-        user?.UserType !== ROLES.ADMIN
-          ? dispatch(
-              getProjectsInBUByBuNameNId(
-                valueInput?.prjSearch,
-                user?.Department_id
-              )
+        if (user?.UserType == ROLES.ADMIN) {
+          dispatch(getProjectsByName(valueInput.prjSearch));
+        } else if (user?.UserType == ROLES.LEADER) {
+          dispatch(
+            getProjectsInBUByBuNameNId(
+              valueInput?.prjSearch,
+              user?.Department_id
             )
-          : dispatch(getProjectsByName(valueInput.prjSearch));
+          );
+        } else {
+          dispatch(
+            getProjectsByNameForEmp(user?.User_id, valueInput.prjSearch)
+          );
+        }
       } else {
-        user?.UserType !== ROLES.ADMIN
-          ? dispatch(getProjectsByBuId(user?.Department_id))
-          : dispatch(getProjects());
+        if (user?.UserType == ROLES.ADMIN) {
+          dispatch(getProjects());
+        } else if (user?.UserType == ROLES.LEADER) {
+          dispatch(getProjectsByBuId(user?.Department_id));
+        } else {
+          dispatch(getProjectsByEmp(user?.User_id));
+        }
       }
   }, [valueInput?.prjSearch, dispatch, user?.UserType]);
   console.log(projects);
@@ -94,7 +106,7 @@ export default function TableData(sText) {
             100
         )}
         steps={5}
-        strokeColor={[ red[6],red[6], orange[6],green[6],green[6]]}
+        strokeColor={[red[6], red[6], orange[6], green[6], green[6]]}
       />
     ),
 

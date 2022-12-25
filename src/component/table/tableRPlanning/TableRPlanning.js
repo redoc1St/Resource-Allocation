@@ -116,13 +116,13 @@ export default function TableResourcePlanning(data) {
 
   const AverageAllocate = mergedData?.map((item) => {
     return (
-      item.Status?.props.children=='Approved' ?
-      item.Effort_planned
-        ? (totalPlanAllocate += item.Effort_planned)
-        : item.Effort_planned : '',
-
+      item.Status?.props.children == "Approved"
+        ? item.Effort_planned
+          ? (totalPlanAllocate += item.Effort_planned)
+          : item.Effort_planned
+        : "",
       item.total_Effort
-        ? (totalActualAllocate += item.total_Effort)
+        ? (totalActualAllocate += item.total_Effort / item.actual)
         : item.total_Effort
     );
   });
@@ -138,7 +138,9 @@ export default function TableResourcePlanning(data) {
           Date_start: new Date(item.Date_start).toLocaleDateString("es-CL"),
           Date_end: new Date(item.Date_end).toLocaleDateString("es-CL"),
           actual: item.actual ? item.actual : "0",
-          total_Effort: item.total_Effort ? item.total_Effort : "0",
+          total_Effort: item.total_Effort
+            ? item.total_Effort / item.actual
+            : "0",
           action:
             item?.Status?.props?.children === "Rejected" ||
             item?.Status?.props?.children === "In Progress" ? (

@@ -3,7 +3,7 @@ import ScrollBar from "react-perfect-scrollbar";
 import styled from "styled-components";
 import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
-import { Alert, Space } from "antd";
+import { Alert, message, Space } from "antd";
 import "./index.css";
 import axios from "axios";
 export default function Profile() {
@@ -14,7 +14,6 @@ export default function Profile() {
   const [typeMessage, setTypeMessage] = useState("error");
   const [passwordVisible, setPasswordVisible] = React.useState(true);
 
-  console.log(user);
   const changeStatus = (e) => {
     setEditButton(!editButton);
     e.preventDefault();
@@ -27,29 +26,10 @@ export default function Profile() {
     logout();
     // Navigate("/login");
   };
-  const showButton = () => {
-    if (!editButton) {
-      return (
-        <div className="col-sm-12">
-          <button className="btn btn-info " onClick={changeStatus}>
-            Edit
-          </button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="col d-flex justify-content-end">
-          <button
-            className="btn btn-primary"
-            type="submit"
-            onClick={changeStatus}
-          >
-            Save Changes
-          </button>
-        </div>
-      );
-    }
-  };
+  // const showButton = () => {
+
+  //   }
+  // };
 
   const onClickShowPass = () => {
     setPasswordVisible(!passwordVisible);
@@ -57,10 +37,22 @@ export default function Profile() {
   const onClickChange = () => {
     setShowChangePass(!showChangePass);
   };
+
   const {
-    register,
+    register: registerEdit,
+    formState: { errors2 },
+    handleSubmit: handleSubmitEdit,
+  } = useForm({
+    defaultValues: {
+      FullName: user?.Fullname,
+      Address: user?.Address,
+    },
+  });
+
+  const {
+    register: register,
     formState: { errors },
-    handleSubmit,
+    handleSubmit: handleSubmit,
   } = useForm({
     defaultValues: {
       newPass: "",
@@ -70,6 +62,30 @@ export default function Profile() {
       //   unit: data?.data?.unit,
     },
   });
+
+  const onSubmitEdit = async (values) => {
+    setEditButton(!editButton);
+
+    console.log(values);
+
+    try {
+      const res = await axios({
+        url: process.env.REACT_APP_BASE_URL + `/api/User/${user.User_id}`,
+        method: "PUT",
+        data: {
+          Fullname: JSON.parse(JSON.stringify(values.FullName)),
+          Address: JSON.parse(JSON.stringify(values.Address)),
+        },
+      });
+      message.success({
+        content: "Edit Profile Successfully",
+        style: { marginTop: "50px" },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const onSubmit = async (values) => {
     console.log(values);
     if (values.conPass != values.newPass) {
@@ -98,6 +114,7 @@ export default function Profile() {
       }
     }
   };
+
   const changePass = () => {
     if (showChangePass === true) {
       return (
@@ -114,36 +131,40 @@ export default function Profile() {
             >
               Change Password
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form key={1} onSubmit={handleSubmit(onSubmit)}>
               <div className="card-body text-secondary">
                 <div className="row">
                   <div className="col">
                     <div className="form-group">
                       <label>Current Password</label>
-                  <div style={{ display: "flex" }}>
-                  {passwordVisible ?
-
-                      <input
-                      required
-                        {...register("curPass")}
-                        className="form-control"
-                        type="password"
-                        placeholder="••••••"
-                      /> : <input required
-                        {...register("curPass")}
-                        className="form-control"
-                        type="text"
-                        placeholder="••••••"></input>}
-                      <i
-                        className="bi bi-eye-slash"
-                        onClick={onClickShowPass}
-                        style={{
-                          fontSize: "25px",
-                          cursor: "pointer",
-                          marginLeft: "-40px",
-                        }}
-                        id="togglePassword"
-                      ></i>
+                      <div style={{ display: "flex" }}>
+                        {passwordVisible ? (
+                          <input
+                            required
+                            {...register("curPass")}
+                            className="form-control"
+                            type="password"
+                            placeholder="••••••"
+                          />
+                        ) : (
+                          <input
+                            required
+                            {...register("curPass")}
+                            className="form-control"
+                            type="text"
+                            placeholder="••••••"
+                          ></input>
+                        )}
+                        <i
+                          className="bi bi-eye-slash"
+                          onClick={onClickShowPass}
+                          style={{
+                            fontSize: "25px",
+                            cursor: "pointer",
+                            marginLeft: "-40px",
+                          }}
+                          id="togglePassword"
+                        ></i>
                       </div>
                     </div>
                   </div>
@@ -153,19 +174,18 @@ export default function Profile() {
                   <div className="col">
                     <div className="form-group">
                       <label>New Password</label>
-                  <div style={{ display: "flex" }}>
-                     
-                      <input
-                       required
-                        {...register("newPass", {
-                          required: true,
-                          minLength: 6,
-                        })}
-                        className="form-control"
-                        type="password"
-                        placeholder="••••••"
-                      />
-                       {/* <i
+                      <div style={{ display: "flex" }}>
+                        <input
+                          required
+                          {...register("newPass", {
+                            required: true,
+                            minLength: 6,
+                          })}
+                          className="form-control"
+                          type="password"
+                          placeholder="••••••"
+                        />
+                        {/* <i
                         className="bi bi-eye-slash"
                         onClick={onClickShowPass}
                         style={{
@@ -193,14 +213,13 @@ export default function Profile() {
                         Confirm{" "}
                         <span className="d-none d-xl-inline">Password</span>
                       </label>
-                  <div style={{ display: "flex" }}>
-
-                      <input
-                        {...register("conPass")}
-                        className="form-control"
-                        type="password"
-                        placeholder="••••••"
-                      />
+                      <div style={{ display: "flex" }}>
+                        <input
+                          {...register("conPass")}
+                          className="form-control"
+                          type="password"
+                          placeholder="••••••"
+                        />
                         {/* <i
                         className="bi bi-eye-slash"
                         onClick={onClickShowPass}
@@ -276,23 +295,6 @@ export default function Profile() {
                               style={{ width: "160px" }}
                               src="https://cdn1.iconfinder.com/data/icons/business-and-finance-flat-4/128/Personnel_man_staff_avatar_people_star_rating-512.png"
                             ></img>
-                            {/* <div
-                                className="d-flex justify-content-center align-items-center rounded"
-                                style={{
-                                  height: "140px",
-                                  backgroundColor: "rgb(233, 236, 239)",
-                                }}
-                              >
-                                <span
-                                  style={{
-                                    color: "rgb(166, 168, 170)",
-                                    font: "bold 8pt Arial",
-                                  }}
-                                >
-                                  140x140
-                                </span>
-                              </div> */}
-                            {/* </div> */}
                           </div>
                           <div className="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                             <div className="text-center text-sm-left mb-2 mb-sm-0">
@@ -300,7 +302,7 @@ export default function Profile() {
                                 {user?.Fullname}
                               </h4>
                               <p className="mb-0">{user?.Email}</p>
-                              <div className="mt-2">
+                              {/* <div className="mt-2">
                                 <button
                                   className="btn btn-primary"
                                   type="button"
@@ -308,7 +310,7 @@ export default function Profile() {
                                   <i className="fa fa-fw fa-camera" />
                                   <span>Change Photo</span>
                                 </button>
-                              </div>
+                              </div> */}
                             </div>
                             <div
                               className="text-center text-sm-right"
@@ -318,7 +320,11 @@ export default function Profile() {
                                 {user?.UserType}
                               </span>
                               <div className="text-muted">
-                                <small>{new Date(user?.Start_Day?.split("T")[0]).toLocaleDateString("es-CL")}</small>
+                                <small>
+                                  {new Date(
+                                    user?.Start_Day?.split("T")[0]
+                                  ).toLocaleDateString("es-CL")}
+                                </small>
                               </div>
                             </div>
                           </div>
@@ -328,18 +334,21 @@ export default function Profile() {
                             <a className="active nav-link">Settings</a>
                           </li>
                         </ul>
-                        <div className="tab-content pt-3">
-                          <div className="tab-pane active">
-                            <form className="form" noValidate>
+                        <form key={2} onSubmit={handleSubmitEdit(onSubmitEdit)}>
+                          <div className="tab-content pt-3">
+                            <div className="tab-pane active">
                               <div className="row">
                                 <div className="col">
                                   <div className="row">
                                     <div className="col-5">
                                       <div className="form-group">
                                         <label>Full Name</label>
+
                                         <input
+                                          // required
                                           className="form-control"
-                                          type="text"
+                                          {...registerEdit("FullName")}
+                                          // type="text"
                                           defaultValue={user?.Fullname || ""}
                                           disabled={!editButton}
                                         />
@@ -369,7 +378,9 @@ export default function Profile() {
                                       <div className="form-group">
                                         <label>Address</label>
                                         <input
+                                          name="Address"
                                           className="form-control"
+                                          {...registerEdit("Address")}
                                           type="text"
                                           defaultValue={user?.Address || ""}
                                           disabled={!editButton}
@@ -380,7 +391,9 @@ export default function Profile() {
                                       <div className="form-group">
                                         <label>BirthDay</label>
                                         <input
-                                          value={new Date(user?.BirthDay?.split("T")[0]).toLocaleDateString("es-CL")}
+                                          value={new Date(
+                                            user?.BirthDay?.split("T")[0]
+                                          ).toLocaleDateString("es-CL")}
                                           type="text"
                                           className="form-control"
                                           disabled
@@ -429,10 +442,31 @@ export default function Profile() {
                                 </div>
                               </div>
 
-                              <div className="row">{showButton()}</div>
-                            </form>
+                              {/* <div className="row" >{showButton()}</div> */}
+                              {!editButton ? (
+                                <div className="col-sm-12">
+                                  <button
+                                    className="btn btn-info "
+                                    // type="submit"
+                                    onClick={changeStatus}
+                                  >
+                                    Edit
+                                  </button>
+                                </div>
+                              ) : (
+                                <div className="col d-flex justify-content-end">
+                                  <button
+                                    className="btn btn-primary"
+                                    type="submit"
+                                    // onClick={changeStatus}
+                                  >
+                                    Save Changes
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        </div>
+                        </form>
                       </div>
                     </div>
                   </div>

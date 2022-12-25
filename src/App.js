@@ -179,17 +179,23 @@ function App() {
                     path="/resourcePlaning"
                     element={<ResourcePlanning />}
                   />
+                  <Route
+                    element={
+                      <RequireAuth allowedRoles={[ROLES.LEADER, ROLES.ADMIN]} />
+                    }
+                  >
+                    <Route
+                      exact
+                      path="/resourcePool"
+                      element={<ResourcePool />}
+                    />
 
-                  <Route
-                    exact
-                    path="/resourcePool"
-                    element={<ResourcePool />}
-                  />
-                  <Route
-                    exact
-                    path="/resourcePool/:code/:r/:l/:s/:bu/:roleId"
-                    element={<ResourcePool />}
-                  />
+                    <Route
+                      exact
+                      path="/resourcePool/:code/:r/:l/:s/:bu/:roleId"
+                      element={<ResourcePool />}
+                    />
+                  </Route>
                   <Route
                     element={
                       <RequireAuth allowedRoles={[ROLES.LEADER, ROLES.ADMIN]} />

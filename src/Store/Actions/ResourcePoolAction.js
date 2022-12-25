@@ -1,7 +1,13 @@
 // import axios from 'axios'
 import axios from "../../../src/api/request";
 
-import { GET_RESOURCEPOOL_EMP, GET_RESOURCEPOOL_EMP_BY_BU, GET_RESOURCEPOOL_EMP_BY_NAME, GET_RESOURCEPOOL_EMP_BY_RLK } from "../types";
+import {
+  GET_RESOURCEPOOL_EMP,
+  GET_RESOURCEPOOL_EMP_BY_BU,
+  GET_RESOURCEPOOL_EMP_BY_NAME,
+  GET_RESOURCEPOOL_EMP_BY_RLK,
+  GET_RESOURCEPOOL_EMP_BY_RLK_NAME,
+} from "../types";
 const projectsApi = process.env.REACT_APP_BASE_URL;
 export const getResourcePoolEmp = () => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })
@@ -11,8 +17,12 @@ export const getResourcePoolEmp = () => async (dispatch) => {
     .then((res) => {
       const emp = res.data.map((item) => ({
         ...item,
-        Date_start: item.Date_start ? new Date(item.Date_start).toLocaleDateString("fr-CA") :'',
-        Date_end: item.Date_end ? new Date(item.Date_end).toLocaleDateString("fr-CA"): '',
+        Date_start: item.Date_start
+          ? new Date(item.Date_start).toLocaleDateString("fr-CA")
+          : "",
+        Date_end: item.Date_end
+          ? new Date(item.Date_end).toLocaleDateString("fr-CA")
+          : "",
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_RESOURCEPOOL_EMP, payload: emp });
@@ -28,8 +38,12 @@ export const getSearchResourcePoolEmpByName = (name) => async (dispatch) => {
     .then((res) => {
       const emp = res.data.map((item) => ({
         ...item,
-        Date_start: item.Date_start ? new Date(item.Date_start).toLocaleDateString("fr-CA") :'',
-        Date_end: item.Date_end ? new Date(item.Date_end).toLocaleDateString("fr-CA"): '',
+        Date_start: item.Date_start
+          ? new Date(item.Date_start).toLocaleDateString("fr-CA")
+          : "",
+        Date_end: item.Date_end
+          ? new Date(item.Date_end).toLocaleDateString("fr-CA")
+          : "",
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_RESOURCEPOOL_EMP_BY_NAME, payload: emp });
@@ -46,16 +60,44 @@ export const getResourcePoolEmpByRLK =
       .then((res) => {
         const emp = res.data.map((item) => ({
           ...item,
-          Date_start: item.Date_start ? new Date(item.Date_start).toLocaleDateString("fr-CA") :'',
-        Date_end: item.Date_end ? new Date(item.Date_end).toLocaleDateString("fr-CA"): '',
+          Date_start: item.Date_start
+            ? new Date(item.Date_start).toLocaleDateString("fr-CA")
+            : "",
+          Date_end: item.Date_end
+            ? new Date(item.Date_end).toLocaleDateString("fr-CA")
+            : "",
         }));
         // dispatch({ type: SET_LOADING, payload: false })
         dispatch({ type: GET_RESOURCEPOOL_EMP_BY_RLK, payload: emp });
-        console.log(emp);
+        // console.log(emp);
       })
       .catch((err) => console.log("Get role error", err));
   };
 
+export const getResourcePoolEmpByRLKAndName =
+  (role, level, skill, name) => async (dispatch) => {
+    // dispatch({ type: SET_LOADING, payload: true })
+
+    await axios
+      .get(
+        `${projectsApi}/api/ResourcePool/search/${role}/${level}/${skill}/${name}`
+      )
+      .then((res) => {
+        const emp = res.data.map((item) => ({
+          ...item,
+          Date_start: item.Date_start
+            ? new Date(item.Date_start).toLocaleDateString("fr-CA")
+            : "",
+          Date_end: item.Date_end
+            ? new Date(item.Date_end).toLocaleDateString("fr-CA")
+            : "",
+        }));
+        // dispatch({ type: SET_LOADING, payload: false })
+        dispatch({ type: GET_RESOURCEPOOL_EMP_BY_RLK_NAME, payload: emp });
+        // console.log(emp);
+      })
+      .catch((err) => console.log("Get role error", err));
+  };
 export const getResourcePoolEmpByBU = (bu) => async (dispatch) => {
   // dispatch({ type: SET_LOADING, payload: true })
 
@@ -64,8 +106,12 @@ export const getResourcePoolEmpByBU = (bu) => async (dispatch) => {
     .then((res) => {
       const emp = res.data.map((item) => ({
         ...item,
-        Date_start: item.Date_start ? new Date(item.Date_start).toLocaleDateString("fr-CA") :'',
-        Date_end: item.Date_end ? new Date(item.Date_end).toLocaleDateString("fr-CA"): '',
+        Date_start: item.Date_start
+          ? new Date(item.Date_start).toLocaleDateString("fr-CA")
+          : "",
+        Date_end: item.Date_end
+          ? new Date(item.Date_end).toLocaleDateString("fr-CA")
+          : "",
       }));
       // dispatch({ type: SET_LOADING, payload: false })
       dispatch({ type: GET_RESOURCEPOOL_EMP_BY_BU, payload: emp });

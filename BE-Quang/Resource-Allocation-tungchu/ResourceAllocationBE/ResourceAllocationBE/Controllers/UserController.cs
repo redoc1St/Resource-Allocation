@@ -45,7 +45,7 @@ namespace ResourceAllocationBE.Controllers
                 return Unauthorized();
             }
         }
-        
+
         //LOAD LIST USER ADMIN XEM
         [HttpGet]
         public JsonResult getListUser()
@@ -151,7 +151,7 @@ namespace ResourceAllocationBE.Controllers
 
         //SEARCH USER BY NAME
         [HttpGet("search/{name}/{isactive}")]
-        public JsonResult searchByName(string name,string isactive)
+        public JsonResult searchByName(string name, string isactive)
         {
             string query = @"
                                select * from
@@ -228,9 +228,9 @@ namespace ResourceAllocationBE.Controllers
         //}
         //INSERT IN TO DB
         [HttpPost("createUser")]
-        public JsonResult createNewUser([FromForm] MailRequest request,User user)
+        public JsonResult createNewUser([FromForm] MailRequest request, User user)
         {
-            
+
             string query = @"
         if not exists(select * from [User] where email = @Email)
         insert into [User] values(
@@ -259,7 +259,7 @@ namespace ResourceAllocationBE.Controllers
                     myCommand.Parameters.AddWithValue("@BirthDay", user.BirthDay);
                     myCommand.Parameters.AddWithValue("@Start_Day", user.Start_Day);
                     myCommand.Parameters.AddWithValue("@Department_id", user.Department_id);
-                  
+
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -273,18 +273,16 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("Added Successfully");
         }
-        
+
         //UPDATE INFOR USER INTO DB
         [HttpPut("{id}")]
         public JsonResult updateUser(User user, int id)
         {
             string query = @"
         update dbo.[User]
-        set [Username] = @Username, [Password]= @Password, 
-        [Fullname] = @Fullname, [Email] = @Email,
-        [Address]=@Address, [UserType]=@UserType, 
-        [isActive]=@isActive, [BirthDay]=@BirthDay, 
-        [Start_Day]=@Start_Day, [Department_id]=@Department_id
+        set 
+        [Fullname] = @Fullname, 
+        [Address]=@Address
         WHERE [User_id] = @id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
@@ -295,16 +293,16 @@ namespace ResourceAllocationBE.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@id", id);
-                    myCommand.Parameters.AddWithValue("@Username", user.Username);
-                    myCommand.Parameters.AddWithValue("@Password", user.Password);
+                    //myCommand.Parameters.AddWithValue("@Username", user.Username);
+                    //myCommand.Parameters.AddWithValue("@Password", user.Password);
                     myCommand.Parameters.AddWithValue("@Fullname", user.Fullname);
-                    myCommand.Parameters.AddWithValue("@Email", user.Email);
-                    myCommand.Parameters.AddWithValue("@Address", user.Address);
-                    myCommand.Parameters.AddWithValue("@UserType", user.UserType);
-                    myCommand.Parameters.AddWithValue("@isActive", user.isActive);
-                    myCommand.Parameters.AddWithValue("@BirthDay", user.BirthDay);
-                    myCommand.Parameters.AddWithValue("@Start_Day", user.Start_Day);
-                    myCommand.Parameters.AddWithValue("@Department_id", user.Department_id);
+                    //myCommand.Parameters.AddWithValue("@Email", user.Email);
+                    myCommand.Parameters.AddWithValue("@Address", user.Address==null ? null: user.Address );
+                    //myCommand.Parameters.AddWithValue("@UserType", user.UserType);
+                    //myCommand.Parameters.AddWithValue("@isActive", user.isActive);
+                    //myCommand.Parameters.AddWithValue("@BirthDay", user.BirthDay);
+                    //myCommand.Parameters.AddWithValue("@Start_Day", user.Start_Day);
+                    //myCommand.Parameters.AddWithValue("@Department_id", user.Department_id);
 
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -320,7 +318,7 @@ namespace ResourceAllocationBE.Controllers
             return new JsonResult("Update Successfully");
         }
 
-       
+
         //Get Detail user theo token
         [HttpGet("getuser")]
         public JsonResult getUserDetail()
