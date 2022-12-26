@@ -83,7 +83,7 @@ namespace ResourceAllocationBE.Controllers
         public JsonResult getListProjectForEmployee(int id)
         {
             string query = @"
-                               select Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
+                               select DISTINCT Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
 					 note, total_Actual_Effort, total_Planned_Effort, total_Planned_Quantity, total_Actual_Quantity from
 					 dbo.[Project]
 					 left join ( select	ID,sum(total_Actual_Efforts) as total_Actual_Effort from Project 
@@ -110,7 +110,9 @@ namespace ResourceAllocationBE.Controllers
 							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
 							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
 							group by  Project.Project_id) as total_A_Quantity on total_A_Quantity.Project_id = Project.Project_id
-					
+					join ResourcePlanning_Role on ResourcePlanning_Role.Project_id = Project.Project_id
+					join Emp_RolePlanning on Emp_RolePlanning.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+					 join ResourcePlanning_Employee on ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
  where 
 ResourcePlanning_Employee.Employee_id =@id order by Project_id desc";
             DataTable table = new DataTable();
@@ -138,7 +140,7 @@ ResourcePlanning_Employee.Employee_id =@id order by Project_id desc";
         public JsonResult getSearchListProjectForEmployee(int id, string name)
         {
             string query = @"
-                               select Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
+                               select DISTINCT Project.Project_id, Code, ProjectName, Depeartment_id, Effort_billable, Start_plan, Start_actual,End_plan,End_actual,
 					 note, total_Actual_Effort, total_Planned_Effort, total_Planned_Quantity, total_Actual_Quantity from
 					 dbo.[Project]
 					 left join ( select	ID,sum(total_Actual_Efforts) as total_Actual_Effort from Project 
@@ -165,7 +167,9 @@ ResourcePlanning_Employee.Employee_id =@id order by Project_id desc";
 							join  ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
 							left join Project on Project.Project_id = ResourcePlanning_Role.Project_id
 							group by  Project.Project_id) as total_A_Quantity on total_A_Quantity.Project_id = Project.Project_id
-					
+					join ResourcePlanning_Role on ResourcePlanning_Role.Project_id = Project.Project_id
+					join Emp_RolePlanning on Emp_RolePlanning.ResourcePlannig_RoleId = ResourcePlanning_Role.id
+					 join ResourcePlanning_Employee on ResourcePlanning_Employee.id = Emp_RolePlanning.Employee_id
  where 
 ResourcePlanning_Employee.Employee_id =@id and [ProjectName] like @name order by Project_id desc ";
             DataTable table = new DataTable();

@@ -94,14 +94,15 @@ export default function TableResourcePlanning(data) {
       fixed: "right",
       width: 100,
     },
-    user?.UserType !== ROLES.EMPLOYEE
-      ? {
+    // user?.UserType !== ROLES.EMPLOYEE
+    //   ?
+       {
           title: "Action",
           dataIndex: "action",
           fixed: "right",
           width: 70,
         }
-      : { fixed: "right", width: 10 },
+      // : { fixed: "right", width: 10 },
   ];
 
   const mergedData = [
@@ -110,7 +111,7 @@ export default function TableResourcePlanning(data) {
     },
     ...data.planningRoles,
   ];
-
+// console.log(mergedData);
   var totalPlanAllocate = 0;
   var totalActualAllocate = 0;
 

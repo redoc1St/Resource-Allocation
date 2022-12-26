@@ -80,14 +80,14 @@ export default function ModalEditPlan(record) {
             `/api/ResourcePlanning/${record?.record.id}`,
           method: "PUT",
           data: {
-            Role_id:values.RoleName,
+            // Role_id:values.RoleName,
             Quantity: values.Quantity,
             Date_start: values.Date_start,
             Date_end: values.Date_end,
             Effort_planned: values.Effort_planned,
             Bill_rate: values.Bill_rate,
-            Level_id: values.LevelName,
-            Skill_id: values.SkillName,
+            // Level_id: values.LevelName,
+            // Skill_id: values.SkillName,
             Project_id: record.project.Project_id,
           },
         });
@@ -187,6 +187,7 @@ export default function ModalEditPlan(record) {
                         // value={record.data.unit}
                         {...register("LevelName")}
                         required
+                        disabled
                         // defaultValue={3}
                       >
                         <Select.Option required></Select.Option>
@@ -245,7 +246,7 @@ export default function ModalEditPlan(record) {
                   <tr>
                     <td>Skill</td>
                     <td>
-                      <select {...register("SkillName")} required>
+                      <select {...register("SkillName")} required disabled>
                         <Select.Option required></Select.Option>
                         {skills?.map((item, index) => {
                           return (

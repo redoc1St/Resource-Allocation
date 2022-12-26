@@ -186,19 +186,15 @@ select * from [user]";
         public JsonResult updateResourcePlanning(ResourcePlanningRole resource, int id)
         {
             string query = @"
-                if not exists ( select * from ResourcePlanning_Role where Role_id = @Role_id and Level_id =@Level_id and Skill_id =@Skill_id and  Project_id=@Project_id)
-                begin update dbo.ResourcePlanning_Role
+               
+                 update dbo.ResourcePlanning_Role
                 set  
                 Quantity=@Quantity,
                 Date_start=@Date_start,
                 Date_end=@Date_end, 
                 Effort_planned=@Effort_planned, 
-                Bill_rate=@Bill_rate,
-                Level_id=@Level_id, 
-                Skill_id=@Skill_id 
-                WHERE id = @id end
-                  else
-                select * from [user]";
+                Bill_rate=@Bill_rate
+                WHERE id = @id";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
             SqlDataReader myReader;
@@ -213,9 +209,6 @@ select * from [user]";
                     myCommand.Parameters.AddWithValue("@Date_end", resource.Date_end == null ? "GETDATE()" : resource.Date_end);
                     myCommand.Parameters.AddWithValue("@Effort_planned", resource.Effort_planned);
                     myCommand.Parameters.AddWithValue("@Bill_rate", resource.Bill_rate);
-                    myCommand.Parameters.AddWithValue("@Level_id", resource.Level_id);
-                    myCommand.Parameters.AddWithValue("@Skill_id", resource.Skill_id);
-                    myCommand.Parameters.AddWithValue("@Role_id", resource.Role_id);
                     myCommand.Parameters.AddWithValue("@Project_id", resource.Project_id);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -223,10 +216,6 @@ select * from [user]";
                     myCon.Close();
 
                 }
-            }
-            if (table.Rows.Count > 0)
-            {
-                return new JsonResult("FAILS");
             }
             return new JsonResult("Update Successfully");
         }

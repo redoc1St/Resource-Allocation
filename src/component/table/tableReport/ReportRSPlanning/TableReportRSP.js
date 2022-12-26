@@ -94,20 +94,21 @@ export default function TableReportRSP() {
     },
     ...planningRoles,
   ];
-
+  console.log(mergedData);
   var totalPlanAllocate = 0;
   var totalActualAllocate = 0;
   var totalActualQuantity = 0;
 
   const AverageAllocate = mergedData?.map((item) => {
     return (
-      item.Effort_planned
-        ? (totalPlanAllocate += item.Effort_planned)
-        : item.Effort_planned,
+      item.Status?.props.children == "Approved"
+        ? item.Effort_planned
+          ? (totalPlanAllocate += item.Effort_planned)
+          : item.Effort_planned
+        : "",
       item.total_Effort
-        ? (totalActualAllocate += item.total_Effort)
-        : item.total_Effort,
-      item.actual ? (totalActualQuantity += item.actual) : item.actual
+        ? (totalActualAllocate += item.total_Effort / item.actual)
+        : item.total_Effort
     );
   });
   // console.log();
@@ -118,14 +119,21 @@ export default function TableReportRSP() {
           ...item,
           status: item.Status,
           actual: item.actual ? item.actual : "0",
+          Date_start: new Date(item.Date_start).toLocaleDateString("es-CL"),
+          Date_end: new Date(item.Date_end).toLocaleDateString("es-CL"),
+          total_Effort: item.total_Effort
+            ? item.total_Effort / item.actual
+            : "0",
         }
       : {
           key: 0,
           RoleName: "Total",
           actual: totalActualQuantity,
-          Effort_planned: totalPlanAllocate,
-          total_Effort: totalActualAllocate,
+          // Effort_planned: totalPlanAllocate,
+          // total_Effort: totalActualAllocate,
           Quantity: planningRoles[planningRoles.length - 1]?.totalPQuantity,
+          actual:
+           planningRoles[planningRoles.length - 1]?.totalAQuantity,
         }
   );
   return (

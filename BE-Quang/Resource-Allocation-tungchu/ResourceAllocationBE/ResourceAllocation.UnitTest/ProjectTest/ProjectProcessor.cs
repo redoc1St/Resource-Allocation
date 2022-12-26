@@ -23,6 +23,8 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             {
                 throw new ArgumentNullException("Input not null");
             }
+            //name > 200
+            // date ko dung format
             if (project.Effort_billable > 100)
             {
                 throw new ArgumentOutOfRangeException("Have to less than 100%");

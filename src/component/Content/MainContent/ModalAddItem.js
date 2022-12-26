@@ -52,11 +52,12 @@ export default function ModalAddItem() {
   };
   const { register, handleSubmit } = useForm({
     defaultValues: {
+      // department_id: user?.Department_id,
       // pId:'5'
     },
     // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
-
+  console.log(user?.Department_id);
   function getCodePrj(name) {
     const prjCode =
       name.replace(/ /g, "").replace(/[a-z]/g, "") +
@@ -180,6 +181,8 @@ export default function ModalAddItem() {
                         placeholder="Choose Unit"
                         {...register("department_id")}
                         required
+                        defaultValue={user?.Department_id}
+                        disabled={user?.UserType == ROLES.LEADER}
                       >
                         <Select.Option required></Select.Option>
                         <option value="1">Bu 1</option>
