@@ -505,6 +505,6 @@ where [ProjectName] like @PName and depeartment_id=@bu";
             return new JsonResult("Update Successfully");
         }
 
-
+        
     }
 }

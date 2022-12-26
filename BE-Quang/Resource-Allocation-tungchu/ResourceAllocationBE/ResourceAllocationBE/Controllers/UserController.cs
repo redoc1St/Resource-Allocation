@@ -407,7 +407,38 @@ namespace ResourceAllocationBE.Controllers
             }
             return new JsonResult("Update Successfully");
         }
+        //GET PM Role
+        //[HttpGet("Employee/PM/{id}")]
+        //public JsonResult getListUserEmployeePM(int id)
+        //{
+        //    string query = @"
+        //                select* from[user]
+        //                join ResourcePlanning_Employee on ResourcePlanning_Employee.Employee_id = [User].[User_id]
+        //                join Emp_RolePlanning on Emp_RolePlanning.Employee_id = ResourcePlanning_Employee.id
+        //                join ResourcePlanning_Role on ResourcePlanning_Role.id = Emp_RolePlanning.ResourcePlannig_RoleId
+        //                join Project on Project.Project_id = ResourcePlanning_Role.Project_id
+        //                join Roles on Roles.Role_id = ResourcePlanning_Employee.Role_id
+        //                join Levels on Levels.Level_id = ResourcePlanning_Employee.Level_id
+        //                join Skill on Skill.Skill_id = ResourcePlanning_Employee.Skill_id
+        //                where ResourcePlanning_Employee.Role_id = 1 and [user].[User_id] = @id";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myCommand.Parameters.AddWithValue("@id", id);
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
 
+        //        }
+        //    }
+        //    return new JsonResult(table);
+        //}
 
     }
 }

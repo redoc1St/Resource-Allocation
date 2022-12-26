@@ -152,6 +152,7 @@ export default function ModalEditItem(data) {
                         // placeholder="Choose Unit"
                         // value={record.data.unit}
                         {...register("unit")}
+                        disabled
                         required
                       >
                         <Select.Option required></Select.Option>

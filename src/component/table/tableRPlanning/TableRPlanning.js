@@ -178,8 +178,8 @@ export default function TableResourcePlanning(data) {
             data?.planningRoles[data.planningRoles.length - 1]?.totalPQuantity,
           actual:
             data?.planningRoles[data.planningRoles.length - 1]?.totalAQuantity,
-          Effort_planned: totalPlanAllocate,
-          total_Effort: totalActualAllocate,
+          // Effort_planned: totalPlanAllocate,
+          // total_Effort: totalActualAllocate,
         }
   );
 

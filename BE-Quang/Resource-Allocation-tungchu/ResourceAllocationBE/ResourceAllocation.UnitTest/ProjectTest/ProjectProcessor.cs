@@ -25,6 +25,10 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             }
             //name > 200
             // date ko dung format
+            if (project.ProjectName.Length > 50)
+            {
+                throw new ArgumentOutOfRangeException("Project name is not more than 50 character");
+            }
             if (project.Effort_billable > 100)
             {
                 throw new ArgumentOutOfRangeException("Have to less than 100%");
@@ -40,6 +44,10 @@ namespace ResourceAllocation.UnitTest.ProjectTest
             if (project.ProjectName == "" || project.Start_actual == "" || project.Start_plan == "" || project.End_actual == "" || project.End_plan == "")
             {
                 throw new ArgumentNullException("Input not null");
+            }
+            if (project.ProjectName.Length > 50)
+            {
+                throw new ArgumentOutOfRangeException("Project name is not more than 50 character");
             }
             if (project.Effort_billable > 100)
             {

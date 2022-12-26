@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { Button, message, Modal, Table, Popconfirm } from "antd";
-import { getRoleByCode, getRolesByNameNRole } from "../../../../../Store/Actions/PlanningRoleAction";
+import {
+  getRoleByCode,
+  getRolesByNameNRole,
+} from "../../../../../Store/Actions/PlanningRoleAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useAuth from "../../../../hooks/useAuth";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import axios from "axios";
+import { ROLES } from "../../../../../App";
 export default function ViewEmp(data) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const { pName: code } = useParams();
   // const { quantity, setQuantity } = useAuth();
   const { pName } = useParams();
+  const { user } = useAuth();
 
   const showModal = () => {
     // console.log(data?.record?.id)
@@ -24,9 +29,7 @@ export default function ViewEmp(data) {
   const rolesEmp = useSelector((state) => state.PlanningRoles.rolesEmp);
 
   useEffect(() => {
-    dispatch(
-      getRolesByNameNRole(data?.record?.ProjectName, data?.record?.id)
-    );
+    dispatch(getRolesByNameNRole(data?.record?.ProjectName, data?.record?.id));
   }, [data?.record?.ProjectName, isModalOpen]);
 
   let countEmp = 0;
@@ -53,7 +56,7 @@ export default function ViewEmp(data) {
           content: "Delete employee successfully",
           style: { marginTop: "50px" },
         });
-    dispatch(getRoleByCode(pName));
+        dispatch(getRoleByCode(pName));
 
         // getRolesByNameNRole(data?.record?.ProjectName, data?.record?.RoleName);
       }
@@ -105,34 +108,36 @@ export default function ViewEmp(data) {
       dataIndex: "SkillName",
       width: 100,
     },
-    {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
-      width: 100,
-      render: (_, record) => {
-        return (
-          <>
-            <Popconfirm
-              title="Are you sure to delete this record?"
-              onConfirm={() => onClickDel(record)}
-              // onCancel={cancel}
-              okText="Yes"
-              cancelText="No"
-            >
-              <span
-                // onClick={() => onClickDel(record)}
-                style={{ textAlign: "center" }}
-              >
-                <DeleteForeverIcon
-                  style={{ fontSize: "30px", cursor: "pointer" }}
-                />
-              </span>
-            </Popconfirm>
-          </>
-        );
-      },
-    },
+    user?.UserType != ROLES.EMPLOYEE
+      ? {
+          title: "Action",
+          key: "operation",
+          fixed: "right",
+          width: 100,
+          render: (_, record) => {
+            return (
+              <>
+                <Popconfirm
+                  title="Are you sure to delete this record?"
+                  onConfirm={() => onClickDel(record)}
+                  // onCancel={cancel}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <span
+                    // onClick={() => onClickDel(record)}
+                    style={{ textAlign: "center" }}
+                  >
+                    <DeleteForeverIcon
+                      style={{ fontSize: "30px", cursor: "pointer" }}
+                    />
+                  </span>
+                </Popconfirm>
+              </>
+            );
+          },
+        }
+      : {},
   ];
 
   return (
