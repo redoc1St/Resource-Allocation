@@ -11,6 +11,7 @@ export default function Forgot() {
   const navigate = useNavigate();
   const { setAccount, login, logout } = useAuth();
   const [error, setError] = useState();
+  const [type, setType] = useState();
 
   const {
     register,
@@ -40,12 +41,15 @@ export default function Forgot() {
         method: "post",
         data: bodyFormData,
       });
+      setType("success");
 
       setError("Your password has been changed, please check your mail !!!");
 
       // console.log("abc", res.data.data.token);
     } catch (error) {
-      setError("Login failed");
+      setType("error");
+
+      setError("Cannot send mail because of network");
     }
   };
 
@@ -84,7 +88,7 @@ export default function Forgot() {
                   <Alert
                     style={{ marginTop: "10px" }}
                     message={error}
-                    type={"success"}
+                    type={type}
                     showIcon
                   />
                 ) : null}

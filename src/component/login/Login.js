@@ -15,6 +15,10 @@ export default function Login() {
   const navigate = useNavigate();
   const { setAccount, login, logout } = useAuth();
   const [error, setError] = useState();
+  const [type, setType] = useState();
+
+  // type={"error"}
+
   const [passwordVisible, setPasswordVisible] = React.useState(true);
 
   const {
@@ -43,36 +47,18 @@ export default function Login() {
         data: { email, password },
       });
       if (res.data) {
-        // localStorage.setItem("token", res.data);
-        // navigate('/candidateManage')
-        // console.log('thanh cong')
+
         login({
-          // _id:res.data.data._id,
           token: res.data,
         });
-
-        // login({
-        //   _id: res.data.data._id,
-        //   token: res.data.data.token,
-        //   returnUrl: searchParams.get("returnUrl") || "",
-        // });
       } else {
         setError("email or password is incorrect");
       }
 
-      // console.log("abc", res.data.data.token);
     } catch (error) {
       setError("Login failed");
+      setType("error")
     }
-
-    // try {
-    //   /// axios
-    // } catch (error) {}
-    // console.log(username);
-    // if (username === accountLogin.username && password === accountLogin.password) {
-    //   setAccount(true);
-    //   navigate("/resourceAllocation");
-    // }
   };
 
   const onClickShowPass=()=>{

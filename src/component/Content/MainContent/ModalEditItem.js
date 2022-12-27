@@ -45,9 +45,7 @@ export default function ModalEditItem(data) {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  {
-    console.log();
-  }
+
   const {
     register,
     formState: { errors },
@@ -186,6 +184,8 @@ export default function ModalEditItem(data) {
                         {...register("sdp")}
                         // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                       />
                       {/* {errors.sdp && (
                         <span style={{ color: "red" }} role="alert">
@@ -199,6 +199,8 @@ export default function ModalEditItem(data) {
                     <td>
                       <input
                         name="sda"
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         type="date"
                         {...register("sda")}
                         // placeholder="dd/MM/YYYY"
@@ -243,6 +245,7 @@ export default function ModalEditItem(data) {
                       <input
                         type="number"
                         {...register("billE")}
+                        max={"9999"}
                         min={0}
                         placeholder="0"
                         required
@@ -253,6 +256,8 @@ export default function ModalEditItem(data) {
                     <td>End date (plan) </td>
                     <td>
                       <input
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         type="date"
                         {...register("edp")}
                         // placeholder="dd/MM/YYYY"
@@ -264,6 +269,8 @@ export default function ModalEditItem(data) {
                     <td>End date (actual)</td>
                     <td>
                       <input
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         type="date"
                         {...register("eda")}
                         name="eda"

@@ -81,7 +81,7 @@ export default function CandidateManage() {
             }}
           >
             {calEmp()}
-            Staff Management
+            Staff List
           </h3>
           <div>
             <BasicBreadcrumbs />

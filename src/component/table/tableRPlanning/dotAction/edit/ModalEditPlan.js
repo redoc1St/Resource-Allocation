@@ -15,14 +15,12 @@ export default function ModalEditPlan(record) {
   const levels = useSelector((state) => state.ExtraObject.levels);
   const skills = useSelector((state) => state.ExtraObject.skills);
   const [error, setError] = useState();
-  // console.log(record);
   const { pName } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {}, []);
 
   const showModal = () => {
-    // console.log(record?.record.id)
     setIsModalOpen(true);
   };
 
@@ -57,13 +55,6 @@ export default function ModalEditPlan(record) {
   });
 
   const onSubmit = async (values) => {
-    // const{pId,unit, pName}= values;
-    // record?.record.id
-    console.log(record.project.Project_id);
-
-    console.log(values);
-    console.log(record?.record.id);
-
     if (Date.parse(values.Date_start) >= Date.parse(values.Date_end)) {
       setError("End date must greater than start date");
       return;
@@ -158,6 +149,8 @@ export default function ModalEditPlan(record) {
                     <td>Start date </td>
                     <td>
                       <input
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         // value={data?.data?.sdp}
                         type="date"
                         {...register("Date_start")}
@@ -212,6 +205,7 @@ export default function ModalEditPlan(record) {
                     <td>
                       <input
                         min={0}
+                        max={100}
                         type={"number"}
                         {...register("Quantity")}
                       />
@@ -221,6 +215,8 @@ export default function ModalEditPlan(record) {
                     <td>End date </td>
                     <td>
                       <input
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         // value={data?.data?.sdp}
                         type="date"
                         {...register("Date_end")}
@@ -242,7 +238,6 @@ export default function ModalEditPlan(record) {
                       />
                     </td>
                   </tr>
-                  {/* {console.log(levels)} */}
                   <tr>
                     <td>Skill</td>
                     <td>

@@ -59,9 +59,9 @@ export default function ModalNote(data) {
       >
         <form onSubmit={handleSubmitNote}>
           <h4>Note for project:</h4>
-          <textarea  name="note" rows={4} cols={50} required defaultValue={data.data.note}/>
+          <textarea  maxLength={200} name="note" rows={4} cols={50} required defaultValue={data.data.note}/>
           <br />
-          <input type="submit" />
+          <input type="submit" value={'Submit'}/>
         </form>
       </Modal>
     </>

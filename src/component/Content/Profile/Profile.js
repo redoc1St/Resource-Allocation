@@ -141,6 +141,7 @@ export default function Profile() {
                         {passwordVisible ? (
                           <input
                             required
+                            maxLength={"50"}
                             {...register("curPass")}
                             className="form-control"
                             type="password"
@@ -148,6 +149,7 @@ export default function Profile() {
                           />
                         ) : (
                           <input
+                            maxLength={"50"}
                             required
                             {...register("curPass")}
                             className="form-control"
@@ -176,6 +178,7 @@ export default function Profile() {
                       <label>New Password</label>
                       <div style={{ display: "flex" }}>
                         <input
+                          maxLength={"50"}
                           required
                           {...register("newPass", {
                             required: true,
@@ -346,6 +349,7 @@ export default function Profile() {
 
                                         <input
                                           // required
+                                          maxLength="50"
                                           className="form-control"
                                           {...registerEdit("FullName")}
                                           // type="text"
@@ -379,6 +383,7 @@ export default function Profile() {
                                         <label>Address</label>
                                         <input
                                           name="Address"
+                                          maxLength="50"
                                           className="form-control"
                                           {...registerEdit("Address")}
                                           type="text"
@@ -426,7 +431,7 @@ export default function Profile() {
                                       </div>
                                     </div>
                                   </div> */}
-                                  <div className="row">
+                                  {/* <div className="row">
                                     <div className="col mb-3">
                                       <div className="form-group">
                                         <label>About</label>
@@ -438,13 +443,16 @@ export default function Profile() {
                                         />
                                       </div>
                                     </div>
-                                  </div>
+                                  </div> */}
                                 </div>
                               </div>
 
                               {/* <div className="row" >{showButton()}</div> */}
                               {!editButton ? (
-                                <div className="col-sm-12">
+                                <div
+                                  className="col-sm-12"
+                                  style={{ marginTop: "30px" }}
+                                >
                                   <button
                                     className="btn btn-info "
                                     // type="submit"
@@ -454,7 +462,10 @@ export default function Profile() {
                                   </button>
                                 </div>
                               ) : (
-                                <div className="col d-flex justify-content-end">
+                                <div
+                                  className="col d-flex justify-content-end"
+                                  style={{ marginTop: "30px" }}
+                                >
                                   <button
                                     className="btn btn-primary"
                                     type="submit"

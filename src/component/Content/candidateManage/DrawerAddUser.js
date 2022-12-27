@@ -104,7 +104,13 @@ export default function DrawerAddUser() {
               <Form.Item
                 name="username"
                 label="Username"
-                rules={[{ required: true, message: "Please enter username" }]}
+                rules={[
+                  { required: true, message: "Please enter username" },
+                  {
+                    max: 50,
+                    message: "Please input username less than 50 character",
+                  },
+                ]}
               >
                 <Input placeholder="Please enter username" />
               </Form.Item>
@@ -113,7 +119,13 @@ export default function DrawerAddUser() {
               <Form.Item
                 name="fullname"
                 label="Fullname"
-                rules={[{ required: true, message: "Please enter fullname" }]}
+                rules={[
+                  { required: true, message: "Please enter fullname" },
+                  {
+                    max: 50,
+                    message: "Please input fullname less than 50 character",
+                  },
+                ]}
               >
                 <Input placeholder="Please enter fullname" />
               </Form.Item>
@@ -126,6 +138,11 @@ export default function DrawerAddUser() {
                 label="Email"
                 rules={[
                   { required: true, message: "Please enter email" },
+
+                  {
+                    max: 50,
+                    message: "Please input email less than 50 character",
+                  },
                   {
                     type: "email",
                   },
@@ -138,7 +155,13 @@ export default function DrawerAddUser() {
               <Form.Item
                 name="address"
                 label="Address"
-                rules={[{ required: true, message: "Please enter address" }]}
+                rules={[
+                  { required: true, message: "Please enter address" },
+                  {
+                    max: 50,
+                    message: "Please input address less than 50 character",
+                  },
+                ]}
               >
                 <Input placeholder="Please enter address" />
               </Form.Item>

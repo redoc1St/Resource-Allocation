@@ -35,14 +35,12 @@ export default function ModalEditPoolEmp(record) {
   const [error, setError] = useState();
 
   const dispatch = useDispatch();
-  console.log(record?.record);
 
   useEffect(() => {
     dispatch(getRoles());
     dispatch(getLevels());
     dispatch(getSkills());
   }, []);
-  // console.log(record?.record)
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -79,7 +77,6 @@ export default function ModalEditPoolEmp(record) {
   const onSubmit = async (values) => {
     // const{pId,unit, pName}= values;
     // record?.record.id
-    console.log(values);
     if (Date.parse(values.Date_start) >= Date.parse(values.Date_end)) {
       setError("End date must greater than start date");
       return;
@@ -169,6 +166,8 @@ export default function ModalEditPoolEmp(record) {
                     <td>Start date </td>
                     <td>
                       <input
+                       max={"3000-12-12"}
+                        min={"1900-01-01"}
                         // value={data?.data?.sdp}
                         type="date"
                         {...register("Date_start")}
@@ -178,7 +177,7 @@ export default function ModalEditPoolEmp(record) {
                     </td>
                   </tr>
                   <tr>
-                    <td>Effort </td>
+                    <td>% Effort </td>
                     <td>
                       <input type="number" min={0} max={100} {...register("Effort")} />
                     </td>
@@ -222,10 +221,10 @@ export default function ModalEditPoolEmp(record) {
                     <td>End date </td>
                     <td>
                       <input
-                        // value={data?.data?.sdp}
+                       max={"3000-12-12"}
+                        min={"1900-01-01"}
                         type="date"
                         {...register("Date_end")}
-                        // placeholder="dd/MM/YYYY"
                         format={"DD/MM/YYYY"}
                       />
                     </td>
@@ -243,21 +242,7 @@ export default function ModalEditPoolEmp(record) {
                     </td>
                   </tr>
 
-                  {/* <tr>
-                    <td>Skill</td>
-                    <td>
-                      <select disabled {...register("SkillName")} required>
-                        <Select.Option required></Select.Option>
-                        {skills.map((item, index) => {
-                          return (
-                            <option value={item.Skill_id} key={index}>
-                              {item.SkillName}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </td>
-                  </tr> */}
+                 
                 </tbody>
               </table>
               <button

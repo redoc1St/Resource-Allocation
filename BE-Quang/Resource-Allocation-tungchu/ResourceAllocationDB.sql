@@ -189,7 +189,6 @@ Quantity,
 Date_start ,
 Date_end ,
 Effort_planned ,
-Effort_actual ,
 Bill_rate ,
 Level_id,
 Skill_id ,
@@ -240,7 +239,7 @@ Skill_id int foreign key references Skill(Skill_id)
 )
 --1
 insert into ResourcePlanning_Employee values(3,3,2,1)
-insert into ResourcePlanning_Employee values(3,4,1,2)
+insert into ResourcePlanning_Employee values(3,4,3,2)
 insert into ResourcePlanning_Employee values(4,3,3,3)
 insert into ResourcePlanning_Employee values(4,4,4,4)
 insert into ResourcePlanning_Employee values(5,5,4,5)
@@ -259,8 +258,8 @@ insert into ResourcePlanning_Employee values(14,3,2,2)
 insert into ResourcePlanning_Employee values(15,2,4,4)					
 insert into ResourcePlanning_Employee values(15,1,4,2)					
 insert into ResourcePlanning_Employee values(16,4,2,1)					
-insert into ResourcePlanning_Employee values(16,5,1,5)					
-insert into ResourcePlanning_Employee values(17,4,1,2)					
+insert into ResourcePlanning_Employee values(16,5,2,5)					
+insert into ResourcePlanning_Employee values(17,4,3,2)					
 insert into ResourcePlanning_Employee values(17,6,4,3)					
 --4
 insert into ResourcePlanning_Employee values(20,5,3,5)					
@@ -273,7 +272,7 @@ insert into ResourcePlanning_Employee values(23,4,3,2)
 insert into ResourcePlanning_Employee values(23,6,4,3)					
 insert into ResourcePlanning_Employee values(24,2,4,5)		
 --5
-insert into ResourcePlanning_Employee values(25,3,1,2)					
+insert into ResourcePlanning_Employee values(25,3,2,2)					
 insert into ResourcePlanning_Employee values(25,4,3,1)					
 insert into ResourcePlanning_Employee values(27,5,4,5)					
 insert into ResourcePlanning_Employee values(27,3,3,3)					
@@ -295,10 +294,10 @@ Date_end date,
 Effort int, 
 Bill_rate int
 )
-insert into Emp_RolePlanning values(1,1,'12-05-2022','12-21-2022',20,20)
-insert into Emp_RolePlanning values(19,7,'2022-12-12','2023-01-02',20,20)
-insert into Emp_RolePlanning values(5,5,'2022-11-28','2023-01-04',20,20)
-insert into Emp_RolePlanning values(18,3,'2022-12-18','2023-01-07',25,25)
+insert into Emp_RolePlanning values(1,1,'12-05-2022','12-21-2022',50,50)
+insert into Emp_RolePlanning values(19,7,'2022-12-12','2023-01-02',50,50)
+insert into Emp_RolePlanning values(5,5,'2022-11-28','2023-01-04',50,50)
+insert into Emp_RolePlanning values(18,3,'2022-12-18','2023-01-07',50,25)
 insert into Emp_RolePlanning values(7,12,'2022-12-19','2023-01-09',30,30)
 insert into Emp_RolePlanning values(12,13,'2022-12-01','2023-01-06',30,30)
 insert into Emp_RolePlanning values(16,18,'2022-12-03','2023-01-04',30,30)

@@ -39,9 +39,7 @@ export default function AddToProject(type) {
 
   console.log(type?.record);
 
-
   useEffect(() => {
-
     // console.log(type?.record.Role_id);
     // console.log(type?.record.level_id);
     // console.log(type?.record.skill_id);
@@ -90,7 +88,7 @@ export default function AddToProject(type) {
 
   useEffect(() => {
     console.log("code project" + codeProject);
-    
+
     if (codeProject) {
       // dispatch(getLeaderByCode(codeProject));
 
@@ -193,7 +191,6 @@ export default function AddToProject(type) {
     ) {
       setError("Date must be in range of project");
     } else {
-
       //THEO LUỒNG PROJECT
 
       if (type.buProject) {
@@ -275,7 +272,7 @@ export default function AddToProject(type) {
           }
         }
       } else {
-        console.log(type?.record)
+        console.log(type?.record);
         console.log(
           values.pName.split(",")[1],
           type?.record?.Role_id,
@@ -469,11 +466,15 @@ export default function AddToProject(type) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <h6 style={{ textAlign: "center" }}>
               {pNamePrj} <br></br>
-              {IdPLanningRole?.RoleName}-{IdPLanningRole?.LevelName}-{IdPLanningRole?.SkillName}
-              <br/>
-              (From {new Date(IdPLanningRole?.Date_start).toLocaleDateString(
+              {IdPLanningRole?.RoleName}-{IdPLanningRole?.LevelName}-
+              {IdPLanningRole?.SkillName}
+              <br />
+              (From{" "}
+              {new Date(IdPLanningRole?.Date_start).toLocaleDateString(
                 "es-CL"
-              )} To {new Date(IdPLanningRole?.Date_end).toLocaleDateString("es-CL")})
+              )}{" "}
+              To{" "}
+              {new Date(IdPLanningRole?.Date_end).toLocaleDateString("es-CL")})
             </h6>
             <table>
               <tbody>
@@ -498,6 +499,8 @@ export default function AddToProject(type) {
                   <th>Start date </th>
                   <td>
                     <input
+                      max={"3000-12-12"}
+                      min={"1900-01-01"}
                       type="date"
                       // defaultValue={dateProject?.sDate?.split("T")[0]}
                       format={"DD/MM/YYYY"}
@@ -511,6 +514,8 @@ export default function AddToProject(type) {
                   <td>
                     <input
                       type="date"
+                      max={"3000-12-12"}
+                      min={"1900-01-01"}
                       format={"DD/MM/YYYY"}
                       required
                       // defaultValue={dateProject?.eDate?.split("T")[0]}

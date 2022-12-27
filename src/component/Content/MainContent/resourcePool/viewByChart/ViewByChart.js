@@ -9,7 +9,7 @@ export default function ViewByChart() {
         style={{
           overflow: "hidden",
           scrollMarginInlineEnd: "50px",
-          width: "1280px",
+          width: "1400px",
           height: "600px",        }}
       >
     <Timeline/>

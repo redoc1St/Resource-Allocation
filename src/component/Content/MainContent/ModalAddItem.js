@@ -50,14 +50,18 @@ export default function ModalAddItem() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
     defaultValues: {
-      // department_id: user?.Department_id,
+      unit: user?.Department_id,
       // pId:'5'
     },
     // mode: "onSubmit", //đây có mấy cái để kiểu ấn enter xong mới bỏ hiển thị lỗi
   });
-  console.log(user?.Department_id);
+  console.log(typeof user?.Department_id);
   function getCodePrj(name) {
     const prjCode =
       name.replace(/ /g, "").replace(/[a-z]/g, "") +
@@ -70,7 +74,7 @@ export default function ModalAddItem() {
     const {
       code,
       projectName,
-      department_id,
+      unit,
       effort_planned,
       effort_actual,
       effort_billable,
@@ -98,7 +102,7 @@ export default function ModalAddItem() {
           data: {
             code: prjCode,
             projectName: JSON.parse(JSON.stringify(delSpace(projectName))),
-            department_id: JSON.parse(JSON.stringify(department_id)),
+            department_id: JSON.parse(JSON.stringify(unit)),
             effort_planned: JSON.parse(JSON.stringify(0)),
             effort_actual: JSON.parse(JSON.stringify(0)),
             effort_billable: JSON.parse(JSON.stringify(effort_billable)),
@@ -178,10 +182,10 @@ export default function ModalAddItem() {
                     <td>Unit *</td>
                     <td>
                       <select
-                        placeholder="Choose Unit"
-                        {...register("department_id")}
+                        // placeholder="Choose Unit"
+                        {...register("unit")}
                         required
-                        defaultValue={user?.Department_id}
+                        // defaultValue={user?.Department_id}
                         disabled={user?.UserType == ROLES.LEADER}
                       >
                         <Select.Option required></Select.Option>
@@ -212,6 +216,8 @@ export default function ModalAddItem() {
                     <td>Start date (plan) </td>
                     <td>
                       <input
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         type="date"
                         {...register("start_plan")}
                         placeholder="dd/MM/YYYY"
@@ -223,11 +229,14 @@ export default function ModalAddItem() {
                 </tbody>
                 <tbody>
                   <tr>
-                    <td>End date (plan) </td>
+                    <td>Start date (actual)</td>
                     <td>
                       <input
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
+                        name="sda"
                         type="date"
-                        {...register("end_plan")}
+                        {...register("start_actual")}
                         placeholder="dd/MM/YYYY"
                         format={"YYYY/MM/DD"}
                         required
@@ -262,6 +271,7 @@ export default function ModalAddItem() {
                         type="number"
                         {...register("effort_billable")}
                         min={0}
+                        max={"9999"}
                         placeholder="0"
                         required
                       />
@@ -270,12 +280,13 @@ export default function ModalAddItem() {
                 </tbody>
                 <tbody>
                   <tr>
-                    <td>Start date (actual)</td>
+                    <td>End date (plan) </td>
                     <td>
                       <input
-                        name="sda"
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         type="date"
-                        {...register("start_actual")}
+                        {...register("end_plan")}
                         placeholder="dd/MM/YYYY"
                         format={"YYYY/MM/DD"}
                         required
@@ -289,6 +300,8 @@ export default function ModalAddItem() {
                     <td>End date (actual)</td>
                     <td>
                       <input
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         type="date"
                         {...register("end_actual")}
                         placeholder="dd/MM/YYYY"

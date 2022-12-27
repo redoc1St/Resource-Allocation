@@ -132,6 +132,8 @@ export default function ModalAddRole(record) {
                     <td>Start date </td>
                     <td>
                       <input
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         // value={data?.data?.sdp}
                         type="date"
                         {...register("Date_start")}
@@ -182,13 +184,21 @@ export default function ModalAddRole(record) {
                   <tr>
                     <td>Quantity</td>
                     <td>
-                      <input {...register("Quantity")} type="number" required />
+                      <input
+                        {...register("Quantity")}
+                        min={0}
+                        max={"100"}
+                        type="number"
+                        required
+                      />
                     </td>
                   </tr>
                   <tr>
                     <td>End date </td>
                     <td>
                       <input
+                        max={"3000-12-12"}
+                        min={"1900-01-01"}
                         // value={data?.data?.sdp}
                         type="date"
                         {...register("Date_end")}

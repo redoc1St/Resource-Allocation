@@ -132,14 +132,14 @@ export default function TableReportRSP() {
           // Effort_planned: totalPlanAllocate,
           // total_Effort: totalActualAllocate,
           Quantity: planningRoles[planningRoles.length - 1]?.totalPQuantity,
-          actual:
-           planningRoles[planningRoles.length - 1]?.totalAQuantity,
+          actual: planningRoles[planningRoles.length - 1]?.totalAQuantity,
         }
   );
   return (
     <div>
       <Table
         className="table-striped-rows"
+        bordered
         style={
           onclickShowLeft
             ? {

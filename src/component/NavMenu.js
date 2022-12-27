@@ -29,7 +29,7 @@ export default function NavMenu() {
                   <div className="sb-sidenav-menu-heading">MAIN MENU</div>
                   <NavLink className="nav-link"   to="/userManage" >
                     <LayoutFilled style={{ margin: "5px" }} />
-                    Staff Management
+                    Staff List
                   </NavLink>
                 </>
 
