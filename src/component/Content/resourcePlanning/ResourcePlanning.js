@@ -23,6 +23,7 @@ import useAuth from "../../hooks/useAuth";
 import {
   getProjects,
   getProjectsByBuId,
+  getProjectsByEmp,
 } from "../../../Store/Actions/ProjectActions";
 import { getEmpByCodePrj } from "../../../Store/Actions/ReportActions";
 export default function ResourcePlanning() {
@@ -55,9 +56,16 @@ export default function ResourcePlanning() {
   useEffect(() => {
     dispatch(getEmpByCodePrj(pName));
     dispatch(getRoleByCode(pName));
-    user?.UserType != ROLES.ADMIN
-      ? dispatch(getProjectsByBuId(user?.Department_id))
-      : dispatch(getProjects());
+    if (user?.UserType == ROLES.ADMIN) {
+      dispatch(getProjects());
+    } else if (user?.UserType == ROLES.ADMIN) {
+      dispatch(getProjectsByBuId(user?.Department_id));
+    } else {
+      getProjectsByEmp(user?.User_id);
+    }
+    // user?.UserType != ROLES.ADMIN
+    //   ? dispatch(getProjectsByBuId(user?.Department_id))
+    //   : dispatch(getProjects());
   }, [pName]);
   useEffect(() => {
     dispatch(getRoles());

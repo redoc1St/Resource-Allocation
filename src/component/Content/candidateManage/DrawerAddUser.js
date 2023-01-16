@@ -107,6 +107,10 @@ export default function DrawerAddUser() {
                 rules={[
                   { required: true, message: "Please enter username" },
                   {
+                    min: 6,
+                    message: "Please input username more than 6 characters",
+                  },
+                  {
                     max: 50,
                     message: "Please input username less than 50 character",
                   },
@@ -123,7 +127,7 @@ export default function DrawerAddUser() {
                   { required: true, message: "Please enter fullname" },
                   {
                     max: 50,
-                    message: "Please input fullname less than 50 character",
+                    message: "Please input fullname less than 50 characters",
                   },
                 ]}
               >

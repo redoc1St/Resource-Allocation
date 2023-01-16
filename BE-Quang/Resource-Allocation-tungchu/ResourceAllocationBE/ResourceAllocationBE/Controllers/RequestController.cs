@@ -65,7 +65,7 @@ namespace ResourceAllocationBE.Controllers
                     ResourcePlanning_Role.Level_id = Levels.Level_id and
                     ResourcePlanning_Role.Skill_id =  Skill.Skill_id and
                     ResourceRequestRole.ResourcePlannig_RoleId = ResourcePlanning_Role.id
-                    order by ResourcePlanning_Role.[status] desc,  ResourceRequestRole.lastestTime  desc";
+                    order by ResourceRequestRole.lastestTime  desc, ResourcePlanning_Role.[status] desc";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ResourceAllocationDB");

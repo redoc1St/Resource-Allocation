@@ -72,11 +72,11 @@ export default function SpecificRequests() {
       width: 90,
     },
 
-    {
-      title: "Bill/Unbill",
-      dataIndex: "request_bill",
-      width: 90,
-    },
+    // {
+    //   title: "Bill/Unbill",
+    //   dataIndex: "request_bill",
+    //   width: 90,
+    // },
 
     {
       title: "Skill",

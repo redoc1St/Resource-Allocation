@@ -51,7 +51,7 @@ export default function ResourcePool(record) {
       {value === "list" ? (
         <>
           <TablePane>
-            <tbody>
+            {/* <tbody>
               <tr>
                 <th></th>
                 <th></th>
@@ -84,7 +84,7 @@ export default function ResourcePool(record) {
                 <td></td>
                 <td></td>
               </tr>
-            </tbody>
+            </tbody> */}
           </TablePane>
 
           <TableRPool {...location?.state} />

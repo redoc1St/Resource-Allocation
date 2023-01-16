@@ -39,7 +39,7 @@ export default function TableRPool(data) {
       if (valueInput?.emp_planning) {
         if (Object.keys(data).length === 0) {
           // if (user?.UserType == ROLES.ADMIN) {
-            dispatch(getSearchResourcePoolEmpByName(valueInput.emp_planning));
+          dispatch(getSearchResourcePoolEmpByName(valueInput.emp_planning));
           // }
         } else {
           dispatch(
@@ -77,6 +77,8 @@ export default function TableRPool(data) {
       title: "Employee",
       dataIndex: "Fullname",
       width: 180,
+      sorter: (a, b) => a.Fullname.localeCompare(b.Fullname),
+
       //   editTable: true,
     },
     {
@@ -132,11 +134,11 @@ export default function TableRPool(data) {
       dataIndex: "Effort",
       width: 80,
     },
-    {
-      title: "Bill/Unbill",
-      dataIndex: "bill",
-      width: 87,
-    },
+    // {
+    //   title: "Bill/Unbill",
+    //   dataIndex: "bill",
+    //   width: 87,
+    // },
     {
       title: "% Bill",
       dataIndex: "Bill_rate",
